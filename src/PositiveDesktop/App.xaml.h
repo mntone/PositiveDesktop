@@ -1,11 +1,5 @@
-﻿#pragma once
-
-#pragma push_macro("GetCurrentTime")
-#undef GetCurrentTime
-
+#pragma once
 #include "App.xaml.g.h"
-
-#pragma pop_macro("GetCurrentTime")
 
 #include "Services/Services.h"
 

@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "VirtualDesktopNotificationServiceWin10.h"
 
+#include <atomic>
+#include <vector>
+
 using namespace app;
 using namespace win10;
 

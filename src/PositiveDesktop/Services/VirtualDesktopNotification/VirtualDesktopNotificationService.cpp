@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Services/Services.h"
 
+#include <atomic>
+#include <vector>
+
 #include "VirtualDesktopNotificationServiceWin10.h"
 #include "VirtualDesktopNotificationServiceWin11.h"
 

@@ -1,4 +1,6 @@
 #pragma once
+#include <microsoft.ui.xaml.window.h>
+#include <winrt/Microsoft.UI.Windowing.h>
 
 inline winrt::Microsoft::UI::DisplayId GetPrimaryDisplayId() {
 	HMONITOR hMonitor = MonitorFromWindow(nullptr, MONITOR_DEFAULTTOPRIMARY);
