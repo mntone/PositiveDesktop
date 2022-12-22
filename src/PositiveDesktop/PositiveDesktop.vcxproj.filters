@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="App.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Common\Reps.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Services\ServiceManager.cpp">
+      <Filter>Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.cpp">
+      <Filter>Services\VirtualDesktopNotification</Filter>
+    </ClCompile>
+    <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.cpp">
+      <Filter>Services\VirtualDesktopNotification</Filter>
+    </ClCompile>
+    <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.cpp">
+      <Filter>Services\VirtualDesktopNotification</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\NotificationWindowViewModel.cpp">
+      <Filter>ViewModels</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Common\Math.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Reps.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\VirtualDesktop.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Services.h">
+      <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.h">
+      <Filter>Services\VirtualDesktopNotification</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.h">
+      <Filter>Services\VirtualDesktopNotification</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.h">
+      <Filter>Services\VirtualDesktopNotification</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\VirtualDesktopNotification\vdevent_t.h">
+      <Filter>Services\VirtualDesktopNotification</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\NotificationPresenter.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIHelper.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\WindowHelper.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\NotificationWindowViewModel.h">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{1c737327-ce80-463c-bd86-3199686623f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services">
+      <UniqueIdentifier>{2ea3d483-7381-4b80-ad87-b04df69cbf0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services\VirtualDesktopNotification">
+      <UniqueIdentifier>{39b010b6-0fad-430f-9591-3629c79da5fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{8e44507f-e73f-49c7-95ff-35309c012ea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModels">
+      <UniqueIdentifier>{67303be4-bdec-4705-b9e9-42c3ed9d27cd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="NotificationWindow.xaml">
+      <Filter>UI</Filter>
+    </Page>
+  </ItemGroup>
+</Project>

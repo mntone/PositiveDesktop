@@ -1,0 +1,22 @@
+﻿<Window x:Class="PositiveDesktop.NotificationWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:local="using:PositiveDesktop"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		mc:Ignorable="d">
+
+	<Border BorderBrush="#BEBEC0"
+			BorderThickness="1">
+		<StackPanel Margin="16,12"
+					HorizontalAlignment="Left"
+					VerticalAlignment="Top"
+					Spacing="8">
+			<TextBlock FontSize="16"
+					   Typography.Capitals="SmallCaps"
+					   Text="{x:Bind ViewModel.Caption, Mode=OneWay}" />
+			<TextBlock FontSize="32"
+					   Text="{x:Bind ViewModel.Message, Mode=OneWay}" />
+		</StackPanel>
+	</Border>
+</Window>

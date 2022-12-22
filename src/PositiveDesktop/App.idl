@@ -1,0 +1,22 @@
+namespace PositiveDesktop
+{
+    namespace ViewModels {
+        [bindable]
+        [default_interface]
+        runtimeclass NotificationWindowViewModel
+        {
+            String Caption { get; };
+            String Message { get; };
+        }
+    }
+
+    //namespace UI {
+
+        [default_interface]
+        runtimeclass NotificationWindow : Microsoft.UI.Xaml.Window, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+        {
+            void Show(Boolean autoHide);
+            PositiveDesktop.ViewModels.NotificationWindowViewModel ViewModel;
+        }
+    //}
+}
