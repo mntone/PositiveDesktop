@@ -8,10 +8,18 @@ using namespace app::win11;
 
 #pragma region Service implementation
 
-VirtualDesktopNotificationServiceImpl::VirtualDesktopNotificationServiceImpl(reps::observer_t& observer)
+app::IVirtualDesktopNotificationServiceImpl* app::win11::CreateVirtualDesktopNotificationServiceImpl(reps::observer_t& observer) {
+	winrt::impl::com_ref<VirtualDesktopNotificationServiceWin11> impl = winrt::make_self<VirtualDesktopNotificationServiceWin11>(observer);
+	return impl.detach();
+}
+
+void app::win11::ReleaseVirtualDesktopNotificationServiceImpl(IVirtualDesktopNotificationServiceImpl* impl) {
+	reinterpret_cast<IUnknown*>(impl)->Release();
+}
+
+VirtualDesktopNotificationServiceWin11::VirtualDesktopNotificationServiceWin11(reps::observer_t& observer)
 	: serviceProvider_(nullptr)
 	, virtualDesktopNotificationService_(nullptr)
-	, sink_(nullptr)
 	, cookie_(0) {
 	winrt::check_hresult(CoCreateInstance(
 		clsidImmersiveShell,
@@ -25,24 +33,19 @@ VirtualDesktopNotificationServiceImpl::VirtualDesktopNotificationServiceImpl(rep
 		__uuidof(IVirtualDesktopNotificationService),
 		virtualDesktopNotificationService_.put_void()));
 
-	winrt::com_ptr<VirtualDesktopNotificationSink> sink = winrt::make_self<VirtualDesktopNotificationSink>();
-	winrt::check_hresult(virtualDesktopNotificationService_->Register(sink.as<IVirtualDesktopNotification>().get(), &cookie_));
+	subject_.addObserver(observer);
 
-	sink->addObserver(observer);
-	sink_ = std::move(sink);
+	winrt::com_ptr<app::win11::IVirtualDesktopNotification> sink;
+	winrt::check_hresult(QueryInterface(__uuidof(app::win11::IVirtualDesktopNotification), sink.put_void()));
+	winrt::check_hresult(virtualDesktopNotificationService_->Register(sink.get(), &cookie_));
 }
 
-void VirtualDesktopNotificationServiceImpl::close() {
+void VirtualDesktopNotificationServiceWin11::close() {
 	WINRT_ASSERT(cookie_);
 
-	sink_->clearObserver();
+	subject_.clearObserver();
 	winrt::check_hresult(virtualDesktopNotificationService_->Unregister(cookie_));
-	sink_ = nullptr;
 	cookie_ = 0;
-}
-
-app::IVirtualDesktopNotificationServiceImpl* app::win11::CreateVirtualDesktopNotificationServiceImpl(reps::observer_t& observer) {
-	return new VirtualDesktopNotificationServiceImpl(observer);
 }
 
 #pragma endregion
@@ -51,31 +54,31 @@ app::IVirtualDesktopNotificationServiceImpl* app::win11::CreateVirtualDesktopNot
 
 #include "vdevent_t.h"
 
-HRESULT VirtualDesktopNotificationSink::VirtualDesktopCreated(IVirtualDesktop* pDesktop) {
+HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopCreated(IVirtualDesktop* pDesktop) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationSink::VirtualDesktopDestroyBegin(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) {
+HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyBegin(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationSink::VirtualDesktopDestroyFailed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) {
+HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyFailed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationSink::VirtualDesktopDestroyed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) {
+HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationSink::Unknown1(int nUnknown) {
+HRESULT VirtualDesktopNotificationServiceWin11::Unknown1(int nUnknown) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationSink::VirtualDesktopMoved(IVirtualDesktop* pDesktop, int nFromIndex, int nToIndex) {
+HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopMoved(IVirtualDesktop* pDesktop, int nFromIndex, int nToIndex) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationSink::VirtualDesktopRenamed(IVirtualDesktop* pDesktop, HSTRING hName) {
+HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopRenamed(IVirtualDesktop* pDesktop, HSTRING hName) {
 	winrt::hstring hstrName;
 	winrt::copy_from_abi(hstrName, hName);
 
@@ -88,11 +91,11 @@ HRESULT VirtualDesktopNotificationSink::VirtualDesktopRenamed(IVirtualDesktop* p
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationSink::ViewVirtualDesktopChanged(void* pView) {
+HRESULT VirtualDesktopNotificationServiceWin11::ViewVirtualDesktopChanged(void* pView) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationSink::CurrentVirtualDesktopChanged(IVirtualDesktop* pDesktopOld, IVirtualDesktop* pDesktopNew) {
+HRESULT VirtualDesktopNotificationServiceWin11::CurrentVirtualDesktopChanged(IVirtualDesktop* pDesktopOld, IVirtualDesktop* pDesktopNew) {
 	winrt::hstring hstrName;
 	{
 		HSTRING hDesktopNewName;
@@ -111,16 +114,8 @@ HRESULT VirtualDesktopNotificationSink::CurrentVirtualDesktopChanged(IVirtualDes
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationSink::VirtualDesktopWallpaperChanged(IVirtualDesktop* pDesktop, HSTRING hPath) {
+HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopWallpaperChanged(IVirtualDesktop* pDesktop, HSTRING hPath) {
 	return S_OK;
-}
-
-void VirtualDesktopNotificationSink::addObserver(reps::observer_t& observer) noexcept {
-	subject_.addObserver(observer);
-}
-
-void VirtualDesktopNotificationSink::clearObserver() noexcept {
-	subject_.clearObserver();
 }
 
 #pragma endregion

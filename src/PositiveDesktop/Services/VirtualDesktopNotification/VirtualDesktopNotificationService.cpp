@@ -20,8 +20,9 @@ private:
 	void FASTCALL on(reps::bag_t const& value) noexcept override;
 
 private:
-	// Sink service
-	std::unique_ptr<app::IVirtualDesktopNotificationServiceImpl> impl_;
+	// Service
+	app::IVirtualDesktopNotificationServiceImpl* impl_;
+	void (*deleter_)(app::IVirtualDesktopNotificationServiceImpl*);
 
 	// Presenter
 	std::unique_ptr<app::UI::INotificationPresenter> presenter_;
@@ -29,7 +30,9 @@ private:
 
 using namespace app;
 
-VirtualDesktopNotificationService::VirtualDesktopNotificationService() {
+VirtualDesktopNotificationService::VirtualDesktopNotificationService()
+	: impl_(nullptr)
+	, deleter_(nullptr) {
 	// Retrieve OS Version
 	OSVERSIONINFOW osver { sizeof(OSVERSIONINFOW) };
 #pragma warning(push)
@@ -47,20 +50,25 @@ VirtualDesktopNotificationService::VirtualDesktopNotificationService() {
 		// Init presenter
 		presenter_.reset(CreateWinUI3NotificationPresenter(app::UI::NotificationPresenterHint::Windows11));
 
-		impl_.reset(app::win11::CreateVirtualDesktopNotificationServiceImpl(*this));
+		deleter_ = app::win11::ReleaseVirtualDesktopNotificationServiceImpl;
+		impl_ = app::win11::CreateVirtualDesktopNotificationServiceImpl(*this);
 	} else if (osver.dwBuildNumber < 20231 && osver.dwBuildNumber >= 9841 /* general Windows 10 */) {
 		// Init presenter
 		presenter_.reset(CreateWinUI3NotificationPresenter(app::UI::NotificationPresenterHint::Windows10));
 
-		impl_.reset(app::win10::CreateVirtualDesktopNotificationServiceImpl(*this));
+		deleter_ = app::win10::ReleaseVirtualDesktopNotificationServiceImpl;
+		impl_ = app::win10::CreateVirtualDesktopNotificationServiceImpl(*this);
 	} else {
 		winrt::throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
 	}
 }
 
 void VirtualDesktopNotificationService::close() {
-	impl_->close();
-	impl_.reset(nullptr);
+	WINRT_ASSERT(deleter_);
+
+	app::IVirtualDesktopNotificationServiceImpl* impl = std::exchange(impl_, nullptr);
+	impl->close();
+	deleter_(impl);
 	delete this;
 }
 

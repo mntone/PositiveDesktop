@@ -6,8 +6,14 @@
 
 namespace app::win11 {
 
-	struct VirtualDesktopNotificationSink
-		: winrt::implements<VirtualDesktopNotificationSink, IVirtualDesktopNotification> {
+	struct VirtualDesktopNotificationServiceWin11
+		: public app::IVirtualDesktopNotificationServiceImpl
+		, winrt::implements<VirtualDesktopNotificationServiceWin11, IVirtualDesktopNotification> {
+		VirtualDesktopNotificationServiceWin11(reps::observer_t& observer);
+
+		void close() override;
+
+		// - IVirtualDesktopNotification
 		IFACEMETHOD(VirtualDesktopCreated)(IVirtualDesktop* pDesktop);
 		IFACEMETHOD(VirtualDesktopDestroyBegin)(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback);
 		IFACEMETHOD(VirtualDesktopDestroyFailed)(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback);
@@ -19,23 +25,11 @@ namespace app::win11 {
 		IFACEMETHOD(CurrentVirtualDesktopChanged)(IVirtualDesktop* pDesktopOld, IVirtualDesktop* pDesktopNew);
 		IFACEMETHOD(VirtualDesktopWallpaperChanged)(IVirtualDesktop* pDesktop, HSTRING path);
 
-		void FASTCALL addObserver(reps::observer_t& observer) noexcept;
-		void clearObserver() noexcept;
-
-	private:
-		reps::single_subject_t subject_;
-	};
-
-	struct VirtualDesktopNotificationServiceImpl final: public app::IVirtualDesktopNotificationServiceImpl {
-		VirtualDesktopNotificationServiceImpl(reps::observer_t& observer);
-
-		void close() override;
-
 	private:
 		winrt::com_ptr<IServiceProvider> serviceProvider_;
 		winrt::com_ptr<IVirtualDesktopNotificationService> virtualDesktopNotificationService_;
-		winrt::com_ptr<VirtualDesktopNotificationSink> sink_;
 		DWORD cookie_;
+		reps::single_subject_t subject_;
 	};
 
 }

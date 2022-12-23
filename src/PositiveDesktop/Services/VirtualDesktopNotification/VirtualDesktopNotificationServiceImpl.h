@@ -15,12 +15,14 @@ namespace app {
 	namespace win10 {
 
 		IVirtualDesktopNotificationServiceImpl* CreateVirtualDesktopNotificationServiceImpl(reps::observer_t& observer);
+		void ReleaseVirtualDesktopNotificationServiceImpl(IVirtualDesktopNotificationServiceImpl* impl);
 
 	}
 
 	namespace win11 {
 
 		IVirtualDesktopNotificationServiceImpl* CreateVirtualDesktopNotificationServiceImpl(reps::observer_t& observer);
+		void ReleaseVirtualDesktopNotificationServiceImpl(IVirtualDesktopNotificationServiceImpl* impl);
 
 	}
 
