@@ -8,8 +8,8 @@
 #include "VirtualDesktopNotificationServiceWin11.h"
 
 // NotificationPresenter impl
-#include "NotificationWindow.xaml.h"
-using NotificationPresenter = UI::NotificationPresenter<winrt::PositiveDesktop::NotificationWindow>;
+#include "UI/NotificationPresenter.h"
+#include "UI/NotificationPresenterWinUI3.h"
 
 class VirtualDesktopNotificationService final: public reps::observer_t {
 public:
@@ -18,8 +18,6 @@ public:
 	void close();
 
 private:
-	void FASTCALL showWindows(UI::NotificationPresenterData data) noexcept;
-
 	void FASTCALL on(reps::bag_t const& value) noexcept override;
 
 private:
@@ -27,7 +25,7 @@ private:
 	std::unique_ptr<app::IVirtualDesktopNotificationServiceImpl> impl_;
 
 	// Presenter
-	NotificationPresenter presenter_;
+	std::unique_ptr<app::UI::INotificationPresenter> presenter_;
 };
 
 VirtualDesktopNotificationService::VirtualDesktopNotificationService() {
@@ -45,8 +43,14 @@ VirtualDesktopNotificationService::VirtualDesktopNotificationService() {
 
 	// Load the service
 	if (osver.dwBuildNumber >= 21313 /* Windows 10 Insider, Windows 11 */) {
+		// Init presenter
+		presenter_.reset(CreateWinUI3NotificationPresenter(app::UI::NotificationPresenterHint::Windows11));
+
 		impl_ = std::make_unique<win11::VirtualDesktopNotificationServiceImpl>(*this);
 	} else if (osver.dwBuildNumber < 20231 && osver.dwBuildNumber >= 9841 /* general Windows 10 */) {
+		// Init presenter
+		presenter_.reset(CreateWinUI3NotificationPresenter(app::UI::NotificationPresenterHint::Windows10));
+
 		impl_ = std::make_unique<win10::VirtualDesktopNotificationServiceImpl>(*this);
 	} else {
 		winrt::throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
@@ -73,11 +77,11 @@ void FASTCALL VirtualDesktopNotificationService::on(reps::bag_t const& value) no
 		vdevent_t ev = reps::data<vdevent_t>(value);
 		switch (ev.type) {
 		case vde_changed:
-			UI::NotificationPresenterData data {
-				UI::NotificationPresenterType::Changed,
+			app::UI::NotificationPresenterData data {
+				app::UI::NotificationPresenterType::Changed,
 				ev.name,
 			};
-			showWindows(std::move(data));
+			presenter_->show(std::move(data));
 			break;
 		}
 		break;
@@ -85,12 +89,6 @@ void FASTCALL VirtualDesktopNotificationService::on(reps::bag_t const& value) no
 	case reps::event_t::completed:
 		break;
 	}
-}
-
-void FASTCALL VirtualDesktopNotificationService::showWindows(UI::NotificationPresenterData data) noexcept {
-	presenter_.sync([data, &presenter = presenter_]() mutable {
-		presenter.show(std::move(data));
-	});
 }
 
 struct __VirtualDesktopNotificationServiceWrapperImpl final: ServiceWrapper {

@@ -136,6 +136,7 @@
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />
+    <ClInclude Include="UI\NotificationPresenterWinUI3.h" />
     <ClInclude Include="UI\UIHelper.h" />
     <ClInclude Include="UI\WindowHelper.h" />
     <ClInclude Include="ViewModels\NotificationWindowViewModel.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.cpp" />
     <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.cpp" />
     <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.cpp" />
+    <ClCompile Include="UI\NotificationPresenterWinUI3.cpp" />
     <ClCompile Include="ViewModels\NotificationWindowViewModel.cpp" />
   </ItemGroup>
   <ItemGroup>

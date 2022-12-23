@@ -24,6 +24,9 @@
     <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.cpp">
       <Filter>Services\VirtualDesktopNotification</Filter>
     </ClCompile>
+    <ClCompile Include="UI\NotificationPresenterWinUI3.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
     <ClCompile Include="ViewModels\NotificationWindowViewModel.cpp">
       <Filter>ViewModels</Filter>
     </ClCompile>
@@ -55,6 +58,9 @@
       <Filter>Services\VirtualDesktopNotification</Filter>
     </ClInclude>
     <ClInclude Include="UI\NotificationPresenter.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\NotificationPresenterWinUI3.h">
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="UI\UIHelper.h">

@@ -1,6 +1,11 @@
 #pragma once
 
-namespace UI {
+namespace app::UI {
+
+	enum class NotificationPresenterHint {
+		Windows10,
+		Windows11,
+	};
 
 	enum class NotificationPresenterType {
 		Changed,
@@ -12,17 +17,11 @@ namespace UI {
 		winrt::hstring message;
 	};
 
-	template<class TImpl>
-	class NotificationPresenter: public std::false_type {
+	class INotificationPresenter {
 	public:
-		static_assert(!value, "this class has to be implemented for desired type");
+		virtual ~INotificationPresenter() { }
 
-		template<typename TFn>
-		void sync(TFn fn) const { }
-
-		void show(NotificationPresenter data) { }
-
-		TImpl native() const { }
+		virtual void show(NotificationPresenterData data) = 0;
 	};
 
 }

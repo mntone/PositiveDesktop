@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "NotificationWindowViewModel.h"
 #if __has_include("NotificationWindowViewModel.g.cpp")
 #include "NotificationWindowViewModel.g.cpp"
@@ -15,18 +15,18 @@ NotificationWindowViewModel::NotificationWindowViewModel() noexcept
 	, message_(L"") {
 }
 
-inline hstring GetCaptionFromType(UI::NotificationPresenterType type) noexcept {
+inline hstring GetCaptionFromType(app::UI::NotificationPresenterType type) noexcept {
 	switch (type) {
-	case UI::NotificationPresenterType::Changed:
+	case app::UI::NotificationPresenterType::Changed:
 		return L"Virtual Desktop Changed";
-	case UI::NotificationPresenterType::Renamed:
+	case app::UI::NotificationPresenterType::Renamed:
 		return L"Virtual Desktop Renamed";
 	default:
 		return L"Unknown event";
 	}
 }
 
-NotificationWindowViewModel::NotificationWindowViewModel(UI::NotificationPresenterData data) noexcept
+NotificationWindowViewModel::NotificationWindowViewModel(app::UI::NotificationPresenterData data) noexcept
 	: caption_(GetCaptionFromType(data.type))
 	, message_(data.message) {
 }
