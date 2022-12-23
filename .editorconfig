@@ -76,10 +76,10 @@ cpp_wrap_preserve_blocks = one_liners
 
 [*.xaml]
 charset = utf-8
-end_of_line = lf
+end_of_line = crlf
 trim_trailing_whitespace = true
 
-[*.{sln}]
+[*.sln]
 charset = utf-8-bom
 end_of_line = crlf
 trim_trailing_whitespace = true

@@ -12,10 +12,10 @@
 *.idl                text encoding=utf-8 eol=lf
 *.[ch]               text encoding=utf-8 eol=lf
 *.[ch]pp             text encoding=utf-8 eol=lf
-*.xaml               text encoding=utf-8 eol=lf
 app.manifest         text encoding=utf-8 eol=lf
 
 # Files normalized to always keep Windows line endings
+*.xaml               text encoding=utf-8 eol=crlf
 *.sln                text encoding=utf-8-bom eol=crlf
 *.vcxproj            text encoding=utf-8 eol=crlf
 *.vcxproj.filters    text encoding=utf-8 eol=crlf
