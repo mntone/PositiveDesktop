@@ -8,15 +8,22 @@
 
 	<Border BorderBrush="#BEBEC0"
 			BorderThickness="1">
-		<StackPanel Margin="16,12"
+		<StackPanel Margin="16,12,8,12"
 					HorizontalAlignment="Left"
 					VerticalAlignment="Top"
 					Spacing="4">
-			<TextBlock FontSize="16"
+			<TextBlock x:Uid="NotificationWindow_Caption"
+					   AutomationProperties.Name="{x:Bind ViewModel.Caption, Mode=OneWay}"
+					   FontSize="16"
 					   Typography.Capitals="SmallCaps"
 					   Text="{x:Bind ViewModel.Caption, Mode=OneWay}" />
-			<TextBlock FontSize="32"
-					   Text="{x:Bind ViewModel.Message, Mode=OneWay}" />
+			<TextBlock x:Uid="NotificationWindow_Message"
+					   AutomationProperties.Name="{x:Bind ViewModel.Message, Mode=OneWay}"
+					   FontSize="32"
+					   FontWeight="SemiLight"
+					   Text="{x:Bind ViewModel.Message, Mode=OneWay}"
+					   TextTrimming="CharacterEllipsis"
+					   TextWrapping="NoWrap" />
 		</StackPanel>
 	</Border>
 </Window>

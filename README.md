@@ -6,8 +6,9 @@
 
 - [x] Show current desktop information
   - [x] View desktop name
-  - [ ] View desktop index
+  - [x] View desktop index
 - [ ] Set notification position
+- [ ] Remove rounded corner of notification window (Windows 11)
 
 ## Requirements
 

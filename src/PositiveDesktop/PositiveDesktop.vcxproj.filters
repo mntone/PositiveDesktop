@@ -89,6 +89,9 @@
     <Filter Include="Services\VirtualDesktopNotification">
       <UniqueIdentifier>{39b010b6-0fad-430f-9591-3629c79da5fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Strings">
+      <UniqueIdentifier>{2d9c9ee8-d3b8-4305-bd58-aeebb1613332}</UniqueIdentifier>
+    </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{8e44507f-e73f-49c7-95ff-35309c012ea2}</UniqueIdentifier>
     </Filter>
@@ -108,7 +111,17 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\CodeResources.lang-en-US.resw" />
-    <PRIResource Include="Strings\CodeResources.lang-ja-JP.resw" />
+    <PRIResource Include="Strings\Resources.lang-ja-JP.resw">
+      <Filter>Strings</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\Resources.lang-en-US.resw">
+      <Filter>Strings</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\CodeResources.lang-en-US.resw">
+      <Filter>Strings</Filter>
+    </PRIResource>
+    <PRIResource Include="Strings\CodeResources.lang-ja-JP.resw">
+      <Filter>Strings</Filter>
+    </PRIResource>
   </ItemGroup>
 </Project>

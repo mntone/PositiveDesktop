@@ -1,4 +1,14 @@
 #pragma once
+#include <ObjectArray.h>
+
+namespace app {
+
+	enum AdjacentDesktopDirection: int {
+		AD_LEFT = 3,
+		AD_RIGHT = 4,
+	};
+
+}
 
 namespace app::win10 {
 
@@ -22,6 +32,28 @@ namespace app::win10 {
 	{
 		virtual HRESULT __stdcall IsViewVisible(void* pView, int* pfVisible) = 0;
 		virtual HRESULT __stdcall GetID(winrt::guid* pGuid) = 0;
+	};
+
+	// Supported OS:
+	// - [17763] October 2018 Update  (1809) / Redstone 5
+	// - [18362] May 2019 Update      (1903) / 19H1
+	// - [18363] November 2019 Update (1909) / 19H2
+	// - [19041] May 2020 Update      (2004) / 20H1
+	// - [19042] October 2020 Update  (20H2) / 20H2
+	// - [19043] May 2021 Update      (21H1) / 21H1
+	// - [19044] November 2021 Update (21H2) / 21H2
+	// - [19045] 2022 Update          (22H2) / 22H2
+	struct __declspec(uuid("F31574D6-B682-4CDC-BD56-1827860ABEC6")) IVirtualDesktopManagerInternal: public IUnknown {
+		virtual HRESULT __stdcall GetCount(int* pCount) = 0;
+		virtual HRESULT __stdcall MoveViewToDesktop(void* pView, IVirtualDesktop* pDesktop) = 0;
+		virtual HRESULT __stdcall CanViewMoveDesktops(void* pView, BOOL* bCanMove) = 0;
+		virtual HRESULT __stdcall GetCurrentDesktop(IVirtualDesktop** ppDesktop) = 0;
+		virtual HRESULT __stdcall GetDesktops(IObjectArray** ppArray) = 0;
+		virtual HRESULT __stdcall GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) = 0;
+		virtual HRESULT __stdcall SwitchDesktop(IVirtualDesktop* pDesktop) = 0;
+		virtual HRESULT __stdcall CreateDesktop() = 0;
+		virtual HRESULT __stdcall RemoveDesktop(IVirtualDesktop* pRemoveDesktop, IVirtualDesktop* pFallbackDesktop) = 0;
+		virtual HRESULT __stdcall FindDesktop(winrt::guid desktopId, IVirtualDesktop** ppDesktop) = 0;
 	};
 
 	// Supported OS: the same as win10::IVirtualDesktop
@@ -57,10 +89,21 @@ namespace app::win10 {
 		virtual HRESULT __stdcall GetDesktopName(HSTRING * pName) = 0;
 	};
 
+	// Supported OS:
+	// - [19041] May 2020 Update      (2004) / 20H1
+	// - [19042] October 2020 Update  (20H2) / 20H2
+	// - [19043] May 2021 Update      (21H1) / 21H1
+	// - [19044] November 2021 Update (21H2) / 21H2
+	// - [19045] 2022 Update          (22H2) / 22H2
+	struct __declspec(uuid("0F3A72B0-4566-487E-9A33-4ED302F6D6CE")) IVirtualDesktopManagerInternal2: public IVirtualDesktopManagerInternal {
+		virtual HRESULT __stdcall Unknown1(IVirtualDesktop* pDesktop, IObjectArray** pUnknown1, IObjectArray** pUnknown2) = 0;
+		virtual HRESULT __stdcall SetDesktopName(IVirtualDesktop* pDesktop, HSTRING pName) = 0;
+	};
+
 	// Supported OS: the same as win10::IVirtualDesktop2
 	MIDL_INTERFACE("1BA7CF30-3591-43FA-ABFA-4AAF7ABEEDB7")
 	IVirtualDesktopNotification2 : public IVirtualDesktopNotification {
-		virtual HRESULT __stdcall VirtualDesktopRenamed(IVirtualDesktop* pDesktop, HSTRING name) = 0;
+		virtual HRESULT __stdcall VirtualDesktopRenamed(IVirtualDesktop2* pDesktop, HSTRING name) = 0;
 	};
 }
 
@@ -78,6 +121,53 @@ namespace app::win11 {
 		virtual HRESULT __stdcall Unknown1(void* pUnknown) = 0;
 		virtual HRESULT __stdcall GetDesktopName(HSTRING* pName) = 0;
 		virtual HRESULT __stdcall GetDesktopWallpaper(HSTRING* pName) = 0;
+	};
+
+	// Supported OS: Build 21359 and later
+	// - [22000] Windows 11 Version 21H2
+	struct __declspec(uuid("B2F925B9-5A0F-4D2E-9F4D-2B1507593C10")) IVirtualDesktopManagerInternal21359: public IUnknown {
+		virtual HRESULT __stdcall GetCount(int* pCount) = 0;
+		virtual HRESULT __stdcall MoveViewToDesktop(void* pView, IVirtualDesktop* pDesktop) = 0;
+		virtual HRESULT __stdcall CanViewMoveDesktops(void* pView, BOOL* bCanMove) = 0;
+		virtual HRESULT __stdcall GetCurrentDesktop(void* pUnknown, IVirtualDesktop** ppDesktop) = 0;
+		virtual HRESULT __stdcall GetDesktops(void* pUnknown, IObjectArray** ppArray) = 0;
+		virtual HRESULT __stdcall GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) = 0;
+		virtual HRESULT __stdcall MoveDesktop(IVirtualDesktop* pMoveDesktop, void* pUnknown, int nIndex) = 0;
+		virtual HRESULT __stdcall SwitchDesktop(IVirtualDesktop* pDesktop) = 0;
+		virtual HRESULT __stdcall CreateDesktop() = 0;
+		virtual HRESULT __stdcall RemoveDesktop(IVirtualDesktop* pRemoveDesktop, IVirtualDesktop* pFallbackDesktop) = 0;
+		virtual HRESULT __stdcall FindDesktop(winrt::guid desktopId, IVirtualDesktop** ppDesktop) = 0;
+		virtual HRESULT __stdcall GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop* pDesktop, IObjectArray** ppLeftDesktops, IObjectArray** ppRightDesktops) = 0;
+		virtual HRESULT __stdcall SetDesktopName(IVirtualDesktop* pDesktop, HSTRING name) = 0;
+		virtual HRESULT __stdcall SetDesktopWallpaper(IVirtualDesktop* pDesktop, HSTRING path) = 0;
+		virtual HRESULT __stdcall UpdateWallpaperPathForAllDesktops(HSTRING text) = 0;
+		virtual HRESULT __stdcall CopyDesktopState(void* pView0, void* pView1) = 0;
+		virtual HRESULT __stdcall GetDesktopIsPerMonitor(BOOL* bPerMonitor) = 0;
+		virtual HRESULT __stdcall SetDesktopIsPerMonitor(BOOL state) = 0;
+	};
+
+	// Supported OS: Build 22449 and later
+	// - [22621] Windows 11 Version 22H2
+	struct __declspec(uuid("B2F925B9-5A0F-4D2E-9F4D-2B1507593C10")) IVirtualDesktopManagerInternal22449: public IUnknown {
+		virtual HRESULT __stdcall GetCount(int* pCount) = 0;
+		virtual HRESULT __stdcall MoveViewToDesktop(void* pView, IVirtualDesktop* pDesktop) = 0;
+		virtual HRESULT __stdcall CanViewMoveDesktops(void* pView, BOOL* bCanMove) = 0;
+		virtual HRESULT __stdcall GetCurrentDesktop(void* pUnknown, IVirtualDesktop** ppDesktop) = 0;
+		virtual HRESULT __stdcall GetAllCurrentDesktops(IObjectArray** ppArray) = 0;
+		virtual HRESULT __stdcall GetDesktops(void* pUnknown, IObjectArray** ppArray) = 0;
+		virtual HRESULT __stdcall GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) = 0;
+		virtual HRESULT __stdcall MoveDesktop(IVirtualDesktop* pMoveDesktop, void* pUnknown, int nIndex) = 0;
+		virtual HRESULT __stdcall SwitchDesktop(IVirtualDesktop* pDesktop) = 0;
+		virtual HRESULT __stdcall CreateDesktop() = 0;
+		virtual HRESULT __stdcall RemoveDesktop(IVirtualDesktop* pRemoveDesktop, IVirtualDesktop* pFallbackDesktop) = 0;
+		virtual HRESULT __stdcall FindDesktop(winrt::guid desktopId, IVirtualDesktop** ppDesktop) = 0;
+		virtual HRESULT __stdcall GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop* pDesktop, IObjectArray** ppLeftDesktops, IObjectArray** ppRightDesktops) = 0;
+		virtual HRESULT __stdcall SetDesktopName(IVirtualDesktop* pDesktop, HSTRING name) = 0;
+		virtual HRESULT __stdcall SetDesktopWallpaper(IVirtualDesktop* pDesktop, HSTRING path) = 0;
+		virtual HRESULT __stdcall UpdateWallpaperPathForAllDesktops(HSTRING text) = 0;
+		virtual HRESULT __stdcall CopyDesktopState(void* pView0, void* pView1) = 0;
+		virtual HRESULT __stdcall GetDesktopIsPerMonitor(BOOL* bPerMonitor) = 0;
+		virtual HRESULT __stdcall SetDesktopIsPerMonitor(BOOL state) = 0;
 	};
 
 	// Supported OS: the same as win11::IVirtualDesktop

@@ -29,6 +29,22 @@ namespace app::UI {
 		void showPrivate(NotificationPresenterData data) noexcept;
 		void changeLanguage(winrt::param::hstring const& language) const noexcept;
 
+		inline winrt::hstring GetFormatDesktopMessage(NotificationPresenterData data) noexcept {
+			if (data.name.empty()) {
+				winrt::hstring messageKey { L"Notification_Message_DesktopIndex" };
+				winrt::hstring messageFormat { resources_.GetValue(messageKey).ValueAsString() };
+				wchar_t buf[256];
+				swprintf_s(buf, messageFormat.c_str(), data.index + 1);
+				return winrt::hstring { buf };
+			} else {
+				winrt::hstring messageKey { L"Notification_Message_DesktopIndexAndNumber" };
+				winrt::hstring messageFormat { resources_.GetValue(messageKey).ValueAsString() };
+				wchar_t buf[256];
+				swprintf_s(buf, messageFormat.c_str(), data.index + 1, data.name.c_str());
+				return winrt::hstring { buf };
+			}
+		}
+
 	private:
 		NotificationPresenterHint hint_;
 		winrt::Microsoft::Windows::ApplicationModel::Resources::ResourceManager resourceManager_;
@@ -69,7 +85,8 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 	// Set data
 	winrt::hstring captionKey { GetResourceNameFromType(data.type) };
 	winrt::hstring caption { resources_.GetValue(captionKey).ValueAsString() };
-	NotificationWindowViewModel viewModel = winrt::make<implementation::NotificationWindowViewModel>(caption, data.message);
+	winrt::hstring message { GetFormatDesktopMessage(data) };
+	NotificationWindowViewModel viewModel = winrt::make<implementation::NotificationWindowViewModel>(caption, message);
 	window_.ViewModel(viewModel);
 
 	// Show window

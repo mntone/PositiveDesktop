@@ -123,4 +123,10 @@
   <data name="Notification_Caption_VirtualDesktopChanged" xml:space="preserve">
     <value>Virtual Desktop Changed</value>
   </data>
+  <data name="Notification_Message_DesktopIndex" xml:space="preserve">
+    <value>Desktop %d</value>
+  </data>
+  <data name="Notification_Message_DesktopIndexAndNumber" xml:space="preserve">
+    <value>Desktop %d: %s</value>
+  </data>
 </root>

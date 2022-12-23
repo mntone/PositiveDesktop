@@ -14,7 +14,8 @@ namespace app::UI {
 
 	struct NotificationPresenterData {
 		NotificationPresenterType type;
-		winrt::hstring message;
+		int index;
+		winrt::hstring name;
 	};
 
 	class INotificationPresenter {

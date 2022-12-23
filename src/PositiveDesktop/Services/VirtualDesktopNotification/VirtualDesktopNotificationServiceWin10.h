@@ -22,16 +22,19 @@ namespace app::win10 {
 		IFACEMETHOD(CurrentVirtualDesktopChanged)(IVirtualDesktop* pDesktopOld, IVirtualDesktop* pDesktopNew);
 
 		// - IVirtualDesktopNotification2
-		IFACEMETHOD(VirtualDesktopRenamed)(IVirtualDesktop* pDesktop, HSTRING name);
+		IFACEMETHOD(VirtualDesktopRenamed)(IVirtualDesktop2* pDesktop, HSTRING name);
 
 	private:
-		void loadDesktop() noexcept;
+		void loadDesktops();
 
 	private:
 		winrt::com_ptr<IServiceProvider> serviceProvider_;
+		winrt::com_ptr<IVirtualDesktopManagerInternal2> virtualDesktopManager_;
 		winrt::com_ptr<IVirtualDesktopNotificationService> virtualDesktopNotificationService_;
 		DWORD cookie_;
 		reps::single_subject_t subject_;
+
+		std::unordered_map<winrt::guid, VirtualDesktopBag> bag_;
 	};
 
 }

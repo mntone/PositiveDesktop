@@ -46,12 +46,12 @@ VirtualDesktopNotificationService::VirtualDesktopNotificationService()
 	}
 
 	// Load the service
-	if (osver.dwBuildNumber >= 21313 /* Windows 10 Insider, Windows 11 */) {
+	if (osver.dwBuildNumber >= 21359 /* Windows 10 Insider, Windows 11 */) {
 		// Init presenter
 		presenter_.reset(CreateWinUI3NotificationPresenter(app::UI::NotificationPresenterHint::Windows11));
 
 		deleter_ = app::win11::ReleaseVirtualDesktopNotificationServiceImpl;
-		impl_ = app::win11::CreateVirtualDesktopNotificationServiceImpl(*this);
+		impl_ = app::win11::CreateVirtualDesktopNotificationServiceImpl(osver.dwBuildNumber, *this);
 	} else if (osver.dwBuildNumber < 20231 && osver.dwBuildNumber >= 9841 /* general Windows 10 */) {
 		// Init presenter
 		presenter_.reset(CreateWinUI3NotificationPresenter(app::UI::NotificationPresenterHint::Windows10));
@@ -88,6 +88,7 @@ void FASTCALL VirtualDesktopNotificationService::on(reps::bag_t const& value) no
 		case vde_changed:
 			app::UI::NotificationPresenterData data {
 				app::UI::NotificationPresenterType::Changed,
+				ev.index,
 				ev.name,
 			};
 			presenter_->show(std::move(data));
@@ -114,5 +115,5 @@ service_t* CreateVirtualDesktopNotificationService() noexcept try {
 	return new __VirtualDesktopNotificationServiceWrapperImpl();
 } catch (winrt::hresult_error const& /*err*/) {
 	// TODO: error log
-	return nullptr;
+	exit(1);
 }

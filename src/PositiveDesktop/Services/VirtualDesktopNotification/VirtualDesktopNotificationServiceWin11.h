@@ -6,10 +6,16 @@
 
 namespace app::win11 {
 
+	struct IVirtualDesktopManagerInternalDelegate {
+		virtual ~IVirtualDesktopManagerInternalDelegate() { }
+
+		virtual HRESULT GetDesktops(IObjectArray** ppArray) noexcept = 0;
+	};
+
 	struct VirtualDesktopNotificationServiceWin11
 		: public app::IVirtualDesktopNotificationServiceImpl
 		, winrt::implements<VirtualDesktopNotificationServiceWin11, IVirtualDesktopNotification> {
-		VirtualDesktopNotificationServiceWin11(reps::observer_t& observer);
+		VirtualDesktopNotificationServiceWin11(DWORD build, reps::observer_t& observer);
 
 		void close() override;
 
@@ -26,10 +32,16 @@ namespace app::win11 {
 		IFACEMETHOD(VirtualDesktopWallpaperChanged)(IVirtualDesktop* pDesktop, HSTRING path);
 
 	private:
+		void loadDesktops();
+
+	private:
 		winrt::com_ptr<IServiceProvider> serviceProvider_;
+		std::unique_ptr<IVirtualDesktopManagerInternalDelegate> virtualDesktopManagerDelegate_;
 		winrt::com_ptr<IVirtualDesktopNotificationService> virtualDesktopNotificationService_;
 		DWORD cookie_;
 		reps::single_subject_t subject_;
+
+		std::unordered_map<winrt::guid, VirtualDesktopBag> bag_;
 	};
 
 }

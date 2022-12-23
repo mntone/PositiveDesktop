@@ -3,13 +3,79 @@
 
 #include <atomic>
 #include <vector>
+#include <map>
+
+using namespace winrt;
 
 using namespace app::win11;
 
+#pragma region Delegate class
+
+struct VirtualDesktopManagerInternalDelegate21359 final: public IVirtualDesktopManagerInternalDelegate {
+	VirtualDesktopManagerInternalDelegate21359(IServiceProvider* serviceProvider) {
+		check_hresult(serviceProvider->QueryService(
+			app::clsidVirtualDesktopManagerInternal,
+			__uuidof(IVirtualDesktopManagerInternal21359),
+			virtualDesktopManager_.put_void()));
+	}
+
+	HRESULT GetDesktops(IObjectArray** ppArray) noexcept {
+		return virtualDesktopManager_->GetDesktops(nullptr, ppArray);
+	}
+
+private:
+	winrt::com_ptr<IVirtualDesktopManagerInternal21359> virtualDesktopManager_;
+};
+
+struct VirtualDesktopManagerInternalDelegate22449 final: public IVirtualDesktopManagerInternalDelegate {
+	VirtualDesktopManagerInternalDelegate22449(IServiceProvider* serviceProvider) {
+		check_hresult(serviceProvider->QueryService(
+			app::clsidVirtualDesktopManagerInternal,
+			__uuidof(IVirtualDesktopManagerInternal22449),
+			virtualDesktopManager_.put_void()));
+	}
+
+	HRESULT GetDesktops(IObjectArray** ppArray) noexcept {
+		return virtualDesktopManager_->GetDesktops(nullptr, ppArray);
+	}
+
+private:
+	winrt::com_ptr<IVirtualDesktopManagerInternal22449> virtualDesktopManager_;
+};
+
+#pragma endregion
+
+#pragma region Support functions
+
+inline guid GetDesktopId(IVirtualDesktop* pDesktop) {
+	guid desktopId;
+	check_hresult(pDesktop->GetID(&desktopId));
+	return desktopId;
+}
+
+inline app::VirtualDesktopBag CreateBag(IVirtualDesktop* pDesktop, UINT nIndex) {
+	hstring desktopName;
+	{
+		HSTRING abiDesktopName;
+		HRESULT hr = pDesktop->GetDesktopName(&abiDesktopName);
+		if (SUCCEEDED(hr)) {
+			attach_abi(desktopName, abiDesktopName);
+		}
+	}
+
+	app::VirtualDesktopBag bag {
+		static_cast<int>(nIndex),
+		desktopName,
+	};
+	return bag;
+}
+
+#pragma endregion
+
 #pragma region Service implementation
 
-app::IVirtualDesktopNotificationServiceImpl* app::win11::CreateVirtualDesktopNotificationServiceImpl(reps::observer_t& observer) {
-	winrt::impl::com_ref<VirtualDesktopNotificationServiceWin11> impl = winrt::make_self<VirtualDesktopNotificationServiceWin11>(observer);
+app::IVirtualDesktopNotificationServiceImpl* app::win11::CreateVirtualDesktopNotificationServiceImpl(DWORD build, reps::observer_t& observer) {
+	winrt::impl::com_ref<VirtualDesktopNotificationServiceWin11> impl = winrt::make_self<VirtualDesktopNotificationServiceWin11>(build, observer);
 	return impl.detach();
 }
 
@@ -17,34 +83,60 @@ void app::win11::ReleaseVirtualDesktopNotificationServiceImpl(IVirtualDesktopNot
 	reinterpret_cast<IUnknown*>(impl)->Release();
 }
 
-VirtualDesktopNotificationServiceWin11::VirtualDesktopNotificationServiceWin11(reps::observer_t& observer)
+VirtualDesktopNotificationServiceWin11::VirtualDesktopNotificationServiceWin11(DWORD build, reps::observer_t& observer)
 	: serviceProvider_(nullptr)
 	, virtualDesktopNotificationService_(nullptr)
 	, cookie_(0) {
-	winrt::check_hresult(CoCreateInstance(
+	check_hresult(CoCreateInstance(
 		clsidImmersiveShell,
 		nullptr,
 		CLSCTX_LOCAL_SERVER,
-		winrt::guid_of<IServiceProvider>(),
+		guid_of<IServiceProvider>(),
 		serviceProvider_.put_void()));
 
-	winrt::check_hresult(serviceProvider_->QueryService(
+	if (build >= 22449) {
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate22449>(serviceProvider_.get());
+	} else if (build >= 21359) {
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate21359>(serviceProvider_.get());
+	} else {
+		throw hresult_not_implemented();
+	}
+
+	check_hresult(serviceProvider_->QueryService(
 		clsidVirtualNotificationService,
 		__uuidof(IVirtualDesktopNotificationService),
 		virtualDesktopNotificationService_.put_void()));
 
 	subject_.addObserver(observer);
 
-	winrt::com_ptr<app::win11::IVirtualDesktopNotification> sink;
-	winrt::check_hresult(QueryInterface(__uuidof(app::win11::IVirtualDesktopNotification), sink.put_void()));
-	winrt::check_hresult(virtualDesktopNotificationService_->Register(sink.get(), &cookie_));
+	com_ptr<app::win11::IVirtualDesktopNotification> sink;
+	check_hresult(QueryInterface(__uuidof(app::win11::IVirtualDesktopNotification), sink.put_void()));
+	check_hresult(virtualDesktopNotificationService_->Register(sink.get(), &cookie_));
+
+	loadDesktops();
+}
+
+void VirtualDesktopNotificationServiceWin11::loadDesktops() {
+	com_ptr<IObjectArray> desktops;
+	check_hresult(virtualDesktopManagerDelegate_->GetDesktops(desktops.put()));
+
+	UINT count { 0 };
+	check_hresult(desktops->GetCount(&count));
+	for (UINT i = 0; i < count; ++i) {
+		com_ptr<IVirtualDesktop> desktop;
+		check_hresult(desktops->GetAt(i, __uuidof(IVirtualDesktop), desktop.put_void()));
+
+		guid desktopId { GetDesktopId(desktop.get()) };
+		VirtualDesktopBag bag { CreateBag(desktop.get(), i) };
+		bag_.emplace(desktopId, std::move(bag));
+	}
 }
 
 void VirtualDesktopNotificationServiceWin11::close() {
 	WINRT_ASSERT(cookie_);
 
 	subject_.clearObserver();
-	winrt::check_hresult(virtualDesktopNotificationService_->Unregister(cookie_));
+	check_hresult(virtualDesktopNotificationService_->Unregister(cookie_));
 	cookie_ = 0;
 }
 
@@ -55,66 +147,154 @@ void VirtualDesktopNotificationServiceWin11::close() {
 #include "vdevent_t.h"
 
 HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopCreated(IVirtualDesktop* pDesktop) {
+	guid desktopId { GetDesktopId(pDesktop) };
+	VirtualDesktopBag bag {
+		static_cast<int>(bag_.size()),
+		L"",
+	};
+	bag_.emplace(desktopId, std::move(bag));
+
+	vdevent_t data {
+		vde_created,
+		0,
+		bag.index,
+		L"",
+	};
+	reps::next(subject_, data);
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyBegin(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) {
+HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyBegin(IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyFailed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) {
+HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyFailed(IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) {
+HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* /*pDesktopFallback*/) {
+	guid desktopId { GetDesktopId(pDesktopDestroyed) };
+	auto itr = bag_.find(desktopId);
+	if (itr == bag_.end()) {
+		// TODO: error log
+		return S_OK;
+	}
+
+	VirtualDesktopBag bag { itr->second };
+	for (auto& bag2 : bag_) {
+		if (bag2.second.index > bag.index) {
+			--bag2.second.index;
+		}
+	}
+	bag_.erase(itr);
+
+	vdevent_t data {
+		vde_removed,
+		0,
+		bag.index,
+		bag.name,
+	};
+	reps::next(subject_, data);
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::Unknown1(int nUnknown) {
+HRESULT VirtualDesktopNotificationServiceWin11::Unknown1(int /*nUnknown*/) {
 	return S_OK;
 }
 
 HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopMoved(IVirtualDesktop* pDesktop, int nFromIndex, int nToIndex) {
+	guid desktopId { GetDesktopId(pDesktop) };
+	auto itr = bag_.find(desktopId);
+	if (itr == bag_.end()) {
+		// TODO: error log
+		return S_OK;
+	}
+
+	// e.g. [A, B, C, D]
+	if (nFromIndex > nToIndex) { // 3 to 1, expected: [A, D, B, C]
+		for (auto& bag2 : bag_) {
+			int index { bag2.second.index };
+			if (nFromIndex <= index && index < nToIndex) {
+				++bag2.second.index;
+			}
+		}
+	} else if (nFromIndex < nToIndex) { // 1 to 3, expected: [A, C, D, B]
+		for (auto& bag2 : bag_) {
+			int index { bag2.second.index };
+			if (nFromIndex < index && index <= nToIndex) {
+				--bag2.second.index;
+			}
+		}
+	} else {
+		WINRT_ASSERT(false);
+		exit(1);
+	}
+
+	VirtualDesktopBag& bag = itr->second;
+	bag.index = nToIndex;
+
+	if (nFromIndex > 0x1FFFFFFF) {
+		// TODO: error log
+		return S_OK;
+	}
+	vdevent_t data {
+		vde_moved,
+		nFromIndex,
+		bag.index,
+		bag.name,
+	};
+	reps::next(subject_, data);
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopRenamed(IVirtualDesktop* pDesktop, HSTRING hName) {
-	winrt::hstring hstrName;
-	winrt::copy_from_abi(hstrName, hName);
+HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopRenamed(IVirtualDesktop* pDesktop, HSTRING abiName) {
+	guid desktopId { GetDesktopId(pDesktop) };
+	auto itr = bag_.find(desktopId);
+	if (itr == bag_.end()) {
+		// TODO: error log
+		return S_OK;
+	}
+
+	winrt::hstring desktopName;
+	winrt::copy_from_abi(desktopName, abiName);
+
+	VirtualDesktopBag& bag = itr->second;
+	bag.name = desktopName;
 
 	vdevent_t data {
 		vde_renamed,
-		-1,
-		hstrName,
+		0,
+		bag.index,
+		desktopName,
 	};
 	reps::next(subject_, data);
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::ViewVirtualDesktopChanged(void* pView) {
+HRESULT VirtualDesktopNotificationServiceWin11::ViewVirtualDesktopChanged(void* /*pView*/) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::CurrentVirtualDesktopChanged(IVirtualDesktop* pDesktopOld, IVirtualDesktop* pDesktopNew) {
-	winrt::hstring hstrName;
-	{
-		HSTRING hDesktopNewName;
-		HRESULT hr = pDesktopNew->GetDesktopName(&hDesktopNewName);
-		if (SUCCEEDED(hr)) {
-			winrt::attach_abi(hstrName, hDesktopNewName);
-		}
+HRESULT VirtualDesktopNotificationServiceWin11::CurrentVirtualDesktopChanged(IVirtualDesktop* /*pDesktopOld*/, IVirtualDesktop* pDesktopNew) {
+	guid desktopId { GetDesktopId(pDesktopNew) };
+	auto itr = bag_.find(desktopId);
+	if (itr == bag_.cend()) {
+		// TODO: error log
+		return S_OK;
 	}
 
+	VirtualDesktopBag const& bag = itr->second;
 	vdevent_t data {
 		vde_changed,
-		-1,
-		hstrName,
+		0,
+		bag.index,
+		bag.name,
 	};
 	reps::next(subject_, data);
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopWallpaperChanged(IVirtualDesktop* pDesktop, HSTRING hPath) {
+HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopWallpaperChanged(IVirtualDesktop* /*pDesktop*/, HSTRING /*hPath*/) {
 	return S_OK;
 }
 
