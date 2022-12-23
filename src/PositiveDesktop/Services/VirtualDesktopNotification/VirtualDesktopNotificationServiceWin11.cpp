@@ -4,8 +4,7 @@
 #include <atomic>
 #include <vector>
 
-using namespace app;
-using namespace win11;
+using namespace app::win11;
 
 #pragma region Service implementation
 
@@ -40,6 +39,10 @@ void VirtualDesktopNotificationServiceImpl::close() {
 	winrt::check_hresult(virtualDesktopNotificationService_->Unregister(cookie_));
 	sink_ = nullptr;
 	cookie_ = 0;
+}
+
+app::IVirtualDesktopNotificationServiceImpl* app::win11::CreateVirtualDesktopNotificationServiceImpl(reps::observer_t& observer) {
+	return new VirtualDesktopNotificationServiceImpl(observer);
 }
 
 #pragma endregion

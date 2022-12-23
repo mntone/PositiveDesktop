@@ -4,8 +4,7 @@
 #include <atomic>
 #include <vector>
 
-#include "VirtualDesktopNotificationServiceWin10.h"
-#include "VirtualDesktopNotificationServiceWin11.h"
+#include "VirtualDesktopNotificationServiceImpl.h"
 
 // NotificationPresenter impl
 #include "UI/NotificationPresenter.h"
@@ -28,6 +27,8 @@ private:
 	std::unique_ptr<app::UI::INotificationPresenter> presenter_;
 };
 
+using namespace app;
+
 VirtualDesktopNotificationService::VirtualDesktopNotificationService() {
 	// Retrieve OS Version
 	OSVERSIONINFOW osver { sizeof(OSVERSIONINFOW) };
@@ -46,12 +47,12 @@ VirtualDesktopNotificationService::VirtualDesktopNotificationService() {
 		// Init presenter
 		presenter_.reset(CreateWinUI3NotificationPresenter(app::UI::NotificationPresenterHint::Windows11));
 
-		impl_ = std::make_unique<win11::VirtualDesktopNotificationServiceImpl>(*this);
+		impl_.reset(app::win11::CreateVirtualDesktopNotificationServiceImpl(*this));
 	} else if (osver.dwBuildNumber < 20231 && osver.dwBuildNumber >= 9841 /* general Windows 10 */) {
 		// Init presenter
 		presenter_.reset(CreateWinUI3NotificationPresenter(app::UI::NotificationPresenterHint::Windows10));
 
-		impl_ = std::make_unique<win10::VirtualDesktopNotificationServiceImpl>(*this);
+		impl_.reset(app::win10::CreateVirtualDesktopNotificationServiceImpl(*this));
 	} else {
 		winrt::throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
 	}

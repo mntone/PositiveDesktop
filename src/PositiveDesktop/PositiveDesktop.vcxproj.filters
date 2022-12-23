@@ -39,13 +39,16 @@
     <ClInclude Include="Common\Reps.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Common\RepsBase.h">
+      <Filter>Common</Filter>
+    </ClInclude>
     <ClInclude Include="Common\VirtualDesktop.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Services\Services.h">
       <Filter>Services</Filter>
     </ClInclude>
-    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.h">
+    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceImpl.h">
       <Filter>Services\VirtualDesktopNotification</Filter>
     </ClInclude>
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.h">

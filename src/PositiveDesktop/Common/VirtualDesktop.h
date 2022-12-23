@@ -1,6 +1,6 @@
 #pragma once
 
-namespace win10 {
+namespace app::win10 {
 
 	// Supported OS:
 	// - [10240]                      (1507) / Threshold 1
@@ -64,7 +64,7 @@ namespace win10 {
 	};
 }
 
-namespace win11 {
+namespace app::win11 {
 
 	// Supported OS:
 	// - [22000] Windows 11 Version 21H2

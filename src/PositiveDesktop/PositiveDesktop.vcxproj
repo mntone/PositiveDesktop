@@ -126,13 +126,14 @@
     </ClInclude>
     <ClInclude Include="Common\Math.h" />
     <ClInclude Include="Common\Reps.h" />
+    <ClInclude Include="Common\RepsBase.h" />
     <ClInclude Include="Common\VirtualDesktop.h" />
     <ClInclude Include="NotificationWindow.xaml.h">
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Services\Services.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\vdevent_t.h" />
-    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.h" />
+    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceImpl.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />

@@ -1,10 +1,10 @@
 #pragma once
-#include "VirtualDesktopNotificationService.h"
+#include "VirtualDesktopNotificationServiceImpl.h"
 
 #include "Common/VirtualDesktop.h"
 #include "Common/Reps.h"
 
-namespace win10 {
+namespace app::win10 {
 
 	struct VirtualDesktopNotificationSink
 		: winrt::implements<VirtualDesktopNotificationSink, IVirtualDesktopNotification, IVirtualDesktopNotification2> {
