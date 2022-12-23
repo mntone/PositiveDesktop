@@ -14,19 +14,3 @@ NotificationWindowViewModel::NotificationWindowViewModel() noexcept
 	: caption_(L"")
 	, message_(L"") {
 }
-
-inline hstring GetCaptionFromType(app::UI::NotificationPresenterType type) noexcept {
-	switch (type) {
-	case app::UI::NotificationPresenterType::Changed:
-		return L"Virtual Desktop Changed";
-	case app::UI::NotificationPresenterType::Renamed:
-		return L"Virtual Desktop Renamed";
-	default:
-		return L"Unknown event";
-	}
-}
-
-NotificationWindowViewModel::NotificationWindowViewModel(app::UI::NotificationPresenterData data) noexcept
-	: caption_(GetCaptionFromType(data.type))
-	, message_(data.message) {
-}

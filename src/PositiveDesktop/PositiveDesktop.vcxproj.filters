@@ -104,4 +104,8 @@
       <Filter>UI</Filter>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\CodeResources.lang-en-US.resw" />
+    <PRIResource Include="Strings\CodeResources.lang-ja-JP.resw" />
+  </ItemGroup>
 </Project>

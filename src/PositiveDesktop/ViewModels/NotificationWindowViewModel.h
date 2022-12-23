@@ -1,13 +1,14 @@
 #pragma once
 #include "ViewModels.NotificationWindowViewModel.g.h"
 
-#include "UI/NotificationPresenter.h"
-
 namespace winrt::PositiveDesktop::ViewModels::implementation {
 
 	struct NotificationWindowViewModel: NotificationWindowViewModelT<NotificationWindowViewModel> {
 		NotificationWindowViewModel() noexcept;
-		NotificationWindowViewModel(app::UI::NotificationPresenterData data) noexcept;
+		NotificationWindowViewModel(winrt::hstring caption, winrt::hstring message) noexcept
+			: caption_(caption)
+			, message_(message)
+		{ }
 
 		winrt::hstring Caption() const noexcept {
 			return caption_;

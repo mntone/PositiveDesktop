@@ -15,6 +15,7 @@
 app.manifest         text encoding=utf-8 eol=lf
 
 # Files normalized to always keep Windows line endings
+*.resw               text encoding=utf-8-bom eol=crlf
 *.xaml               text encoding=utf-8 eol=crlf
 *.sln                text encoding=utf-8-bom eol=crlf
 *.vcxproj            text encoding=utf-8 eol=crlf

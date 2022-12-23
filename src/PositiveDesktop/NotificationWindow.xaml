@@ -11,7 +11,7 @@
 		<StackPanel Margin="16,12"
 					HorizontalAlignment="Left"
 					VerticalAlignment="Top"
-					Spacing="8">
+					Spacing="4">
 			<TextBlock FontSize="16"
 					   Typography.Capitals="SmallCaps"
 					   Text="{x:Bind ViewModel.Caption, Mode=OneWay}" />
