@@ -11,6 +11,22 @@ using namespace app::win11;
 
 #pragma region Delegate class
 
+struct VirtualDesktopManagerInternalDelegate21313 final: public IVirtualDesktopManagerInternalDelegate {
+	VirtualDesktopManagerInternalDelegate21313(IServiceProvider* serviceProvider) {
+		check_hresult(serviceProvider->QueryService(
+			app::clsidVirtualDesktopManagerInternal,
+			__uuidof(IVirtualDesktopManagerInternal21313),
+			virtualDesktopManager_.put_void()));
+	}
+
+	HRESULT GetDesktops(IObjectArray** ppArray) noexcept {
+		return virtualDesktopManager_->GetDesktops(nullptr, ppArray);
+	}
+
+private:
+	winrt::com_ptr<IVirtualDesktopManagerInternal21313> virtualDesktopManager_;
+};
+
 struct VirtualDesktopManagerInternalDelegate21359 final: public IVirtualDesktopManagerInternalDelegate {
 	VirtualDesktopManagerInternalDelegate21359(IServiceProvider* serviceProvider) {
 		check_hresult(serviceProvider->QueryService(
@@ -41,6 +57,22 @@ struct VirtualDesktopManagerInternalDelegate22449 final: public IVirtualDesktopM
 
 private:
 	winrt::com_ptr<IVirtualDesktopManagerInternal22449> virtualDesktopManager_;
+};
+
+struct VirtualDesktopManagerInternalDelegate25158 final: public IVirtualDesktopManagerInternalDelegate {
+	VirtualDesktopManagerInternalDelegate25158(IServiceProvider* serviceProvider) {
+		check_hresult(serviceProvider->QueryService(
+			app::clsidVirtualDesktopManagerInternal,
+			__uuidof(IVirtualDesktopManagerInternal25158),
+			virtualDesktopManager_.put_void()));
+	}
+
+	HRESULT GetDesktops(IObjectArray** ppArray) noexcept {
+		return virtualDesktopManager_->GetDesktops(nullptr, ppArray);
+	}
+
+private:
+	winrt::com_ptr<IVirtualDesktopManagerInternal25158> virtualDesktopManager_;
 };
 
 #pragma endregion
@@ -94,12 +126,16 @@ VirtualDesktopNotificationServiceWin11::VirtualDesktopNotificationServiceWin11(D
 		guid_of<IServiceProvider>(),
 		serviceProvider_.put_void()));
 
-	if (build >= 22449) {
+	if (build >= 25158) {
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate25158>(serviceProvider_.get());
+	} else if (build >= 22449) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate22449>(serviceProvider_.get());
 	} else if (build >= 21359) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate21359>(serviceProvider_.get());
+	} else if (build >= 21313) {
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate21313>(serviceProvider_.get());
 	} else {
-		throw hresult_not_implemented();
+		winrt::throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
 	}
 
 	check_hresult(serviceProvider_->QueryService(

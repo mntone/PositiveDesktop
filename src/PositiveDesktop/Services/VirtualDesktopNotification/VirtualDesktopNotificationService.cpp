@@ -46,7 +46,7 @@ VirtualDesktopNotificationService::VirtualDesktopNotificationService()
 	}
 
 	// Load the service
-	if (osver.dwBuildNumber >= 21359 /* Windows 10 Insider, Windows 11 */) {
+	if (osver.dwBuildNumber >= 21313 /* Windows 10 Insider, Windows 11 */) {
 		// Init presenter
 		presenter_.reset(CreateWinUI3NotificationPresenter(app::UI::NotificationPresenterHint::Windows11));
 
