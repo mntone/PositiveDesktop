@@ -12,7 +12,7 @@
     <ClCompile Include="Common\Reps.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Services\ServiceManager.cpp">
+    <ClCompile Include="Services\app_t.cpp">
       <Filter>Services</Filter>
     </ClCompile>
     <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.cpp">
@@ -45,7 +45,7 @@
     <ClInclude Include="Common\VirtualDesktop.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Services\Services.h">
+    <ClInclude Include="Services\app_t.h">
       <Filter>Services</Filter>
     </ClInclude>
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceImpl.h">
@@ -74,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="ViewModels\NotificationWindowViewModel.h">
       <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.h">
+      <Filter>Services\VirtualDesktopNotification</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

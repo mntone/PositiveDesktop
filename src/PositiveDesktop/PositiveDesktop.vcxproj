@@ -131,8 +131,9 @@
     <ClInclude Include="NotificationWindow.xaml.h">
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="Services\Services.h" />
+    <ClInclude Include="Services\app_t.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\vdevent_t.h" />
+    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceImpl.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.h" />
@@ -157,7 +158,7 @@
     <ClCompile Include="NotificationWindow.xaml.cpp">
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="Services\ServiceManager.cpp" />
+    <ClCompile Include="Services\app_t.cpp" />
     <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.cpp" />
     <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.cpp" />
     <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.cpp" />

@@ -1,19 +1,20 @@
 #pragma once
 #include "App.xaml.g.h"
 
-#include "Services/Services.h"
+#include "Services/app_t.h"
 
-namespace winrt::PositiveDesktop::implementation
-{
-    struct App : AppT<App>
-    {
-        App();
+namespace winrt::PositiveDesktop::implementation {
 
-        void OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const&);
-        void OnSuspending(IInspectable const&, Windows::ApplicationModel::SuspendingEventArgs const&);
+	struct App: AppT<App> {
+		App();
 
-    private:
-        std::unique_ptr<struct ServiceManager> serviceBag_;
-        winrt::Microsoft::UI::Xaml::Window window_{ nullptr };
-    };
+		void OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const&);
+		void OnSuspending(IInspectable const&, Windows::ApplicationModel::SuspendingEventArgs const&);
+
+	private:
+		bool initialized_ { false };
+		app::app_t app_;
+		winrt::Microsoft::UI::Xaml::Window window_ { nullptr };
+	};
+
 }

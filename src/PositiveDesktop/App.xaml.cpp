@@ -44,16 +44,15 @@ App::App() {
 /// </summary>
 /// <param name="e">Details about the launch request and process.</param>
 void App::OnLaunched(LaunchActivatedEventArgs const&) {
-	if (serviceBag_) {
+	if (initialized_) {
 		return;
 	}
+	initialized_ = true;
 
-	// Init services.
-	auto serviceManager = new struct ServiceManager();
-	if (serviceManager->Initialize()) {
-		delete serviceManager;
+	// Init app
+	try {
+		app_.initialize();
+	} catch (winrt::hresult_error const& /*err*/) {
 		Exit(); // Note: Not working because of Windows App SDK issue.
-	} else {
-		serviceBag_.reset(serviceManager);
 	}
 }
