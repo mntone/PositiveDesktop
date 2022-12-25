@@ -33,11 +33,13 @@ namespace winrt::PositiveDesktop::implementation {
 		}
 		void corner(app::storage::corner_t value) noexcept;
 
-		winrt::event_token PropertyChanged(winrt::Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& value);
-		void PropertyChanged(winrt::event_token const& token);
+		event_token PropertyChanged(Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& value);
+		void PropertyChanged(event_token const& token);
 
 	private:
-		winrt::event_token activated_, closed_;
+		Microsoft::UI::Xaml::Window::Activated_revoker activatedRovoker_;
+		Microsoft::UI::Xaml::Window::Closed_revoker closedRovoker_;
+		Microsoft::UI::Dispatching::DispatcherQueueTimer timer_;
 
 		app::UI::NotificationPresenterHint hint_;
 		app::storage::corner_t corner_;
@@ -46,8 +48,6 @@ namespace winrt::PositiveDesktop::implementation {
 
 		ViewModels::NotificationWindowViewModel viewModel_;
 		event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChanged_;
-
-		Microsoft::UI::Dispatching::DispatcherQueueTimer timer_;
 	};
 
 }

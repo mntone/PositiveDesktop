@@ -67,17 +67,8 @@ NotificationWindow::~NotificationWindow() {
 }
 
 void NotificationWindow::ReleasePrivate() {
-	winrt::event_token activated = std::exchange(activated_, {});
-	if (activated) {
-		Activated(activated);
-	}
-
-	winrt::event_token closed = std::exchange(closed_, {});
-	if (closed) {
-		Closed(closed);
-	}
-
-	std::exchange(backdropController_, nullptr);
+	activatedRovoker_.revoke();
+	closedRovoker_.revoke();
 }
 
 void NotificationWindow::Show(float visibleDuration) {
@@ -192,14 +183,12 @@ inline winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme C
 }
 
 void NotificationWindow::SetupSystemBackdropConfiguration() {
-	configuration_ = SystemBackdropConfiguration();
+	WINRT_ASSERT(!activatedRovoker_);
+	WINRT_ASSERT(!closedRovoker_);
 
-	if (!activated_) {
-		activated_ = Activated({ this, &NotificationWindow::WindowActivated });
-	}
-	if (!closed_) {
-		closed_ = Closed({ this, &NotificationWindow::WindowClosed });
-	}
+	configuration_ = SystemBackdropConfiguration();
+	activatedRovoker_ = Activated(auto_revoke, { this, &NotificationWindow::WindowActivated });
+	closedRovoker_ = Closed(auto_revoke, { this, &NotificationWindow::WindowClosed });
 
 	configuration_.IsInputActive(true);
 
