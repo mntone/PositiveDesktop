@@ -15,6 +15,9 @@
     <ClCompile Include="Services\app_t.cpp">
       <Filter>Services</Filter>
     </ClCompile>
+    <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
+      <Filter>Services\Storages</Filter>
+    </ClCompile>
     <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.cpp">
       <Filter>Services\VirtualDesktopNotification</Filter>
     </ClCompile>
@@ -48,6 +51,15 @@
     <ClInclude Include="Services\app_t.h">
       <Filter>Services</Filter>
     </ClInclude>
+    <ClInclude Include="Services\Storages\config_t.h">
+      <Filter>Services\Storages</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Storages\WinRTConfigManager.h">
+      <Filter>Services\Storages</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.h">
+      <Filter>Services\VirtualDesktopNotification</Filter>
+    </ClInclude>
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceImpl.h">
       <Filter>Services\VirtualDesktopNotification</Filter>
     </ClInclude>
@@ -75,9 +87,6 @@
     <ClInclude Include="ViewModels\NotificationWindowViewModel.h">
       <Filter>ViewModels</Filter>
     </ClInclude>
-    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.h">
-      <Filter>Services\VirtualDesktopNotification</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -88,6 +97,9 @@
     </Filter>
     <Filter Include="Services">
       <UniqueIdentifier>{2ea3d483-7381-4b80-ad87-b04df69cbf0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services\Storages">
+      <UniqueIdentifier>{d9e3ff94-0cc6-4f7b-af02-aec668f7466f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Services\VirtualDesktopNotification">
       <UniqueIdentifier>{39b010b6-0fad-430f-9591-3629c79da5fa}</UniqueIdentifier>

@@ -81,9 +81,10 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <MinimumRequiredVersion>10.0</MinimumRequiredVersion>
@@ -137,6 +138,8 @@
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceImpl.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.h" />
+    <ClInclude Include="Services\Storages\config_t.h" />
+    <ClInclude Include="Services\Storages\WinRTConfigManager.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />
     <ClInclude Include="UI\NotificationPresenterWinUI3.h" />
     <ClInclude Include="UI\UIHelper.h" />
@@ -159,6 +162,9 @@
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Services\app_t.cpp" />
+    <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.cpp" />
     <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.cpp" />
     <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.cpp" />

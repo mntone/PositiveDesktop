@@ -12,15 +12,18 @@ void release(T*& ptr) {
 }
 
 app_t::app_t()
-	: presenter_(nullptr)
+	: configManager_(nullptr)
+	, presenter_(nullptr)
 	, notificationListener_(nullptr) {
 }
 
 app_t::~app_t() noexcept {
 	release(notificationListener_);
 	release(presenter_);
+	release(configManager_);
 }
 
+#include "Storages/WinRTConfigManager.h"
 #include "UI/NotificationPresenterWinUI3.h"
 
 void app_t::initialize() {
@@ -35,6 +38,10 @@ void app_t::initialize() {
 	if (osver.dwMajorVersion != 10 || osver.dwMinorVersion != 0) {
 		winrt::throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
 	}
+
+	// Init config manager
+	configManager_ = storage::CreateWinRTConfigManager();
+	config_ = configManager_->Load();
 
 	// Init presenter
 	app::UI::NotificationPresenterHint hint = osver.dwBuildNumber >= 22000

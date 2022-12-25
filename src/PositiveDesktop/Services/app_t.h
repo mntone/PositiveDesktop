@@ -12,6 +12,7 @@ namespace app {
 		void initialize();
 
 	private:
+		app::storage::config_t config_;
 		storage::IConfigManager* configManager_;
 		UI::INotificationPresenter* presenter_;
 		listener::VirtualDesktopNotificationService* notificationListener_;

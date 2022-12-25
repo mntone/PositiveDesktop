@@ -52,6 +52,8 @@
 #include <winrt/Windows.System.h>
 #include <DispatcherQueue.h>
 
+#include "Services/Storages/config_t.h"
+
 #include <winrt/Microsoft.Graphics.Display.h>
 #include <winrt/Microsoft.UI.Composition.h>
 #include <winrt/Microsoft.UI.Composition.SystemBackdrops.h>
