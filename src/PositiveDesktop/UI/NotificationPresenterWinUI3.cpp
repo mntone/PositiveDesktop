@@ -11,8 +11,9 @@ namespace app::UI {
 
 	class NotificationPresenterWinUI3: public INotificationPresenter {
 	public:
-		NotificationPresenterWinUI3(NotificationPresenterHint hint) noexcept
-			: hint_(hint)
+		NotificationPresenterWinUI3(app::storage::config_t const& config, NotificationPresenterHint hint) noexcept
+			: config_(config)
+			, hint_(hint)
 			, resourceManager_()
 			, resources_(resourceManager_.MainResourceMap().GetSubtree(L"CodeResources"))
 			, dispatcherQueue_(nullptr)
@@ -46,6 +47,7 @@ namespace app::UI {
 		}
 
 	private:
+		app::storage::config_t const& config_;
 		NotificationPresenterHint hint_;
 		winrt::Microsoft::Windows::ApplicationModel::Resources::ResourceManager resourceManager_;
 		winrt::Microsoft::Windows::ApplicationModel::Resources::ResourceMap resources_;
@@ -90,7 +92,7 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 	window_.ViewModel(viewModel);
 
 	// Show window
-	window_.Show(true);
+	window_.Show(app::storage::actualDuration(config_.defaultDesktop.duration));
 }
 
 void NotificationPresenterWinUI3::changeLanguage(winrt::param::hstring const& language) const noexcept {
@@ -98,6 +100,6 @@ void NotificationPresenterWinUI3::changeLanguage(winrt::param::hstring const& la
 	resourceContext.QualifierValues().Insert(L"Language", language);
 }
 
-INotificationPresenter* CreateWinUI3NotificationPresenter(NotificationPresenterHint hint) {
-	return new NotificationPresenterWinUI3(hint);
+INotificationPresenter* CreateWinUI3NotificationPresenter(app::storage::config_t const& config, NotificationPresenterHint hint) {
+	return new NotificationPresenterWinUI3(config, hint);
 }

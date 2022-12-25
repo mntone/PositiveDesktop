@@ -73,7 +73,7 @@ void NotificationWindow::ReleasePrivate() {
 	std::exchange(backdropController_, nullptr);
 }
 
-void NotificationWindow::Show(bool autoHide) {
+void NotificationWindow::Show(float visibleDuration) {
 	// TODO: Observe the WorkArea and update position.
 	winrt::Microsoft::UI::Windowing::AppWindow appWindow = GetAppWindow(m_inner);
 	winrt::Microsoft::UI::DisplayId primaryDisplayId = GetPrimaryDisplayId();
@@ -99,9 +99,9 @@ void NotificationWindow::Show(bool autoHide) {
 		appWindow.Show();
 	}
 
-	if (autoHide) {
+	if (visibleDuration > 0.f) {
 		timer_ = DispatcherQueue().CreateTimer();
-		timer_.Interval(std::chrono::seconds { 3 });
+		timer_.Interval(std::chrono::milliseconds { std::lround(1000.f * visibleDuration) });
 		timer_.IsRepeating(false);
 		timer_.Tick([appWindow](auto&&, IInspectable const&) {
 			appWindow.Hide();

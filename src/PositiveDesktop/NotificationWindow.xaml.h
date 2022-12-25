@@ -9,7 +9,7 @@ namespace winrt::PositiveDesktop::implementation {
 		NotificationWindow();
 		~NotificationWindow();
 
-		void Show(bool autoHide);
+		void Show(float visibleDuration);
 
 	private:
 		void ReleasePrivate();

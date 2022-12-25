@@ -15,7 +15,7 @@ namespace PositiveDesktop
         [default_interface]
         runtimeclass NotificationWindow : Microsoft.UI.Xaml.Window, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
         {
-            void Show(Boolean autoHide);
+            void Show(Single visibleDuration);
             PositiveDesktop.ViewModels.NotificationWindowViewModel ViewModel;
         }
     //}

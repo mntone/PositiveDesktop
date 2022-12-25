@@ -47,7 +47,7 @@ void app_t::initialize() {
 	app::UI::NotificationPresenterHint hint = osver.dwBuildNumber >= 22000
 		? app::UI::NotificationPresenterHint::Windows11 /* Build 22000- */
 		: app::UI::NotificationPresenterHint::Windows10;
-	presenter_ = CreateWinUI3NotificationPresenter(hint);
+	presenter_ = CreateWinUI3NotificationPresenter(config_, hint);
 
 	// Init listener
 	notificationListener_ = new listener::VirtualDesktopNotificationService(presenter_);
