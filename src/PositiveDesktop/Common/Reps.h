@@ -1,5 +1,8 @@
 #pragma once
 
+#include <atomic>
+#include <vector>
+
 // RElationshiPS Library: Micro observer pattern
 #include "RepsBase.h"
 

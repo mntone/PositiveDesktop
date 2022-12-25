@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "VirtualDesktopNotificationService.h"
 
-#include <atomic>
-#include <vector>
-
 #include "UI/NotificationPresenter.h"
 
 using namespace app::listener;
