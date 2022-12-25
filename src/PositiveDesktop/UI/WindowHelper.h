@@ -12,8 +12,18 @@ inline winrt::Microsoft::UI::DisplayId GetPrimaryDisplayId() {
 template<typename TWindow>
 inline HWND GetHwnd(TWindow window) {
 	HWND hWnd { nullptr };
-	winrt::impl::com_ref<IWindowNative> windowNative = window.try_as<IWindowNative>();
+	winrt::impl::com_ref<IWindowNative> windowNative = window.as<IWindowNative>();
 	winrt::check_hresult(windowNative->get_WindowHandle(&hWnd));
+	return hWnd;
+}
+
+template<typename TWindow>
+inline HWND GetNullableHwnd(TWindow window) noexcept {
+	HWND hWnd { nullptr };
+	winrt::impl::com_ref<IWindowNative> windowNative = window.try_as<IWindowNative>();
+	if (windowNative) {
+		windowNative->get_WindowHandle(&hWnd);
+	}
 	return hWnd;
 }
 

@@ -81,7 +81,7 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 
 	// Check window
 	if (!window_) {
-		window_ = winrt::make<winrt::PositiveDesktop::implementation::NotificationWindow>();
+		window_ = winrt::make<winrt::PositiveDesktop::implementation::NotificationWindow>(hint_, config_.defaultDesktop.corner);
 	}
 
 	// Set data

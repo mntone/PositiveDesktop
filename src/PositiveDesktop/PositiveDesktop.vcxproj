@@ -87,6 +87,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
+      <AdditionalDependencies>dwmapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <MinimumRequiredVersion>10.0</MinimumRequiredVersion>
       <HeapReserveSize>0x40000</HeapReserveSize>
       <StackReserveSize>0x40000</StackReserveSize>

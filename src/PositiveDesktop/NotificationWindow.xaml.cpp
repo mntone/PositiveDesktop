@@ -4,6 +4,8 @@
 #include "NotificationWindow.g.cpp"
 #endif
 
+#include <dwmapi.h>
+
 #include "Common/Math.h"
 #include "UI/WindowHelper.h"
 
@@ -21,8 +23,10 @@ using namespace PositiveDesktop::implementation;
 
 namespace muw = winrt::Microsoft::UI::Windowing;
 
-NotificationWindow::NotificationWindow()
-	: viewModel_(make<ViewModels::implementation::NotificationWindowViewModel>())
+NotificationWindow::NotificationWindow(app::UI::NotificationPresenterHint hint, app::storage::corner_t corner)
+	: hint_(hint)
+	, corner_(corner)
+	, viewModel_(make<ViewModels::implementation::NotificationWindowViewModel>())
 	, timer_(nullptr) {
 	InitializeComponent();
 
@@ -52,6 +56,9 @@ NotificationWindow::NotificationWindow()
 	presenter.IsResizable(false);
 	presenter.SetBorderAndTitleBar(false, false);
 
+	if (corner != app::storage::cnr_default) {
+		UpdateCorners();
+	}
 	TrySetSystemBackdrop();
 }
 
@@ -107,6 +114,51 @@ void NotificationWindow::Show(float visibleDuration) {
 			appWindow.Hide();
 		});
 		timer_.Start();
+	}
+}
+
+inline DWM_WINDOW_CORNER_PREFERENCE GetDwmCornerFromConfigType(app::storage::corner_t value) noexcept {
+	switch (value) {
+	case app::storage::cnr_rounded:
+		return DWMWCP_ROUND;
+	case app::storage::cnr_rounded_small:
+		return DWMWCP_ROUNDSMALL;
+	case app::storage::cnr_squared:
+		return DWMWCP_DONOTROUND;
+	case app::storage::cnr_default:
+	default:
+		return DWMWCP_DEFAULT;
+	}
+}
+
+inline app::storage::corner_t GetConfigCornerFromDwmType(DWM_WINDOW_CORNER_PREFERENCE value) noexcept {
+	switch (value) {
+	case DWMWCP_ROUND:
+		return app::storage::cnr_rounded;
+	case DWMWCP_ROUNDSMALL:
+		return app::storage::cnr_rounded_small;
+	case DWMWCP_DONOTROUND:
+		return app::storage::cnr_squared;
+	case DWMWCP_DEFAULT:
+	default:
+		return app::storage::cnr_default;
+	}
+}
+
+void NotificationWindow::UpdateCorners() noexcept {
+	if (hint_ != app::UI::NotificationPresenterHint::Windows11) return;
+
+	HWND hWnd { GetNullableHwnd(m_inner) };
+	if (!hWnd) return;
+
+	DWM_WINDOW_CORNER_PREFERENCE preference { GetDwmCornerFromConfigType(corner_) };
+	HRESULT hr = DwmSetWindowAttribute(hWnd, DWMWA_WINDOW_CORNER_PREFERENCE, &preference, sizeof(DWM_WINDOW_CORNER_PREFERENCE));
+	if (FAILED(hr)) {
+		// Rollback if available
+		hr = DwmGetWindowAttribute(hWnd, DWMWA_WINDOW_CORNER_PREFERENCE, &preference, sizeof(DWM_WINDOW_CORNER_PREFERENCE));
+		if (SUCCEEDED(hr)) {
+			corner_ = GetConfigCornerFromDwmType(preference);
+		}
 	}
 }
 
@@ -176,6 +228,13 @@ void NotificationWindow::ViewModel(ViewModels::NotificationWindowViewModel const
 	if (viewModel_ != value) {
 		viewModel_ = value;
 		propertyChanged_(*this, Data::PropertyChangedEventArgs { L"ViewModel" });
+	}
+}
+
+void NotificationWindow::corner(app::storage::corner_t value) noexcept {
+	if (corner_ != value) {
+		corner_ = value;
+		UpdateCorners();
 	}
 }
 

@@ -8,7 +8,7 @@
   - [x] View desktop name
   - [x] View desktop index
 - [ ] Set notification position
-- [ ] Remove rounded corner of notification window (Windows 11)
+- [x] Apply window corner (square, round, small round) to notification window (Windows 11)
 
 ## Requirements
 
