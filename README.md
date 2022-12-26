@@ -2,6 +2,8 @@
 
 "Positive☆Desktop" is reworked virtual desktop utility for Windows 10 and 11. The source code is written in native (C++), so footprint is very small.
 
+https://user-images.githubusercontent.com/901816/209556339-4c579869-0df4-44a7-974c-ef1b72b294ef.mp4
+
 ## Features
 
 - [x] Show current desktop information
