@@ -12,7 +12,7 @@ namespace app::storage {
 		nfm_cursor,
 		nfm_all,
 	};
-	static notification_mode_t const kNotificationDefault = nfm_default;
+	constexpr notification_mode_t kNotificationDefault = nfm_default;
 
 	enum theme_t: unsigned int {
 		thm_default,
@@ -21,7 +21,7 @@ namespace app::storage {
 		thm_dark,
 		thm_accent,
 	};
-	static theme_t const kThemeDefault = thm_default;
+	constexpr theme_t kThemeDefault = thm_default;
 
 	enum corner_t: unsigned int {
 		cnr_default,
@@ -29,14 +29,15 @@ namespace app::storage {
 		cnr_rounded_small,
 		cnr_squared,
 	};
-	static corner_t const kCornerDefault = cnr_default;
+	constexpr corner_t kCornerDefault = cnr_default;
 
-	static int const kDurationDefault = 9; /* 3s */
-	static int const kPositionXDefault = 21; /* center */
-	static int const kPositionYDefault = 21; /* center */
-	static float const kDurationDefaultFloat = 3.f; /* 3s */
-	static float const kPositionXDefaultFloat = 0.5; /* center */
-	static float const kPositionYDefaultFloat = 0.5; /* center */
+	constexpr unsigned int kInactiveBackdrop = 1; /* true */
+	constexpr unsigned int kDurationDefault = 9; /* 3s */
+	constexpr unsigned int kPositionXDefault = 21; /* center */
+	constexpr unsigned int kPositionYDefault = 21; /* center */
+	constexpr float kDurationDefaultFloat = 3.f; /* 3s */
+	constexpr float kPositionXDefaultFloat = 0.5; /* center */
+	constexpr float kPositionYDefaultFloat = 0.5; /* center */
 	struct desktop_t final {
 #pragma pack(4)
 		theme_t theme : 3 { kNotificationDefault }; // theme
@@ -128,12 +129,12 @@ namespace app::storage {
 		ttt_default = ttt_equals,
 	};
 
-	static bool const kEnabledDefault = true;
-	static unsigned int const kIndexDefault = 0;
-	static wchar_t const* const kNameDefault = L"";
+	constexpr unsigned int kEnabledDefault = 1; /* true */
+	constexpr unsigned int kIndexDefault = 0;
+	constexpr wchar_t const* kNameDefault = L"";
 	struct override_desktop_t final {
 		winrt::guid uuid;
-		bool enabled : 1 { kEnabledDefault };
+		unsigned int enabled : 1 { kEnabledDefault };
 		override_text_mode_t textMode : 3 { ttt_default };
 		override_mode_t overrideMode : 4 { orm_default };
 		desktop_t desktop;
@@ -155,7 +156,7 @@ namespace app::storage {
 	};
 
 	struct config_t final {
-		notification_mode_t mode { nfm_default };
+		notification_mode_t mode { kNotificationDefault };
 		desktop_t defaultDesktop;
 		std::vector<override_desktop_t> desktops;
 	};
