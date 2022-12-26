@@ -6,7 +6,7 @@
 #include "NotificationWindow.xaml.h"
 #include "UIHelper.h"
 
-namespace app::UI {
+namespace app::ui {
 
 	class NotificationPresenterWinUI3: public INotificationPresenter {
 	public:
@@ -20,7 +20,7 @@ namespace app::UI {
 		}
 
 		void show(NotificationPresenterData data) noexcept override {
-			Dispatch(gDispatchQueue, [data, this]() mutable {
+			dispatch(gDispatchQueue, [data, this]() mutable {
 				showPrivate(std::move(data));
 			});
 		}
@@ -65,7 +65,8 @@ namespace app::UI {
 
 }
 
-using namespace app::UI;
+using namespace app::storage;
+using namespace app::ui;
 
 using namespace winrt::PositiveDesktop::ViewModels;
 
@@ -74,13 +75,18 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 	if (nullptr == dispatcherQueue_) {
 		winrt::Windows::System::DispatcherQueue dispatcherQueue { winrt::Windows::System::DispatcherQueue::GetForCurrentThread() };
 		if (nullptr == dispatcherQueue) {
-			dispatcherQueue_ = CreateSystemDispatcherQueueController();
+			dispatcherQueue_ = createSystemDispatcherQueueController();
 		}
 	}
 
 	// Check window
 	if (!window_) {
-		window_ = winrt::make<winrt::PositiveDesktop::implementation::NotificationWindow>(hint_, config_.defaultDesktop.corner);
+		desktop_t config = config_.defaultDesktop;
+		if (config.theme == thm_default) {
+			config.theme = thm_system;
+		}
+
+		window_ = winrt::make<winrt::PositiveDesktop::implementation::NotificationWindow>(hint_, std::move(config));
 	}
 
 	// Set data

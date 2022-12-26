@@ -6,8 +6,58 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		mc:Ignorable="d">
 
-	<Border BorderBrush="#BEBEC0"
-			BorderThickness="1">
+	<Border Background="{x:Bind Background, Mode=OneWay}"
+			BorderBrush="{x:Bind Border, Mode=OneWay}"
+			BorderThickness="{x:Bind BorderThickness, Mode=OneWay}"
+			HighContrastAdjustment="None">
+		<Border.Resources>
+			<SolidColorBrush x:Key="WindowFillColorBrush_HighContrast"
+							 Color="{ThemeResource SystemColorWindowColor}" />
+			<SolidColorBrush x:Key="WindowStrokeColorBrush_HighContrast"
+							 Color="{ThemeResource SystemColorWindowTextColor}" />
+
+			<Color x:Key="Windows10WindowFillColor_Dark">#1F1F1F</Color>
+			<Color x:Key="Windows10WindowFillColor_Light">#E4E4E4</Color>
+			<StaticResource x:Key="Windows10WindowFillColor_Accent"
+							ResourceKey="SystemAccentColorDark1" />
+
+			<SolidColorBrush x:Key="Windows10WindowFillColorBrush_Dark"
+							 Color="{StaticResource Windows10WindowFillColor_Dark}" />
+			<SolidColorBrush x:Key="Windows10WindowFillColorBrush_Light"
+							 Color="{StaticResource Windows10WindowFillColor_Light}" />
+			<SolidColorBrush x:Key="Windows10WindowFillColorBrush_Accent"
+							 Color="{StaticResource Windows10WindowFillColor_Accent}" />
+
+			<SolidColorBrush x:Key="Windows10WindowStrokeColorBrush_Dark"
+							 Color="#1F1F1F" />
+			<SolidColorBrush x:Key="Windows10WindowStrokeColorBrush_Light"
+							 Color="#E4E4E4" />
+			<SolidColorBrush x:Key="Windows10WindowStrokeColorBrush_Accent"
+							 Color="{ThemeResource SystemAccentColorDark1}" />
+
+			<Color x:Key="AcrylicWindowFillTintColor_Dark">#0A0A0A</Color>
+			<x:Double x:Key="AcrylicWindowFillTintOpacity_Dark">0.7</x:Double>
+
+			<Color x:Key="AcrylicWindowFillTintColor_Light">#E4E4E4</Color>
+			<x:Double x:Key="AcrylicWindowFillTintOpacity_Light">0.6</x:Double>
+
+			<StaticResource x:Key="AcrylicWindowFillTintColor_Accent"
+							ResourceKey="SystemAccentColorDark1" />
+			<x:Double x:Key="AcrylicWindowFillTintOpacity_Accent">0.8</x:Double>
+
+			<SolidColorBrush x:Key="AcrylicWindowStrokeColorBrush"
+							 Color="{ThemeResource SurfaceStrokeColorFlyout}" />
+			<SolidColorBrush x:Key="AcrylicWindowStrokeColorBrush_Accent"
+							 Color="{ThemeResource SystemAccentColorDark1}" />
+
+			<SolidColorBrush x:Key="Windows11WindowFillColorBrush"
+							 Color="{ThemeResource SolidBackgroundFillColorBase}" />
+			<SolidColorBrush x:Key="Windows11WindowStrokeColorBrush"
+							 Color="{ThemeResource LayerOnMicaBaseAltFillColorDefault}" />
+			<SolidColorBrush x:Key="MicaWindowStrokeColorBrush"
+							 Color="{ThemeResource LayerOnMicaBaseAltFillColorDefault}" />
+		</Border.Resources>
+
 		<StackPanel Margin="16,12,8,12"
 					HorizontalAlignment="Left"
 					VerticalAlignment="Top"

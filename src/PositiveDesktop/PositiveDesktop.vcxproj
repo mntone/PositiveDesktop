@@ -148,6 +148,7 @@
     <ClInclude Include="Services\Storages\WinRTConfigManager.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />
     <ClInclude Include="UI\NotificationPresenterWinUI3.h" />
+    <ClInclude Include="UI\register_value_t.h" />
     <ClInclude Include="UI\UIHelper.h" />
     <ClInclude Include="UI\WindowHelper.h" />
     <ClInclude Include="ViewModels\NotificationWindowViewModel.h" />

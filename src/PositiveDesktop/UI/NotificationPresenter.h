@@ -1,6 +1,6 @@
 #pragma once
 
-namespace app::UI {
+namespace app::ui {
 
 	enum class NotificationPresenterHint {
 		Windows10,

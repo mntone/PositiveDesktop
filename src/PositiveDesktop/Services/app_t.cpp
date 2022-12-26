@@ -44,9 +44,9 @@ void app_t::initialize() {
 	config_ = configManager_->Load();
 
 	// Init presenter
-	app::UI::NotificationPresenterHint hint = osver.dwBuildNumber >= 22000
-		? app::UI::NotificationPresenterHint::Windows11 /* Build 22000- */
-		: app::UI::NotificationPresenterHint::Windows10;
+	app::ui::NotificationPresenterHint hint = osver.dwBuildNumber >= 22000
+		? app::ui::NotificationPresenterHint::Windows11 /* Build 22000- */
+		: app::ui::NotificationPresenterHint::Windows10;
 	presenter_ = CreateWinUI3NotificationPresenter(config_, hint);
 
 	// Init listener

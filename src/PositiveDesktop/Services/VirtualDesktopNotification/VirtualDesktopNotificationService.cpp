@@ -5,7 +5,7 @@
 
 using namespace app::listener;
 
-VirtualDesktopNotificationService::VirtualDesktopNotificationService(app::UI::INotificationPresenter* presenter)
+VirtualDesktopNotificationService::VirtualDesktopNotificationService(app::ui::INotificationPresenter* presenter)
 	: presenter_(presenter)
 	, impl_(nullptr)
 	, deleter_(nullptr) {
@@ -47,8 +47,8 @@ void FASTCALL VirtualDesktopNotificationService::on(reps::bag_t const& value) no
 		vdevent_t ev = reps::data<vdevent_t>(value);
 		switch (ev.type) {
 		case vde_changed:
-			app::UI::NotificationPresenterData data {
-				app::UI::NotificationPresenterType::Changed,
+			app::ui::NotificationPresenterData data {
+				app::ui::NotificationPresenterType::Changed,
 				ev.index,
 				ev.name,
 			};

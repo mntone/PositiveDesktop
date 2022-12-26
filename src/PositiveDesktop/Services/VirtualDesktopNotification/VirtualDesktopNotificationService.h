@@ -7,7 +7,7 @@ namespace app::listener {
 
 	class VirtualDesktopNotificationService final: public reps::observer_t {
 	public:
-		VirtualDesktopNotificationService(app::UI::INotificationPresenter* presenter);
+		VirtualDesktopNotificationService(app::ui::INotificationPresenter* presenter);
 		~VirtualDesktopNotificationService();
 
 		void initialize(uint32_t build);
@@ -16,7 +16,7 @@ namespace app::listener {
 		void FASTCALL on(reps::bag_t const& value) noexcept override;
 
 	private:
-		app::UI::INotificationPresenter* presenter_;
+		app::ui::INotificationPresenter* presenter_;
 		IVirtualDesktopNotificationServiceImpl* impl_;
 		void (*deleter_)(IVirtualDesktopNotificationServiceImpl*);
 	};

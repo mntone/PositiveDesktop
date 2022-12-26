@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "App.xaml.h"
 
-namespace app::UI {
+namespace app::ui {
 	winrt::Microsoft::UI::Dispatching::DispatcherQueue gDispatchQueue = nullptr;
 }
 
@@ -20,8 +20,8 @@ using namespace PositiveDesktop::implementation;
 /// </summary>
 App::App() {
 	// Save DispatcherQueue
-	app::UI::gDispatchQueue = winrt::Microsoft::UI::Dispatching::DispatcherQueue::GetForCurrentThread();
-	if (!app::UI::gDispatchQueue) {
+	app::ui::gDispatchQueue = winrt::Microsoft::UI::Dispatching::DispatcherQueue::GetForCurrentThread();
+	if (!app::ui::gDispatchQueue) {
 		Exit();
 		return;
 	}
