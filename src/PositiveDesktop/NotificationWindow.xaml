@@ -31,24 +31,28 @@
 			<SolidColorBrush x:Key="Windows10WindowStrokeColorBrush_Dark"
 							 Color="#1F1F1F" />
 			<SolidColorBrush x:Key="Windows10WindowStrokeColorBrush_Light"
-							 Color="#E4E4E4" />
+							 Color="#AAAAAA" />
 			<SolidColorBrush x:Key="Windows10WindowStrokeColorBrush_Accent"
 							 Color="{ThemeResource SystemAccentColorDark1}" />
 
-			<Color x:Key="AcrylicWindowFillTintColor_Dark">#0A0A0A</Color>
-			<x:Double x:Key="AcrylicWindowFillTintOpacity_Dark">0.7</x:Double>
+			<SolidColorBrush x:Key="AcrylicWindowFillTintColorBrush_Dark"
+							 Color="#B30A0A0A" />
+			<SolidColorBrush x:Key="AcrylicWindowFillTintColorBrush_Light"
+							 Color="#99E0E0E0" />
+			<SolidColorBrush x:Key="AcrylicWindowFillTintColorBrush_Accent"
+							 Color="{ThemeResource SystemAccentColorDark1}"
+							 Opacity="0.8" />
 
-			<Color x:Key="AcrylicWindowFillTintColor_Light">#E4E4E4</Color>
-			<x:Double x:Key="AcrylicWindowFillTintOpacity_Light">0.6</x:Double>
+			<x:Double x:Key="AcrylicWindowFillLuminosityOpacity_Dark">0.7</x:Double>
+			<x:Double x:Key="AcrylicWindowFillLuminosityOpacity_Light">0.9</x:Double>
+			<x:Double x:Key="AcrylicWindowFillLuminosityOpacity_Accent">0.75</x:Double>
 
-			<StaticResource x:Key="AcrylicWindowFillTintColor_Accent"
-							ResourceKey="SystemAccentColorDark1" />
-			<x:Double x:Key="AcrylicWindowFillTintOpacity_Accent">0.8</x:Double>
-
-			<SolidColorBrush x:Key="AcrylicWindowStrokeColorBrush"
-							 Color="{ThemeResource SurfaceStrokeColorFlyout}" />
+			<SolidColorBrush x:Key="AcrylicWindowStrokeColorBrush_Dark"
+							 Color="#51000000" />
+			<SolidColorBrush x:Key="AcrylicWindowStrokeColorBrush_Light"
+							 Color="#51000000" />
 			<SolidColorBrush x:Key="AcrylicWindowStrokeColorBrush_Accent"
-							 Color="{ThemeResource SystemAccentColorDark1}" />
+							 Color="#51000000" />
 
 			<SolidColorBrush x:Key="Windows11WindowFillColorBrush"
 							 Color="{ThemeResource SolidBackgroundFillColorBase}" />

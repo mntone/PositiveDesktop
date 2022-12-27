@@ -33,16 +33,16 @@ namespace app::ui::resources {
 	constexpr std::wstring_view Windows10WindowStrokeColorBrush_Accent = L"Windows10WindowStrokeColorBrush_Accent";
 
 	// AcrylicWindow resources
-	constexpr std::wstring_view AcrylicWindowFillTintColor_Dark = L"AcrylicWindowFillTintColor_Dark";
-	constexpr std::wstring_view AcrylicWindowFillTintOpacity_Dark = L"AcrylicWindowFillTintOpacity_Dark";
+	constexpr std::wstring_view AcrylicWindowFillTintColorBrush_Dark = L"AcrylicWindowFillTintColorBrush_Dark";
+	constexpr std::wstring_view AcrylicWindowFillTintColorBrush_Light = L"AcrylicWindowFillTintColorBrush_Light";
+	constexpr std::wstring_view AcrylicWindowFillTintColorBrush_Accent = L"AcrylicWindowFillTintColorBrush_Accent";
 
-	constexpr std::wstring_view AcrylicWindowFillTintColor_Light = L"AcrylicWindowFillTintColor_Light";
-	constexpr std::wstring_view AcrylicWindowFillTintOpacity_Light = L"AcrylicWindowFillTintOpacity_Light";
+	constexpr std::wstring_view AcrylicWindowFillLuminosityOpacity_Dark = L"AcrylicWindowFillLuminosityOpacity_Dark";
+	constexpr std::wstring_view AcrylicWindowFillLuminosityOpacity_Light = L"AcrylicWindowFillLuminosityOpacity_Light";
+	constexpr std::wstring_view AcrylicWindowFillLuminosityOpacity_Accent = L"AcrylicWindowFillLuminosityOpacity_Accent";
 
-	constexpr std::wstring_view AcrylicWindowFillTintColor_Accent = L"AcrylicWindowFillTintColor_Accent";
-	constexpr std::wstring_view AcrylicWindowFillTintOpacity_Accent = L"AcrylicWindowFillTintOpacity_Accent";
-
-	constexpr std::wstring_view AcrylicWindowStrokeColorBrush = L"AcrylicWindowStrokeColorBrush";
+	constexpr std::wstring_view AcrylicWindowStrokeColorBrush_Dark = L"AcrylicWindowStrokeColorBrush_Dark";
+	constexpr std::wstring_view AcrylicWindowStrokeColorBrush_Light = L"AcrylicWindowStrokeColorBrush_Light";
 	constexpr std::wstring_view AcrylicWindowStrokeColorBrush_Accent = L"AcrylicWindowStrokeColorBrush_Accent";
 
 	// Windows 11 (plain) resources
@@ -326,6 +326,8 @@ void NotificationWindow::TrySetSystemBackdrop(FrameworkElement rootElement) {
 
 				DesktopAcrylicController controller = DesktopAcrylicController();
 				controller.SetSystemBackdropConfiguration(configuration_);
+				controller.TintColor(winrt::Microsoft::UI::Colors::Transparent());
+				controller.TintOpacity(0);
 				controller.AddSystemBackdropTarget(try_as<ICompositionSupportsSystemBackdrop>());
 				backdropController_ = controller;
 				return;
@@ -373,42 +375,41 @@ void NotificationWindow::ApplyThemeForAcrylic(FrameworkElement rootElement) noex
 	}
 
 	ResourceDictionary res { rootElement.Resources() };
-	Media::Brush border { nullptr };
-	Color tintColor, fallbackColor;
-	double tintOpacity;
+	Media::Brush background { nullptr }, border { nullptr };
+	Color fallbackColor;
+	double luminosityOpacity;
 	winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme backdropTheme;
 	if (colorPrevalence_.value()) {
+		background = getBrush(res, resources::AcrylicWindowFillTintColorBrush_Accent);
 		border = getBrush(res, resources::AcrylicWindowStrokeColorBrush_Accent);
-		tintColor = getColor(res, resources::AcrylicWindowFillTintColor_Accent);
-		tintOpacity = getDouble(res, resources::AcrylicWindowFillTintOpacity_Accent);
+		luminosityOpacity = getDouble(res, resources::AcrylicWindowFillLuminosityOpacity_Accent);
 		fallbackColor = getColor(res, resources::Windows10WindowFillColor_Accent);
 		backdropTheme = winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme::Dark;
 	} else {
-		border = getBrush(res, resources::AcrylicWindowStrokeColorBrush);
 		switch (rootElement.ActualTheme()) {
 		case ElementTheme::Dark:
-			tintColor = getColor(res, resources::AcrylicWindowFillTintColor_Dark);
-			tintOpacity = getDouble(res, resources::AcrylicWindowFillTintOpacity_Dark);
+			background = getBrush(res, resources::AcrylicWindowFillTintColorBrush_Dark);
+			border = getBrush(res, resources::AcrylicWindowStrokeColorBrush_Dark);
+			luminosityOpacity = getDouble(res, resources::AcrylicWindowFillLuminosityOpacity_Dark);
 			fallbackColor = getColor(res, resources::Windows10WindowFillColor_Dark);
 			backdropTheme = winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme::Dark;
 			break;
 		case ElementTheme::Light:
 		default:
-			tintColor = getColor(res, resources::AcrylicWindowFillTintColor_Light);
-			tintOpacity = getDouble(res, resources::AcrylicWindowFillTintOpacity_Light);
+			background = getBrush(res, resources::AcrylicWindowFillTintColorBrush_Light);
+			border = getBrush(res, resources::AcrylicWindowStrokeColorBrush_Light);
+			luminosityOpacity = getDouble(res, resources::AcrylicWindowFillLuminosityOpacity_Light);
 			fallbackColor = getColor(res, resources::Windows10WindowFillColor_Light);
 			backdropTheme = winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme::Light;
 			break;
 		}
 	}
 
-	Background(nullptr);
+	Background(background);
 	Border(border);
 
 	DesktopAcrylicController controller = backdropController_.as<DesktopAcrylicController>();
-	controller.TintColor(tintColor);
-	controller.TintOpacity(static_cast<float>(tintOpacity));
-	controller.LuminosityOpacity(static_cast<float>(tintOpacity * tintColor.A / 255.0));
+	controller.LuminosityOpacity(static_cast<float>(luminosityOpacity));
 	controller.FallbackColor(fallbackColor);
 	configuration_.Theme(backdropTheme);
 }
