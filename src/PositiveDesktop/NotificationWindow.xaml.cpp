@@ -81,7 +81,7 @@ NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::stor
 	, background_(nullptr)
 	, border_(nullptr)
 	, borderThickness_(ThicknessHelper::FromUniformLength(1))
-	, viewModel_(make<ViewModels::implementation::NotificationWindowViewModel>())
+	, viewModel_(nullptr)
 	, timer_(nullptr) {
 	InitializeComponent();
 
@@ -111,7 +111,7 @@ NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::stor
 	// Set window configs
 	muw::AppWindow appWindow = GetAppWindow(hWnd);
 	appWindow.IsShownInSwitchers(false);
-	appWindow.ResizeClient(Windows::Graphics::SizeInt32 { 500, 100 });
+	appWindow.ResizeClient(Windows::Graphics::SizeInt32 { 500, 95 });
 
 	muw::OverlappedPresenter presenter = appWindow.Presenter().as<muw::OverlappedPresenter>();
 	presenter.IsAlwaysOnTop(true);
@@ -460,7 +460,7 @@ void NotificationWindow::SystemSettingsChanged() {
 	enableTransparency_.reset();
 
 	FrameworkElement rootElement = Content().as<FrameworkElement>();
-	if (transparencyEnabled_ != enableTransparency_.value()) {
+	if (transparencyEnabled_ != static_cast<bool>(enableTransparency_.value())) {
 		TrySetSystemBackdrop(rootElement);
 	}
 
