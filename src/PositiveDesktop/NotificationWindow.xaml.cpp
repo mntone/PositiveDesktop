@@ -5,6 +5,7 @@
 #endif
 
 #include <dwmapi.h>
+#include <ShellScalingApi.h>
 #include <winrt/Windows.UI.ViewManagement.h>
 
 #include "Common/Math.h"
@@ -77,6 +78,8 @@ NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::stor
 	, configuration_(nullptr)
 	, backdropController_(nullptr)
 	, applyTheme_(nullptr)
+	, dpiX_(USER_DEFAULT_SCREEN_DPI)
+	, dpiY_(USER_DEFAULT_SCREEN_DPI)
 	, transparencyEnabled_(false)
 	, background_(nullptr)
 	, border_(nullptr)
@@ -86,6 +89,11 @@ NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::stor
 	InitializeComponent();
 
 	HWND hWnd { GetHwnd(m_inner) };
+
+	// Get DPI
+	HMONITOR hMonitor = MonitorFromWindow(nullptr, MONITOR_DEFAULTTOPRIMARY);
+	WINRT_ASSERT(hMonitor);
+	check_hresult(GetDpiForMonitor(hMonitor, MDT_EFFECTIVE_DPI, &dpiX_, &dpiY_));
 
 	// Hook WndProc
 	check_bool(SetPropW(hWnd, resources::PositiveDesktop_NotificationWindow_ClassPointer.data(), this)); // Set class pointer
@@ -152,7 +160,10 @@ void NotificationWindow::Show(float visibleDuration) {
 	// Set ideal size
 	RectInt32 workArea = displayArea.WorkArea();
 	UIElement content = Content();
-	content.Measure(app::sizeAsFloat(workArea));
+	Size workSizeFloat = app::sizeAsFloat(workArea);
+	workSizeFloat.Width /= static_cast<float>(dpiX_) / USER_DEFAULT_SCREEN_DPI;
+	workSizeFloat.Height /= static_cast<float>(dpiY_) / USER_DEFAULT_SCREEN_DPI;
+	content.Measure(workSizeFloat);
 
 	// Adjust window size
 	Size expectedSize = content.DesiredSize();
@@ -185,6 +196,9 @@ LRESULT NotificationWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPAR
 		HighContrastChanged();
 	} else if (WM_SETTINGCHANGE == message) {
 		SystemSettingsChanged();
+	} else if (WM_DPICHANGED == message) {
+		dpiX_ = LOWORD(wParam);
+		dpiY_ = HIWORD(wParam);
 	}
 
 	if (nextWndProc_) {
@@ -199,6 +213,17 @@ LRESULT NotificationWindow::WndProcStatic(HWND hWnd, UINT message, WPARAM wParam
 		return that->WndProc(hWnd, message, wParam, lParam);
 	}
 	return DefWindowProcW(hWnd, message, wParam, lParam);
+}
+
+void NotificationWindow::UpdatePosition() {
+	// TODO: Observe the WorkArea and update position.
+	winrt::Microsoft::UI::Windowing::AppWindow appWindow = GetAppWindow(m_inner);
+	winrt::Microsoft::UI::DisplayId primaryDisplayId = GetPrimaryDisplayId();
+	winrt::Microsoft::UI::Windowing::DisplayArea displayArea = winrt::Microsoft::UI::Windowing::DisplayArea::GetFromDisplayId(primaryDisplayId);
+
+	RectInt32 outerBounds = displayArea.OuterBounds();
+	PointInt32 position = (app::size(outerBounds) - appWindow.Size()) >> 1;
+	appWindow.Move(position);
 }
 
 inline DWM_WINDOW_CORNER_PREFERENCE GetDwmCornerFromConfigType(app::storage::corner_t value) noexcept {
@@ -506,6 +531,10 @@ void NotificationWindow::WindowActivated(IInspectable const& /*sender*/, WindowA
 
 void NotificationWindow::WindowClosed(IInspectable const& /*sender*/, WindowEventArgs const& /*args*/) {
 	ReleasePrivate();
+}
+
+void NotificationWindow::WindowSizeChanged(IInspectable const& /*sender*/, WindowSizeChangedEventArgs const& /*args*/) {
+	UpdatePosition();
 }
 
 #pragma endregion
