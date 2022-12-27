@@ -34,20 +34,18 @@ namespace reps {
 	namespace __impl {
 
 		struct lock_t {
-			enum state { unlocked = 0, locked };
-
 			inline void lock() noexcept {
-				while (state_.exchange(locked, std::memory_order_acquire) == locked) {
+				while (flag_.test_and_set(std::memory_order_acquire)) {
 					Sleep(0);
 				}
 			}
 
 			inline void unlock() noexcept {
-				state_.store(unlocked, std::memory_order_release);
+				flag_.clear(std::memory_order_release);
 			}
 
 		private:
-			std::atomic<state> state_;
+			std::atomic_flag flag_;
 		};
 
 
@@ -71,11 +69,11 @@ namespace reps {
 
 		struct observer_impl {
 		protected:
-			inline void _setObserver(observer_t const* observer) noexcept {
+			constexpr void _setObserver(observer_t const* observer) noexcept {
 				observers_.push_back(observer);
 			}
 
-			inline void _clearObserver() noexcept {
+			constexpr void _clearObserver() noexcept {
 				observers_.clear();
 			}
 
