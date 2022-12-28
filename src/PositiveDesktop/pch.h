@@ -15,17 +15,20 @@
 // Unused definition
 #define NOGDICAPMASKS
 #define NOVIRTUALKEYCODES
+#define NODESKTOP
+#define NOWINDOWSTATION
+#define NOMDI
 #define NOSYSMETRICS
 #define NOMENUS
 #define NOICONS
 #define NORASTEROPS
-#define OEMRESOURCE
 #define NOATOM
 #define NOCLIPBOARD
 #define NODRAWTEXT
 #define NOKERNEL
 #define NONLS
 #define NOMB
+#define NOCOLOR
 #define NOMEMMGR
 #define NOMETAFILE
 #define NOMINMAX
@@ -37,6 +40,7 @@
 #define NOHELP
 #define NOPROFILER
 #define NOMCX
+#define NOCRYPT
 
 #include <windows.h>
 #include <unknwn.h>
@@ -57,7 +61,6 @@
 
 #include <winrt/Microsoft.Graphics.Display.h>
 #include <winrt/Microsoft.UI.Composition.h>
-#include <winrt/Microsoft.UI.Composition.SystemBackdrops.h>
 #include <winrt/Microsoft.UI.Dispatching.h>
 #include <winrt/Microsoft.UI.Interop.h>
 #include <winrt/Microsoft.UI.Xaml.h>

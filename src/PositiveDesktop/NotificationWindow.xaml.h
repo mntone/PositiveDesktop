@@ -1,6 +1,8 @@
 #pragma once
 #include "NotificationWindow.g.h"
 
+#include <winrt/Microsoft.UI.Composition.SystemBackdrops.h>
+
 #include "ViewModels/NotificationWindowViewModel.h"
 #include "UI/register_value_t.h"
 #include "UI/NotificationPresenter.h"
