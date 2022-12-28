@@ -560,7 +560,9 @@ void NotificationWindow::ContentThemeChanged(FrameworkElement const& sender, IIn
 }
 
 void NotificationWindow::WindowActivated(IInspectable const& /*sender*/, WindowActivatedEventArgs const& args) {
-	//configuration_.IsInputActive(WindowActivationState::Deactivated != args.WindowActivationState());
+	if (config_.inactiveBackdrop == app::storage::ibd_disabled) {
+		configuration_.IsInputActive(WindowActivationState::Deactivated != args.WindowActivationState());
+	}
 }
 
 void NotificationWindow::WindowClosed(IInspectable const& /*sender*/, WindowEventArgs const& /*args*/) {

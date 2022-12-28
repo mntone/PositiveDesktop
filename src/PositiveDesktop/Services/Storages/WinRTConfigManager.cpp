@@ -52,6 +52,7 @@ namespace app::storage {
 		desktop_t load(winrt::Windows::Foundation::Collections::IPropertySet values) {
 			desktop_t desktop {
 				load(values, L"theme", kThemeDefault),
+				load(values, L"inactiveBackdrop", kInactiveBackdropDefault),
 				load(values, L"corner", kCornerDefault),
 				packedDuration(load(values, L"duration", kDurationDefaultFloat)),
 				load(values, L"positionMode", kPositionModeDefault),
@@ -140,6 +141,7 @@ namespace app::storage {
 
 		void store(winrt::Windows::Foundation::Collections::IPropertySet values, desktop_t value) {
 			store(values, L"theme", value.theme, kThemeDefault);
+			store(values, L"inactiveBackdrop", value.inactiveBackdrop, kInactiveBackdropDefault);
 			store(values, L"corner", value.corner, kCornerDefault);
 			store(values, L"duration", actualDuration(value.duration), kDurationDefaultFloat);
 			store(values, L"positionMode", value.positionMode, kPositionModeDefault);

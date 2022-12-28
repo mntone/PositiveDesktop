@@ -31,6 +31,13 @@ namespace app::storage {
 	};
 	constexpr corner_t kCornerDefault = cnr_default;
 
+	enum inactive_backdrop_t: unsigned int {
+		ibd_default,
+		ibd_disabled,
+		ibd_enabled,
+	};
+	constexpr inactive_backdrop_t kInactiveBackdropDefault = ibd_default;
+
 	enum position_mode_t: unsigned int {
 		psn_default,
 		psn_workarea,
@@ -49,7 +56,8 @@ namespace app::storage {
 	struct desktop_t final {
 #pragma pack(4)
 		theme_t theme : 3 { kNotificationDefault }; // theme
-		int : 5;
+		int : 3;
+		inactive_backdrop_t inactiveBackdrop : 2 { kInactiveBackdropDefault };
 		corner_t corner : 2 { kCornerDefault };  // [Windows 11] square corner
 		unsigned int duration : 6 { kDurationDefault };   // 0 → parent, 1 → 0.25, 2 → 0.75, 3-63 → 0.0, 0.5, ..., 30.0 [s]
 
