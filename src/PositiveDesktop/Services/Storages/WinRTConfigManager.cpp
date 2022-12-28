@@ -54,6 +54,7 @@ namespace app::storage {
 				load(values, L"theme", kThemeDefault),
 				load(values, L"corner", kCornerDefault),
 				packedDuration(load(values, L"duration", kDurationDefaultFloat)),
+				load(values, L"positionMode", kPositionModeDefault),
 				packedPosition(load(values, L"positionX", kPositionXDefaultFloat)),
 				packedPosition(load(values, L"positionY", kPositionYDefaultFloat)),
 			};
@@ -141,6 +142,7 @@ namespace app::storage {
 			store(values, L"theme", value.theme, kThemeDefault);
 			store(values, L"corner", value.corner, kCornerDefault);
 			store(values, L"duration", actualDuration(value.duration), kDurationDefaultFloat);
+			store(values, L"positionMode", value.positionMode, kPositionModeDefault);
 			store(values, L"positionX", actualPosition(value.positionX), kPositionXDefaultFloat);
 			store(values, L"positionY", actualPosition(value.positionY), kPositionYDefaultFloat);
 		}

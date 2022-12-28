@@ -56,8 +56,7 @@ namespace app::ui::resources {
 }
 
 extern std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
-	unsigned int modeX,
-	unsigned int modeY,
+	app::storage::desktop_t const& config,
 	app::int32x4_t workArea,
 	app::int32x4_t outerBounds,
 	app::int32x2_t size,
@@ -189,8 +188,7 @@ void NotificationWindow::Show(float visibleDuration) {
 
 	// Calc position
 	std::pair<int32x2_t, double4> calcData = getPositionAndThickness(
-		config_.positionY,
-		config_.positionX,
+		config_,
 		workArea,
 		outerBounds,
 		appWindow.Size(),
@@ -254,8 +252,7 @@ void NotificationWindow::UpdatePosition() {
 
 	// Calc position
 	std::pair<app::int32x2_t, app::double4> calcData = getPositionAndThickness(
-		config_.positionY,
-		config_.positionX,
+		config_,
 		workArea,
 		outerBounds,
 		appWindow.Size(),

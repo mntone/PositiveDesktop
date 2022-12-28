@@ -31,10 +31,18 @@ namespace app::storage {
 	};
 	constexpr corner_t kCornerDefault = cnr_default;
 
+	enum position_mode_t: unsigned int {
+		psn_default,
+		psn_workarea,
+		psn_window,
+		psn_cursor,
+	};
+	constexpr position_mode_t kPositionModeDefault = psn_default;
+
 	constexpr unsigned int kInactiveBackdrop = 1; /* true */
 	constexpr unsigned int kDurationDefault = 9; /* 3s */
-	constexpr unsigned int kPositionXDefault = 21; /* center */
-	constexpr unsigned int kPositionYDefault = 21; /* center */
+	constexpr unsigned int kPositionXDefault = 5; /* center */
+	constexpr unsigned int kPositionYDefault = 5; /* center */
 	constexpr float kDurationDefaultFloat = 3.f; /* 3s */
 	constexpr float kPositionXDefaultFloat = 0.5; /* center */
 	constexpr float kPositionYDefaultFloat = 0.5; /* center */
@@ -45,23 +53,11 @@ namespace app::storage {
 		corner_t corner : 2 { kCornerDefault };  // [Windows 11] square corner
 		unsigned int duration : 6 { kDurationDefault };   // 0 → parent, 1 → 0.25, 2 → 0.75, 3-63 → 0.0, 0.5, ..., 30.0 [s]
 
-		// 0 → parent
-		// 1 → window to left of the cursor if available (serialize as -Inf)
-		// 2 → cursor (serialize as NaN)
-		// 3 → window to right of the cursor if available (serialize as +Inf)
-		// 4-10 → reserved
-		// 11-31 → 0.0～1.0
-		unsigned int positionX : 5 { kPositionXDefault };
-		int : 3;
+		position_mode_t positionMode : 2 { kPositionModeDefault };
+		unsigned int positionX : 3 { kPositionXDefault }; // 0 → parent, 1, 2 → reserved, 3-7 → 0.0～1.0
+		unsigned int positionY : 3 { kPositionYDefault }; // 0 → parent, 1, 2 → reserved, 3-7 → 0.0～1.0
 
-		// 0 → parent
-		// 1 → window over the cursor if available (serialize as -Inf)
-		// 2 → cursor (serialize as NaN)
-		// 3 → window under the cursor if available (serialize as +Inf)
-		// 4-10 → reserved
-		// 11-31 → 0.0～1.0
-		unsigned int positionY : 5 { kPositionYDefault };
-		int : 3;
+		int : 8;
 #pragma pack()
 	};
 
@@ -88,30 +84,15 @@ namespace app::storage {
 	}
 
 	inline float actualPosition(unsigned int packedPosition, float parentPosition = 0.5) noexcept {
-		if (packedPosition >= 11) {
-			return 0.05f * static_cast<float>(packedPosition - 11);
+		if (packedPosition >= 3) {
+			return 0.25f * static_cast<float>(packedPosition - 3);
 		} else {
-			switch (packedPosition) {
-			case 1: return -std::numeric_limits<float>::infinity();
-			case 2: return std::numeric_limits<float>::quiet_NaN();
-			case 3: return std::numeric_limits<float>::infinity();
-			default: return parentPosition;
-			}
+			return parentPosition;
 		}
 	}
 
 	inline unsigned int packedPosition(float actualPosition) noexcept {
-		if (!std::isfinite(actualPosition)) {
-			if (std::isinf(actualPosition)) {
-				return 3;
-			} else if (std::isnan(actualPosition)) {
-				return 2;
-			} else {
-				return 1;
-			}
-		} else {
-			return std::min(31u, static_cast<unsigned int>(std::lround(20.f * actualPosition)) + 11u);
-		}
+		return std::min(31u, static_cast<unsigned int>(std::lround(4.f * actualPosition)) + 3u);
 	}
 
 	enum override_mode_t: unsigned int {
