@@ -80,7 +80,7 @@ namespace muw = winrt::Microsoft::UI::Windowing;
 
 NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::storage::desktop_t config)
 	: hint_(hint)
-	, config_(config)
+	, config_(std::move(config))
 	, configuration_(nullptr)
 	, backdropController_(nullptr)
 	, applyTheme_(nullptr)
@@ -140,7 +140,7 @@ NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::stor
 	TrySetSystemBackdrop(rootElement);
 	UpdateTheme(rootElement); /* PLEASE call this after calling TrySetSystemBackdrop because of using configuration_ */
 	(this->*applyTheme_)(rootElement);
-	if (config.corner != app::storage::cnr_default) {
+	if (config_.corner != app::storage::cnr_default) {
 		UpdateCorners();
 	}
 }
