@@ -9,7 +9,7 @@ https://user-images.githubusercontent.com/901816/209556339-4c579869-0df4-44a7-97
 - [x] Show current desktop information
   - [x] View desktop name
   - [x] View desktop index
-- [ ] Set notification position
+- [x] Set notification position
 - [x] Apply window corner (square, round, small round) to notification window (Windows 11)
 
 ## Requirements

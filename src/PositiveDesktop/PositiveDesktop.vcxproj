@@ -168,6 +168,9 @@
     <ClCompile Include="NotificationWindow.xaml.cpp">
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="NotificationWindow.xaml.calc.cpp">
+      <DependentUpon>NotificationWindow.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="Services\app_t.cpp" />
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>

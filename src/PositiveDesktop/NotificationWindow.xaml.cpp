@@ -55,6 +55,14 @@ namespace app::ui::resources {
 
 }
 
+extern std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
+	unsigned int modeX,
+	unsigned int modeY,
+	app::int32x4_t workArea,
+	app::int32x4_t outerBounds,
+	app::int32x2_t size,
+	bool isWindows11);
+
 using namespace winrt;
 
 using namespace Microsoft::UI;
@@ -83,7 +91,7 @@ NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::stor
 	, transparencyEnabled_(false)
 	, background_(nullptr)
 	, border_(nullptr)
-	, borderThickness_(ThicknessHelper::FromUniformLength(1))
+	, borderThickness_({ 1, 1, 1, 1 })
 	, viewModel_(nullptr)
 	, timer_(nullptr) {
 	InitializeComponent();
@@ -152,31 +160,45 @@ void NotificationWindow::ReleasePrivate() {
 }
 
 void NotificationWindow::Show(float visibleDuration) {
+	using namespace app;
+
 	// TODO: Observe the WorkArea and update position.
 	winrt::Microsoft::UI::Windowing::AppWindow appWindow = GetAppWindow(m_inner);
 	winrt::Microsoft::UI::DisplayId primaryDisplayId = GetPrimaryDisplayId();
 	winrt::Microsoft::UI::Windowing::DisplayArea displayArea = winrt::Microsoft::UI::Windowing::DisplayArea::GetFromDisplayId(primaryDisplayId);
 
 	// Set ideal size
-	RectInt32 workArea = displayArea.WorkArea();
+	bool isWindows11 = hint_ == NotificationPresenterHint::Windows11;
+	int32x4_t workArea = displayArea.WorkArea();
+	int32x4_t outerBounds = displayArea.OuterBounds();
+	if (isWindows11) {
+		workArea.addPadding(12);
+		outerBounds.addPadding(12);
+	}
 	UIElement content = Content();
-	Size workSizeFloat = app::sizeAsFloat(workArea);
-	workSizeFloat.Width /= static_cast<float>(dpiX_) / USER_DEFAULT_SCREEN_DPI;
-	workSizeFloat.Height /= static_cast<float>(dpiY_) / USER_DEFAULT_SCREEN_DPI;
+	float2 invScale = float2(USER_DEFAULT_SCREEN_DPI) / float2(dpiX_, dpiY_);
+	float2 workSizeFloat = static_cast<float2>(workArea.size()) * invScale;
 	content.Measure(workSizeFloat);
 
 	// Adjust window size
 	Size expectedSize = content.DesiredSize();
-	RectInt32 outerBounds = displayArea.OuterBounds();
-	SizeInt32 size = appWindow.ClientSize();
-	PointInt32 position = (app::size(outerBounds) - size) >> 1;
-	appWindow.MoveAndResize(RectInt32 {
-		position.X,
-		position.Y,
+	appWindow.ResizeClient(SizeInt32 {
 		500,
 		app::lceil(expectedSize.Height),
 	});
+
+	// Calc position
+	std::pair<int32x2_t, double4> calcData = getPositionAndThickness(
+		config_.positionY,
+		config_.positionX,
+		workArea,
+		outerBounds,
+		appWindow.Size(),
+		isWindows11);
+	BorderThickness(calcData.second);
+	appWindow.Move(calcData.first);
 	if (!appWindow.IsVisible()) {
+		timer_ = nullptr;
 		appWindow.Show();
 	}
 
@@ -221,9 +243,24 @@ void NotificationWindow::UpdatePosition() {
 	winrt::Microsoft::UI::DisplayId primaryDisplayId = GetPrimaryDisplayId();
 	winrt::Microsoft::UI::Windowing::DisplayArea displayArea = winrt::Microsoft::UI::Windowing::DisplayArea::GetFromDisplayId(primaryDisplayId);
 
-	RectInt32 outerBounds = displayArea.OuterBounds();
-	PointInt32 position = (app::size(outerBounds) - appWindow.Size()) >> 1;
-	appWindow.Move(position);
+	// Set ideal size
+	bool isWindows11 = hint_ == NotificationPresenterHint::Windows11;
+	app::int32x4_t workArea = displayArea.WorkArea();
+	app::int32x4_t outerBounds = displayArea.OuterBounds();
+	if (isWindows11) {
+		workArea.addPadding(12);
+		outerBounds.addPadding(12);
+	}
+
+	// Calc position
+	std::pair<app::int32x2_t, app::double4> calcData = getPositionAndThickness(
+		config_.positionY,
+		config_.positionX,
+		workArea,
+		outerBounds,
+		appWindow.Size(),
+		isWindows11);
+	appWindow.Move(calcData.first);
 }
 
 inline DWM_WINDOW_CORNER_PREFERENCE GetDwmCornerFromConfigType(app::storage::corner_t value) noexcept {
