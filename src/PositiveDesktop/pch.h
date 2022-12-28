@@ -43,6 +43,8 @@
 #define NOCRYPT
 
 #include <windows.h>
+#include <dwmapi.h>
+
 #include <unknwn.h>
 #include <inspectable.h>
 #include <restrictederrorinfo.h>

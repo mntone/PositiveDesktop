@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include <utility>
-#include <dwmapi.h>
 #include <Common/Math.h>
 
 namespace app {
@@ -33,7 +32,7 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 	int32x4_t workArea,
 	int32x4_t outerBounds,
 	int32x2_t size,
-	bool isWindows11) {
+	bool isSquareCorner) {
 	int32x2_t position;
 	double4 border { 1, 1, 1, 1 };
 
@@ -129,13 +128,13 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 			switch (modeY) {
 			case 3:
 				position.y = std::max(cursor.y - size.y, workArea.y);
-				if (!isWindows11 && position.y == workArea.y) {
+				if (isSquareCorner && position.y == workArea.y) {
 					border.y = 0;
 				}
 				break;
 			case 4:
 				position.y = std::clamp(cursor.y - (size.y >> 2), workArea.y, workArea.y2() - size.y);
-				if (!isWindows11) {
+				if (isSquareCorner) {
 					if (position.y == workArea.y) {
 						border.y = 0;
 					} else if (position.y == workArea.y2() - size.y) {
@@ -145,7 +144,7 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 				break;
 			case 6:
 				position.y = std::clamp(cursor.y - ((size.y * 3) >> 2), workArea.y, workArea.y2() - size.y);
-				if (!isWindows11) {
+				if (isSquareCorner) {
 					if (position.y == workArea.y) {
 						border.y = 0;
 					} else if (position.y == workArea.y2() - size.y) {
@@ -155,14 +154,14 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 				break;
 			case 7:
 				position.y = std::min(cursor.y, workArea.y2() - size.y);
-				if (!isWindows11 && position.y == workArea.y2() - size.y) {
+				if (isSquareCorner && position.y == workArea.y2() - size.y) {
 					border.w = 0;
 				}
 				break;
 			case 5:
 			default:
 				position.y = std::clamp(cursor.y - (size.y >> 1), workArea.y, workArea.y2() - size.y);
-				if (!isWindows11) {
+				if (isSquareCorner) {
 					if (position.y == workArea.y) {
 						border.y = 0;
 					} else if (position.y == workArea.y2() - size.y) {
@@ -175,13 +174,13 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 			switch (modeX) {
 			case 3:
 				position.x = std::max(cursor.x - size.x, workArea.x);
-				if (!isWindows11 && position.x == workArea.x) {
+				if (isSquareCorner && position.x == workArea.x) {
 					border.x = 0;
 				}
 				break;
 			case 4:
 				position.x = std::clamp(cursor.x - (size.x >> 2), workArea.x, workArea.x2() - size.x);
-				if (!isWindows11) {
+				if (isSquareCorner) {
 					if (position.x == workArea.x) {
 						border.x = 0;
 					} else if (position.x == workArea.x2() - size.x) {
@@ -191,7 +190,7 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 				break;
 			case 6:
 				position.x = std::clamp(cursor.x - ((size.x * 3) >> 2), workArea.x, workArea.x2() - size.x);
-				if (!isWindows11) {
+				if (isSquareCorner) {
 					if (position.x == workArea.x) {
 						border.x = 0;
 					} else if (position.x == workArea.x2() - size.x) {
@@ -201,14 +200,14 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 				break;
 			case 7:
 				position.x = std::min(cursor.x, workArea.x2() - size.x);
-				if (!isWindows11 && position.x == workArea.x2() - size.x) {
+				if (isSquareCorner && position.x == workArea.x2() - size.x) {
 					border.z = 0;
 				}
 				break;
 			case 5:
 			default:
 				position.x = std::clamp(cursor.x - (size.x >> 1), workArea.x, workArea.x2() - size.x);
-				if (!isWindows11) {
+				if (isSquareCorner) {
 					if (position.x == workArea.x) {
 						border.x = 0;
 					} else if (position.x == workArea.x2() - size.x) {
@@ -228,7 +227,7 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 			switch (modeY) {
 			case 3:
 				position = outerPosition;
-				if (!isWindows11) {
+				if (isSquareCorner) {
 					border = double4 { 0, 0, 1, 1 };
 				}
 				break;
@@ -240,7 +239,7 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 				break;
 			case 7:
 				position = outerPosition + (outerBounds.size() - size);
-				if (!isWindows11) {
+				if (isSquareCorner) {
 					border = double4 { 1, 1, 0, 0 };
 				}
 				break;
@@ -253,7 +252,7 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 			switch (modeY) {
 			case 3:
 				position.y = outerBounds.y;
-				if (!isWindows11) {
+				if (isSquareCorner) {
 					border.y = 0;
 				}
 				break;
@@ -265,7 +264,7 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 				break;
 			case 7:
 				position.y = outerBounds.y + (outerBounds.w - size.y);
-				if (!isWindows11) {
+				if (isSquareCorner) {
 					border.w = 0;
 				}
 				break;
@@ -278,7 +277,7 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 			switch (modeX) {
 			case 3:
 				position.x = outerBounds.x;
-				if (!isWindows11) {
+				if (isSquareCorner) {
 					border.x = 0;
 				}
 				break;
@@ -290,7 +289,7 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 				break;
 			case 7:
 				position.x = outerBounds.x + (outerBounds.z - size.x);
-				if (!isWindows11) {
+				if (isSquareCorner) {
 					border.z = 0;
 				}
 				break;

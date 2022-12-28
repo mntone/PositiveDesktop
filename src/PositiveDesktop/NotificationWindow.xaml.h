@@ -18,7 +18,7 @@ namespace winrt::PositiveDesktop::implementation {
 	private:
 		void ReleasePrivate();
 		void UpdatePosition();
-		void UpdateCorners() noexcept;
+		bool UpdateCorners() noexcept;
 		void UpdateTheme(Microsoft::UI::Xaml::FrameworkElement rootElement);
 
 		void TrySetSystemBackdrop(Microsoft::UI::Xaml::FrameworkElement rootElement);
@@ -88,6 +88,7 @@ namespace winrt::PositiveDesktop::implementation {
 		void (NotificationWindow::*applyTheme_)(Microsoft::UI::Xaml::FrameworkElement rootElement) noexcept;
 
 		UINT dpiX_, dpiY_;
+		DWM_WINDOW_CORNER_PREFERENCE cornerPreference_;
 		app::ui::system_uses_light_theme_t systemUsesLightTheme_;
 		app::ui::color_prevalence_t colorPrevalence_;
 		app::ui::enable_transparency_t enableTransparency_;

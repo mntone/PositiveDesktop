@@ -4,7 +4,6 @@
 #include "NotificationWindow.g.cpp"
 #endif
 
-#include <dwmapi.h>
 #include <ShellScalingApi.h>
 #include <winrt/Windows.UI.ViewManagement.h>
 
@@ -60,7 +59,7 @@ extern std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
 	app::int32x4_t workArea,
 	app::int32x4_t outerBounds,
 	app::int32x2_t size,
-	bool isWindows11);
+	bool isSquareCorner);
 
 using namespace winrt;
 
@@ -87,6 +86,7 @@ NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::stor
 	, applyTheme_(nullptr)
 	, dpiX_(USER_DEFAULT_SCREEN_DPI)
 	, dpiY_(USER_DEFAULT_SCREEN_DPI)
+	, cornerPreference_(DWMWCP_DEFAULT)
 	, transparencyEnabled_(false)
 	, background_(nullptr)
 	, border_(nullptr)
@@ -167,13 +167,25 @@ void NotificationWindow::Show(float visibleDuration) {
 	winrt::Microsoft::UI::Windowing::DisplayArea displayArea = winrt::Microsoft::UI::Windowing::DisplayArea::GetFromDisplayId(primaryDisplayId);
 
 	// Set ideal size
-	bool isWindows11 = hint_ == NotificationPresenterHint::Windows11;
 	int32x4_t workArea = displayArea.WorkArea();
 	int32x4_t outerBounds = displayArea.OuterBounds();
-	if (isWindows11) {
-		workArea.addPadding(12);
-		outerBounds.addPadding(12);
+	bool isSquareCorner = true;
+	if (hint_ == NotificationPresenterHint::Windows11) {
+		switch (cornerPreference_) {
+		case DWMWCP_DEFAULT:
+		case DWMWCP_ROUND:
+			isSquareCorner = false;
+			workArea.addPadding(12);
+			outerBounds.addPadding(12);
+			break;
+		case DWMWCP_ROUNDSMALL:
+			isSquareCorner = false;
+			workArea.addPadding(4);
+			outerBounds.addPadding(4);
+			break;
+		}
 	}
+
 	UIElement content = Content();
 	float2 invScale = float2(USER_DEFAULT_SCREEN_DPI) / float2(dpiX_, dpiY_);
 	float2 workSizeFloat = static_cast<float2>(workArea.size()) * invScale;
@@ -192,7 +204,7 @@ void NotificationWindow::Show(float visibleDuration) {
 		workArea,
 		outerBounds,
 		appWindow.Size(),
-		isWindows11);
+		isSquareCorner);
 	BorderThickness(calcData.second);
 	appWindow.Move(calcData.first);
 	if (!appWindow.IsVisible()) {
@@ -242,12 +254,23 @@ void NotificationWindow::UpdatePosition() {
 	winrt::Microsoft::UI::Windowing::DisplayArea displayArea = winrt::Microsoft::UI::Windowing::DisplayArea::GetFromDisplayId(primaryDisplayId);
 
 	// Set ideal size
-	bool isWindows11 = hint_ == NotificationPresenterHint::Windows11;
 	app::int32x4_t workArea = displayArea.WorkArea();
 	app::int32x4_t outerBounds = displayArea.OuterBounds();
-	if (isWindows11) {
-		workArea.addPadding(12);
-		outerBounds.addPadding(12);
+	bool isSquareCorner = true;
+	if (hint_ == NotificationPresenterHint::Windows11) {
+		switch (cornerPreference_) {
+		case DWMWCP_DEFAULT:
+		case DWMWCP_ROUND:
+			isSquareCorner = false;
+			workArea.addPadding(12);
+			outerBounds.addPadding(12);
+			break;
+		case DWMWCP_ROUNDSMALL:
+			isSquareCorner = false;
+			workArea.addPadding(4);
+			outerBounds.addPadding(4);
+			break;
+		}
 	}
 
 	// Calc position
@@ -256,7 +279,7 @@ void NotificationWindow::UpdatePosition() {
 		workArea,
 		outerBounds,
 		appWindow.Size(),
-		isWindows11);
+		isSquareCorner);
 	appWindow.Move(calcData.first);
 }
 
@@ -274,35 +297,25 @@ inline DWM_WINDOW_CORNER_PREFERENCE GetDwmCornerFromConfigType(app::storage::cor
 	}
 }
 
-inline app::storage::corner_t GetConfigCornerFromDwmType(DWM_WINDOW_CORNER_PREFERENCE value) noexcept {
-	switch (value) {
-	case DWMWCP_ROUND:
-		return app::storage::cnr_rounded;
-	case DWMWCP_ROUNDSMALL:
-		return app::storage::cnr_rounded_small;
-	case DWMWCP_DONOTROUND:
-		return app::storage::cnr_squared;
-	case DWMWCP_DEFAULT:
-	default:
-		return app::storage::cnr_default;
-	}
-}
+bool NotificationWindow::UpdateCorners() noexcept {
+	if (hint_ != app::ui::NotificationPresenterHint::Windows11) return false;
 
-void NotificationWindow::UpdateCorners() noexcept {
-	if (hint_ != app::ui::NotificationPresenterHint::Windows11) return;
+	DWM_WINDOW_CORNER_PREFERENCE cornerPreference { GetDwmCornerFromConfigType(config_.corner) };
+	if (cornerPreference == cornerPreference_) return false;
 
 	HWND hWnd { GetNullableHwnd(m_inner) };
-	if (!hWnd) return;
+	if (!hWnd) return false;
 
-	DWM_WINDOW_CORNER_PREFERENCE preference { GetDwmCornerFromConfigType(config_.corner) };
-	HRESULT hr = DwmSetWindowAttribute(hWnd, DWMWA_WINDOW_CORNER_PREFERENCE, &preference, sizeof(DWM_WINDOW_CORNER_PREFERENCE));
+	HRESULT hr = DwmSetWindowAttribute(hWnd, DWMWA_WINDOW_CORNER_PREFERENCE, &cornerPreference, sizeof(DWM_WINDOW_CORNER_PREFERENCE));
 	if (FAILED(hr)) {
 		// Rollback if available
-		hr = DwmGetWindowAttribute(hWnd, DWMWA_WINDOW_CORNER_PREFERENCE, &preference, sizeof(DWM_WINDOW_CORNER_PREFERENCE));
+		hr = DwmGetWindowAttribute(hWnd, DWMWA_WINDOW_CORNER_PREFERENCE, &cornerPreference, sizeof(DWM_WINDOW_CORNER_PREFERENCE));
 		if (SUCCEEDED(hr)) {
-			config_.corner = GetConfigCornerFromDwmType(preference);
+			cornerPreference_ = cornerPreference;
 		}
+		return false;
 	}
+	return true;
 }
 
 inline winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme ConvertToSystemBackdropTheme(ElementTheme const& theme) {
@@ -615,7 +628,9 @@ void NotificationWindow::theme(app::storage::theme_t value) noexcept {
 void NotificationWindow::corner(app::storage::corner_t value) noexcept {
 	if (config_.corner != value) {
 		config_.corner = value;
-		UpdateCorners();
+		if (UpdateCorners()) {
+			UpdatePosition();
+		}
 	}
 }
 
