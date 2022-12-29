@@ -12,6 +12,12 @@
 #define VECTORCALL
 #endif
 
+#ifdef _DEBUG
+#define TEST_EXPORT __declspec(dllexport)
+#else
+#define TEST_EXPORT
+#endif
+
 // Unused definition
 #define NOGDICAPMASKS
 #define NODESKTOP
