@@ -17,7 +17,6 @@ VirtualDesktopNotificationService::~VirtualDesktopNotificationService() {
 	app::IVirtualDesktopNotificationServiceImpl* impl = std::exchange(impl_, nullptr);
 	impl->close();
 	deleter_(impl);
-	delete this;
 }
 
 void VirtualDesktopNotificationService::initialize(uint32_t build) {
