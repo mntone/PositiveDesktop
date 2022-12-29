@@ -9,9 +9,6 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="Common\Reps.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="Services\app_t.cpp">
       <Filter>Services</Filter>
     </ClCompile>
@@ -40,12 +37,6 @@
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="Common\Math.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Reps.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\RepsBase.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\VirtualDesktop.h">

@@ -97,7 +97,7 @@ namespace reps {
 	}
 
 	struct subject_t: observable_t, __impl::observer_impl {
-		void TEST_EXPORT send(bag_t&& value) noexcept override;
+		void send(bag_t&& value) noexcept override;
 
 		void FASTCALL addObserver(observer_t const& observer) noexcept {
 			__impl::lock_guard<__impl::lock_t> lock { locker_ };
@@ -115,7 +115,7 @@ namespace reps {
 
 	struct single_subject_t: observable_t, __impl::single_observer_impl {
 	public:
-		void TEST_EXPORT send(bag_t&& value) noexcept override;
+		void send(bag_t&& value) noexcept override;
 
 		void FASTCALL addObserver(observer_t const& observer) noexcept {
 			__impl::lock_guard<__impl::lock_t> lock { locker_ };
@@ -135,7 +135,7 @@ namespace reps {
 		buffered_subject_t() = delete;
 		buffered_subject_t(bag_t&& init) noexcept: cache_(init) {}
 
-		void TEST_EXPORT send(bag_t&& value) noexcept override;
+		void send(bag_t&& value) noexcept override;
 
 		template<typename T>
 		void FASTCALL addObserver(observer_t const& observer) noexcept {
@@ -161,7 +161,7 @@ namespace reps {
 		single_buffered_subject_t() = delete;
 		single_buffered_subject_t(bag_t&& init) noexcept: cache_(init) { }
 
-		void TEST_EXPORT send(bag_t&& value) noexcept override;
+		void send(bag_t&& value) noexcept override;
 
 		template<typename T>
 		void FASTCALL addObserver(observer_t const& observer) noexcept {

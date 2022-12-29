@@ -32,12 +32,12 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <OutDir>$(SolutionDir)bin\$(Platform)-$(Configuration)\PositiveDesktop\</OutDir>
+    <OutDir>$(SolutionDir)bin\$(Platform)-$(Configuration)\$(MSBuildProjectName)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(Platform)-$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\PositiveDesktop\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\PositiveDesktopCore\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -47,7 +47,6 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(OutDir)..\PositiveDesktop\PositiveDesktop.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <MinimumRequiredVersion>10.0</MinimumRequiredVersion>
     </Link>
@@ -81,8 +80,8 @@
     <ClCompile Include="RepsTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\PositiveDesktop\PositiveDesktop.vcxproj">
-      <Project>{d35fff9f-a20b-4a73-811f-b2b8f79d4cc1}</Project>
+    <ProjectReference Include="..\src\PositiveDesktopCore\PositiveDesktopCore.vcxproj">
+      <Project>{e40563c6-182a-4d7c-ad4b-6e5e1e2c1761}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

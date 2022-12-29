@@ -15,7 +15,7 @@
       have a name that matches the .winmd
     -->
     <TargetName>$(RootNamespace)</TargetName>
-    <DefaultLanguage>ja-JP</DefaultLanguage>
+    <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
     <AppContainerApplication>false</AppContainerApplication>
     <AppxPackage>false</AppxPackage>
@@ -80,6 +80,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\PositiveDesktopCore\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level4</WarningLevel>
       <AdditionalOptions>%(AdditionalOptions) /bigobj /Zm200</AdditionalOptions>
       <FloatingPointModel>Fast</FloatingPointModel>
@@ -129,8 +130,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Common\Math.h" />
-    <ClInclude Include="Common\Reps.h" />
-    <ClInclude Include="Common\RepsBase.h" />
     <ClInclude Include="Common\VirtualDesktop.h" />
     <ClInclude Include="NotificationWindow.xaml.h">
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
@@ -163,7 +162,6 @@
     <ClCompile Include="App.xaml.cpp">
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="Common\Reps.cpp" />
     <ClCompile Include="NotificationWindow.xaml.cpp">
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </ClCompile>
@@ -197,6 +195,11 @@
     <PRIResource Include="Strings\CodeResources.lang-ja-JP.resw" />
     <PRIResource Include="Strings\Resources.lang-en-US.resw" />
     <PRIResource Include="Strings\Resources.lang-ja-JP.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PositiveDesktopCore\PositiveDesktopCore.vcxproj">
+      <Project>{e40563c6-182a-4d7c-ad4b-6e5e1e2c1761}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

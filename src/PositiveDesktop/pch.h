@@ -1,22 +1,7 @@
 #pragma once
+#include "shared.h"
 
-#ifdef _M_IX86
-#define FASTCALL __fastcall
-#else
-#define FASTCALL
-#endif
-
-#if defined(_M_IX86) || defined(_M_X64)
-#define VECTORCALL __vectorcall
-#else
-#define VECTORCALL
-#endif
-
-#ifdef _DEBUG
-#define TEST_EXPORT __declspec(dllexport)
-#else
-#define TEST_EXPORT
-#endif
+#define WIN32_LEAN_AND_MEAN
 
 // Unused definition
 #define NOGDICAPMASKS
@@ -36,6 +21,7 @@
 #define NOCOLOR
 #define NOMEMMGR
 #define NOMETAFILE
+#define NOTEXTMETRIC
 #define NOMINMAX
 #define NOOPENFILE
 #define NOSCROLL

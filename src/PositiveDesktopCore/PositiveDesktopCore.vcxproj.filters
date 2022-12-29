@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Common\Reps.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Services\KeyListeners\KeyListenerService.cpp">
+      <Filter>Services\KeyListeners</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="shared.h" />
+    <ClInclude Include="Common\Reps.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\RepsBase.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\KeyListeners\kbevent_t.h">
+      <Filter>Services\KeyListeners</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\KeyListeners\KeyListenerService.h">
+      <Filter>Services\KeyListeners</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{3b1ac9fe-5a23-433a-8741-25003c642b17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services">
+      <UniqueIdentifier>{b06c1b3c-3a1f-4a67-83f8-c1f405ed62b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services\KeyListeners">
+      <UniqueIdentifier>{14bc6c18-65b0-4707-b5ee-8f9d8922a8bd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>

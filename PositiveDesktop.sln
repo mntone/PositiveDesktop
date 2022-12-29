@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "PositiveDesktop (Package)", "src\PositiveDesktopPackage\PositiveDesktopPackage.wapproj", "{52BD8EFB-E354-4B3F-BC44-4E88EDD5A7D1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PositiveDesktopCore", "src\PositiveDesktopCore\PositiveDesktopCore.vcxproj", "{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PositiveDesktop", "src\PositiveDesktop\PositiveDesktop.vcxproj", "{D35FFF9F-A20B-4A73-811F-B2B8F79D4CC1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PositiveDesktopTest", "test\PositiveDesktopTest.vcxproj", "{AB2C71E2-C8B3-42A9-9F14-0B9A98D37F9A}"
@@ -37,6 +39,18 @@ Global
 		{52BD8EFB-E354-4B3F-BC44-4E88EDD5A7D1}.Release|x86.ActiveCfg = Release|x86
 		{52BD8EFB-E354-4B3F-BC44-4E88EDD5A7D1}.Release|x86.Build.0 = Release|x86
 		{52BD8EFB-E354-4B3F-BC44-4E88EDD5A7D1}.Release|x86.Deploy.0 = Release|x86
+		{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}.Debug|ARM64.Build.0 = Debug|ARM64
+		{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}.Debug|x64.ActiveCfg = Debug|x64
+		{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}.Debug|x64.Build.0 = Debug|x64
+		{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}.Debug|x86.ActiveCfg = Debug|Win32
+		{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}.Debug|x86.Build.0 = Debug|Win32
+		{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}.Release|ARM64.ActiveCfg = Release|x64
+		{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}.Release|ARM64.Build.0 = Release|x64
+		{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}.Release|x64.ActiveCfg = Release|x64
+		{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}.Release|x64.Build.0 = Release|x64
+		{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}.Release|x86.ActiveCfg = Release|Win32
+		{E40563C6-182A-4D7C-AD4B-6E5E1E2C1761}.Release|x86.Build.0 = Release|Win32
 		{D35FFF9F-A20B-4A73-811F-B2B8F79D4CC1}.Debug|ARM64.ActiveCfg = Debug|ARM64
 		{D35FFF9F-A20B-4A73-811F-B2B8F79D4CC1}.Debug|ARM64.Build.0 = Debug|ARM64
 		{D35FFF9F-A20B-4A73-811F-B2B8F79D4CC1}.Debug|x64.ActiveCfg = Debug|x64
