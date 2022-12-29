@@ -151,6 +151,10 @@ NotificationWindow::~NotificationWindow() {
 
 void NotificationWindow::ReleasePrivate() {
 	HWND hWnd { GetHwnd(m_inner) };
+	WNDPROC nextWndProc = std::exchange(nextWndProc_, nullptr);
+	if (!SetWindowLongPtrW(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(nextWndProc))) {
+		// TODO: Error message. Failed to unregister the own subclass.
+	}
 	RemovePropW(hWnd, resources::PositiveDesktop_NotificationWindow_ClassPointer.data());
 
 	actualThemeChangedRevoker_.revoke();
@@ -233,10 +237,7 @@ LRESULT NotificationWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPAR
 		dpiY_ = HIWORD(wParam);
 	}
 
-	if (nextWndProc_) {
-		return CallWindowProcW(nextWndProc_, hWnd, message, wParam, lParam);
-	}
-	return DefWindowProcW(hWnd, message, wParam, lParam);
+	return CallWindowProcW(nextWndProc_, hWnd, message, wParam, lParam);
 }
 
 LRESULT NotificationWindow::WndProcStatic(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept {
