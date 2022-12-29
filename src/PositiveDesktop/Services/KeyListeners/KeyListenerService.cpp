@@ -6,18 +6,18 @@
 
 #include "KeyListenerService.h"
 
-HHOOK app::keylisteners::KeysListenerService::hHook_;
+HHOOK app::keylistener::KeysListenerService::hHook_;
 #ifndef KEYLISTENERS_SINGLETON
-std::set<KeysListenerService*> app::keylisteners::KeysListenerService::hooks_;
+std::set<KeysListenerService*> app::keylistener::KeysListenerService::hooks_;
 #else
-app::keylisteners::KeysListenerService* app::keylisteners::KeysListenerService::hook_;
+app::keylistener::KeysListenerService* app::keylistener::KeysListenerService::hook_;
 #endif
 
 #include "kbevent_t.h"
 
 #define IsKeyPressed(__nVirtualKey) ((GetKeyState(__nVirtualKey) & 0x8000) != 0)
 
-using namespace app::keylisteners;
+using namespace app::keylistener;
 
 KeysListenerService::~KeysListenerService() {
 	KeysListenerService::removeHook(this);

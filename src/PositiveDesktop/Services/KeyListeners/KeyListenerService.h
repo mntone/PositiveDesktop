@@ -3,7 +3,7 @@
 
 #define KEYLISTENERS_SINGLETON
 
-namespace app::keylisteners {
+namespace app::keylistener {
 
 	class KeysListenerService final {
 	public:

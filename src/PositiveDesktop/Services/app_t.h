@@ -22,7 +22,7 @@ namespace app {
 		app::storage::config_t config_;
 		storage::IConfigManager* configManager_;
 		ui::INotificationPresenter* presenter_;
-		keylisteners::KeysListenerService* keysLitener_;
+		keylistener::KeysListenerService* keysLitener_;
 		listener::VirtualDesktopNotificationService* notificationListener_;
 	};
 

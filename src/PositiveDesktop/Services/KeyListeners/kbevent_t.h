@@ -1,6 +1,6 @@
 #pragma once
 
-namespace app::keylisteners {
+namespace app::keylistener {
 
 	enum kbevent_t: char {
 		kbe_exit,

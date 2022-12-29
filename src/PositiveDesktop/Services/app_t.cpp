@@ -21,7 +21,7 @@ app_t::app_t()
 app_t::~app_t() noexcept {
 	release(notificationListener_);
 
-	keylisteners::KeysListenerService* keysLitener = std::exchange(keysLitener_, nullptr);
+	keylistener::KeysListenerService* keysLitener = std::exchange(keysLitener_, nullptr);
 	if (keysLitener) {
 		keysLitener->clearObserver();
 		delete keysLitener;
@@ -58,7 +58,7 @@ void app_t::initialize() {
 	presenter_ = CreateWinUI3NotificationPresenter(config_, hint);
 
 	// Init key listener
-	keysLitener_ = new keylisteners::KeysListenerService();
+	keysLitener_ = new keylistener::KeysListenerService();
 	keysLitener_->addObserver(*this);
 	keysLitener_->initialize();
 
@@ -78,7 +78,7 @@ void FASTCALL app_t::on(reps::bag_t const& value) noexcept {
 	switch (value.ev) {
 	case reps::event_t::next:
 	{
-		using namespace app::keylisteners;
+		using namespace app::keylistener;
 
 		kbevent_t ev = reps::data<kbevent_t>(value);
 		switch (ev) {
