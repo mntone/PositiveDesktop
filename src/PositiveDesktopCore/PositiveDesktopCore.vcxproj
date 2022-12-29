@@ -103,12 +103,15 @@
     <ClInclude Include="shared.h" />
     <ClInclude Include="Common\Reps.h" />
     <ClInclude Include="Common\RepsBase.h" />
+    <ClInclude Include="Services\KeyListeners\kbevent_t.h" />
+    <ClInclude Include="Services\KeyListeners\KeyListenerService.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Common\Reps.cpp" />
+    <ClCompile Include="Services\KeyListeners\KeyListenerService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

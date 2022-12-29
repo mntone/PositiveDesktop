@@ -67,7 +67,7 @@ void app_t::initialize() {
 	notificationListener_->initialize(osver.dwBuildNumber);
 }
 
-#include "KeyListeners/kbevent_t.h"
+#include "Services/KeyListeners/kbevent_t.h"
 
 void FASTCALL app_t::on(reps::bag_t const& value) noexcept {
 	if (value.hr < 0) {
