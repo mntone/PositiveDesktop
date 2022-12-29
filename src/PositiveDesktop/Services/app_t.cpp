@@ -14,11 +14,19 @@ void release(T*& ptr) {
 app_t::app_t()
 	: configManager_(nullptr)
 	, presenter_(nullptr)
+	, keysLitener_(nullptr)
 	, notificationListener_(nullptr) {
 }
 
 app_t::~app_t() noexcept {
 	release(notificationListener_);
+
+	keylisteners::KeysListenerService* keysLitener = std::exchange(keysLitener_, nullptr);
+	if (keysLitener) {
+		keysLitener->clearObserver();
+		delete keysLitener;
+	}
+
 	release(presenter_);
 	release(configManager_);
 }
@@ -49,7 +57,38 @@ void app_t::initialize() {
 		: app::ui::NotificationPresenterHint::Windows10;
 	presenter_ = CreateWinUI3NotificationPresenter(config_, hint);
 
+	// Init key listener
+	keysLitener_ = new keylisteners::KeysListenerService();
+	keysLitener_->addObserver(*this);
+	keysLitener_->initialize();
+
 	// Init listener
 	notificationListener_ = new listener::VirtualDesktopNotificationService(presenter_);
 	notificationListener_->initialize(osver.dwBuildNumber);
+}
+
+#include "KeyListeners/kbevent_t.h"
+
+void FASTCALL app_t::on(reps::bag_t const& value) noexcept {
+	if (value.hr < 0) {
+		// error
+		return;
+	}
+
+	switch (value.ev) {
+	case reps::event_t::next:
+	{
+		using namespace app::keylisteners;
+
+		kbevent_t ev = reps::data<kbevent_t>(value);
+		switch (ev) {
+		case kbe_exit:
+			presenter_->closeAll();
+			break;
+		}
+		break;
+	}
+	case reps::event_t::completed:
+		break;
+	}
 }

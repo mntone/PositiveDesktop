@@ -15,6 +15,9 @@
     <ClCompile Include="Services\app_t.cpp">
       <Filter>Services</Filter>
     </ClCompile>
+    <ClCompile Include="Services\KeyListeners\KeyListenerService.cpp">
+      <Filter>Services\KeyListeners</Filter>
+    </ClCompile>
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
       <Filter>Services\Storages</Filter>
     </ClCompile>
@@ -50,6 +53,12 @@
     </ClInclude>
     <ClInclude Include="Services\app_t.h">
       <Filter>Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\KeyListeners\kbevent_t.h">
+      <Filter>Services\KeyListeners</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\KeyListeners\KeyListenerService.h">
+      <Filter>Services\KeyListeners</Filter>
     </ClInclude>
     <ClInclude Include="Services\Storages\config_t.h">
       <Filter>Services\Storages</Filter>
@@ -100,6 +109,9 @@
     </Filter>
     <Filter Include="Services">
       <UniqueIdentifier>{2ea3d483-7381-4b80-ad87-b04df69cbf0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services\KeyListeners">
+      <UniqueIdentifier>{14bc6c18-65b0-4707-b5ee-8f9d8922a8bd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Services\Storages">
       <UniqueIdentifier>{d9e3ff94-0cc6-4f7b-af02-aec668f7466f}</UniqueIdentifier>

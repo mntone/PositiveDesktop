@@ -14,7 +14,6 @@
 
 // Unused definition
 #define NOGDICAPMASKS
-#define NOVIRTUALKEYCODES
 #define NODESKTOP
 #define NOWINDOWSTATION
 #define NOMDI

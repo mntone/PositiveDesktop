@@ -11,7 +11,8 @@ namespace app::ui {
 	class NotificationPresenterWinUI3: public INotificationPresenter {
 	public:
 		NotificationPresenterWinUI3(app::storage::config_t const& config, NotificationPresenterHint hint) noexcept
-			: config_(config)
+			: finalize_(false)
+			, config_(config)
 			, hint_(hint)
 			, resourceManager_()
 			, resources_(resourceManager_.MainResourceMap().GetSubtree(L"CodeResources"))
@@ -24,6 +25,8 @@ namespace app::ui {
 				showPrivate(std::move(data));
 			});
 		}
+
+		void closeAll() noexcept override;
 
 	private:
 		void showPrivate(NotificationPresenterData data) noexcept;
@@ -46,6 +49,7 @@ namespace app::ui {
 		}
 
 	private:
+		bool finalize_;
 		app::storage::config_t const& config_;
 		NotificationPresenterHint hint_;
 		winrt::Microsoft::Windows::ApplicationModel::Resources::ResourceManager resourceManager_;
@@ -70,7 +74,18 @@ using namespace app::ui;
 
 using namespace winrt::PositiveDesktop::ViewModels;
 
+void NotificationPresenterWinUI3::closeAll() noexcept {
+	finalize_ = true;
+
+	winrt::PositiveDesktop::NotificationWindow window = std::exchange(window_, nullptr);
+	if (!window) return;
+
+	window.Close();
+}
+
 void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) noexcept {
+	if (finalize_) return; // Exit state
+
 	// Check previous DispatcherQueue (require it for Mica/DesktopAcrylicController)
 	if (nullptr == dispatcherQueue_) {
 		winrt::Windows::System::DispatcherQueue dispatcherQueue { winrt::Windows::System::DispatcherQueue::GetForCurrentThread() };

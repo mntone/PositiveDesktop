@@ -139,6 +139,8 @@
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Services\app_t.h" />
+    <ClInclude Include="Services\KeyListeners\kbevent_t.h" />
+    <ClInclude Include="Services\KeyListeners\KeyListenerService.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\vdevent_t.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.h" />
     <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceImpl.h" />
@@ -172,6 +174,7 @@
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Services\app_t.cpp" />
+    <ClCompile Include="Services\KeyListeners\KeyListenerService.cpp" />
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>

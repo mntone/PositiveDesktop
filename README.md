@@ -11,6 +11,7 @@ https://user-images.githubusercontent.com/901816/209556339-4c579869-0df4-44a7-97
   - [x] View desktop index
 - [x] Set notification position
 - [x] Apply window corner (square, round, small round) to notification window (Windows 11)
+- [x] Listen for key input from global hook (Win+Ctrl+X to exit application in experimental version)
 
 ## Requirements
 
