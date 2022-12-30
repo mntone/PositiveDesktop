@@ -27,7 +27,7 @@ namespace app::win11 {
 		IFACEMETHOD(Unknown1)(int nUnknown);
 		IFACEMETHOD(VirtualDesktopMoved)(IVirtualDesktop* pDesktop, int nFromIndex, int nToIndex);
 		IFACEMETHOD(VirtualDesktopRenamed)(IVirtualDesktop* pDesktop, HSTRING name);
-		IFACEMETHOD(ViewVirtualDesktopChanged)(void* pView);
+		IFACEMETHOD(ViewVirtualDesktopChanged)(IUnknown* pView);
 		IFACEMETHOD(CurrentVirtualDesktopChanged)(IVirtualDesktop* pDesktopOld, IVirtualDesktop* pDesktopNew);
 		IFACEMETHOD(VirtualDesktopWallpaperChanged)(IVirtualDesktop* pDesktop, HSTRING path);
 

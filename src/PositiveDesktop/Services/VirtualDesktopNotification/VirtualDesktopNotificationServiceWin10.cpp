@@ -133,7 +133,7 @@ HRESULT VirtualDesktopNotificationServiceWin10::VirtualDesktopDestroyFailed(IVir
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin10::VirtualDesktopDestroyed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) {
+HRESULT VirtualDesktopNotificationServiceWin10::VirtualDesktopDestroyed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* /*pDesktopFallback*/) {
 	guid desktopId { GetDesktopId(pDesktopDestroyed) };
 	auto itr = bag_.find(desktopId);
 	if (itr == bag_.end()) {
@@ -159,7 +159,7 @@ HRESULT VirtualDesktopNotificationServiceWin10::VirtualDesktopDestroyed(IVirtual
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin10::ViewVirtualDesktopChanged(void* /*pView*/) {
+HRESULT VirtualDesktopNotificationServiceWin10::ViewVirtualDesktopChanged(IUnknown* /*pView*/) {
 	return S_OK;
 }
 

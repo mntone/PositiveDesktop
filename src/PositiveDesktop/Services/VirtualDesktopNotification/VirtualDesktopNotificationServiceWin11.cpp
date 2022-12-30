@@ -307,7 +307,7 @@ HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopRenamed(IVirtualDe
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::ViewVirtualDesktopChanged(void* /*pView*/) {
+HRESULT VirtualDesktopNotificationServiceWin11::ViewVirtualDesktopChanged(IUnknown* /*pView*/) {
 	return S_OK;
 }
 

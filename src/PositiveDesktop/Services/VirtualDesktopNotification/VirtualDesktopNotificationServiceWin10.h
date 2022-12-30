@@ -18,7 +18,7 @@ namespace app::win10 {
 		IFACEMETHOD(VirtualDesktopDestroyBegin)(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback);
 		IFACEMETHOD(VirtualDesktopDestroyFailed)(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback);
 		IFACEMETHOD(VirtualDesktopDestroyed)(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback);
-		IFACEMETHOD(ViewVirtualDesktopChanged)(void* pView);
+		IFACEMETHOD(ViewVirtualDesktopChanged)(IUnknown* pView);
 		IFACEMETHOD(CurrentVirtualDesktopChanged)(IVirtualDesktop* pDesktopOld, IVirtualDesktop* pDesktopNew);
 
 		// - IVirtualDesktopNotification2
