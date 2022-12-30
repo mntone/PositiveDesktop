@@ -15,13 +15,13 @@ app_t::app_t()
 	: configManager_(nullptr)
 	, presenter_(nullptr)
 	, keysLitener_(nullptr)
-	, notificationListener_(nullptr) {
+	, desktop_(nullptr) {
 }
 
 app_t::~app_t() noexcept {
 	message_service_t::close();
 
-	release(notificationListener_);
+	release(desktop_);
 
 	keylistener::KeysListenerService* keysLitener = std::exchange(keysLitener_, nullptr);
 	if (keysLitener) {
@@ -64,9 +64,9 @@ void app_t::initialize() {
 	keysLitener_->addObserver(*this);
 	keysLitener_->initialize();
 
-	// Init listener
-	notificationListener_ = new listener::VirtualDesktopNotificationService(presenter_);
-	notificationListener_->initialize(osver.dwBuildNumber);
+	// Init desktop service
+	desktop_ = new desktop::DesktopService(presenter_);
+	desktop_->initialize(osver.dwBuildNumber);
 
 	// Start message service
 	message_service_t::initialize();
@@ -105,10 +105,10 @@ void app_t::process(keylistener::kbevent_t ev) noexcept {
 	case kbe_move_window:
 		switch (ev) {
 		case kbe_move_window_left:
-			notificationListener_->moveWindowLeft();
+			desktop_->moveWindowLeft();
 			break;
 		case kbe_move_window_right:
-			notificationListener_->moveWindowRight();
+			desktop_->moveWindowRight();
 			break;
 		}
 		break;

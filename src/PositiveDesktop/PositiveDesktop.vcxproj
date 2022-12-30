@@ -136,11 +136,11 @@
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Services\app_t.h" />
-    <ClInclude Include="Services\VirtualDesktopNotification\vdevent_t.h" />
-    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.h" />
-    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceImpl.h" />
-    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.h" />
-    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.h" />
+    <ClInclude Include="Services\Desktops\vdevent_t.h" />
+    <ClInclude Include="Services\Desktops\DesktopService.h" />
+    <ClInclude Include="Services\Desktops\DesktopServiceImpl.h" />
+    <ClInclude Include="Services\Desktops\DesktopServiceImplWin10.h" />
+    <ClInclude Include="Services\Desktops\DesktopServiceImplWin11.h" />
     <ClInclude Include="Services\Storages\config_t.h" />
     <ClInclude Include="Services\Storages\WinRTConfigManager.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />
@@ -168,12 +168,12 @@
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Services\app_t.cpp" />
+    <ClCompile Include="Services\Desktops\DesktopService.cpp" />
+    <ClCompile Include="Services\Desktops\DesktopServiceImplWin10.cpp" />
+    <ClCompile Include="Services\Desktops\DesktopServiceImplWin11.cpp" />
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.cpp" />
-    <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.cpp" />
-    <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.cpp" />
     <ClCompile Include="UI\NotificationPresenterWinUI3.cpp" />
     <ClCompile Include="ViewModels\NotificationWindowViewModel.cpp" />
   </ItemGroup>

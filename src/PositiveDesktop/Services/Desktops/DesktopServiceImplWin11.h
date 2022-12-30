@@ -1,5 +1,5 @@
 #pragma once
-#include "VirtualDesktopNotificationServiceImpl.h"
+#include "DesktopServiceImpl.h"
 
 #include "Common/VirtualDesktop.h"
 #include "Common/Reps.h"
@@ -15,10 +15,10 @@ namespace app::win11 {
 		virtual HRESULT GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) noexcept = 0;
 	};
 
-	struct VirtualDesktopNotificationServiceWin11
-		: public app::IVirtualDesktopNotificationServiceImpl
-		, winrt::implements<VirtualDesktopNotificationServiceWin11, IVirtualDesktopNotification> {
-		VirtualDesktopNotificationServiceWin11(DWORD build, reps::observer_t& observer);
+	struct DesktopServiceImplWin11
+		: public app::IDesktopServiceImpl
+		, winrt::implements<DesktopServiceImplWin11, IVirtualDesktopNotification> {
+		DesktopServiceImplWin11(DWORD build, reps::observer_t& observer);
 
 		void close() override;
 

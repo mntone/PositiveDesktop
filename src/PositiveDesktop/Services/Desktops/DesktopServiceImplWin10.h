@@ -1,15 +1,15 @@
 #pragma once
-#include "VirtualDesktopNotificationServiceImpl.h"
+#include "DesktopServiceImpl.h"
 
 #include "Common/VirtualDesktop.h"
 #include "Common/Reps.h"
 
 namespace app::win10 {
 
-	struct VirtualDesktopNotificationServiceWin10
-		: public app::IVirtualDesktopNotificationServiceImpl
-		, winrt::implements<VirtualDesktopNotificationServiceWin10, IVirtualDesktopNotification, IVirtualDesktopNotification2> {
-		VirtualDesktopNotificationServiceWin10(reps::observer_t& observer);
+	struct DesktopServiceImplWin10
+		: public app::IDesktopServiceImpl
+		, winrt::implements<DesktopServiceImplWin10, IVirtualDesktopNotification, IVirtualDesktopNotification2> {
+		DesktopServiceImplWin10(reps::observer_t& observer);
 
 		void close() override;
 

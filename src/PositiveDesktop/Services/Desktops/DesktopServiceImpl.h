@@ -8,8 +8,8 @@ namespace app {
 		winrt::hstring name;
 	};
 
-	struct IVirtualDesktopNotificationServiceImpl {
-		virtual ~IVirtualDesktopNotificationServiceImpl() { }
+	struct IDesktopServiceImpl {
+		virtual ~IDesktopServiceImpl() { }
 
 		virtual void moveForegroundWindowToLeftOfCurrent() const = 0;
 		virtual void moveForegroundWindowToRightOfCurrent() const = 0;
@@ -22,15 +22,15 @@ namespace app {
 
 	namespace win10 {
 
-		IVirtualDesktopNotificationServiceImpl* CreateVirtualDesktopNotificationServiceImpl(reps::observer_t& observer);
-		void ReleaseVirtualDesktopNotificationServiceImpl(IVirtualDesktopNotificationServiceImpl* impl);
+		IDesktopServiceImpl* CreateDesktopServiceImpl(reps::observer_t& observer);
+		void ReleaseDesktopServiceImpl(IDesktopServiceImpl* impl);
 
 	}
 
 	namespace win11 {
 
-		IVirtualDesktopNotificationServiceImpl* CreateVirtualDesktopNotificationServiceImpl(DWORD build, reps::observer_t& observer);
-		void ReleaseVirtualDesktopNotificationServiceImpl(IVirtualDesktopNotificationServiceImpl* impl);
+		IDesktopServiceImpl* CreateDesktopServiceImpl(DWORD build, reps::observer_t& observer);
+		void ReleaseDesktopServiceImpl(IDesktopServiceImpl* impl);
 
 	}
 

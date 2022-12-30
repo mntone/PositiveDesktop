@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "VirtualDesktopNotificationServiceWin10.h"
+#include "DesktopServiceImplWin10.h"
 
 #include <atomic>
 #include <vector>
@@ -38,16 +38,16 @@ inline app::VirtualDesktopBag CreateBag(IVirtualDesktop2* pDesktop, UINT nIndex)
 
 #pragma region Service implementation
 
-app::IVirtualDesktopNotificationServiceImpl* app::win10::CreateVirtualDesktopNotificationServiceImpl(reps::observer_t& observer) {
-	impl::com_ref<VirtualDesktopNotificationServiceWin10> impl = make_self<VirtualDesktopNotificationServiceWin10>(observer);
+app::IDesktopServiceImpl* app::win10::CreateDesktopServiceImpl(reps::observer_t& observer) {
+	impl::com_ref<DesktopServiceImplWin10> impl = make_self<DesktopServiceImplWin10>(observer);
 	return impl.detach();
 }
 
-void app::win10::ReleaseVirtualDesktopNotificationServiceImpl(IVirtualDesktopNotificationServiceImpl* impl) {
+void app::win10::ReleaseDesktopServiceImpl(IDesktopServiceImpl* impl) {
 	reinterpret_cast<IUnknown*>(impl)->Release();
 }
 
-VirtualDesktopNotificationServiceWin10::VirtualDesktopNotificationServiceWin10(reps::observer_t& observer)
+DesktopServiceImplWin10::DesktopServiceImplWin10(reps::observer_t& observer)
 	: serviceProvider_(nullptr)
 	, virtualDesktopNotificationService_(nullptr)
 	, cookie_(0) {
@@ -82,7 +82,7 @@ VirtualDesktopNotificationServiceWin10::VirtualDesktopNotificationServiceWin10(r
 	loadDesktops();
 }
 
-void VirtualDesktopNotificationServiceWin10::loadDesktops() {
+void DesktopServiceImplWin10::loadDesktops() {
 	com_ptr<IObjectArray> desktops;
 	check_hresult(virtualDesktopManager_->GetDesktops(desktops.put()));
 
@@ -98,7 +98,7 @@ void VirtualDesktopNotificationServiceWin10::loadDesktops() {
 	}
 }
 
-void VirtualDesktopNotificationServiceWin10::close() {
+void DesktopServiceImplWin10::close() {
 	WINRT_ASSERT(cookie_);
 
 	subject_.clearObserver();
@@ -110,7 +110,7 @@ void VirtualDesktopNotificationServiceWin10::close() {
 
 #pragma region Operation implementation
 
-void VirtualDesktopNotificationServiceWin10::moveForegroundWindowToLeftOfCurrent() const {
+void DesktopServiceImplWin10::moveForegroundWindowToLeftOfCurrent() const {
 	com_ptr<IVirtualDesktop> current;
 	check_hresult(virtualDesktopManager_->GetCurrentDesktop(current.put()));
 
@@ -122,7 +122,7 @@ void VirtualDesktopNotificationServiceWin10::moveForegroundWindowToLeftOfCurrent
 	check_hresult(virtualDesktopManager_->MoveViewToDesktop(view.get(), left.get()));
 }
 
-void VirtualDesktopNotificationServiceWin10::moveForegroundWindowToRightOfCurrent() const {
+void DesktopServiceImplWin10::moveForegroundWindowToRightOfCurrent() const {
 	com_ptr<IVirtualDesktop> current;
 	check_hresult(virtualDesktopManager_->GetCurrentDesktop(current.put()));
 
@@ -140,7 +140,7 @@ void VirtualDesktopNotificationServiceWin10::moveForegroundWindowToRightOfCurren
 
 #include "vdevent_t.h"
 
-HRESULT VirtualDesktopNotificationServiceWin10::VirtualDesktopCreated(IVirtualDesktop* pDesktop) {
+HRESULT DesktopServiceImplWin10::VirtualDesktopCreated(IVirtualDesktop* pDesktop) {
 	guid desktopId { GetDesktopId(pDesktop) };
 	VirtualDesktopBag bag {
 		static_cast<int>(bag_.size()),
@@ -158,15 +158,15 @@ HRESULT VirtualDesktopNotificationServiceWin10::VirtualDesktopCreated(IVirtualDe
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin10::VirtualDesktopDestroyBegin(IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
+HRESULT DesktopServiceImplWin10::VirtualDesktopDestroyBegin(IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin10::VirtualDesktopDestroyFailed(IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
+HRESULT DesktopServiceImplWin10::VirtualDesktopDestroyFailed(IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin10::VirtualDesktopDestroyed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* /*pDesktopFallback*/) {
+HRESULT DesktopServiceImplWin10::VirtualDesktopDestroyed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* /*pDesktopFallback*/) {
 	guid desktopId { GetDesktopId(pDesktopDestroyed) };
 	auto itr = bag_.find(desktopId);
 	if (itr == bag_.end()) {
@@ -192,11 +192,11 @@ HRESULT VirtualDesktopNotificationServiceWin10::VirtualDesktopDestroyed(IVirtual
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin10::ViewVirtualDesktopChanged(IUnknown* /*pView*/) {
+HRESULT DesktopServiceImplWin10::ViewVirtualDesktopChanged(IUnknown* /*pView*/) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin10::CurrentVirtualDesktopChanged(IVirtualDesktop* /*pDesktopOld*/, IVirtualDesktop* pDesktopNew) {
+HRESULT DesktopServiceImplWin10::CurrentVirtualDesktopChanged(IVirtualDesktop* /*pDesktopOld*/, IVirtualDesktop* pDesktopNew) {
 	guid desktopId { GetDesktopId(pDesktopNew) };
 	auto itr = bag_.find(desktopId);
 	if (itr == bag_.cend()) {
@@ -215,7 +215,7 @@ HRESULT VirtualDesktopNotificationServiceWin10::CurrentVirtualDesktopChanged(IVi
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin10::VirtualDesktopRenamed(IVirtualDesktop2* pDesktop, HSTRING abiName) {
+HRESULT DesktopServiceImplWin10::VirtualDesktopRenamed(IVirtualDesktop2* pDesktop, HSTRING abiName) {
 	guid desktopId { GetDesktopId(pDesktop) };
 	auto itr = bag_.find(desktopId);
 	if (itr == bag_.end()) {

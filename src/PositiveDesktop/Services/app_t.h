@@ -6,7 +6,7 @@
 #include "Services/Storages/config_t.h"
 #include "Services/KeyListeners/kbevent_t.h"
 #include "Services/KeyListeners/KeyListenerService.h"
-#include "Services/VirtualDesktopNotification/VirtualDesktopNotificationService.h"
+#include "Services/Desktops/DesktopService.h"
 
 namespace app {
 
@@ -26,7 +26,7 @@ namespace app {
 		storage::IConfigManager* configManager_;
 		ui::INotificationPresenter* presenter_;
 		keylistener::KeysListenerService* keysLitener_;
-		listener::VirtualDesktopNotificationService* notificationListener_;
+		desktop::DesktopService* desktop_;
 	};
 
 }

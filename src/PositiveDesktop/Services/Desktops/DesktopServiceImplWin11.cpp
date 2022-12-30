@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "VirtualDesktopNotificationServiceWin11.h"
+#include "DesktopServiceImplWin11.h"
 
 #include <atomic>
 #include <vector>
@@ -154,16 +154,16 @@ inline app::VirtualDesktopBag CreateBag(IVirtualDesktop* pDesktop, UINT nIndex) 
 
 #pragma region Service implementation
 
-app::IVirtualDesktopNotificationServiceImpl* app::win11::CreateVirtualDesktopNotificationServiceImpl(DWORD build, reps::observer_t& observer) {
-	winrt::impl::com_ref<VirtualDesktopNotificationServiceWin11> impl = winrt::make_self<VirtualDesktopNotificationServiceWin11>(build, observer);
+app::IDesktopServiceImpl* app::win11::CreateDesktopServiceImpl(DWORD build, reps::observer_t& observer) {
+	winrt::impl::com_ref<DesktopServiceImplWin11> impl = winrt::make_self<DesktopServiceImplWin11>(build, observer);
 	return impl.detach();
 }
 
-void app::win11::ReleaseVirtualDesktopNotificationServiceImpl(IVirtualDesktopNotificationServiceImpl* impl) {
+void app::win11::ReleaseDesktopServiceImpl(IDesktopServiceImpl* impl) {
 	reinterpret_cast<IUnknown*>(impl)->Release();
 }
 
-VirtualDesktopNotificationServiceWin11::VirtualDesktopNotificationServiceWin11(DWORD build, reps::observer_t& observer)
+DesktopServiceImplWin11::DesktopServiceImplWin11(DWORD build, reps::observer_t& observer)
 	: serviceProvider_(nullptr)
 	, virtualDesktopNotificationService_(nullptr)
 	, cookie_(0) {
@@ -205,7 +205,7 @@ VirtualDesktopNotificationServiceWin11::VirtualDesktopNotificationServiceWin11(D
 	loadDesktops();
 }
 
-void VirtualDesktopNotificationServiceWin11::loadDesktops() {
+void DesktopServiceImplWin11::loadDesktops() {
 	com_ptr<IObjectArray> desktops;
 	check_hresult(virtualDesktopManagerDelegate_->GetDesktops(desktops.put()));
 
@@ -221,7 +221,7 @@ void VirtualDesktopNotificationServiceWin11::loadDesktops() {
 	}
 }
 
-void VirtualDesktopNotificationServiceWin11::close() {
+void DesktopServiceImplWin11::close() {
 	WINRT_ASSERT(cookie_);
 
 	subject_.clearObserver();
@@ -233,7 +233,7 @@ void VirtualDesktopNotificationServiceWin11::close() {
 
 #pragma region Operation implementation
 
-void VirtualDesktopNotificationServiceWin11::moveForegroundWindowToLeftOfCurrent() const {
+void DesktopServiceImplWin11::moveForegroundWindowToLeftOfCurrent() const {
 	com_ptr<IVirtualDesktop> current;
 	check_hresult(virtualDesktopManagerDelegate_->GetCurrentDesktop(current.put()));
 
@@ -245,7 +245,7 @@ void VirtualDesktopNotificationServiceWin11::moveForegroundWindowToLeftOfCurrent
 	check_hresult(virtualDesktopManagerDelegate_->MoveViewToDesktop(view.get(), left.get()));
 }
 
-void VirtualDesktopNotificationServiceWin11::moveForegroundWindowToRightOfCurrent() const {
+void DesktopServiceImplWin11::moveForegroundWindowToRightOfCurrent() const {
 	com_ptr<IVirtualDesktop> current;
 	check_hresult(virtualDesktopManagerDelegate_->GetCurrentDesktop(current.put()));
 
@@ -263,7 +263,7 @@ void VirtualDesktopNotificationServiceWin11::moveForegroundWindowToRightOfCurren
 
 #include "vdevent_t.h"
 
-HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopCreated(IVirtualDesktop* pDesktop) {
+HRESULT DesktopServiceImplWin11::VirtualDesktopCreated(IVirtualDesktop* pDesktop) {
 	guid desktopId { GetDesktopId(pDesktop) };
 	VirtualDesktopBag bag {
 		static_cast<int>(bag_.size()),
@@ -281,15 +281,15 @@ HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopCreated(IVirtualDe
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyBegin(IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
+HRESULT DesktopServiceImplWin11::VirtualDesktopDestroyBegin(IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyFailed(IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
+HRESULT DesktopServiceImplWin11::VirtualDesktopDestroyFailed(IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* /*pDesktopFallback*/) {
+HRESULT DesktopServiceImplWin11::VirtualDesktopDestroyed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* /*pDesktopFallback*/) {
 	guid desktopId { GetDesktopId(pDesktopDestroyed) };
 	auto itr = bag_.find(desktopId);
 	if (itr == bag_.end()) {
@@ -315,11 +315,11 @@ HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopDestroyed(IVirtual
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::Unknown1(int /*nUnknown*/) {
+HRESULT DesktopServiceImplWin11::Unknown1(int /*nUnknown*/) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopMoved(IVirtualDesktop* pDesktop, int nFromIndex, int nToIndex) {
+HRESULT DesktopServiceImplWin11::VirtualDesktopMoved(IVirtualDesktop* pDesktop, int nFromIndex, int nToIndex) {
 	guid desktopId { GetDesktopId(pDesktop) };
 	auto itr = bag_.find(desktopId);
 	if (itr == bag_.end()) {
@@ -364,7 +364,7 @@ HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopMoved(IVirtualDesk
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopRenamed(IVirtualDesktop* pDesktop, HSTRING abiName) {
+HRESULT DesktopServiceImplWin11::VirtualDesktopRenamed(IVirtualDesktop* pDesktop, HSTRING abiName) {
 	guid desktopId { GetDesktopId(pDesktop) };
 	auto itr = bag_.find(desktopId);
 	if (itr == bag_.end()) {
@@ -388,11 +388,11 @@ HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopRenamed(IVirtualDe
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::ViewVirtualDesktopChanged(IUnknown* /*pView*/) {
+HRESULT DesktopServiceImplWin11::ViewVirtualDesktopChanged(IUnknown* /*pView*/) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::CurrentVirtualDesktopChanged(IVirtualDesktop* /*pDesktopOld*/, IVirtualDesktop* pDesktopNew) {
+HRESULT DesktopServiceImplWin11::CurrentVirtualDesktopChanged(IVirtualDesktop* /*pDesktopOld*/, IVirtualDesktop* pDesktopNew) {
 	guid desktopId { GetDesktopId(pDesktopNew) };
 	auto itr = bag_.find(desktopId);
 	if (itr == bag_.cend()) {
@@ -411,7 +411,7 @@ HRESULT VirtualDesktopNotificationServiceWin11::CurrentVirtualDesktopChanged(IVi
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationServiceWin11::VirtualDesktopWallpaperChanged(IVirtualDesktop* /*pDesktop*/, HSTRING /*hPath*/) {
+HRESULT DesktopServiceImplWin11::VirtualDesktopWallpaperChanged(IVirtualDesktop* /*pDesktop*/, HSTRING /*hPath*/) {
 	return S_OK;
 }
 

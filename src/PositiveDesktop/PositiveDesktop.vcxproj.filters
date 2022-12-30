@@ -15,14 +15,14 @@
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
       <Filter>Services\Storages</Filter>
     </ClCompile>
-    <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.cpp">
-      <Filter>Services\VirtualDesktopNotification</Filter>
+    <ClCompile Include="Services\Desktops\DesktopService.cpp">
+      <Filter>Services\Desktops</Filter>
     </ClCompile>
-    <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.cpp">
-      <Filter>Services\VirtualDesktopNotification</Filter>
+    <ClCompile Include="Services\Desktops\DesktopServiceImplWin10.cpp">
+      <Filter>Services\Desktops</Filter>
     </ClCompile>
-    <ClCompile Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.cpp">
-      <Filter>Services\VirtualDesktopNotification</Filter>
+    <ClCompile Include="Services\Desktops\DesktopServiceImplWin11.cpp">
+      <Filter>Services\Desktops</Filter>
     </ClCompile>
     <ClCompile Include="UI\NotificationPresenterWinUI3.cpp">
       <Filter>UI</Filter>
@@ -45,26 +45,26 @@
     <ClInclude Include="Services\app_t.h">
       <Filter>Services</Filter>
     </ClInclude>
+    <ClInclude Include="Services\Desktops\DesktopService.h">
+      <Filter>Services\Desktops</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Desktops\DesktopServiceImpl.h">
+      <Filter>Services\Desktops</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Desktops\DesktopServiceImplWin10.h">
+      <Filter>Services\Desktops</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Desktops\DesktopServiceImplWin11.h">
+      <Filter>Services\Desktops</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Desktops\vdevent_t.h">
+      <Filter>Services\Desktops</Filter>
+    </ClInclude>
     <ClInclude Include="Services\Storages\config_t.h">
       <Filter>Services\Storages</Filter>
     </ClInclude>
     <ClInclude Include="Services\Storages\WinRTConfigManager.h">
       <Filter>Services\Storages</Filter>
-    </ClInclude>
-    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationService.h">
-      <Filter>Services\VirtualDesktopNotification</Filter>
-    </ClInclude>
-    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceImpl.h">
-      <Filter>Services\VirtualDesktopNotification</Filter>
-    </ClInclude>
-    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin10.h">
-      <Filter>Services\VirtualDesktopNotification</Filter>
-    </ClInclude>
-    <ClInclude Include="Services\VirtualDesktopNotification\VirtualDesktopNotificationServiceWin11.h">
-      <Filter>Services\VirtualDesktopNotification</Filter>
-    </ClInclude>
-    <ClInclude Include="Services\VirtualDesktopNotification\vdevent_t.h">
-      <Filter>Services\VirtualDesktopNotification</Filter>
     </ClInclude>
     <ClInclude Include="UI\NotificationPresenter.h">
       <Filter>UI</Filter>
@@ -95,11 +95,11 @@
     <Filter Include="Services">
       <UniqueIdentifier>{2ea3d483-7381-4b80-ad87-b04df69cbf0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Services\Desktops">
+      <UniqueIdentifier>{39b010b6-0fad-430f-9591-3629c79da5fa}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Services\Storages">
       <UniqueIdentifier>{d9e3ff94-0cc6-4f7b-af02-aec668f7466f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Services\VirtualDesktopNotification">
-      <UniqueIdentifier>{39b010b6-0fad-430f-9591-3629c79da5fa}</UniqueIdentifier>
     </Filter>
     <Filter Include="Strings">
       <UniqueIdentifier>{2d9c9ee8-d3b8-4305-bd58-aeebb1613332}</UniqueIdentifier>
