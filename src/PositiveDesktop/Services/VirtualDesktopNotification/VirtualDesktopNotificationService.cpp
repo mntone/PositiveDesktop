@@ -32,6 +32,18 @@ void VirtualDesktopNotificationService::initialize(uint32_t build) {
 	}
 }
 
+void VirtualDesktopNotificationService::moveWindowLeft() noexcept try {
+	impl_->moveForegroundWindowToLeftOfCurrent();
+} catch (winrt::hresult_error const& /*err*/) {
+	// TODO: error log
+}
+
+void VirtualDesktopNotificationService::moveWindowRight() noexcept try {
+	impl_->moveForegroundWindowToRightOfCurrent();
+} catch (winrt::hresult_error const& /*err*/) {
+	// TODO: error log
+}
+
 #include "vdevent_t.h"
 
 void FASTCALL VirtualDesktopNotificationService::on(reps::bag_t const& value) noexcept {

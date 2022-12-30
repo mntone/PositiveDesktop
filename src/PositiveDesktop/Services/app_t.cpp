@@ -93,10 +93,24 @@ void FASTCALL app_t::on(reps::bag_t const& value) noexcept {
 void app_t::process(keylistener::kbevent_t ev) noexcept {
 	using namespace app::keylistener;
 
-	switch (ev) {
-	case kbe_exit:
-		message_service_t::terminateWithoutLock();
-		presenter_->closeAll();
+	switch (flag(ev)) {
+	case kbe_extend:
+		switch (ev) {
+		case kbe_exit:
+			message_service_t::terminateWithoutLock();
+			presenter_->closeAll();
+			break;
+		}
+		break;
+	case kbe_move_window:
+		switch (ev) {
+		case kbe_move_window_left:
+			notificationListener_->moveWindowLeft();
+			break;
+		case kbe_move_window_right:
+			notificationListener_->moveWindowRight();
+			break;
+		}
 		break;
 	}
 }

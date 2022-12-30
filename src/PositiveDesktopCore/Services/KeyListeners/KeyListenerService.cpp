@@ -34,6 +34,20 @@ LRESULT KeysListenerService::KbdProc(HHOOK hHook, int nCode, WPARAM wParam, KBDL
 		reps::next(subject_, kbe_exit);
 		return TRUE;
 	}
+
+	// Win+Ctrl+Alt+←: Move window to the left desktop.
+	if (VK_LEFT == kbdStruct.vkCode && IsKeyPressed(VK_LCONTROL) && IsKeyPressed(VK_LWIN) && IsKeyPressed(VK_LMENU)) {
+		handled = true;
+		reps::next(subject_, kbe_move_window_left);
+		return TRUE;
+	}
+
+	// Win+Ctrl+Alt+→: Move window to the right desktop.
+	if (VK_RIGHT == kbdStruct.vkCode && IsKeyPressed(VK_LCONTROL) && IsKeyPressed(VK_LWIN) && IsKeyPressed(VK_LMENU)) {
+		handled = true;
+		reps::next(subject_, kbe_move_window_right);
+		return TRUE;
+	}
 	return FALSE;
 }
 

@@ -19,8 +19,20 @@ struct VirtualDesktopManagerInternalDelegate21313 final: public IVirtualDesktopM
 			virtualDesktopManager_.put_void()));
 	}
 
-	HRESULT GetDesktops(IObjectArray** ppArray) noexcept {
+	inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktop* pDesktop) noexcept override {
+		return virtualDesktopManager_->MoveViewToDesktop(pView, pDesktop);
+	}
+
+	inline HRESULT GetCurrentDesktop(IVirtualDesktop** ppDesktop) noexcept override {
+		return virtualDesktopManager_->GetCurrentDesktop(nullptr, ppDesktop);
+	}
+
+	inline HRESULT GetDesktops(IObjectArray** ppArray) noexcept override {
 		return virtualDesktopManager_->GetDesktops(nullptr, ppArray);
+	}
+
+	inline HRESULT GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, app::AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) noexcept override {
+		return virtualDesktopManager_->GetAdjacentDesktop(pDesktopOrigin, nDirection, ppDesktop);
 	}
 
 private:
@@ -35,8 +47,20 @@ struct VirtualDesktopManagerInternalDelegate21359 final: public IVirtualDesktopM
 			virtualDesktopManager_.put_void()));
 	}
 
-	HRESULT GetDesktops(IObjectArray** ppArray) noexcept {
+	inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktop* pDesktop) noexcept override {
+		return virtualDesktopManager_->MoveViewToDesktop(pView, pDesktop);
+	}
+
+	inline HRESULT GetCurrentDesktop(IVirtualDesktop** ppDesktop) noexcept override {
+		return virtualDesktopManager_->GetCurrentDesktop(nullptr, ppDesktop);
+	}
+
+	inline HRESULT GetDesktops(IObjectArray** ppArray) noexcept override {
 		return virtualDesktopManager_->GetDesktops(nullptr, ppArray);
+	}
+
+	inline HRESULT GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, app::AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) noexcept override {
+		return virtualDesktopManager_->GetAdjacentDesktop(pDesktopOrigin, nDirection, ppDesktop);
 	}
 
 private:
@@ -51,8 +75,20 @@ struct VirtualDesktopManagerInternalDelegate22449 final: public IVirtualDesktopM
 			virtualDesktopManager_.put_void()));
 	}
 
-	HRESULT GetDesktops(IObjectArray** ppArray) noexcept {
+	inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktop* pDesktop) noexcept override {
+		return virtualDesktopManager_->MoveViewToDesktop(pView, pDesktop);
+	}
+
+	inline HRESULT GetCurrentDesktop(IVirtualDesktop** ppDesktop) noexcept override {
+		return virtualDesktopManager_->GetCurrentDesktop(nullptr, ppDesktop);
+	}
+
+	inline HRESULT GetDesktops(IObjectArray** ppArray) noexcept override {
 		return virtualDesktopManager_->GetDesktops(nullptr, ppArray);
+	}
+
+	inline HRESULT GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, app::AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) noexcept override {
+		return virtualDesktopManager_->GetAdjacentDesktop(pDesktopOrigin, nDirection, ppDesktop);
 	}
 
 private:
@@ -67,8 +103,20 @@ struct VirtualDesktopManagerInternalDelegate25158 final: public IVirtualDesktopM
 			virtualDesktopManager_.put_void()));
 	}
 
-	HRESULT GetDesktops(IObjectArray** ppArray) noexcept {
+	inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktop* pDesktop) noexcept override {
+		return virtualDesktopManager_->MoveViewToDesktop(pView, pDesktop);
+	}
+
+	inline HRESULT GetCurrentDesktop(IVirtualDesktop** ppDesktop) noexcept override {
+		return virtualDesktopManager_->GetCurrentDesktop(nullptr, ppDesktop);
+	}
+
+	inline HRESULT GetDesktops(IObjectArray** ppArray) noexcept override {
 		return virtualDesktopManager_->GetDesktops(nullptr, ppArray);
+	}
+
+	inline HRESULT GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, app::AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) noexcept override {
+		return virtualDesktopManager_->GetAdjacentDesktop(pDesktopOrigin, nDirection, ppDesktop);
 	}
 
 private:
@@ -126,6 +174,11 @@ VirtualDesktopNotificationServiceWin11::VirtualDesktopNotificationServiceWin11(D
 		guid_of<IServiceProvider>(),
 		serviceProvider_.put_void()));
 
+	check_hresult(serviceProvider_->QueryService(
+		__uuidof(IApplicationViewCollection),
+		__uuidof(IApplicationViewCollection),
+		applicationViewCollection_.put_void()));
+
 	if (build >= 25158) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate25158>(serviceProvider_.get());
 	} else if (build >= 22449) {
@@ -174,6 +227,34 @@ void VirtualDesktopNotificationServiceWin11::close() {
 	subject_.clearObserver();
 	check_hresult(virtualDesktopNotificationService_->Unregister(cookie_));
 	cookie_ = 0;
+}
+
+#pragma endregion
+
+#pragma region Operation implementation
+
+void VirtualDesktopNotificationServiceWin11::moveForegroundWindowToLeftOfCurrent() const {
+	com_ptr<IVirtualDesktop> current;
+	check_hresult(virtualDesktopManagerDelegate_->GetCurrentDesktop(current.put()));
+
+	com_ptr<IVirtualDesktop> left;
+	check_hresult(virtualDesktopManagerDelegate_->GetAdjacentDesktop(current.get(), AD_LEFT, left.put()));
+
+	com_ptr<IUnknown> view;
+	check_hresult(applicationViewCollection_->GetViewInFocus(view.put()));
+	check_hresult(virtualDesktopManagerDelegate_->MoveViewToDesktop(view.get(), left.get()));
+}
+
+void VirtualDesktopNotificationServiceWin11::moveForegroundWindowToRightOfCurrent() const {
+	com_ptr<IVirtualDesktop> current;
+	check_hresult(virtualDesktopManagerDelegate_->GetCurrentDesktop(current.put()));
+
+	com_ptr<IVirtualDesktop> right;
+	check_hresult(virtualDesktopManagerDelegate_->GetAdjacentDesktop(current.get(), AD_RIGHT, right.put()));
+
+	com_ptr<IUnknown> view;
+	check_hresult(applicationViewCollection_->GetViewInFocus(view.put()));
+	check_hresult(virtualDesktopManagerDelegate_->MoveViewToDesktop(view.get(), right.get()));
 }
 
 #pragma endregion

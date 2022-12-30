@@ -59,6 +59,11 @@ VirtualDesktopNotificationServiceWin10::VirtualDesktopNotificationServiceWin10(r
 		serviceProvider_.put_void()));
 
 	check_hresult(serviceProvider_->QueryService(
+		__uuidof(IApplicationViewCollection),
+		__uuidof(IApplicationViewCollection),
+		applicationViewCollection_.put_void()));
+
+	check_hresult(serviceProvider_->QueryService(
 		clsidVirtualDesktopManagerInternal,
 		__uuidof(IVirtualDesktopManagerInternal2),
 		virtualDesktopManager_.put_void()));
@@ -99,6 +104,34 @@ void VirtualDesktopNotificationServiceWin10::close() {
 	subject_.clearObserver();
 	check_hresult(virtualDesktopNotificationService_->Unregister(cookie_));
 	cookie_ = 0;
+}
+
+#pragma endregion
+
+#pragma region Operation implementation
+
+void VirtualDesktopNotificationServiceWin10::moveForegroundWindowToLeftOfCurrent() const {
+	com_ptr<IVirtualDesktop> current;
+	check_hresult(virtualDesktopManager_->GetCurrentDesktop(current.put()));
+
+	com_ptr<IVirtualDesktop> left;
+	check_hresult(virtualDesktopManager_->GetAdjacentDesktop(current.get(), AD_LEFT, left.put()));
+
+	com_ptr<IUnknown> view;
+	check_hresult(applicationViewCollection_->GetViewForHwnd(GetForegroundWindow(), view.put()));
+	check_hresult(virtualDesktopManager_->MoveViewToDesktop(view.get(), left.get()));
+}
+
+void VirtualDesktopNotificationServiceWin10::moveForegroundWindowToRightOfCurrent() const {
+	com_ptr<IVirtualDesktop> current;
+	check_hresult(virtualDesktopManager_->GetCurrentDesktop(current.put()));
+
+	com_ptr<IVirtualDesktop> right;
+	check_hresult(virtualDesktopManager_->GetAdjacentDesktop(current.get(), AD_RIGHT, right.put()));
+
+	com_ptr<IUnknown> view;
+	check_hresult(applicationViewCollection_->GetViewForHwnd(GetForegroundWindow(), view.put()));
+	check_hresult(virtualDesktopManager_->MoveViewToDesktop(view.get(), right.get()));
 }
 
 #pragma endregion

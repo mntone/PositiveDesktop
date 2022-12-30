@@ -9,7 +9,10 @@ namespace app::win11 {
 	struct IVirtualDesktopManagerInternalDelegate {
 		virtual ~IVirtualDesktopManagerInternalDelegate() { }
 
+		virtual HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktop* pDesktop) noexcept = 0;
+		virtual HRESULT GetCurrentDesktop(IVirtualDesktop** ppDesktop) noexcept = 0;
 		virtual HRESULT GetDesktops(IObjectArray** ppArray) noexcept = 0;
+		virtual HRESULT GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) noexcept = 0;
 	};
 
 	struct VirtualDesktopNotificationServiceWin11
@@ -18,6 +21,10 @@ namespace app::win11 {
 		VirtualDesktopNotificationServiceWin11(DWORD build, reps::observer_t& observer);
 
 		void close() override;
+
+		// - Operations
+		void moveForegroundWindowToLeftOfCurrent() const override;
+		void moveForegroundWindowToRightOfCurrent() const override;
 
 		// - IVirtualDesktopNotification
 		IFACEMETHOD(VirtualDesktopCreated)(IVirtualDesktop* pDesktop);
@@ -36,6 +43,7 @@ namespace app::win11 {
 
 	private:
 		winrt::com_ptr<IServiceProvider> serviceProvider_;
+		winrt::com_ptr<IApplicationViewCollection> applicationViewCollection_;
 		std::unique_ptr<IVirtualDesktopManagerInternalDelegate> virtualDesktopManagerDelegate_;
 		winrt::com_ptr<IVirtualDesktopNotificationService> virtualDesktopNotificationService_;
 		DWORD cookie_;

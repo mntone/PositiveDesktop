@@ -11,6 +11,8 @@ namespace app {
 	struct IVirtualDesktopNotificationServiceImpl {
 		virtual ~IVirtualDesktopNotificationServiceImpl() { }
 
+		virtual void moveForegroundWindowToLeftOfCurrent() const = 0;
+		virtual void moveForegroundWindowToRightOfCurrent() const = 0;
 		virtual void close() = 0;
 	};
 

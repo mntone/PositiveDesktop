@@ -13,6 +13,10 @@ namespace app::win10 {
 
 		void close() override;
 
+		// - Operations
+		void moveForegroundWindowToLeftOfCurrent() const override;
+		void moveForegroundWindowToRightOfCurrent() const override;
+
 		// - IVirtualDesktopNotification
 		IFACEMETHOD(VirtualDesktopCreated)(IVirtualDesktop* pDesktop);
 		IFACEMETHOD(VirtualDesktopDestroyBegin)(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback);
@@ -29,6 +33,7 @@ namespace app::win10 {
 
 	private:
 		winrt::com_ptr<IServiceProvider> serviceProvider_;
+		winrt::com_ptr<IApplicationViewCollection> applicationViewCollection_;
 		winrt::com_ptr<IVirtualDesktopManagerInternal2> virtualDesktopManager_;
 		winrt::com_ptr<IVirtualDesktopNotificationService> virtualDesktopNotificationService_;
 		DWORD cookie_;

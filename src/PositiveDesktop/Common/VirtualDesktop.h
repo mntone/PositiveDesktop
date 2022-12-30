@@ -8,6 +8,31 @@ namespace app {
 		AD_RIGHT = 4,
 	};
 
+	// Supported OS:
+	// - [17763] October 2018 Update  (1809) / Redstone 5
+	// - [18362] May 2019 Update      (1903) / 19H1
+	// - [18363] November 2019 Update (1909) / 19H2
+	// - [19041] May 2020 Update      (2004) / 20H1
+	// - [19042] October 2020 Update  (20H2) / 20H2
+	// - [19043] May 2021 Update      (21H1) / 21H1
+	// - [19044] November 2021 Update (21H2) / 21H2
+	// - [19045] 2022 Update          (22H2) / 22H2
+	// - [22000] Windows 11 Version 21H2
+	// - [22621] Windows 11 Version 22H2
+	struct __declspec(uuid("1841C6D7-4F9D-42C0-AF41-8747538F10E5")) IApplicationViewCollection: public IUnknown {
+		virtual HRESULT __stdcall GetViews(IObjectArray** ppViews) = 0;
+		virtual HRESULT __stdcall GetViewsByZOrder(IObjectArray** ppViews) = 0;
+		virtual HRESULT __stdcall GetViewsByAppUserModelId(LPCWSTR id, IObjectArray** ppViews) = 0;
+		virtual HRESULT __stdcall GetViewForHwnd(HWND hWnd, /*IApplicationView*/ IUnknown** ppView) = 0;
+		virtual HRESULT __stdcall GetViewForApplication(/*IImmersiveApplication*/ IUnknown* pImmersiveApplication, /*IApplicationView*/ IUnknown** ppView) = 0;
+		virtual HRESULT __stdcall GetViewForAppUserModelId(LPCWSTR id, /*IApplicationView*/ IUnknown** ppView) = 0;
+		virtual HRESULT __stdcall GetViewInFocus(/*IApplicationView*/ IUnknown** ppView) = 0;
+		virtual HRESULT __stdcall Unknown1(/*IApplicationView*/ IUnknown** ppView) = 0;
+		virtual HRESULT __stdcall RefreshCollection() = 0;
+		virtual HRESULT __stdcall RegisterForApplicationViewChanges(/*IApplicationViewChangeListener*/ IUnknown* pListener, DWORD* dwCookie) = 0;
+		virtual HRESULT __stdcall UnregisterForApplicationViewChanges(DWORD dwCookie) = 0;
+	};
+
 }
 
 namespace app::win10 {

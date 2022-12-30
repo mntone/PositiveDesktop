@@ -9,7 +9,7 @@
   <Identity
     Name="47418mntone.PositiveDesktop"
     Publisher="CN=mntone"
-    Version="0.3.10.0" />
+    Version="0.3.14.0" />
 
   <Properties>
     <DisplayName>PositiveDesktop (Package)</DisplayName>

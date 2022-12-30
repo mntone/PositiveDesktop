@@ -12,6 +12,10 @@ namespace app::listener {
 
 		void initialize(uint32_t build);
 
+		// - Desktop actions
+		void moveWindowLeft() noexcept;
+		void moveWindowRight() noexcept;
+
 	private:
 		void FASTCALL on(reps::bag_t const& value) noexcept override;
 
