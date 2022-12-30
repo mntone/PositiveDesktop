@@ -25,25 +25,23 @@ namespace app {
 
 }
 
-using namespace app;
-
-std::pair<int32x2_t, double4> getPositionAndThickness(
-	storage::desktop_t const& config,
-	int32x4_t workArea,
-	int32x4_t outerBounds,
-	int32x2_t size,
+std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
+	app::storage::desktop_t const& config,
+	app::int32x4_t workArea,
+	app::int32x4_t outerBounds,
+	app::int32x2_t size,
 	bool isSquareCorner) {
-	int32x2_t position;
-	double4 border { 1, 1, 1, 1 };
+	app::int32x2_t position;
+	app::double4 border { 1, 1, 1, 1 };
 
 	unsigned int const modeX = config.positionX;
 	unsigned int const modeY = config.positionY;
 
 	switch (config.positionMode) {
-	case storage::psn_window:
-		int32x4_t windowBounds = getActiveWindowRect();
+	case app::storage::psn_window:
+		app::int32x4_t windowBounds = app::getActiveWindowRect();
 		if (modeY == modeX) {
-			int32x2_t windowPosition = windowBounds.point();
+			app::int32x2_t windowPosition = windowBounds.point();
 			switch (modeY) {
 			case 3:
 				position = windowPosition;
@@ -103,8 +101,8 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 		}
 		position = clamp(position, workArea.point(), workArea.point2() - size);
 		break;
-	case storage::psn_cursor:
-		int32x2_t cursor = getCursorPosition();
+	case app::storage::psn_cursor:
+		app::int32x2_t cursor = app::getCursorPosition();
 		if (modeY == modeX) {
 			switch (modeY) {
 			case 3:
@@ -220,15 +218,15 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 		break;
 
 	// WorkArea mode
-	case storage::psn_workarea:
+	case app::storage::psn_workarea:
 	default:
 		if (modeY == modeX) {
-			int32x2_t outerPosition = outerBounds.point();
+			app::int32x2_t outerPosition = outerBounds.point();
 			switch (modeY) {
 			case 3:
 				position = outerPosition;
 				if (isSquareCorner) {
-					border = double4 { 0, 0, 1, 1 };
+					border = app::double4 { 0, 0, 1, 1 };
 				}
 				break;
 			case 4:
@@ -240,7 +238,7 @@ std::pair<int32x2_t, double4> getPositionAndThickness(
 			case 7:
 				position = outerPosition + (outerBounds.size() - size);
 				if (isSquareCorner) {
-					border = double4 { 1, 1, 0, 0 };
+					border = app::double4 { 1, 1, 0, 0 };
 				}
 				break;
 			case 5:

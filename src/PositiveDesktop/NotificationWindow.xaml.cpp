@@ -163,16 +163,14 @@ void NotificationWindow::ReleasePrivate() {
 }
 
 void NotificationWindow::Show(float visibleDuration) {
-	using namespace app;
-
 	// TODO: Observe the WorkArea and update position.
 	winrt::Microsoft::UI::Windowing::AppWindow appWindow = GetAppWindow(m_inner);
 	winrt::Microsoft::UI::DisplayId primaryDisplayId = GetPrimaryDisplayId();
 	winrt::Microsoft::UI::Windowing::DisplayArea displayArea = winrt::Microsoft::UI::Windowing::DisplayArea::GetFromDisplayId(primaryDisplayId);
 
 	// Set ideal size
-	int32x4_t workArea = displayArea.WorkArea();
-	int32x4_t outerBounds = displayArea.OuterBounds();
+	app::int32x4_t workArea = displayArea.WorkArea();
+	app::int32x4_t outerBounds = displayArea.OuterBounds();
 	bool isSquareCorner = true;
 	if (hint_ == NotificationPresenterHint::Windows11) {
 		switch (cornerPreference_) {
@@ -191,8 +189,8 @@ void NotificationWindow::Show(float visibleDuration) {
 	}
 
 	UIElement content = Content();
-	float2 invScale = float2(USER_DEFAULT_SCREEN_DPI) / float2(dpiX_, dpiY_);
-	float2 workSizeFloat = static_cast<float2>(workArea.size()) * invScale;
+	app::float2 invScale = app::float2(USER_DEFAULT_SCREEN_DPI) / app::float2(static_cast<float>(dpiX_), static_cast<float>(dpiY_));
+	app::float2 workSizeFloat = static_cast<app::float2>(workArea.size()) * invScale;
 	content.Measure(workSizeFloat);
 
 	// Adjust window size
@@ -203,7 +201,7 @@ void NotificationWindow::Show(float visibleDuration) {
 	});
 
 	// Calc position
-	std::pair<int32x2_t, double4> calcData = getPositionAndThickness(
+	std::pair<app::int32x2_t, app::double4> calcData = getPositionAndThickness(
 		config_,
 		workArea,
 		outerBounds,
