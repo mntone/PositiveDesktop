@@ -8,7 +8,7 @@
 
 namespace reps {
 
-	static inline void swap(observer_t const*& a, observer_t const*& b) noexcept {
+	static constexpr void swap(observer_t const*& a, observer_t const*& b) noexcept {
 		observer_t const* temp = std::move(a);
 		a = std::move(b);
 		b = std::move(temp);
@@ -35,17 +35,16 @@ namespace reps {
 
 		struct lock_t {
 			inline void lock() noexcept {
-				while (flag_.test_and_set(std::memory_order_acquire)) {
-					Sleep(0);
-				}
+				bool expected = false;
+				_ASSERTE(flag_.compare_exchange_strong(expected, true, std::memory_order_acquire));
 			}
 
 			inline void unlock() noexcept {
-				flag_.clear(std::memory_order_release);
+				flag_.store(false, std::memory_order_release);
 			}
 
 		private:
-			std::atomic_flag flag_;
+			std::atomic_bool flag_;
 		};
 
 
@@ -82,12 +81,12 @@ namespace reps {
 
 		struct single_observer_impl {
 		protected:
-			inline void _setObserver(observer_t const* observer) noexcept {
+			constexpr void _setObserver(observer_t const* observer) noexcept {
 				using std::swap;
 				swap(observer_, observer);
 			}
 
-			inline void _clearObserver() noexcept {
+			constexpr void _clearObserver() noexcept {
 				_setObserver(nullptr);
 			}
 
@@ -99,12 +98,12 @@ namespace reps {
 	struct subject_t: observable_t, __impl::observer_impl {
 		void send(bag_t&& value) noexcept override;
 
-		void FASTCALL addObserver(observer_t const& observer) noexcept {
+		inline void addObserver(observer_t const& observer) noexcept {
 			__impl::lock_guard<__impl::lock_t> lock { locker_ };
 			_setObserver(&observer);
 		}
 
-		void clearObserver() noexcept {
+		inline void clearObserver() noexcept {
 			__impl::lock_guard<__impl::lock_t> lock { locker_ };
 			_clearObserver();
 		}
@@ -117,12 +116,12 @@ namespace reps {
 	public:
 		void send(bag_t&& value) noexcept override;
 
-		void FASTCALL addObserver(observer_t const& observer) noexcept {
+		inline void addObserver(observer_t const& observer) noexcept {
 			__impl::lock_guard<__impl::lock_t> lock { locker_ };
 			_setObserver(&observer);
 		}
 
-		void clearObserver() noexcept {
+		inline void clearObserver() noexcept {
 			__impl::lock_guard<__impl::lock_t> lock { locker_ };
 			_clearObserver();
 		}
@@ -133,12 +132,12 @@ namespace reps {
 
 	struct buffered_subject_t: observable_t, __impl::observer_impl {
 		buffered_subject_t() = delete;
-		buffered_subject_t(bag_t&& init) noexcept: cache_(init) {}
+		constexpr buffered_subject_t(bag_t&& init) noexcept: cache_(std::move(init)) {}
 
 		void send(bag_t&& value) noexcept override;
 
 		template<typename T>
-		void FASTCALL addObserver(observer_t const& observer) noexcept {
+		inline void addObserver(observer_t const& observer) noexcept {
 			__impl::lock_guard<__impl::lock_t> lock { locker_ };
 			_setObserver(&observer);
 
@@ -147,7 +146,7 @@ namespace reps {
 			send(std::move(bag));
 		}
 
-		void clearObserver() noexcept {
+		inline void clearObserver() noexcept {
 			__impl::lock_guard<__impl::lock_t> lock { locker_ };
 			_clearObserver();
 		}
@@ -159,12 +158,12 @@ namespace reps {
 
 	struct single_buffered_subject_t: observable_t, __impl::single_observer_impl {
 		single_buffered_subject_t() = delete;
-		single_buffered_subject_t(bag_t&& init) noexcept: cache_(init) { }
+		constexpr single_buffered_subject_t(bag_t&& init) noexcept: cache_(std::move(init)) { }
 
 		void send(bag_t&& value) noexcept override;
 
 		template<typename T>
-		void FASTCALL addObserver(observer_t const& observer) noexcept {
+		inline void addObserver(observer_t const& observer) noexcept {
 			__impl::lock_guard<__impl::lock_t> lock { locker_ };
 			_setObserver(&observer);
 
@@ -173,7 +172,7 @@ namespace reps {
 			send(std::move(bag));
 		}
 
-		void clearObserver() noexcept {
+		inline void clearObserver() noexcept {
 			__impl::lock_guard<__impl::lock_t> lock { locker_ };
 			_clearObserver();
 		}
