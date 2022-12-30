@@ -19,6 +19,8 @@ app_t::app_t()
 }
 
 app_t::~app_t() noexcept {
+	message_service_t::close();
+
 	release(notificationListener_);
 
 	keylistener::KeysListenerService* keysLitener = std::exchange(keysLitener_, nullptr);
@@ -65,9 +67,10 @@ void app_t::initialize() {
 	// Init listener
 	notificationListener_ = new listener::VirtualDesktopNotificationService(presenter_);
 	notificationListener_->initialize(osver.dwBuildNumber);
-}
 
-#include "Services/KeyListeners/kbevent_t.h"
+	// Start message service
+	message_service_t::initialize();
+}
 
 void FASTCALL app_t::on(reps::bag_t const& value) noexcept {
 	if (value.hr < 0) {
@@ -78,17 +81,22 @@ void FASTCALL app_t::on(reps::bag_t const& value) noexcept {
 	switch (value.ev) {
 	case reps::event_t::next:
 	{
-		using namespace app::keylistener;
-
-		kbevent_t ev = reps::data<kbevent_t>(value);
-		switch (ev) {
-		case kbe_exit:
-			presenter_->closeAll();
-			break;
-		}
+		keylistener::kbevent_t const ev = reps::data<keylistener::kbevent_t>(value);
+		message_service_t::send(ev); // DO NOT PROCESS data on key listener thread.
 		break;
 	}
 	case reps::event_t::completed:
+		break;
+	}
+}
+
+void app_t::process(keylistener::kbevent_t ev) noexcept {
+	using namespace app::keylistener;
+
+	switch (ev) {
+	case kbe_exit:
+		message_service_t::terminateWithoutLock();
+		presenter_->closeAll();
 		break;
 	}
 }

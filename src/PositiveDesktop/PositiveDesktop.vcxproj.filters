@@ -36,6 +36,9 @@
     <ClInclude Include="Common\Math.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Common\message_service_t.h">
+      <Filter>Common</Filter>
+    </ClInclude>
     <ClInclude Include="Common\VirtualDesktop.h">
       <Filter>Common</Filter>
     </ClInclude>

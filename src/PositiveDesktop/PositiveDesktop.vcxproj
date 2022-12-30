@@ -130,6 +130,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Common\Math.h" />
+    <ClInclude Include="Common\message_service_t.h" />
     <ClInclude Include="Common\VirtualDesktop.h" />
     <ClInclude Include="NotificationWindow.xaml.h">
       <DependentUpon>NotificationWindow.xaml</DependentUpon>

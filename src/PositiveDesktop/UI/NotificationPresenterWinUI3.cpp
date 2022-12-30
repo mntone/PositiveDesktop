@@ -80,7 +80,9 @@ void NotificationPresenterWinUI3::closeAll() noexcept {
 	winrt::PositiveDesktop::NotificationWindow window = std::exchange(window_, nullptr);
 	if (!window) return;
 
-	window.Close();
+	dispatch(gDispatchQueue, [window]() {
+		window.Close();
+	});
 }
 
 void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) noexcept {

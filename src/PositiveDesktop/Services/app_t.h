@@ -1,14 +1,16 @@
 #pragma once
 
+#include "Common/message_service_t.h"
 #include "Common/RepsBase.h"
 
 #include "Services/Storages/config_t.h"
+#include "Services/KeyListeners/kbevent_t.h"
 #include "Services/KeyListeners/KeyListenerService.h"
 #include "Services/VirtualDesktopNotification/VirtualDesktopNotificationService.h"
 
 namespace app {
 
-	class app_t final: reps::observer_t {
+	class app_t final: public message_service_t<app::keylistener::kbevent_t>, reps::observer_t {
 	public:
 		app_t();
 		~app_t() noexcept;
@@ -17,6 +19,7 @@ namespace app {
 
 	private:
 		void FASTCALL on(reps::bag_t const& value) noexcept override;
+		void process(app::keylistener::kbevent_t ev) noexcept override;
 
 	private:
 		app::storage::config_t config_;
