@@ -134,7 +134,7 @@ namespace app::win10 {
 
 namespace app::win11 {
 
-	// Supported OS:
+	// Supported OS: Build 21313 and later
 	// - [22000] Windows 11 Version 21H2
 	// - [22621] Windows 11 Version 22H2
 	MIDL_INTERFACE("536D3495-B208-4CC9-AE26-DE8111275BF8")
@@ -239,18 +239,18 @@ namespace app::win11 {
 		virtual HRESULT __stdcall SetDesktopIsPerMonitor(BOOL state) = 0;
 	};
 
-	// Supported OS: the same as win11::IVirtualDesktop
+	// Supported OS: Build 21359 and later
 	MIDL_INTERFACE("CD403E52-DEED-4C13-B437-B98380F2B1E8")
 	IVirtualDesktopNotification : public IUnknown {
-		virtual HRESULT __stdcall VirtualDesktopCreated(IVirtualDesktop* pDesktop) = 0;
-		virtual HRESULT __stdcall VirtualDesktopDestroyBegin(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) = 0;
-		virtual HRESULT __stdcall VirtualDesktopDestroyFailed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) = 0;
-		virtual HRESULT __stdcall VirtualDesktopDestroyed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) = 0;
+		virtual HRESULT __stdcall VirtualDesktopCreated(IObjectArray* pArray, IVirtualDesktop* pDesktop) = 0;
+		virtual HRESULT __stdcall VirtualDesktopDestroyBegin(IObjectArray* pArray, IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) = 0;
+		virtual HRESULT __stdcall VirtualDesktopDestroyFailed(IObjectArray* pArray, IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) = 0;
+		virtual HRESULT __stdcall VirtualDesktopDestroyed(IObjectArray* pArray, IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback) = 0;
 		virtual HRESULT __stdcall Unknown1(int nUnknown) = 0;
-		virtual HRESULT __stdcall VirtualDesktopMoved(IVirtualDesktop* pDesktop, int nFromIndex, int nToIndex) = 0;
+		virtual HRESULT __stdcall VirtualDesktopMoved(IObjectArray* pArray, IVirtualDesktop* pDesktop, int nFromIndex, int nToIndex) = 0;
 		virtual HRESULT __stdcall VirtualDesktopRenamed(IVirtualDesktop* pDesktop, HSTRING name) = 0;
-		virtual HRESULT __stdcall ViewVirtualDesktopChanged(IUnknown* pView) = 0;
-		virtual HRESULT __stdcall CurrentVirtualDesktopChanged(IVirtualDesktop* pDesktopOld, IVirtualDesktop* pDesktopNew) = 0;
+		virtual HRESULT __stdcall ViewVirtualDesktopChanged(/*IApplicationView*/ IUnknown* pView) = 0;
+		virtual HRESULT __stdcall CurrentVirtualDesktopChanged(IObjectArray* pArray, IVirtualDesktop* pDesktopOld, IVirtualDesktop* pDesktopNew) = 0;
 		virtual HRESULT __stdcall VirtualDesktopWallpaperChanged(IVirtualDesktop* pDesktop, HSTRING path) = 0;
 	};
 

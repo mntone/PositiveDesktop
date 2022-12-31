@@ -185,8 +185,6 @@ DesktopServiceImplWin11::DesktopServiceImplWin11(DWORD build, reps::observer_t& 
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate22449>(serviceProvider_.get());
 	} else if (build >= 21359) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate21359>(serviceProvider_.get());
-	} else if (build >= 21313) {
-		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate21313>(serviceProvider_.get());
 	} else {
 		winrt::throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
 	}
@@ -263,7 +261,7 @@ void DesktopServiceImplWin11::moveForegroundWindowToRightOfCurrent() const {
 
 #include "vdevent_t.h"
 
-HRESULT DesktopServiceImplWin11::VirtualDesktopCreated(IVirtualDesktop* pDesktop) {
+HRESULT DesktopServiceImplWin11::VirtualDesktopCreated(IObjectArray* /*pArray*/, IVirtualDesktop* pDesktop) {
 	guid desktopId { GetDesktopId(pDesktop) };
 	VirtualDesktopBag bag {
 		static_cast<int>(bag_.size()),
@@ -281,15 +279,15 @@ HRESULT DesktopServiceImplWin11::VirtualDesktopCreated(IVirtualDesktop* pDesktop
 	return S_OK;
 }
 
-HRESULT DesktopServiceImplWin11::VirtualDesktopDestroyBegin(IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
+HRESULT DesktopServiceImplWin11::VirtualDesktopDestroyBegin(IObjectArray* /*pArray*/, IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
 	return S_OK;
 }
 
-HRESULT DesktopServiceImplWin11::VirtualDesktopDestroyFailed(IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
+HRESULT DesktopServiceImplWin11::VirtualDesktopDestroyFailed(IObjectArray* /*pArray*/, IVirtualDesktop* /*pDesktopDestroyed*/, IVirtualDesktop* /*pDesktopFallback*/) {
 	return S_OK;
 }
 
-HRESULT DesktopServiceImplWin11::VirtualDesktopDestroyed(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* /*pDesktopFallback*/) {
+HRESULT DesktopServiceImplWin11::VirtualDesktopDestroyed(IObjectArray* /*pArray*/, IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* /*pDesktopFallback*/) {
 	guid desktopId { GetDesktopId(pDesktopDestroyed) };
 	auto itr = bag_.find(desktopId);
 	if (itr == bag_.end()) {
@@ -319,7 +317,7 @@ HRESULT DesktopServiceImplWin11::Unknown1(int /*nUnknown*/) {
 	return S_OK;
 }
 
-HRESULT DesktopServiceImplWin11::VirtualDesktopMoved(IVirtualDesktop* pDesktop, int nFromIndex, int nToIndex) {
+HRESULT DesktopServiceImplWin11::VirtualDesktopMoved(IObjectArray* /*pArray*/, IVirtualDesktop* pDesktop, int nFromIndex, int nToIndex) {
 	guid desktopId { GetDesktopId(pDesktop) };
 	auto itr = bag_.find(desktopId);
 	if (itr == bag_.end()) {
@@ -392,7 +390,7 @@ HRESULT DesktopServiceImplWin11::ViewVirtualDesktopChanged(IUnknown* /*pView*/) 
 	return S_OK;
 }
 
-HRESULT DesktopServiceImplWin11::CurrentVirtualDesktopChanged(IVirtualDesktop* /*pDesktopOld*/, IVirtualDesktop* pDesktopNew) {
+HRESULT DesktopServiceImplWin11::CurrentVirtualDesktopChanged(IObjectArray* /*pArray*/, IVirtualDesktop* /*pDesktopOld*/, IVirtualDesktop* pDesktopNew) {
 	guid desktopId { GetDesktopId(pDesktopNew) };
 	auto itr = bag_.find(desktopId);
 	if (itr == bag_.cend()) {

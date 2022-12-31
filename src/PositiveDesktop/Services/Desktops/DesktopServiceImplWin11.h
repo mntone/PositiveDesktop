@@ -27,15 +27,15 @@ namespace app::win11 {
 		void moveForegroundWindowToRightOfCurrent() const override;
 
 		// - IVirtualDesktopNotification
-		IFACEMETHOD(VirtualDesktopCreated)(IVirtualDesktop* pDesktop);
-		IFACEMETHOD(VirtualDesktopDestroyBegin)(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback);
-		IFACEMETHOD(VirtualDesktopDestroyFailed)(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback);
-		IFACEMETHOD(VirtualDesktopDestroyed)(IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback);
+		IFACEMETHOD(VirtualDesktopCreated)(IObjectArray* pArray, IVirtualDesktop* pDesktop);
+		IFACEMETHOD(VirtualDesktopDestroyBegin)(IObjectArray* pArray, IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback);
+		IFACEMETHOD(VirtualDesktopDestroyFailed)(IObjectArray* pArray, IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback);
+		IFACEMETHOD(VirtualDesktopDestroyed)(IObjectArray* pArray, IVirtualDesktop* pDesktopDestroyed, IVirtualDesktop* pDesktopFallback);
 		IFACEMETHOD(Unknown1)(int nUnknown);
-		IFACEMETHOD(VirtualDesktopMoved)(IVirtualDesktop* pDesktop, int nFromIndex, int nToIndex);
+		IFACEMETHOD(VirtualDesktopMoved)(IObjectArray* pArray, IVirtualDesktop* pDesktop, int nFromIndex, int nToIndex);
 		IFACEMETHOD(VirtualDesktopRenamed)(IVirtualDesktop* pDesktop, HSTRING name);
 		IFACEMETHOD(ViewVirtualDesktopChanged)(IUnknown* pView);
-		IFACEMETHOD(CurrentVirtualDesktopChanged)(IVirtualDesktop* pDesktopOld, IVirtualDesktop* pDesktopNew);
+		IFACEMETHOD(CurrentVirtualDesktopChanged)(IObjectArray* pArray, IVirtualDesktop* pDesktopOld, IVirtualDesktop* pDesktopNew);
 		IFACEMETHOD(VirtualDesktopWallpaperChanged)(IVirtualDesktop* pDesktop, HSTRING path);
 
 	private:

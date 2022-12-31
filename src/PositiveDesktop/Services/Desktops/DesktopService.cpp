@@ -21,7 +21,7 @@ DesktopService::~DesktopService() {
 
 void DesktopService::initialize(uint32_t build) {
 	// Load the service
-	if (build >= 21313 /* Windows 10 Insider, Windows 11 */) {
+	if (build >= 21359 /* Windows 10 Insider, Windows 11 */) {
 		deleter_ = app::win11::ReleaseDesktopServiceImpl;
 		impl_ = app::win11::CreateDesktopServiceImpl(build, *this);
 	} else if (20231 > build && build >= 9841 /* general Windows 10 */) {
