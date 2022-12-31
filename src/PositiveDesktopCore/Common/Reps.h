@@ -1,6 +1,6 @@
 #pragma once
+#include "lock_t.h"
 
-#include <atomic>
 #include <vector>
 
 // RElationshiPS Library: Micro observer pattern
@@ -32,39 +32,6 @@ namespace reps {
 	};
 
 	namespace __impl {
-
-		struct lock_t {
-			inline void lock() noexcept {
-				bool expected = false;
-				_ASSERTE(flag_.compare_exchange_strong(expected, true, std::memory_order_acquire));
-			}
-
-			inline void unlock() noexcept {
-				flag_.store(false, std::memory_order_release);
-			}
-
-		private:
-			std::atomic_bool flag_;
-		};
-
-
-		template <class lock_t>
-		class _NODISCARD_LOCK lock_guard {
-		public:
-			explicit lock_guard(lock_t& locker): locker_(locker) {
-				locker_.lock();
-			}
-
-			~lock_guard() noexcept {
-				locker_.unlock();
-			}
-
-			lock_guard(const lock_guard&) = delete;
-			lock_guard& operator=(const lock_guard&) = delete;
-
-		private:
-			lock_t& locker_;
-		};
 
 		struct observer_impl {
 		protected:
@@ -99,17 +66,17 @@ namespace reps {
 		void send(bag_t&& value) noexcept override;
 
 		inline void addObserver(observer_t const& observer) noexcept {
-			__impl::lock_guard<__impl::lock_t> lock { locker_ };
+			app::lock_guard<app::lock_t> lock { locker_ };
 			_setObserver(&observer);
 		}
 
 		inline void clearObserver() noexcept {
-			__impl::lock_guard<__impl::lock_t> lock { locker_ };
+			app::lock_guard<app::lock_t> lock { locker_ };
 			_clearObserver();
 		}
 
 	private:
-		__impl::lock_t locker_;
+		app::lock_t locker_;
 	};
 
 	struct single_subject_t: observable_t, __impl::single_observer_impl {
@@ -117,17 +84,17 @@ namespace reps {
 		void send(bag_t&& value) noexcept override;
 
 		inline void addObserver(observer_t const& observer) noexcept {
-			__impl::lock_guard<__impl::lock_t> lock { locker_ };
+			app::lock_guard<app::lock_t> lock { locker_ };
 			_setObserver(&observer);
 		}
 
 		inline void clearObserver() noexcept {
-			__impl::lock_guard<__impl::lock_t> lock { locker_ };
+			app::lock_guard<app::lock_t> lock { locker_ };
 			_clearObserver();
 		}
 
 	private:
-		__impl::lock_t locker_;
+		app::lock_t locker_;
 	};
 
 	struct buffered_subject_t: observable_t, __impl::observer_impl {
@@ -138,7 +105,7 @@ namespace reps {
 
 		template<typename T>
 		inline void addObserver(observer_t const& observer) noexcept {
-			__impl::lock_guard<__impl::lock_t> lock { locker_ };
+			app::lock_guard<app::lock_t> lock { locker_ };
 			_setObserver(&observer);
 
 			__impl::bag_t<T> bag;
@@ -147,12 +114,12 @@ namespace reps {
 		}
 
 		inline void clearObserver() noexcept {
-			__impl::lock_guard<__impl::lock_t> lock { locker_ };
+			app::lock_guard<app::lock_t> lock { locker_ };
 			_clearObserver();
 		}
 
 	private:
-		__impl::lock_t locker_;
+		app::lock_t locker_;
 		bag_t cache_;
 	};
 
@@ -164,7 +131,7 @@ namespace reps {
 
 		template<typename T>
 		inline void addObserver(observer_t const& observer) noexcept {
-			__impl::lock_guard<__impl::lock_t> lock { locker_ };
+			app::lock_guard<app::lock_t> lock { locker_ };
 			_setObserver(&observer);
 
 			__impl::bag_t<T> bag;
@@ -173,12 +140,12 @@ namespace reps {
 		}
 
 		inline void clearObserver() noexcept {
-			__impl::lock_guard<__impl::lock_t> lock { locker_ };
+			app::lock_guard<app::lock_t> lock { locker_ };
 			_clearObserver();
 		}
 
 	private:
-		__impl::lock_t locker_;
+		app::lock_t locker_;
 		bag_t cache_;
 	};
 

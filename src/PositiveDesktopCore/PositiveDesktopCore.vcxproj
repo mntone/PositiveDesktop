@@ -101,6 +101,7 @@
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="shared.h" />
+    <ClInclude Include="Common\lock_t.h" />
     <ClInclude Include="Common\Reps.h" />
     <ClInclude Include="Common\RepsBase.h" />
     <ClInclude Include="Services\KeyListeners\kbevent_t.h" />

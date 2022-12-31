@@ -12,6 +12,9 @@
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="shared.h" />
+    <ClInclude Include="Common\lock_t.h">
+      <Filter>Common</Filter>
+    </ClInclude>
     <ClInclude Include="Common\Reps.h">
       <Filter>Common</Filter>
     </ClInclude>
