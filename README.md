@@ -19,6 +19,28 @@ Positive☆Desktop have the following system requirements:
 
 - Windows 10 version 1809 (build 17763) or later.
 
+## Development
+
+It runs on Windows 10 version 1809 or later.
+
+You'll need the following software:
+
+- Visual Studio 2022 Version 17.4 or later (no test in earlier version)
+  - Desktop development with C++
+  - .NET SDK (Use the build for DesktopBridge app; this option includes .NET 6 & 7 Runtime)
+  - Test Adapter for Google Test (option)
+- Windows 10 SDK, version 1809 (10.0.17763.0)
+  https://developer.microsoft.com/en-us/windows/downloads/sdk-archive/
+
+1. Clone the repository:
+
+   ```sh
+   git clone https://github.com/mntone/PositiveDesktop.git
+   ```
+2. Open the `PositiveDesktop.sln` file.
+3. Open the `PositiveDesktopPackage/Package.appxmanifest` file on Visual Studio.
+4. Go the "Packaging" tab, click "Choose Certificate...", and click "Create".
+
 ## Authors
 
 - mntone - Initial work.
