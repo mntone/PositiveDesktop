@@ -1,6 +1,8 @@
 #pragma once
 #include "kbevent_t.h"
 
+#include <unordered_map>
+
 #include "Common/key_config_t.h"
 #include "Common/lock_t.h"
 #include "Common/Reps.h"
@@ -37,6 +39,7 @@ namespace app::keylistener {
 		static void removeHook(KeysListenerService* that);
 
 	private:
+		char previousVirtualKey_;
 		bool suspending_;
 		std::unordered_map<short, kbevent_t> keymap_;
 		reps::single_subject_t subject_;

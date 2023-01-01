@@ -1,21 +1,24 @@
 #pragma once
 
 #include <numeric>
+#include <string>
 
-void OutputDebugStringFVW(const wchar_t* format, va_list args) {
+inline void OutputDebugStringFVW(const wchar_t* format, va_list args) {
 	int len = _vscwprintf(format, args) + 1;
 	std::wstring buffer;
 	buffer.resize(len);
 	vswprintf_s(buffer.data(), len, format, args);
 	OutputDebugStringW(buffer.c_str());
 }
-void OutputDebugStringFW(const wchar_t* format, ...) {
+
+inline void OutputDebugStringFW(const wchar_t* format, ...) {
 	va_list args;
 	va_start(args, format);
 	OutputDebugStringFVW(format, args);
 	va_end(args);
 }
-void OutputCurrentStatus() {
+
+inline void OutputCurrentStatus() {
 	ULONG_PTR lowLimit, highLimit;
 	GetCurrentThreadStackLimits(&lowLimit, &highLimit);
 	auto stackSize = highLimit - lowLimit;

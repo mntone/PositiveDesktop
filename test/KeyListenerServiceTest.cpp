@@ -88,6 +88,30 @@ TEST(KeyListener, ExitApp) {
 	SendInput(keys.size(), keys.data(), sizeof(INPUT));
 }
 
+TEST(KeyListener, DuplicateKey) {
+	std::unique_ptr<KeysListenerService> service = std::make_unique<KeysListenerService>();
+	listener_t listener([](reps::bag_t const& value) {
+		static int i = 0;
+
+		kbevent_t kbe = reps::data<kbevent_t>(value);
+		EXPECT_EQ(kbe, kbe_exit);
+		EXPECT_EQ(i++, 0);
+		SUCCEED() << "Receive \"kbe_exit\".";
+	});
+	service->addObserver(listener);
+	service->initialize();
+
+	// Send key
+	std::array<INPUT, 8> keys; // Win, Ctrl, X, X, X, (key up)
+	keys[0] = CreateKey(VK_LWIN);
+	keys[1] = CreateKey(VK_LCONTROL);
+	keys[2] = CreateKey('X');
+	keys[3] = CreateKey('X');
+	keys[4] = CreateKey('X');
+	AddAllKeysUp(keys.cbegin(), keys.cbegin() + 3, keys.rbegin(), keys.rbegin() + 3);
+	SendInput(keys.size(), keys.data(), sizeof(INPUT));
+}
+
 TEST(KeyListener, MoveLeft) {
 	std::unique_ptr<KeysListenerService> service = std::make_unique<KeysListenerService>();
 	listener_t listener([](reps::bag_t const& value) {

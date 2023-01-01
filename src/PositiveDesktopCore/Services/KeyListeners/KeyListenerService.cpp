@@ -1,12 +1,14 @@
 #include "pch.h"
 
-#include <unordered_map>
-
 #ifndef KEYLISTENERS_SINGLETON
 #include <set>
 #endif
 
 #include "KeyListenerService.h"
+
+#ifdef DEBUG_KEYINPUT
+#include "Common/Debug.h"
+#endif
 
 app::lock_t app::keylistener::KeysListenerService::locker_;
 HHOOK app::keylistener::KeysListenerService::hHook_;
@@ -73,14 +75,32 @@ void KeysListenerService::updateConfigPrivate(app::storage::key_config_t const& 
 	keymap_ = std::move(keymap);
 }
 
-LRESULT KeysListenerService::KbdProc(HHOOK /*hHook*/, int /*nCode*/, WPARAM /*wParam*/, KBDLLHOOKSTRUCT const& kbdStruct, bool& handled) noexcept {
-	short key { static_cast<char>(kbdStruct.vkCode) };
+LRESULT KeysListenerService::KbdProc(HHOOK /*hHook*/, int /*nCode*/, WPARAM wParam, KBDLLHOOKSTRUCT const& kbdStruct, bool& handled) noexcept {
+	if (WM_KEYUP == wParam || WM_SYSKEYUP == wParam) {
+		previousVirtualKey_ = 0;
+		return FALSE;
+	}
+	char virtualKey = static_cast<char>(kbdStruct.vkCode);
+	if (virtualKey == previousVirtualKey_) return FALSE;
+	previousVirtualKey_ = virtualKey;
+
+	short key { virtualKey };
 	if (IsKeyPressed(VK_LCONTROL)) key |= 0x2000;
 	if (IsKeyPressed(VK_RCONTROL)) key |= 0x1000;
 	if (IsKeyPressed(VK_LWIN)) key |= 0x0800;
 	if (IsKeyPressed(VK_RWIN)) key |= 0x0400;
 	if (IsKeyPressed(VK_LMENU)) key |= 0x0200;
 	if (IsKeyPressed(VK_RMENU)) key |= 0x0100;
+
+#ifdef DEBUG_KEYINPUT
+	if (0x30 <= key && key <= 0x5A) {
+		OutputDebugStringFW(L"flag: %04X, key: %08X (%c)\n", kbdStruct.flags, key, virtualKey);
+	} else if (VK_NUMPAD0 <= key && key <= VK_NUMPAD9) {
+		OutputDebugStringFW(L"flag: %04X, key: %08X (Numpad %c)\n", kbdStruct.flags, key, virtualKey - VK_NUMPAD0 + '0');
+	} else {
+		OutputDebugStringFW(L"flag: %04X, key: %08X\n", kbdStruct.flags, key);
+	}
+#endif
 
 	auto itr = keymap_.find(key);
 	if (itr != keymap_.end()) {
