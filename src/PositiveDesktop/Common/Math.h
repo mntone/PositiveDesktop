@@ -30,8 +30,7 @@ namespace app {
 
 namespace app {
 
-#pragma pack(16)
-	struct int32x2_t final {
+	struct __declspec(align(16)) int32x2_t final {
 		int32_t x;
 		int32_t y;
 
@@ -216,7 +215,7 @@ namespace app {
 		return (max)((min)(value, maxValue), minValue);
 	}
 
-	struct int32x4_t final {
+	struct __declspec(align(16)) int32x4_t final {
 		int32_t x;
 		int32_t y;
 		int32_t z;
@@ -464,7 +463,7 @@ namespace app {
 #endif
 	};
 
-	struct float2 final {
+	struct __declspec(align(16)) float2 final {
 		float x;
 		float y;
 
@@ -629,7 +628,7 @@ namespace app {
 		return (max)((min)(value, maxValue), minValue);
 	}
 
-	struct double2 final {
+	struct __declspec(align(16)) double2 final {
 		double x;
 		double y;
 
@@ -789,7 +788,7 @@ namespace app {
 		return (max)((min)(value, maxValue), minValue);
 	}
 
-	struct double4 final {
+	struct __declspec(align(32)) double4 final {
 		double x; // left
 		double y; // top
 		double z; // width | right for thickness
@@ -956,6 +955,5 @@ namespace app {
 		constexpr operator winrt::Microsoft::UI::Xaml::Thickness() const noexcept { return winrt::Microsoft::UI::Xaml::Thickness { x, y, z, w }; }
 #endif
 	};
-#pragma pack()
 
 }
