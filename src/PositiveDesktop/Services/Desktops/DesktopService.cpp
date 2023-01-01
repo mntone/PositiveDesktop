@@ -32,14 +32,14 @@ void DesktopService::initialize(uint32_t build) {
 	}
 }
 
-void DesktopService::moveWindowLeft() noexcept try {
-	impl_->moveForegroundWindowToLeftOfCurrent();
+void DesktopService::moveForegroundWindow(int target) noexcept try {
+	impl_->moveForegroundWindow(target);
 } catch (winrt::hresult_error const& /*err*/) {
 	// TODO: error log
 }
 
-void DesktopService::moveWindowRight() noexcept try {
-	impl_->moveForegroundWindowToRightOfCurrent();
+void DesktopService::moveForegroundWindowAndSwitch(int target) noexcept try {
+	impl_->moveForegroundWindowAndSwitch(target);
 } catch (winrt::hresult_error const& /*err*/) {
 	// TODO: error log
 }

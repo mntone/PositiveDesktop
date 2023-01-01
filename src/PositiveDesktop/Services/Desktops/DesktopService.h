@@ -14,8 +14,8 @@ namespace app::desktop {
 		void initialize(uint32_t build);
 
 		// - Desktop actions
-		void moveWindowLeft() noexcept;
-		void moveWindowRight() noexcept;
+		void moveForegroundWindow(int target) noexcept;
+		void moveForegroundWindowAndSwitch(int target) noexcept;
 
 	private:
 		void FASTCALL on(reps::bag_t const& value) noexcept override;

@@ -35,6 +35,14 @@ struct VirtualDesktopManagerInternalDelegate21313 final: public IVirtualDesktopM
 		return virtualDesktopManager_->GetAdjacentDesktop(pDesktopOrigin, nDirection, ppDesktop);
 	}
 
+	inline HRESULT SwitchDesktop(IVirtualDesktop* pDesktop) noexcept override {
+		return virtualDesktopManager_->SwitchDesktop(pDesktop);
+	}
+
+	inline HRESULT CreateDesktop(IVirtualDesktop** ppDesktop) noexcept override {
+		return virtualDesktopManager_->CreateDesktop(nullptr, ppDesktop);
+	}
+
 private:
 	winrt::com_ptr<IVirtualDesktopManagerInternal21313> virtualDesktopManager_;
 };
@@ -61,6 +69,14 @@ struct VirtualDesktopManagerInternalDelegate21359 final: public IVirtualDesktopM
 
 	inline HRESULT GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, app::AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) noexcept override {
 		return virtualDesktopManager_->GetAdjacentDesktop(pDesktopOrigin, nDirection, ppDesktop);
+	}
+
+	inline HRESULT SwitchDesktop(IVirtualDesktop* pDesktop) noexcept override {
+		return virtualDesktopManager_->SwitchDesktop(pDesktop);
+	}
+
+	inline HRESULT CreateDesktop(IVirtualDesktop** ppDesktop) noexcept override {
+		return virtualDesktopManager_->CreateDesktop(nullptr, ppDesktop);
 	}
 
 private:
@@ -91,6 +107,14 @@ struct VirtualDesktopManagerInternalDelegate22449 final: public IVirtualDesktopM
 		return virtualDesktopManager_->GetAdjacentDesktop(pDesktopOrigin, nDirection, ppDesktop);
 	}
 
+	inline HRESULT SwitchDesktop(IVirtualDesktop* pDesktop) noexcept override {
+		return virtualDesktopManager_->SwitchDesktop(pDesktop);
+	}
+
+	inline HRESULT CreateDesktop(IVirtualDesktop** ppDesktop) noexcept override {
+		return virtualDesktopManager_->CreateDesktop(nullptr, ppDesktop);
+	}
+
 private:
 	winrt::com_ptr<IVirtualDesktopManagerInternal22449> virtualDesktopManager_;
 };
@@ -117,6 +141,14 @@ struct VirtualDesktopManagerInternalDelegate25158 final: public IVirtualDesktopM
 
 	inline HRESULT GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, app::AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) noexcept override {
 		return virtualDesktopManager_->GetAdjacentDesktop(pDesktopOrigin, nDirection, ppDesktop);
+	}
+
+	inline HRESULT SwitchDesktop(IVirtualDesktop* pDesktop) noexcept override {
+		return virtualDesktopManager_->SwitchDesktop(pDesktop);
+	}
+
+	inline HRESULT CreateDesktop(IVirtualDesktop** ppDesktop) noexcept override {
+		return virtualDesktopManager_->CreateDesktop(nullptr, ppDesktop);
 	}
 
 private:
@@ -231,28 +263,53 @@ void DesktopServiceImplWin11::close() {
 
 #pragma region Operation implementation
 
-void DesktopServiceImplWin11::moveForegroundWindowToLeftOfCurrent() const {
-	com_ptr<IVirtualDesktop> current;
-	check_hresult(virtualDesktopManagerDelegate_->GetCurrentDesktop(current.put()));
+void DesktopServiceImplWin11::moveForegroundWindow(int target) const {
+	com_ptr<IVirtualDesktop> currentDesktop;
+	check_hresult(virtualDesktopManagerDelegate_->GetCurrentDesktop(currentDesktop.put()));
 
-	com_ptr<IVirtualDesktop> left;
-	check_hresult(virtualDesktopManagerDelegate_->GetAdjacentDesktop(current.get(), AD_LEFT, left.put()));
+	com_ptr<IVirtualDesktop> targetDesktop;
+	switch (target) {
+	case vdt_left:
+		check_hresult(virtualDesktopManagerDelegate_->GetAdjacentDesktop(currentDesktop.get(), AD_LEFT, targetDesktop.put()));
+		break;
+	case vdt_right:
+		check_hresult(virtualDesktopManagerDelegate_->GetAdjacentDesktop(currentDesktop.get(), AD_RIGHT, targetDesktop.put()));
+		break;
+	case vdt_new:
+		check_hresult(virtualDesktopManagerDelegate_->CreateDesktop(targetDesktop.put()));
+		break;
+	default:
+		throw hresult_not_implemented();
+	}
 
 	com_ptr<IUnknown> view;
-	check_hresult(applicationViewCollection_->GetViewInFocus(view.put()));
-	check_hresult(virtualDesktopManagerDelegate_->MoveViewToDesktop(view.get(), left.get()));
+	check_hresult(applicationViewCollection_->GetViewForHwnd(GetForegroundWindow(), view.put()));
+	check_hresult(virtualDesktopManagerDelegate_->MoveViewToDesktop(view.get(), targetDesktop.get()));
 }
 
-void DesktopServiceImplWin11::moveForegroundWindowToRightOfCurrent() const {
-	com_ptr<IVirtualDesktop> current;
-	check_hresult(virtualDesktopManagerDelegate_->GetCurrentDesktop(current.put()));
+void DesktopServiceImplWin11::moveForegroundWindowAndSwitch(int target) const {
+	com_ptr<IVirtualDesktop> currentDesktop;
+	check_hresult(virtualDesktopManagerDelegate_->GetCurrentDesktop(currentDesktop.put()));
 
-	com_ptr<IVirtualDesktop> right;
-	check_hresult(virtualDesktopManagerDelegate_->GetAdjacentDesktop(current.get(), AD_RIGHT, right.put()));
+	com_ptr<IVirtualDesktop> targetDesktop;
+	switch (target) {
+	case vdt_left:
+		check_hresult(virtualDesktopManagerDelegate_->GetAdjacentDesktop(currentDesktop.get(), AD_LEFT, targetDesktop.put()));
+		break;
+	case vdt_right:
+		check_hresult(virtualDesktopManagerDelegate_->GetAdjacentDesktop(currentDesktop.get(), AD_RIGHT, targetDesktop.put()));
+		break;
+	case vdt_new:
+		check_hresult(virtualDesktopManagerDelegate_->CreateDesktop(targetDesktop.put()));
+		break;
+	default:
+		throw hresult_not_implemented();
+	}
 
 	com_ptr<IUnknown> view;
-	check_hresult(applicationViewCollection_->GetViewInFocus(view.put()));
-	check_hresult(virtualDesktopManagerDelegate_->MoveViewToDesktop(view.get(), right.get()));
+	check_hresult(applicationViewCollection_->GetViewForHwnd(GetForegroundWindow(), view.put()));
+	check_hresult(virtualDesktopManagerDelegate_->MoveViewToDesktop(view.get(), targetDesktop.get()));
+	check_hresult(virtualDesktopManagerDelegate_->SwitchDesktop(targetDesktop.get()));
 }
 
 #pragma endregion

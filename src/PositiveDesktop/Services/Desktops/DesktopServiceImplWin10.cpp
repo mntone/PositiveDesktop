@@ -110,28 +110,53 @@ void DesktopServiceImplWin10::close() {
 
 #pragma region Operation implementation
 
-void DesktopServiceImplWin10::moveForegroundWindowToLeftOfCurrent() const {
-	com_ptr<IVirtualDesktop> current;
-	check_hresult(virtualDesktopManager_->GetCurrentDesktop(current.put()));
+void DesktopServiceImplWin10::moveForegroundWindow(int target) const {
+	com_ptr<IVirtualDesktop> currentDesktop;
+	check_hresult(virtualDesktopManager_->GetCurrentDesktop(currentDesktop.put()));
 
-	com_ptr<IVirtualDesktop> left;
-	check_hresult(virtualDesktopManager_->GetAdjacentDesktop(current.get(), AD_LEFT, left.put()));
+	com_ptr<IVirtualDesktop> targetDesktop;
+	switch (target) {
+	case vdt_left:
+		check_hresult(virtualDesktopManager_->GetAdjacentDesktop(currentDesktop.get(), AD_LEFT, targetDesktop.put()));
+		break;
+	case vdt_right:
+		check_hresult(virtualDesktopManager_->GetAdjacentDesktop(currentDesktop.get(), AD_RIGHT, targetDesktop.put()));
+		break;
+	case vdt_new:
+		check_hresult(virtualDesktopManager_->CreateDesktop(targetDesktop.put()));
+		break;
+	default:
+		throw hresult_not_implemented();
+	}
 
 	com_ptr<IUnknown> view;
 	check_hresult(applicationViewCollection_->GetViewForHwnd(GetForegroundWindow(), view.put()));
-	check_hresult(virtualDesktopManager_->MoveViewToDesktop(view.get(), left.get()));
+	check_hresult(virtualDesktopManager_->MoveViewToDesktop(view.get(), targetDesktop.get()));
 }
 
-void DesktopServiceImplWin10::moveForegroundWindowToRightOfCurrent() const {
-	com_ptr<IVirtualDesktop> current;
-	check_hresult(virtualDesktopManager_->GetCurrentDesktop(current.put()));
+void DesktopServiceImplWin10::moveForegroundWindowAndSwitch(int target) const {
+	com_ptr<IVirtualDesktop> currentDesktop;
+	check_hresult(virtualDesktopManager_->GetCurrentDesktop(currentDesktop.put()));
 
-	com_ptr<IVirtualDesktop> right;
-	check_hresult(virtualDesktopManager_->GetAdjacentDesktop(current.get(), AD_RIGHT, right.put()));
+	com_ptr<IVirtualDesktop> targetDesktop;
+	switch (target) {
+	case vdt_left:
+		check_hresult(virtualDesktopManager_->GetAdjacentDesktop(currentDesktop.get(), AD_LEFT, targetDesktop.put()));
+		break;
+	case vdt_right:
+		check_hresult(virtualDesktopManager_->GetAdjacentDesktop(currentDesktop.get(), AD_RIGHT, targetDesktop.put()));
+		break;
+	case vdt_new:
+		check_hresult(virtualDesktopManager_->CreateDesktop(targetDesktop.put()));
+		break;
+	default:
+		throw hresult_not_implemented();
+	}
 
 	com_ptr<IUnknown> view;
 	check_hresult(applicationViewCollection_->GetViewForHwnd(GetForegroundWindow(), view.put()));
-	check_hresult(virtualDesktopManager_->MoveViewToDesktop(view.get(), right.get()));
+	check_hresult(virtualDesktopManager_->MoveViewToDesktop(view.get(), targetDesktop.get()));
+	check_hresult(virtualDesktopManager_->SwitchDesktop(targetDesktop.get()));
 }
 
 #pragma endregion

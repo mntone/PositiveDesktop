@@ -103,14 +103,16 @@ void app_t::process(keylistener::kbevent_t ev) noexcept {
 		}
 		break;
 	case kbe_move_window:
-		switch (ev) {
-		case kbe_move_window_left:
-			desktop_->moveWindowLeft();
-			break;
-		case kbe_move_window_right:
-			desktop_->moveWindowRight();
-			break;
-		}
+	{
+		int target = app::keylistener::desktop(ev);
+		desktop_->moveForegroundWindow(target);
 		break;
+	}
+	case kbe_move_window_and_switch:
+	{
+		int target = app::keylistener::desktop(ev);
+		desktop_->moveForegroundWindowAndSwitch(target);
+		break;
+	}
 	}
 }

@@ -3,6 +3,25 @@
 
 namespace app {
 
+	enum vdtarget_t: int {
+		vdt_first,
+		vdt_desktop1,
+		vdt_desktop2,
+		vdt_desktop3,
+		vdt_desktop4,
+		vdt_desktop5,
+		vdt_desktop6,
+		vdt_desktop7,
+		vdt_desktop8,
+		vdt_desktop9,
+		vdt_desktop10,
+		vdt_last,
+		vdt_left,
+		vdt_right,
+		vdt_new,
+		vdt_previous,
+	};
+
 	struct VirtualDesktopBag {
 		int index;
 		winrt::hstring name;
@@ -11,8 +30,8 @@ namespace app {
 	struct IDesktopServiceImpl {
 		virtual ~IDesktopServiceImpl() { }
 
-		virtual void moveForegroundWindowToLeftOfCurrent() const = 0;
-		virtual void moveForegroundWindowToRightOfCurrent() const = 0;
+		virtual void moveForegroundWindow(int target) const = 0;
+		virtual void moveForegroundWindowAndSwitch(int target) const = 0;
 		virtual void close() = 0;
 	};
 

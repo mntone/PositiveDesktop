@@ -14,8 +14,8 @@ namespace app::win10 {
 		void close() override;
 
 		// - Operations
-		void moveForegroundWindowToLeftOfCurrent() const override;
-		void moveForegroundWindowToRightOfCurrent() const override;
+		void moveForegroundWindow(int target) const override;
+		void moveForegroundWindowAndSwitch(int target) const override;
 
 		// - IVirtualDesktopNotification
 		IFACEMETHOD(VirtualDesktopCreated)(IVirtualDesktop* pDesktop);

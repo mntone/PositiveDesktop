@@ -116,8 +116,8 @@ TEST(KeyListener, MoveLeft) {
 	std::unique_ptr<KeysListenerService> service = std::make_unique<KeysListenerService>();
 	listener_t listener([](reps::bag_t const& value) {
 		kbevent_t kbe = reps::data<kbevent_t>(value);
-		EXPECT_EQ(kbe, kbe_move_window_left);
-		SUCCEED() << "Receive \"kbe_move_window_left\".";
+		EXPECT_EQ(kbe, kbe_move_window_and_switch_left);
+		SUCCEED() << "Receive \"kbe_move_window_and_switch_left\".";
 	});
 	service->addObserver(listener);
 	service->initialize();

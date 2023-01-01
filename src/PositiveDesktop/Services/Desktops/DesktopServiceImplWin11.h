@@ -13,6 +13,8 @@ namespace app::win11 {
 		virtual HRESULT GetCurrentDesktop(IVirtualDesktop** ppDesktop) noexcept = 0;
 		virtual HRESULT GetDesktops(IObjectArray** ppArray) noexcept = 0;
 		virtual HRESULT GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) noexcept = 0;
+		virtual HRESULT SwitchDesktop(IVirtualDesktop* pDesktop) noexcept = 0;
+		virtual HRESULT CreateDesktop(IVirtualDesktop** ppDesktop) noexcept = 0;
 	};
 
 	struct DesktopServiceImplWin11
@@ -23,8 +25,8 @@ namespace app::win11 {
 		void close() override;
 
 		// - Operations
-		void moveForegroundWindowToLeftOfCurrent() const override;
-		void moveForegroundWindowToRightOfCurrent() const override;
+		void moveForegroundWindow(int target) const override;
+		void moveForegroundWindowAndSwitch(int target) const override;
 
 		// - IVirtualDesktopNotification
 		IFACEMETHOD(VirtualDesktopCreated)(IObjectArray* pArray, IVirtualDesktop* pDesktop);

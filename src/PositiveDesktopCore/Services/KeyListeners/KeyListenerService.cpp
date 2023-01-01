@@ -31,8 +31,9 @@ KeysListenerService::~KeysListenerService() {
 void KeysListenerService::initialize() {
 	app::storage::key_config_t config;
 	config.map.push_back({ kbe_exit, { 'X', 0x28 /* LCtrl+LWin */ } }); // Exit application.
-	config.map.push_back({ kbe_move_window_left, { VK_LEFT, 0x2A /* LCtrl+LWin+LAlt*/ } }); // Move window to the left desktop.
-	config.map.push_back({ kbe_move_window_right, { VK_RIGHT, 0x2A /* LCtrl+LWin+LAlt*/ } }); // Move window to the right desktop.
+	config.map.push_back({ kbe_move_window_and_switch_left, { VK_LEFT, 0x2A /* LCtrl+LWin+LAlt*/ } }); // Move window to the left desktop and switch.
+	config.map.push_back({ kbe_move_window_and_switch_right, { VK_RIGHT, 0x2A /* LCtrl+LWin+LAlt*/ } }); // Move window to the right desktop and switch.
+	config.map.push_back({ kbe_move_window_and_switch_new, { 'D', 0x2A /* LCtrl+LWin+LAlt*/ } }); // Move window to the new desktop and switch.
 	updateConfigPrivate(config);
 
 	KeysListenerService::addHook(this);

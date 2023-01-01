@@ -76,7 +76,7 @@ namespace app::win10 {
 		virtual HRESULT __stdcall GetDesktops(IObjectArray** ppArray) = 0;
 		virtual HRESULT __stdcall GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall SwitchDesktop(IVirtualDesktop* pDesktop) = 0;
-		virtual HRESULT __stdcall CreateDesktop() = 0;
+		virtual HRESULT __stdcall CreateDesktop(IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall RemoveDesktop(IVirtualDesktop* pRemoveDesktop, IVirtualDesktop* pFallbackDesktop) = 0;
 		virtual HRESULT __stdcall FindDesktop(winrt::guid desktopId, IVirtualDesktop** ppDesktop) = 0;
 	};
@@ -158,7 +158,7 @@ namespace app::win11 {
 		virtual HRESULT __stdcall GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall MoveDesktop(IVirtualDesktop* pMoveDesktop, void* pUnknown, int nIndex) = 0;
 		virtual HRESULT __stdcall SwitchDesktop(IVirtualDesktop* pDesktop) = 0;
-		virtual HRESULT __stdcall CreateDesktop() = 0;
+		virtual HRESULT __stdcall CreateDesktop(void* pUnknown, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall RemoveDesktop(IVirtualDesktop* pRemoveDesktop, IVirtualDesktop* pFallbackDesktop) = 0;
 		virtual HRESULT __stdcall FindDesktop(winrt::guid desktopId, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop* pDesktop, IObjectArray** ppLeftDesktops, IObjectArray** ppRightDesktops) = 0;
@@ -180,7 +180,7 @@ namespace app::win11 {
 		virtual HRESULT __stdcall GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall MoveDesktop(IVirtualDesktop* pMoveDesktop, void* pUnknown, int nIndex) = 0;
 		virtual HRESULT __stdcall SwitchDesktop(IVirtualDesktop* pDesktop) = 0;
-		virtual HRESULT __stdcall CreateDesktop() = 0;
+		virtual HRESULT __stdcall CreateDesktop(void* pUnknown, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall RemoveDesktop(IVirtualDesktop* pRemoveDesktop, IVirtualDesktop* pFallbackDesktop) = 0;
 		virtual HRESULT __stdcall FindDesktop(winrt::guid desktopId, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop* pDesktop, IObjectArray** ppLeftDesktops, IObjectArray** ppRightDesktops) = 0;
@@ -204,7 +204,7 @@ namespace app::win11 {
 		virtual HRESULT __stdcall GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall MoveDesktop(IVirtualDesktop* pMoveDesktop, void* pUnknown, int nIndex) = 0;
 		virtual HRESULT __stdcall SwitchDesktop(IVirtualDesktop* pDesktop) = 0;
-		virtual HRESULT __stdcall CreateDesktop() = 0;
+		virtual HRESULT __stdcall CreateDesktop(void* pUnknown, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall RemoveDesktop(IVirtualDesktop* pRemoveDesktop, IVirtualDesktop* pFallbackDesktop) = 0;
 		virtual HRESULT __stdcall FindDesktop(winrt::guid desktopId, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop* pDesktop, IObjectArray** ppLeftDesktops, IObjectArray** ppRightDesktops) = 0;
@@ -227,7 +227,7 @@ namespace app::win11 {
 		virtual HRESULT __stdcall GetAdjacentDesktop(IVirtualDesktop* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall MoveDesktop(IVirtualDesktop* pMoveDesktop, void* pUnknown, int nIndex) = 0;
 		virtual HRESULT __stdcall SwitchDesktop(IVirtualDesktop* pDesktop) = 0;
-		virtual HRESULT __stdcall CreateDesktop() = 0;
+		virtual HRESULT __stdcall CreateDesktop(void* pUnknown, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall RemoveDesktop(IVirtualDesktop* pRemoveDesktop, IVirtualDesktop* pFallbackDesktop) = 0;
 		virtual HRESULT __stdcall FindDesktop(winrt::guid desktopId, IVirtualDesktop** ppDesktop) = 0;
 		virtual HRESULT __stdcall GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop* pDesktop, IObjectArray** ppLeftDesktops, IObjectArray** ppRightDesktops) = 0;
