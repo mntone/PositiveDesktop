@@ -1,11 +1,14 @@
 #include "pch.h"
 
+#include <unordered_map>
+
 #ifndef KEYLISTENERS_SINGLETON
 #include <set>
 #endif
 
 #include "KeyListenerService.h"
 
+app::lock_t app::keylistener::KeysListenerService::locker_;
 HHOOK app::keylistener::KeysListenerService::hHook_;
 #ifndef KEYLISTENERS_SINGLETON
 std::set<KeysListenerService*> app::keylistener::KeysListenerService::hooks_;
@@ -13,39 +16,76 @@ std::set<KeysListenerService*> app::keylistener::KeysListenerService::hooks_;
 app::keylistener::KeysListenerService* app::keylistener::KeysListenerService::hook_;
 #endif
 
-#include "kbevent_t.h"
-
 #define IsKeyPressed(__nVirtualKey) ((GetKeyState(__nVirtualKey) & 0x8000) != 0)
 
 using namespace app::keylistener;
 
 KeysListenerService::~KeysListenerService() {
-	KeysListenerService::removeHook(this);
+	if (suspending_) {
+		KeysListenerService::removeHook(this);
+	}
 }
 
 void KeysListenerService::initialize() {
+	app::storage::key_config_t config;
+	config.map.push_back({ kbe_exit, { 'X', 0x28 /* LCtrl+LWin */ } }); // Exit application.
+	config.map.push_back({ kbe_move_window_left, { VK_LEFT, 0x2A /* LCtrl+LWin+LAlt*/ } }); // Move window to the left desktop.
+	config.map.push_back({ kbe_move_window_right, { VK_RIGHT, 0x2A /* LCtrl+LWin+LAlt*/ } }); // Move window to the right desktop.
+	updateConfigPrivate(config);
+
 	KeysListenerService::addHook(this);
 }
 
-LRESULT KeysListenerService::KbdProc(HHOOK hHook, int nCode, WPARAM wParam, KBDLLHOOKSTRUCT const& kbdStruct, bool& handled) noexcept {
-	// Win+Ctrl+X: Exit application.
-	if ('X' == kbdStruct.vkCode && IsKeyPressed(VK_LCONTROL) && IsKeyPressed(VK_LWIN)) {
-		handled = true;
-		reps::next(subject_, kbe_exit);
-		return TRUE;
-	}
+void KeysListenerService::suspend() {
+	WINRT_ASSERT(!suspending_);
 
-	// Win+Ctrl+Alt+←: Move window to the left desktop.
-	if (VK_LEFT == kbdStruct.vkCode && IsKeyPressed(VK_LCONTROL) && IsKeyPressed(VK_LWIN) && IsKeyPressed(VK_LMENU)) {
-		handled = true;
-		reps::next(subject_, kbe_move_window_left);
-		return TRUE;
-	}
+	suspending_ = true;
+	KeysListenerService::removeHook(this);
+}
 
-	// Win+Ctrl+Alt+→: Move window to the right desktop.
-	if (VK_RIGHT == kbdStruct.vkCode && IsKeyPressed(VK_LCONTROL) && IsKeyPressed(VK_LWIN) && IsKeyPressed(VK_LMENU)) {
+void KeysListenerService::resume() {
+	WINRT_ASSERT(suspending_);
+
+	suspending_ = false;
+	KeysListenerService::addHook(this);
+}
+
+void KeysListenerService::updateConfig(app::storage::key_config_t const& config) noexcept {
+	if (suspending_) {
+		updateConfigPrivate(config);
+	} else {
+		KeysListenerService::removeHook(this);
+		updateConfigPrivate(config);
+		KeysListenerService::addHook(this);
+	}
+}
+
+void KeysListenerService::updateConfigPrivate(app::storage::key_config_t const& config) noexcept {
+	std::unordered_map<short, kbevent_t> keymap;
+	for (app::storage::keymap_t const& key : config.map) {
+		if (!key.key1.empty()) {
+			keymap.emplace(key.key1.raw, key.ev);
+		}
+		if (!key.key2.empty()) {
+			keymap.emplace(key.key2.raw, key.ev);
+		}
+	}
+	keymap_ = std::move(keymap);
+}
+
+LRESULT KeysListenerService::KbdProc(HHOOK /*hHook*/, int /*nCode*/, WPARAM /*wParam*/, KBDLLHOOKSTRUCT const& kbdStruct, bool& handled) noexcept {
+	short key { static_cast<char>(kbdStruct.vkCode) };
+	if (IsKeyPressed(VK_LCONTROL)) key |= 0x2000;
+	if (IsKeyPressed(VK_RCONTROL)) key |= 0x1000;
+	if (IsKeyPressed(VK_LWIN)) key |= 0x0800;
+	if (IsKeyPressed(VK_RWIN)) key |= 0x0400;
+	if (IsKeyPressed(VK_LMENU)) key |= 0x0200;
+	if (IsKeyPressed(VK_RMENU)) key |= 0x0100;
+
+	auto itr = keymap_.find(key);
+	if (itr != keymap_.end()) {
 		handled = true;
-		reps::next(subject_, kbe_move_window_right);
+		reps::next(subject_, itr->second);
 		return TRUE;
 	}
 	return FALSE;
@@ -54,6 +94,7 @@ LRESULT KeysListenerService::KbdProc(HHOOK hHook, int nCode, WPARAM wParam, KBDL
 #pragma region Static implementation
 
 void KeysListenerService::addHook(KeysListenerService* that) {
+	app::lock_guard<app::lock_t> lock { locker_ };
 #ifndef KEYLISTENERS_SINGLETON
 	if (hooks_.empty()) {
 		HHOOK hHook = SetWindowsHookExW(
@@ -81,6 +122,7 @@ void KeysListenerService::addHook(KeysListenerService* that) {
 }
 
 void KeysListenerService::removeHook(KeysListenerService* that) {
+	app::lock_guard<app::lock_t> lock { locker_ };
 #ifndef KEYLISTENERS_SINGLETON
 	auto itr = hooks_.find(that);
 	if (itr == hooks_.end()) {
