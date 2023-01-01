@@ -58,15 +58,6 @@ namespace app::ui {
 		winrt::PositiveDesktop::NotificationWindow window_;
 	};
 
-	inline winrt::hstring GetResourceNameFromType(NotificationPresenterType type) noexcept {
-		switch (type) {
-		case NotificationPresenterType::Changed:
-			return L"Notification_Caption_VirtualDesktopChanged";
-		default:
-			return L"Notification_Caption_Unknown";
-		}
-	}
-
 }
 
 using namespace app::storage;
@@ -107,7 +98,7 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 	}
 
 	// Set data
-	winrt::hstring captionKey { GetResourceNameFromType(data.type) };
+	winrt::hstring captionKey { L"Notification_Caption_VirtualDesktopChanged" };
 	winrt::hstring caption { resources_.GetValue(captionKey).ValueAsString() };
 	winrt::hstring message { GetFormatDesktopMessage(data) };
 	NotificationWindowViewModel viewModel = winrt::make<implementation::NotificationWindowViewModel>(caption, message);

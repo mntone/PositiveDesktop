@@ -106,6 +106,16 @@
     <ClInclude Include="Common\lock_t.h" />
     <ClInclude Include="Common\Reps.h" />
     <ClInclude Include="Common\RepsBase.h" />
+    <ClInclude Include="Common\RepsUtil.h" />
+    <ClInclude Include="Common\VirtualDesktop.h" />
+    <ClInclude Include="Services\Desktops\vdevent_t.h" />
+    <ClInclude Include="Services\Desktops\DesktopService.h" />
+    <ClInclude Include="Services\Desktops\Private\VirtualDesktopDelegate.h" />
+    <ClInclude Include="Services\Desktops\Private\VirtualDesktopManagerInternalDelegate.h" />
+    <ClInclude Include="Services\Desktops\Private\VirtualDesktopNotificationListener10240.h" />
+    <ClInclude Include="Services\Desktops\Private\VirtualDesktopNotificationListener21359.h" />
+    <ClInclude Include="Services\Desktops\VirtualDesktopInterface.h" />
+    <ClInclude Include="Services\Desktops\VirtualDesktopCache.h" />
     <ClInclude Include="Services\KeyListeners\kbevent_t.h" />
     <ClInclude Include="Services\KeyListeners\KeyListenerService.h" />
   </ItemGroup>
@@ -114,6 +124,11 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Common\Reps.cpp" />
+    <ClCompile Include="Services\Desktops\DesktopService.cpp" />
+    <ClCompile Include="Services\Desktops\VirtualDesktopCache.cpp" />
+    <ClCompile Include="Services\Desktops\Private\VirtualDesktopManagerInternalDelegate.cpp" />
+    <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener10240.cpp" />
+    <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener21359.cpp" />
     <ClCompile Include="Services\KeyListeners\KeyListenerService.cpp" />
   </ItemGroup>
   <ItemGroup>

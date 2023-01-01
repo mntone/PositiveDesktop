@@ -8,6 +8,8 @@
 #include "Services/KeyListeners/KeyListenerService.h"
 #include "Services/Desktops/DesktopService.h"
 
+#include "UI/NotificationPresenter.h"
+
 namespace app {
 
 	class app_t final: public message_service_t<app::keylistener::kbevent_t>, reps::observer_t {

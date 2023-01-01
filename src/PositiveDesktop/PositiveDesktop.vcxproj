@@ -131,16 +131,10 @@
     </ClInclude>
     <ClInclude Include="Common\Math.h" />
     <ClInclude Include="Common\message_service_t.h" />
-    <ClInclude Include="Common\VirtualDesktop.h" />
     <ClInclude Include="NotificationWindow.xaml.h">
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Services\app_t.h" />
-    <ClInclude Include="Services\Desktops\vdevent_t.h" />
-    <ClInclude Include="Services\Desktops\DesktopService.h" />
-    <ClInclude Include="Services\Desktops\DesktopServiceImpl.h" />
-    <ClInclude Include="Services\Desktops\DesktopServiceImplWin10.h" />
-    <ClInclude Include="Services\Desktops\DesktopServiceImplWin11.h" />
     <ClInclude Include="Services\Storages\config_t.h" />
     <ClInclude Include="Services\Storages\WinRTConfigManager.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />
@@ -168,9 +162,6 @@
       <DependentUpon>NotificationWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="Services\app_t.cpp" />
-    <ClCompile Include="Services\Desktops\DesktopService.cpp" />
-    <ClCompile Include="Services\Desktops\DesktopServiceImplWin10.cpp" />
-    <ClCompile Include="Services\Desktops\DesktopServiceImplWin11.cpp" />
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>

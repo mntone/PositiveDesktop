@@ -1,12 +1,28 @@
 #include "pch.h"
 #include "app_t.h"
 
+#include "Common/RepsUtil.h"
+
+#include "Services/Desktops/vdevent_t.h"
+#include "Services/Storages/WinRTConfigManager.h"
+
+#include "UI/NotificationPresenterWinUI3.h"
+
 using namespace app;
 
 template<typename T>
+void release(T*& ptr, typename std::enable_if_t<!std::is_base_of_v<reps::observable_t, T>, std::nullptr_t> = nullptr) {
+	T* ptr2 = std::exchange(ptr, nullptr);
+	if (ptr2) {
+		delete ptr2;
+	}
+}
+
+template<typename T, typename std::enable_if_t<std::is_base_of_v<reps::observable_t, T>, std::nullptr_t> = nullptr>
 void release(T*& ptr) {
 	T* ptr2 = std::exchange(ptr, nullptr);
 	if (ptr2) {
+		ptr2->clearObserver();
 		delete ptr2;
 	}
 }
@@ -32,9 +48,6 @@ app_t::~app_t() noexcept {
 	release(presenter_);
 	release(configManager_);
 }
-
-#include "Storages/WinRTConfigManager.h"
-#include "UI/NotificationPresenterWinUI3.h"
 
 void app_t::initialize() {
 	// Retrieve OS Version
@@ -65,7 +78,24 @@ void app_t::initialize() {
 	keysLitener_->initialize();
 
 	// Init desktop service
-	desktop_ = new desktop::DesktopService(presenter_);
+	desktop_ = new desktop::DesktopService();
+	desktop_->addObserver(*new reps::dangerous_listener_t([this](reps::bag_t const& value) {
+		if (value.hr < 0) {
+			// error
+			return;
+		}
+
+		desktop::vdevent_t ev = reps::data<desktop::vdevent_t>(value);
+		switch (ev.type) {
+		case desktop::vde_changed:
+			ui::NotificationPresenterData data {
+				ev.index,
+				ev.name,
+			};
+			presenter_->show(std::move(data));
+			break;
+		}
+	}));
 	desktop_->initialize(osver.dwBuildNumber);
 
 	// Start message service

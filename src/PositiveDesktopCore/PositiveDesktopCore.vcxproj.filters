@@ -5,6 +5,21 @@
     <ClCompile Include="Common\Reps.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="Services\Desktops\DesktopService.cpp">
+      <Filter>Services\Desktops</Filter>
+    </ClCompile>
+    <ClCompile Include="Services\Desktops\Private\VirtualDesktopManagerInternalDelegate.cpp">
+      <Filter>Services\Desktops\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener10240.cpp">
+      <Filter>Services\Desktops\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener21359.cpp">
+      <Filter>Services\Desktops\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Services\Desktops\VirtualDesktopCache.cpp">
+      <Filter>Services\Desktops</Filter>
+    </ClCompile>
     <ClCompile Include="Services\KeyListeners\KeyListenerService.cpp">
       <Filter>Services\KeyListeners</Filter>
     </ClCompile>
@@ -27,11 +42,41 @@
     <ClInclude Include="Common\RepsBase.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Common\VirtualDesktop.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Desktops\DesktopService.h">
+      <Filter>Services\Desktops</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Desktops\Private\VirtualDesktopDelegate.h">
+      <Filter>Services\Desktops\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Desktops\Private\VirtualDesktopManagerInternalDelegate.h">
+      <Filter>Services\Desktops\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Desktops\Private\VirtualDesktopNotificationListener10240.h">
+      <Filter>Services\Desktops\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Desktops\Private\VirtualDesktopNotificationListener21359.h">
+      <Filter>Services\Desktops\Private</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Desktops\vdevent_t.h">
+      <Filter>Services\Desktops</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Desktops\VirtualDesktopCache.h">
+      <Filter>Services\Desktops</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Desktops\VirtualDesktopInterface.h">
+      <Filter>Services\Desktops</Filter>
+    </ClInclude>
     <ClInclude Include="Services\KeyListeners\kbevent_t.h">
       <Filter>Services\KeyListeners</Filter>
     </ClInclude>
     <ClInclude Include="Services\KeyListeners\KeyListenerService.h">
       <Filter>Services\KeyListeners</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\RepsUtil.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +85,12 @@
     </Filter>
     <Filter Include="Services">
       <UniqueIdentifier>{b06c1b3c-3a1f-4a67-83f8-c1f405ed62b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services\Desktops">
+      <UniqueIdentifier>{39b010b6-0fad-430f-9591-3629c79da5fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services\Desktops\Private">
+      <UniqueIdentifier>{cb93361d-2878-4df2-88c7-c39fb03096df}</UniqueIdentifier>
     </Filter>
     <Filter Include="Services\KeyListeners">
       <UniqueIdentifier>{14bc6c18-65b0-4707-b5ee-8f9d8922a8bd}</UniqueIdentifier>

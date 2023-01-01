@@ -7,13 +7,7 @@ namespace app::ui {
 		Windows11,
 	};
 
-	enum class NotificationPresenterType {
-		Changed,
-		Renamed,
-	};
-
 	struct NotificationPresenterData {
-		NotificationPresenterType type;
 		int index;
 		winrt::hstring name;
 	};

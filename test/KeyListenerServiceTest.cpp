@@ -2,25 +2,13 @@
 #include "Services/KeyListeners/kbevent_t.h"
 #include "Services/KeyListeners/KeyListenerService.h"
 
+#include "Common/RepsUtil.h"
+
 using namespace app::keylistener;
 
 #include <array>
-#include <functional>
 #include <memory>
 #include <type_traits>
-
-class listener_t final: public reps::observer_t {
-public:
-	listener_t(std::function<void(reps::bag_t const&)> callback) noexcept: callback_(callback) { }
-
-private:
-	void FASTCALL on(reps::bag_t const& value) noexcept override {
-		callback_(value);
-	}
-
-private:
-	std::function<void(reps::bag_t const&)> callback_;
-};
 
 constexpr bool IsExtendedKey(unsigned char virtualKey) {
 	constexpr std::array<unsigned char, 11> extendedKey {
@@ -71,7 +59,7 @@ constexpr void AddAllKeysUp(Container& c) {
 
 TEST(KeyListener, ExitApp) {
 	std::unique_ptr<KeysListenerService> service = std::make_unique<KeysListenerService>();
-	listener_t listener([](reps::bag_t const& value) {
+	reps::listener_t listener([](reps::bag_t const& value) {
 		kbevent_t kbe = reps::data<kbevent_t>(value);
 		EXPECT_EQ(kbe, kbe_exit);
 		SUCCEED() << "Receive \"kbe_exit\".";
@@ -90,7 +78,7 @@ TEST(KeyListener, ExitApp) {
 
 TEST(KeyListener, DuplicateKey) {
 	std::unique_ptr<KeysListenerService> service = std::make_unique<KeysListenerService>();
-	listener_t listener([](reps::bag_t const& value) {
+	reps::listener_t listener([](reps::bag_t const& value) {
 		static int i = 0;
 
 		kbevent_t kbe = reps::data<kbevent_t>(value);
@@ -114,7 +102,7 @@ TEST(KeyListener, DuplicateKey) {
 
 TEST(KeyListener, MoveLeft) {
 	std::unique_ptr<KeysListenerService> service = std::make_unique<KeysListenerService>();
-	listener_t listener([](reps::bag_t const& value) {
+	reps::listener_t listener([](reps::bag_t const& value) {
 		kbevent_t kbe = reps::data<kbevent_t>(value);
 		EXPECT_EQ(kbe, kbe_move_window_and_switch_left);
 		SUCCEED() << "Receive \"kbe_move_window_and_switch_left\".";

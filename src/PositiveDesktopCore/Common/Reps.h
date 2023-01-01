@@ -72,6 +72,7 @@ namespace reps {
 
 		inline void clearObserver() noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
+			complete();
 			_clearObserver();
 		}
 
@@ -90,6 +91,7 @@ namespace reps {
 
 		inline void clearObserver() noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
+			complete();
 			_clearObserver();
 		}
 
@@ -115,6 +117,7 @@ namespace reps {
 
 		inline void clearObserver() noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
+			complete();
 			_clearObserver();
 		}
 
@@ -141,6 +144,7 @@ namespace reps {
 
 		inline void clearObserver() noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
+			complete();
 			_clearObserver();
 		}
 

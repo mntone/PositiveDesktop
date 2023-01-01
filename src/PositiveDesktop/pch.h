@@ -2,6 +2,7 @@
 #include "shared.h"
 
 #define WIN32_LEAN_AND_MEAN
+#define WINRT_LEAN_AND_MEAN
 
 // Unused definition
 #define NOGDICAPMASKS
