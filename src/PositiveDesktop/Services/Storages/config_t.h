@@ -69,7 +69,7 @@ namespace app::storage {
 #pragma pack()
 	};
 
-	inline float actualDuration(unsigned int packedDuration, float parentDuration = 3.0f) noexcept {
+	constexpr float actualDuration(unsigned int packedDuration, float parentDuration = 3.0f) noexcept {
 		if (packedDuration >= 3) {
 			return 0.5f * static_cast<float>(packedDuration - 3);
 		} else {
@@ -81,7 +81,7 @@ namespace app::storage {
 		}
 	}
 
-	inline unsigned int packedDuration(float actualDuration) noexcept {
+	constexpr unsigned int packedDuration(float actualDuration) noexcept {
 		if (0.125 < actualDuration && actualDuration < 0.375) {
 			return 1;
 		} else if (0.625 < actualDuration && actualDuration < 0.875) {
@@ -91,7 +91,7 @@ namespace app::storage {
 		}
 	}
 
-	inline float actualPosition(unsigned int packedPosition, float parentPosition = 0.5) noexcept {
+	constexpr float actualPosition(unsigned int packedPosition, float parentPosition = 0.5) noexcept {
 		if (packedPosition >= 3) {
 			return 0.25f * static_cast<float>(packedPosition - 3);
 		} else {
@@ -99,8 +99,8 @@ namespace app::storage {
 		}
 	}
 
-	inline unsigned int packedPosition(float actualPosition) noexcept {
-		return std::min(31u, static_cast<unsigned int>(std::lround(4.f * actualPosition)) + 3u);
+	constexpr unsigned int packedPosition(float actualPosition) noexcept {
+		return std::min(7u, static_cast<unsigned int>(std::lround(4.f * actualPosition)) + 3u);
 	}
 
 	enum override_mode_t: unsigned int {
