@@ -30,7 +30,7 @@ namespace app {
 
 namespace app {
 
-	struct __declspec(align(16)) int32x2_t final {
+	struct int32x2_t final {
 		int32_t x;
 		int32_t y;
 
@@ -463,7 +463,7 @@ namespace app {
 #endif
 	};
 
-	struct __declspec(align(16)) float2 final {
+	struct float2 final {
 		float x;
 		float y;
 
