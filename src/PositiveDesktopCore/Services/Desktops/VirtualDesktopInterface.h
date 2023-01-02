@@ -5,8 +5,6 @@ namespace app::desktop {
 	struct IVirtualDesktopDelegate {
 		virtual ~IVirtualDesktopDelegate() = default;
 
-		virtual void DeletePointer() noexcept = 0;
-
 		virtual int Index() const noexcept = 0;
 		virtual void Index(int value) noexcept = 0;
 

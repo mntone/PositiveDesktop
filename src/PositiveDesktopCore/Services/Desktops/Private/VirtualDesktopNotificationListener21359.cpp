@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "VirtualDesktopNotificationListener21359.h"
 
+#include "VirtualDesktopDelegate.h"
+
 using namespace app::desktop;
 
 HRESULT VirtualDesktopNotificationListener21359::VirtualDesktopCreated(IObjectArray* /*pArray*/, IVirtualDesktop20231* pDesktop) {
@@ -22,9 +24,11 @@ HRESULT VirtualDesktopNotificationListener21359::VirtualDesktopDestroyFailed(IOb
 
 HRESULT VirtualDesktopNotificationListener21359::VirtualDesktopDestroyed(IObjectArray* /*pArray*/, IVirtualDesktop20231* pDesktopDestroyed, IVirtualDesktop20231* /*pDesktopFallback*/) {
 	IVirtualDesktopDelegate* delegate { nullptr };
-	HRESULT hr = cache_->FromInterface(pDesktopDestroyed, &delegate);
+	HRESULT hr = cache_->DetachDelegate(pDesktopDestroyed, &delegate);
 	if (SUCCEEDED(hr)) {
-		delegate->DeletePointer();
+		VirtualDesktopDelegate20231* native = reinterpret_cast<VirtualDesktopDelegate20231*>(delegate);
+		native->ForceCache();
+		native->DeletePointer();
 		hr = callback_->VirtualDesktopDestroyed(delegate);
 	}
 	return hr;

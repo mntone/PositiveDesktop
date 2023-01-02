@@ -13,7 +13,7 @@ namespace app::desktop {
 			DeletePointer();
 		}
 
-		inline void DeletePointer() noexcept override {
+		inline void DeletePointer() noexcept {
 			IVirtualDesktop* iface = std::exchange(iface_, nullptr);
 			if (iface) {
 				iface->Release();
@@ -41,27 +41,30 @@ namespace app::desktop {
 			DeletePointer();
 		}
 
-		inline void DeletePointer() noexcept override {
+		inline void DeletePointer() noexcept {
 			IVirtualDesktop2* iface = std::exchange(iface_, nullptr);
 			if (iface) {
 				iface->Release();
 			}
+		}
+		inline void ForceCache() noexcept {
+			if (!iface_ || cachedName_) return;
+
+			winrt::hstring name;
+			{
+				HSTRING abiName;
+				winrt::check_hresult(iface_->GetName(&abiName));
+				winrt::attach_abi(name, abiName);
+			}
+			name_ = std::move(name);
+			cachedName_ = true;
 		}
 
 		constexpr int Index() const noexcept override { return index_; }
 		constexpr void Index(int value) noexcept { index_ = value; }
 
 		inline winrt::hstring Name() override {
-			if (!cachedName_) {
-				winrt::hstring name;
-				{
-					HSTRING abiName;
-					winrt::check_hresult(iface_->GetName(&abiName));
-					winrt::attach_abi(name, abiName);
-				}
-				name_ = std::move(name);
-				cachedName_ = true;
-			}
+			ForceCache();
 			return name_;
 		}
 		inline void Name(HSTRING value) override {
@@ -85,27 +88,30 @@ namespace app::desktop {
 			DeletePointer();
 		}
 
-		inline void DeletePointer() noexcept override {
+		inline void DeletePointer() noexcept {
 			IVirtualDesktop20231* iface = std::exchange(iface_, nullptr);
 			if (iface) {
 				iface->Release();
 			}
+		}
+		inline void ForceCache() {
+			if (!iface_ || cachedName_) return;
+
+			winrt::hstring name;
+			{
+				HSTRING abiName;
+				winrt::check_hresult(iface_->GetName(&abiName));
+				winrt::attach_abi(name, abiName);
+			}
+			name_ = std::move(name);
+			cachedName_ = true;
 		}
 
 		constexpr int Index() const noexcept override { return index_; }
 		constexpr void Index(int value) noexcept { index_ = value; }
 
 		inline winrt::hstring Name() override {
-			if (!cachedName_) {
-				winrt::hstring name;
-				{
-					HSTRING abiName;
-					winrt::check_hresult(iface_->GetName(&abiName));
-					winrt::attach_abi(name, abiName);
-				}
-				name_ = std::move(name);
-				cachedName_ = true;
-			}
+			ForceCache();
 			return name_;
 		}
 		inline void Name(HSTRING value) override {

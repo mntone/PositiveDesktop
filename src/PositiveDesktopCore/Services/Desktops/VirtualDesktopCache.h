@@ -1,4 +1,5 @@
 #pragma once
+#include "Common/lock_t.h"
 #include "Common/VirtualDesktop.h"
 #include "VirtualDesktopInterface.h"
 
@@ -24,12 +25,15 @@ namespace app::desktop {
 
 		HRESULT MoveDelegate(IVirtualDesktop20231* iface, int nFromIndex, int nToIndex, IVirtualDesktopDelegate** ppDelegate) noexcept;
 
-		IVirtualDesktopDelegate* DeleteDelegate(IVirtualDesktop* iface);
-		IVirtualDesktopDelegate* DeleteDelegate(IVirtualDesktop2* iface);
-		IVirtualDesktopDelegate* DeleteDelegate(IVirtualDesktop20231* iface);
+		HRESULT DetachDelegate(IVirtualDesktop* iface, IVirtualDesktopDelegate** ppDesktop) noexcept;
+		HRESULT DetachDelegate(IVirtualDesktop2* iface, IVirtualDesktopDelegate** ppDesktop) noexcept;
+		HRESULT DetachDelegate(IVirtualDesktop20231* iface, IVirtualDesktopDelegate** ppDesktop) noexcept;
 
 	private:
-		std::unordered_map<winrt::guid, IVirtualDesktopDelegate*> cache_;
+		using container_type = std::unordered_map<winrt::guid, IVirtualDesktopDelegate*>;
+
+		app::lock_t locker_;
+		container_type cache_;
 	};
 
 }
