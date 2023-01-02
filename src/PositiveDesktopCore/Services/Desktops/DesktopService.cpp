@@ -5,6 +5,7 @@
 #include "Private/VirtualDesktopDelegate.h"
 #include "Private/VirtualDesktopManagerInternalDelegate.h"
 #include "Private/VirtualDesktopNotificationListener10240.h"
+#include "Private/VirtualDesktopNotificationListener20231.h"
 #include "Private/VirtualDesktopNotificationListener21359.h"
 
 namespace app::desktop {
@@ -89,12 +90,18 @@ void DesktopService::initialize(uint32_t build) {
 		com_ptr<VirtualDesktopNotificationListener21359> listener = make_self<VirtualDesktopNotificationListener21359>(cache_, this);
 		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification21359>().get(), &cookie_));
 		listener_ = listener.detach();
-	} else if (20231 > build && build >= 10159 /* general Windows 10 */) {
+	} else if (build >= 20231 /* Windows 10 Insider */) {
+		com_ptr<VirtualDesktopNotificationListener20231> listener = make_self<VirtualDesktopNotificationListener20231>(cache_, this);
+		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification20241>().get(), &cookie_));
+		listener_ = listener.detach();
+	} else if (build >= 20211) {
+		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
+	} else if (build >= 10159 /* general Windows 10 */) {
 		com_ptr<VirtualDesktopNotificationListener10240> listener = make_self<VirtualDesktopNotificationListener10240>(cache_, this);
 		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification2>().get(), &cookie_));
 		listener_ = listener.detach();
 	} else {
-		winrt::throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
+		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
 	}
 
 	check_hresult(virtualDesktopManagerDelegate_->LoadDesktops());
