@@ -171,15 +171,15 @@ namespace app::desktop {
 
 	// Supported OS: Build 21313 and later
 	struct __declspec(uuid("B2F925B9-5A0F-4D2E-9F4D-2B1507593C10")) IVirtualDesktopManagerInternal21313: public IUnknown {
-		virtual HRESULT __stdcall GetCount(int* pCount) = 0;
+		virtual HRESULT __stdcall GetCount(void* pUnknown, int* pCount) = 0;
 		virtual HRESULT __stdcall MoveViewToDesktop(IUnknown* pView, IVirtualDesktop20231* pDesktop) = 0;
 		virtual HRESULT __stdcall CanViewMoveDesktops(IUnknown* pView, BOOL* bCanMove) = 0;
 		virtual HRESULT __stdcall GetCurrentDesktop(void* pUnknown, IVirtualDesktop20231** ppDesktop) = 0;
 		virtual HRESULT __stdcall GetDesktops(void* pUnknown, IObjectArray** ppArray) = 0;
 		virtual HRESULT __stdcall GetAdjacentDesktop(IVirtualDesktop20231* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop20231** ppDesktop) = 0;
-		virtual HRESULT __stdcall MoveDesktop(IVirtualDesktop20231* pMoveDesktop, void* pUnknown, int nIndex) = 0; // Add this in build 21313
-		virtual HRESULT __stdcall SwitchDesktop(IVirtualDesktop20231* pDesktop) = 0;
+		virtual HRESULT __stdcall SwitchDesktop(void* pUnknown, IVirtualDesktop20231* pDesktop) = 0;
 		virtual HRESULT __stdcall CreateDesktop(void* pUnknown, IVirtualDesktop20231** ppDesktop) = 0;
+		virtual HRESULT __stdcall MoveDesktop(IVirtualDesktop20231* pMoveDesktop, void* pUnknown, int nIndex) = 0; // Add this in build 21313
 		virtual HRESULT __stdcall RemoveDesktop(IVirtualDesktop20231* pRemoveDesktop, IVirtualDesktop20231* pFallbackDesktop) = 0;
 		virtual HRESULT __stdcall FindDesktop(winrt::guid desktopId, IVirtualDesktop20231** ppDesktop) = 0;
 		virtual HRESULT __stdcall GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop20231* pDesktop, IObjectArray** ppLeftDesktops, IObjectArray** ppRightDesktops) = 0;
@@ -199,16 +199,16 @@ namespace app::desktop {
 	// Supported OS: Build 22449 and later
 	// - [22621] Windows 11 Version 22H2
 	struct __declspec(uuid("B2F925B9-5A0F-4D2E-9F4D-2B1507593C10")) IVirtualDesktopManagerInternal22449: public IUnknown {
-		virtual HRESULT __stdcall GetCount(int* pCount) = 0;
+		virtual HRESULT __stdcall GetCount(void* pUnknown, int* pCount) = 0;
 		virtual HRESULT __stdcall MoveViewToDesktop(IUnknown* pView, IVirtualDesktop20231* pDesktop) = 0;
 		virtual HRESULT __stdcall CanViewMoveDesktops(IUnknown* pView, BOOL* bCanMove) = 0;
 		virtual HRESULT __stdcall GetCurrentDesktop(void* pUnknown, IVirtualDesktop20231** ppDesktop) = 0;
 		virtual HRESULT __stdcall GetAllCurrentDesktops(IObjectArray** ppArray) = 0; // Add this in build 22449
 		virtual HRESULT __stdcall GetDesktops(void* pUnknown, IObjectArray** ppArray) = 0;
 		virtual HRESULT __stdcall GetAdjacentDesktop(IVirtualDesktop20231* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop20231** ppDesktop) = 0;
-		virtual HRESULT __stdcall MoveDesktop(IVirtualDesktop20231* pMoveDesktop, void* pUnknown, int nIndex) = 0;
-		virtual HRESULT __stdcall SwitchDesktop(IVirtualDesktop20231* pDesktop) = 0;
+		virtual HRESULT __stdcall SwitchDesktop(void* pUnknown, IVirtualDesktop20231* pDesktop) = 0;
 		virtual HRESULT __stdcall CreateDesktop(void* pUnknown, IVirtualDesktop20231** ppDesktop) = 0;
+		virtual HRESULT __stdcall MoveDesktop(IVirtualDesktop20231* pMoveDesktop, void* pUnknown, int nIndex) = 0;
 		virtual HRESULT __stdcall RemoveDesktop(IVirtualDesktop20231* pRemoveDesktop, IVirtualDesktop20231* pFallbackDesktop) = 0;
 		virtual HRESULT __stdcall FindDesktop(winrt::guid desktopId, IVirtualDesktop20231** ppDesktop) = 0;
 		virtual HRESULT __stdcall GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop20231* pDesktop, IObjectArray** ppLeftDesktops, IObjectArray** ppRightDesktops) = 0;

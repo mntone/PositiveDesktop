@@ -87,11 +87,11 @@ void DesktopService::initialize(uint32_t build) {
 
 	if (build >= 21359 /* Windows 10 Insider, Windows 11 */) {
 		com_ptr<VirtualDesktopNotificationListener21359> listener = make_self<VirtualDesktopNotificationListener21359>(cache_, this);
-		check_hresult(virtualDesktopNotificationService_->Register(listener.try_as<IUnknown>().get(), &cookie_));
+		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification21359>().get(), &cookie_));
 		listener_ = listener.detach();
 	} else if (20231 > build && build >= 10159 /* general Windows 10 */) {
 		com_ptr<VirtualDesktopNotificationListener10240> listener = make_self<VirtualDesktopNotificationListener10240>(cache_, this);
-		check_hresult(virtualDesktopNotificationService_->Register(listener.try_as<IUnknown>().get(), &cookie_));
+		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification2>().get(), &cookie_));
 		listener_ = listener.detach();
 	} else {
 		winrt::throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);

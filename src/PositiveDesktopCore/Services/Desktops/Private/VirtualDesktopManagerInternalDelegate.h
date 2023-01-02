@@ -193,7 +193,7 @@ namespace app::desktop {
 
 		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) noexcept override {
 			WINRT_ASSERT(iface_);
-			return iface_->SwitchDesktop(reinterpret_cast<VirtualDesktopDelegate20231*>(pDesktop)->iface());
+			return iface_->SwitchDesktop(nullptr, reinterpret_cast<VirtualDesktopDelegate20231*>(pDesktop)->iface());
 		}
 
 		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {
@@ -263,7 +263,7 @@ namespace app::desktop {
 
 		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) noexcept override {
 			WINRT_ASSERT(iface_);
-			return iface_->SwitchDesktop(reinterpret_cast<VirtualDesktopDelegate20231*>(pDesktop)->iface());
+			return iface_->SwitchDesktop(nullptr, reinterpret_cast<VirtualDesktopDelegate20231*>(pDesktop)->iface());
 		}
 
 		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {
@@ -333,7 +333,7 @@ namespace app::desktop {
 
 		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) noexcept override {
 			WINRT_ASSERT(iface_);
-			return iface_->SwitchDesktop(reinterpret_cast<VirtualDesktopDelegate20231*>(pDesktop)->iface());
+			return iface_->SwitchDesktop(nullptr, reinterpret_cast<VirtualDesktopDelegate20231*>(pDesktop)->iface());
 		}
 
 		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {

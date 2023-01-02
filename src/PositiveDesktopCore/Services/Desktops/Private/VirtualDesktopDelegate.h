@@ -16,7 +16,7 @@ namespace app::desktop {
 		inline void DeletePointer() noexcept override {
 			IVirtualDesktop* iface = std::exchange(iface_, nullptr);
 			if (iface) {
-				iface_->Release();
+				iface->Release();
 			}
 		}
 
@@ -44,7 +44,7 @@ namespace app::desktop {
 		inline void DeletePointer() noexcept override {
 			IVirtualDesktop2* iface = std::exchange(iface_, nullptr);
 			if (iface) {
-				iface_->Release();
+				iface->Release();
 			}
 		}
 
@@ -58,9 +58,9 @@ namespace app::desktop {
 					HSTRING abiName;
 					winrt::check_hresult(iface_->GetDesktopName(&abiName));
 					winrt::attach_abi(name, abiName);
-					cachedName_ = true;
 				}
 				name_ = std::move(name);
+				cachedName_ = true;
 			}
 			return name_;
 		}
@@ -88,7 +88,7 @@ namespace app::desktop {
 		inline void DeletePointer() noexcept override {
 			IVirtualDesktop20231* iface = std::exchange(iface_, nullptr);
 			if (iface) {
-				iface_->Release();
+				iface->Release();
 			}
 		}
 
@@ -102,9 +102,9 @@ namespace app::desktop {
 					HSTRING abiName;
 					winrt::check_hresult(iface_->GetDesktopName(&abiName));
 					winrt::attach_abi(name, abiName);
-					cachedName_ = true;
 				}
 				name_ = std::move(name);
+				cachedName_ = true;
 			}
 			return name_;
 		}
