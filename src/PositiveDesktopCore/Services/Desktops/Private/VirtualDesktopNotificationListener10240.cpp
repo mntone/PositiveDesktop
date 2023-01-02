@@ -43,12 +43,12 @@ HRESULT VirtualDesktopNotificationListener10240::CurrentVirtualDesktopChanged(IV
 	return hr;
 }
 
-HRESULT VirtualDesktopNotificationListener10240::VirtualDesktopRenamed(IVirtualDesktop2* pDesktop, HSTRING abiName) {
+HRESULT VirtualDesktopNotificationListener10240::VirtualDesktopNameChanged(IVirtualDesktop2* pDesktop, HSTRING abiName) {
 	IVirtualDesktopDelegate* delegate { nullptr };
 	HRESULT hr = cache_->FromInterface(pDesktop, &delegate);
 	if (SUCCEEDED(hr)) {
 		delegate->Name(abiName);
-		hr = callback_->VirtualDesktopRenamed(delegate);
+		hr = callback_->VirtualDesktopNameChanged(delegate);
 	}
 	return hr;
 }

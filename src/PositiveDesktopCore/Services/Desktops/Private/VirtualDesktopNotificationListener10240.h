@@ -20,7 +20,7 @@ namespace app::desktop {
 		IFACEMETHOD(CurrentVirtualDesktopChanged)(IVirtualDesktop* pDesktopOld, IVirtualDesktop* pDesktopNew);
 
 		// - IVirtualDesktopNotification2
-		IFACEMETHOD(VirtualDesktopRenamed)(IVirtualDesktop2* pDesktop, HSTRING name);
+		IFACEMETHOD(VirtualDesktopNameChanged)(IVirtualDesktop2* pDesktop, HSTRING name);
 
 	private:
 		std::shared_ptr<VirtualDesktopCache> cache_;

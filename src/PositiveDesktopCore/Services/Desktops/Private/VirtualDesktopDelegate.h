@@ -56,7 +56,7 @@ namespace app::desktop {
 				winrt::hstring name;
 				{
 					HSTRING abiName;
-					winrt::check_hresult(iface_->GetDesktopName(&abiName));
+					winrt::check_hresult(iface_->GetName(&abiName));
 					winrt::attach_abi(name, abiName);
 				}
 				name_ = std::move(name);
@@ -100,7 +100,7 @@ namespace app::desktop {
 				winrt::hstring name;
 				{
 					HSTRING abiName;
-					winrt::check_hresult(iface_->GetDesktopName(&abiName));
+					winrt::check_hresult(iface_->GetName(&abiName));
 					winrt::attach_abi(name, abiName);
 				}
 				name_ = std::move(name);

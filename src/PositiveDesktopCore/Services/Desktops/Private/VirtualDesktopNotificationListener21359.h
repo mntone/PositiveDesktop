@@ -16,9 +16,9 @@ namespace app::desktop {
 		IFACEMETHOD(VirtualDesktopDestroyBegin)(IObjectArray* pArray, IVirtualDesktop20231* pDesktopDestroyed, IVirtualDesktop20231* pDesktopFallback);
 		IFACEMETHOD(VirtualDesktopDestroyFailed)(IObjectArray* pArray, IVirtualDesktop20231* pDesktopDestroyed, IVirtualDesktop20231* pDesktopFallback);
 		IFACEMETHOD(VirtualDesktopDestroyed)(IObjectArray* pArray, IVirtualDesktop20231* pDesktopDestroyed, IVirtualDesktop20231* pDesktopFallback);
-		IFACEMETHOD(Unknown1)(int nUnknown);
+		IFACEMETHOD(VirtualDesktopIsPerMonitorChanged)(BOOL bPerMonitor);
 		IFACEMETHOD(VirtualDesktopMoved)(IObjectArray* pArray, IVirtualDesktop20231* pDesktop, int nFromIndex, int nToIndex);
-		IFACEMETHOD(VirtualDesktopRenamed)(IVirtualDesktop20231* pDesktop, HSTRING name);
+		IFACEMETHOD(VirtualDesktopNameChanged)(IVirtualDesktop20231* pDesktop, HSTRING name);
 		IFACEMETHOD(ViewVirtualDesktopChanged)(IUnknown* pView);
 		IFACEMETHOD(CurrentVirtualDesktopChanged)(IObjectArray* pArray, IVirtualDesktop20231* pDesktopOld, IVirtualDesktop20231* pDesktopNew);
 		IFACEMETHOD(VirtualDesktopWallpaperChanged)(IVirtualDesktop20231* pDesktop, HSTRING path);

@@ -216,7 +216,7 @@ HRESULT DesktopService::VirtualDesktopMoved(IVirtualDesktopDelegate* pDesktop, i
 	return err.code();
 }
 
-HRESULT DesktopService::VirtualDesktopRenamed(IVirtualDesktopDelegate* pDesktop) noexcept try {
+HRESULT DesktopService::VirtualDesktopNameChanged(IVirtualDesktopDelegate* pDesktop) noexcept try {
 	vdevent_t data {
 		vde_renamed,
 		0,

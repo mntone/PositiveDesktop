@@ -30,16 +30,16 @@ HRESULT VirtualDesktopNotificationListener20231::VirtualDesktopDestroyed(IVirtua
 	return hr;
 }
 
-HRESULT VirtualDesktopNotificationListener20231::Unknown1(int /*nUnknown*/) {
+HRESULT VirtualDesktopNotificationListener20231::VirtualDesktopIsPerMonitorChanged(BOOL /*bPerMonitor*/) {
 	return S_OK;
 }
 
-HRESULT VirtualDesktopNotificationListener20231::VirtualDesktopRenamed(IVirtualDesktop20231* pDesktop, HSTRING abiName) {
+HRESULT VirtualDesktopNotificationListener20231::VirtualDesktopNameChanged(IVirtualDesktop20231* pDesktop, HSTRING abiName) {
 	IVirtualDesktopDelegate* delegate { nullptr };
 	HRESULT hr = cache_->FromInterface(pDesktop, &delegate);
 	if (SUCCEEDED(hr)) {
 		delegate->Name(abiName);
-		hr = callback_->VirtualDesktopRenamed(delegate);
+		hr = callback_->VirtualDesktopNameChanged(delegate);
 	}
 	return hr;
 }

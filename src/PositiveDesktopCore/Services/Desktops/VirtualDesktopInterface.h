@@ -39,7 +39,7 @@ namespace app::desktop {
 		virtual HRESULT __stdcall VirtualDesktopCreated(IVirtualDesktopDelegate* pDesktop) noexcept = 0;
 		virtual HRESULT __stdcall VirtualDesktopDestroyed(IVirtualDesktopDelegate* pDesktopDestroyed) noexcept = 0;
 		virtual HRESULT __stdcall VirtualDesktopMoved(IVirtualDesktopDelegate* pDesktop, int nFromIndex) noexcept = 0;
-		virtual HRESULT __stdcall VirtualDesktopRenamed(IVirtualDesktopDelegate* pDesktop) noexcept = 0;
+		virtual HRESULT __stdcall VirtualDesktopNameChanged(IVirtualDesktopDelegate* pDesktop) noexcept = 0;
 		virtual HRESULT __stdcall CurrentVirtualDesktopChanged(IVirtualDesktopDelegate* pDesktopNew) noexcept = 0;
 	};
 

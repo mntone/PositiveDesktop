@@ -52,7 +52,7 @@ namespace app::desktop {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop* pDesktop { nullptr };
-			HRESULT hr = iface_->CreateDesktop(&pDesktop);
+			HRESULT hr = iface_->CreateDesktopW(&pDesktop);
 			if (SUCCEEDED(hr)) {
 				hr = cache_->FromInterface(pDesktop, ppDesktop);
 			}
@@ -125,7 +125,7 @@ namespace app::desktop {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop* pDesktop { nullptr };
-			HRESULT hr = iface_->CreateDesktop(&pDesktop);
+			HRESULT hr = iface_->CreateDesktopW(&pDesktop);
 			if (SUCCEEDED(hr)) {
 				IVirtualDesktop2* pDesktop2 { nullptr };
 				hr = pDesktop->QueryInterface(&pDesktop2);
@@ -200,7 +200,7 @@ namespace app::desktop {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop20231* pDesktop { nullptr };
-			HRESULT hr = iface_->CreateDesktop(nullptr, &pDesktop);
+			HRESULT hr = iface_->CreateDesktopW(nullptr, &pDesktop);
 			if (SUCCEEDED(hr)) {
 				hr = cache_->FromInterface(pDesktop, ppDesktop);
 			}
@@ -270,7 +270,7 @@ namespace app::desktop {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop20231* pDesktop { nullptr };
-			HRESULT hr = iface_->CreateDesktop(nullptr, &pDesktop);
+			HRESULT hr = iface_->CreateDesktopW(nullptr, &pDesktop);
 			if (SUCCEEDED(hr)) {
 				hr = cache_->FromInterface(pDesktop, ppDesktop);
 			}
@@ -340,7 +340,7 @@ namespace app::desktop {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop20231* pDesktop { nullptr };
-			HRESULT hr = iface_->CreateDesktop(nullptr, &pDesktop);
+			HRESULT hr = iface_->CreateDesktopW(nullptr, &pDesktop);
 			if (SUCCEEDED(hr)) {
 				hr = cache_->FromInterface(pDesktop, ppDesktop);
 			}
