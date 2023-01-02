@@ -11,11 +11,11 @@
 #endif
 
 app::lock_t app::keylistener::KeysListenerService::locker_;
-HHOOK app::keylistener::KeysListenerService::hHook_;
+HHOOK app::keylistener::KeysListenerService::hHook_ = nullptr;
 #ifndef KEYLISTENERS_SINGLETON
 std::set<KeysListenerService*> app::keylistener::KeysListenerService::hooks_;
 #else
-app::keylistener::KeysListenerService* app::keylistener::KeysListenerService::hook_;
+app::keylistener::KeysListenerService* app::keylistener::KeysListenerService::hook_ = nullptr;
 #endif
 
 #define IsKeyPressed(__nVirtualKey) ((GetKeyState(__nVirtualKey) & 0x8000) != 0)
@@ -25,7 +25,7 @@ using namespace app::keylistener;
 KeysListenerService::~KeysListenerService() {
 	clearObserver();
 
-	if (suspending_) {
+	if (!suspending_) {
 		KeysListenerService::removeHook(this);
 	}
 }
@@ -177,6 +177,7 @@ LRESULT KeysListenerService::KbdProcStatic(int nCode, WPARAM wParam, LPARAM lPar
 	LPKBDLLHOOKSTRUCT kbdStruct = reinterpret_cast<LPKBDLLHOOKSTRUCT>(lParam);
 
 	bool handled = false;
+	app::lock_guard<app::lock_t> lock { locker_ };
 #ifndef KEYLISTENERS_SINGLETON
 	for (auto hook : hooks_) {
 		LRESULT result = hook->KbdProc(hHook_, nCode, wParam, *kbdStruct, handled);
