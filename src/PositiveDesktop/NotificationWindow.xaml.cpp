@@ -54,12 +54,15 @@ namespace app::ui::resources {
 
 }
 
+#pragma warning(push)
+#pragma warning(disable: 4324)
 extern std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
 	app::storage::desktop_t const& config,
 	app::int32x4_t workArea,
 	app::int32x4_t outerBounds,
 	app::int32x2_t size,
 	bool isSquareCorner);
+#pragma warning(pop)
 
 using namespace winrt;
 

@@ -215,7 +215,7 @@ namespace app {
 		return (max)((min)(value, maxValue), minValue);
 	}
 
-	struct __declspec(align(16)) int32x4_t final {
+	struct alignas(16) int32x4_t final {
 		int32_t x;
 		int32_t y;
 		int32_t z;
@@ -628,7 +628,7 @@ namespace app {
 		return (max)((min)(value, maxValue), minValue);
 	}
 
-	struct __declspec(align(16)) double2 final {
+	struct alignas(16) double2 final {
 		double x;
 		double y;
 
@@ -788,7 +788,7 @@ namespace app {
 		return (max)((min)(value, maxValue), minValue);
 	}
 
-	struct __declspec(align(32)) double4 final {
+	struct alignas(32) double4 final {
 		double x; // left
 		double y; // top
 		double z; // width | right for thickness

@@ -25,6 +25,8 @@ namespace app {
 
 }
 
+#pragma warning(push)
+#pragma warning(disable: 4324)
 std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
 	app::storage::desktop_t const& config,
 	app::int32x4_t workArea,
@@ -303,3 +305,4 @@ std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
 
 	return std::make_pair(position, border);
 }
+#pragma warning(pop)
