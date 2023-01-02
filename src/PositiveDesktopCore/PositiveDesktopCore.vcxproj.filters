@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Common\Reps.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="Services\Desktops\DesktopService.cpp">
       <Filter>Services\Desktops</Filter>
     </ClCompile>

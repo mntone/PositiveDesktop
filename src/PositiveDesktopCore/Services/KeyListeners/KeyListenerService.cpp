@@ -23,6 +23,8 @@ app::keylistener::KeysListenerService* app::keylistener::KeysListenerService::ho
 using namespace app::keylistener;
 
 KeysListenerService::~KeysListenerService() {
+	clearObserver();
+
 	if (suspending_) {
 		KeysListenerService::removeHook(this);
 	}
@@ -106,7 +108,7 @@ LRESULT KeysListenerService::KbdProc(HHOOK /*hHook*/, int /*nCode*/, WPARAM wPar
 	auto itr = keymap_.find(key);
 	if (itr != keymap_.end()) {
 		handled = true;
-		reps::next(subject_, itr->second);
+		next(itr->second);
 		return TRUE;
 	}
 	return FALSE;

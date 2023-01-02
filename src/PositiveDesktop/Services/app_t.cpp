@@ -11,18 +11,9 @@
 using namespace app;
 
 template<typename T>
-void release(T*& ptr, typename std::enable_if_t<!std::is_base_of_v<reps::observable_t, T>, std::nullptr_t> = nullptr) {
-	T* ptr2 = std::exchange(ptr, nullptr);
-	if (ptr2) {
-		delete ptr2;
-	}
-}
-
-template<typename T, typename std::enable_if_t<std::is_base_of_v<reps::observable_t, T>, std::nullptr_t> = nullptr>
 void release(T*& ptr) {
 	T* ptr2 = std::exchange(ptr, nullptr);
 	if (ptr2) {
-		ptr2->clearObserver();
 		delete ptr2;
 	}
 }
@@ -38,13 +29,7 @@ app_t::~app_t() noexcept {
 	message_service_t::close();
 
 	release(desktop_);
-
-	keylistener::KeysListenerService* keysLitener = std::exchange(keysLitener_, nullptr);
-	if (keysLitener) {
-		keysLitener->clearObserver();
-		delete keysLitener;
-	}
-
+	release(keysLitener_);
 	release(presenter_);
 	release(configManager_);
 }
@@ -79,30 +64,14 @@ void app_t::initialize() {
 
 	// Init desktop service
 	desktop_ = new desktop::DesktopService();
-	desktop_->addObserver(*new reps::dangerous_listener_t([this](reps::bag_t const& value) {
-		if (value.hr < 0) {
-			// error
-			return;
-		}
-
-		desktop::vdevent_t ev = reps::data<desktop::vdevent_t>(value);
-		switch (ev.type) {
-		case desktop::vde_changed:
-			ui::NotificationPresenterData data {
-				ev.index,
-				ev.name,
-			};
-			presenter_->show(std::move(data));
-			break;
-		}
-	}));
+	desktop_->addObserver(*this);
 	desktop_->initialize(osver.dwBuildNumber);
 
 	// Start message service
 	message_service_t::initialize();
 }
 
-void FASTCALL app_t::on(reps::bag_t const& value) noexcept {
+void FASTCALL app_t::on(reps::bag_t<app::keylistener::kbevent_t> const& value) noexcept {
 	if (value.hr < 0) {
 		// error
 		return;
@@ -111,11 +80,27 @@ void FASTCALL app_t::on(reps::bag_t const& value) noexcept {
 	switch (value.ev) {
 	case reps::event_t::next:
 	{
-		keylistener::kbevent_t const ev = reps::data<keylistener::kbevent_t>(value);
-		message_service_t::send(ev); // DO NOT PROCESS data on key listener thread.
+		message_service_t::send(value.data); // DO NOT PROCESS data on key listener thread.
 		break;
 	}
 	case reps::event_t::completed:
+		break;
+	}
+}
+
+void FASTCALL app_t::on(reps::bag_t<app::desktop::vdevent_t> const& value) noexcept {
+	if (value.hr < 0) {
+		// error
+		return;
+	}
+
+	switch (value.data.type) {
+	case desktop::vde_changed:
+		ui::NotificationPresenterData data {
+			value.data.index,
+			value.data.name,
+		};
+		presenter_->show(std::move(data));
 		break;
 	}
 }

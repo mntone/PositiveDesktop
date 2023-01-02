@@ -11,7 +11,7 @@
 
 namespace app::keylistener {
 
-	class KeysListenerService final {
+	class KeysListenerService final: public reps::single_subject_t<kbevent_t> {
 	public:
 		~KeysListenerService();
 
@@ -20,14 +20,6 @@ namespace app::keylistener {
 
 		void suspend();
 		void resume();
-
-		void addObserver(reps::observer_t& observer) noexcept {
-			subject_.addObserver(observer);
-		}
-
-		void clearObserver() noexcept {
-			subject_.clearObserver();
-		}
 
 	private:
 		void updateConfigPrivate(app::storage::key_config_t const& config) noexcept;
@@ -42,7 +34,6 @@ namespace app::keylistener {
 		char previousVirtualKey_;
 		bool suspending_;
 		std::unordered_map<short, kbevent_t> keymap_;
-		reps::single_subject_t subject_;
 
 		static app::lock_t locker_;
 		static HHOOK hHook_;

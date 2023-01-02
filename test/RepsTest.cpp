@@ -9,7 +9,7 @@
 using namespace reps;
 
 template<typename T>
-class RepsTest: public testing::Test, public reps::observer_t {
+class RepsTest: public testing::Test, public reps::observer_t<int> {
 protected:
 	RepsTest() = default;
 
@@ -18,13 +18,12 @@ protected:
 	}
 
 	void next(int value) noexcept {
-		reps::next(subject_, value);
+		subject_.next(value);
 		++id_;
 	}
 
-	void FASTCALL on(reps::bag_t const& value) noexcept override {
-		int integer = reps::data<int>(value);
-		latest_ = integer;
+	void FASTCALL on(reps::bag_t<int> const& value) noexcept override {
+		latest_ = value.data;
 	}
 
 	std::optional<int> latest() const noexcept { return latest_; }
@@ -35,7 +34,7 @@ protected:
 	T subject_;
 };
 
-using MultipleRepsTest = RepsTest<reps::subject_t>;
+using MultipleRepsTest = RepsTest<reps::subject_t<int>>;
 
 TEST_F(MultipleRepsTest, SingleThread) {
 	next(4);
@@ -66,7 +65,7 @@ TEST_F(MultipleRepsTest, MultiThread) {
 }
 
 
-using SingleRepsTest = RepsTest<reps::single_subject_t>;
+using SingleRepsTest = RepsTest<reps::single_subject_t<int>>;
 TEST_F(SingleRepsTest, SingleThread) {
 	next(4);
 	EXPECT_EQ(latest_, 4);

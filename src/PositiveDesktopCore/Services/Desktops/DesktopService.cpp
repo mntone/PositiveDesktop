@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "DesktopService.h"
 
-#include "vdevent_t.h"
 #include "Private/VirtualDesktopDelegate.h"
 #include "Private/VirtualDesktopManagerInternalDelegate.h"
 #include "Private/VirtualDesktopNotificationListener10240.h"
@@ -46,6 +45,8 @@ DesktopService::DesktopService()
 }
 
 DesktopService::~DesktopService() {
+	clearObserver();
+
 	IVirtualDesktopNotificationListener* listener = std::exchange(listener_, nullptr);
 	if (listener) {
 		winrt::com_ptr<IUnknown> unknown { listener, take_ownership_from_abi };
@@ -173,7 +174,7 @@ HRESULT DesktopService::VirtualDesktopCreated(IVirtualDesktopDelegate* pDesktop)
 		pDesktop->Index(),
 		L"",
 	};
-	reps::next(*this, std::move(data));
+	next(std::move(data));
 	return S_OK;
 } catch (winrt::hresult_error const& err) {
 	// TODO: error log
@@ -190,7 +191,7 @@ HRESULT DesktopService::VirtualDesktopDestroyed(IVirtualDesktopDelegate* pDeskto
 
 	delete pDesktopDestroyed;
 
-	reps::next(*this, std::move(data));
+	next(std::move(data));
 	return S_OK;
 } catch (winrt::hresult_error const& err) {
 	// TODO: error log
@@ -209,7 +210,7 @@ HRESULT DesktopService::VirtualDesktopMoved(IVirtualDesktopDelegate* pDesktop, i
 		pDesktop->Index(),
 		pDesktop->Name(),
 	};
-	reps::next(*this, std::move(data));
+	next(std::move(data));
 	return S_OK;
 } catch (winrt::hresult_error const& err) {
 	// TODO: error log
@@ -223,7 +224,7 @@ HRESULT DesktopService::VirtualDesktopNameChanged(IVirtualDesktopDelegate* pDesk
 		pDesktop->Index(),
 		pDesktop->Name(),
 	};
-	reps::next(*this, std::move(data));
+	next(std::move(data));
 	return S_OK;
 } catch (winrt::hresult_error const& err) {
 	// TODO: error log
@@ -237,7 +238,7 @@ HRESULT DesktopService::CurrentVirtualDesktopChanged(IVirtualDesktopDelegate* pD
 		pDesktopNew->Index(),
 		pDesktopNew->Name(),
 	};
-	reps::next(*this, std::move(data));
+	next(std::move(data));
 	return S_OK;
 } catch (winrt::hresult_error const& err) {
 	// TODO: error log

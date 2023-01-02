@@ -12,7 +12,10 @@
 
 namespace app {
 
-	class app_t final: public message_service_t<app::keylistener::kbevent_t>, reps::observer_t {
+	class app_t final
+		: public message_service_t<app::keylistener::kbevent_t>
+		, reps::observer_t<app::keylistener::kbevent_t>
+		, reps::observer_t<app::desktop::vdevent_t> {
 	public:
 		app_t();
 		~app_t() noexcept;
@@ -20,7 +23,8 @@ namespace app {
 		void initialize();
 
 	private:
-		void FASTCALL on(reps::bag_t const& value) noexcept override;
+		void FASTCALL on(reps::bag_t<app::keylistener::kbevent_t> const& value) noexcept;
+		void FASTCALL on(reps::bag_t<app::desktop::vdevent_t> const& value) noexcept;
 		void process(app::keylistener::kbevent_t ev) noexcept override;
 
 	private:

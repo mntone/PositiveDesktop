@@ -124,7 +124,6 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Common\Reps.cpp" />
     <ClCompile Include="Services\Desktops\DesktopService.cpp" />
     <ClCompile Include="Services\Desktops\VirtualDesktopCache.cpp" />
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopManagerInternalDelegate.cpp" />

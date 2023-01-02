@@ -1,5 +1,7 @@
 #pragma once
 #include "Common/VirtualDesktop.h"
+
+#include "vdevent_t.h"
 #include "VirtualDesktopCache.h"
 #include "VirtualDesktopInterface.h"
 
@@ -7,7 +9,7 @@
 
 namespace app::desktop {
 
-	class DesktopService final: public IVirtualDesktopNotificationCallback, public reps::single_subject_t {
+	class DesktopService final: public IVirtualDesktopNotificationCallback, public reps::single_subject_t<vdevent_t> {
 	public:
 		DesktopService();
 		~DesktopService();
