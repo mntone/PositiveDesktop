@@ -29,6 +29,10 @@ namespace app::desktop {
 		HRESULT DetachDelegate(IVirtualDesktop2* iface, IVirtualDesktopDelegate** ppDesktop) noexcept;
 		HRESULT DetachDelegate(IVirtualDesktop20231* iface, IVirtualDesktopDelegate** ppDesktop) noexcept;
 
+		HRESULT First(IVirtualDesktopDelegate** ppDesktop) noexcept;
+		HRESULT GetAt(int index, IVirtualDesktopDelegate** ppDesktop) noexcept;
+		HRESULT Last(IVirtualDesktopDelegate** ppDesktop) noexcept;
+
 	private:
 		using container_type = std::unordered_map<winrt::guid, IVirtualDesktopDelegate*>;
 

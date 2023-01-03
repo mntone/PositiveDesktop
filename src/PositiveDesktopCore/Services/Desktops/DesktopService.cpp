@@ -10,7 +10,6 @@
 namespace app::desktop {
 
 	enum vdtarget_t: int {
-		vdt_first,
 		vdt_desktop1,
 		vdt_desktop2,
 		vdt_desktop3,
@@ -21,6 +20,7 @@ namespace app::desktop {
 		vdt_desktop8,
 		vdt_desktop9,
 		vdt_desktop10,
+		vdt_first,
 		vdt_last,
 		vdt_left,
 		vdt_right,
@@ -112,24 +112,50 @@ void DesktopService::initialize(uint32_t build) {
 
 #pragma region Operation implementation
 
-void DesktopService::moveForegroundWindow(int target) noexcept try {
-	IVirtualDesktopDelegate* currentDesktop;
-	check_hresult(virtualDesktopManagerDelegate_->GetCurrentDesktop(&currentDesktop));
-
-	IVirtualDesktopDelegate* targetDesktop;
+HRESULT DesktopService::GetTargetDesktop(int target, IVirtualDesktopDelegate** ppDesktop) const noexcept {
+	HRESULT hr = S_OK;
 	switch (target) {
 	case vdt_left:
-		check_hresult(virtualDesktopManagerDelegate_->GetAdjacentDesktop(currentDesktop, AD_LEFT, &targetDesktop));
+	{
+		IVirtualDesktopDelegate* currentDesktop { nullptr };
+		hr = virtualDesktopManagerDelegate_->GetCurrentDesktop(&currentDesktop);
+		if (SUCCEEDED(hr)) {
+			hr = virtualDesktopManagerDelegate_->GetAdjacentDesktop(currentDesktop, AD_LEFT, ppDesktop);
+		}
 		break;
+	}
 	case vdt_right:
-		check_hresult(virtualDesktopManagerDelegate_->GetAdjacentDesktop(currentDesktop, AD_RIGHT, &targetDesktop));
+	{
+		IVirtualDesktopDelegate* currentDesktop { nullptr };
+		hr = virtualDesktopManagerDelegate_->GetCurrentDesktop(&currentDesktop);
+		if (SUCCEEDED(hr)) {
+			hr = virtualDesktopManagerDelegate_->GetAdjacentDesktop(currentDesktop, AD_RIGHT, ppDesktop);
+		}
+		break;
+	}
+	case vdt_first:
+		hr = virtualDesktopCache_->First(ppDesktop);
+		break;
+	case vdt_last:
+		hr = virtualDesktopCache_->Last(ppDesktop);
 		break;
 	case vdt_new:
-		check_hresult(virtualDesktopManagerDelegate_->CreateDesktop(&targetDesktop));
+		hr = virtualDesktopManagerDelegate_->CreateDesktop(ppDesktop);
+		break;
+	case vdt_previous:
+		hr = E_NOTIMPL;
 		break;
 	default:
-		throw hresult_not_implemented();
+		WINRT_ASSERT(target <= 9);
+		hr = virtualDesktopCache_->GetAt(target, ppDesktop);
+		break;
 	}
+	return hr;
+}
+
+void DesktopService::moveForegroundWindow(int target) noexcept try {
+	IVirtualDesktopDelegate* targetDesktop { nullptr };
+	check_hresult(GetTargetDesktop(target, &targetDesktop));
 
 	com_ptr<IUnknown> view;
 	check_hresult(applicationViewCollection_->GetViewForHwnd(GetForegroundWindow(), view.put()));
@@ -139,23 +165,8 @@ void DesktopService::moveForegroundWindow(int target) noexcept try {
 }
 
 void DesktopService::moveForegroundWindowAndSwitch(int target) noexcept try {
-	IVirtualDesktopDelegate* currentDesktop;
-	check_hresult(virtualDesktopManagerDelegate_->GetCurrentDesktop(&currentDesktop));
-
-	IVirtualDesktopDelegate* targetDesktop;
-	switch (target) {
-	case vdt_left:
-		check_hresult(virtualDesktopManagerDelegate_->GetAdjacentDesktop(currentDesktop, AD_LEFT, &targetDesktop));
-		break;
-	case vdt_right:
-		check_hresult(virtualDesktopManagerDelegate_->GetAdjacentDesktop(currentDesktop, AD_RIGHT, &targetDesktop));
-		break;
-	case vdt_new:
-		check_hresult(virtualDesktopManagerDelegate_->CreateDesktop(&targetDesktop));
-		break;
-	default:
-		throw hresult_not_implemented();
-	}
+	IVirtualDesktopDelegate* targetDesktop { nullptr };
+	check_hresult(GetTargetDesktop(target, &targetDesktop));
 
 	com_ptr<IUnknown> view;
 	check_hresult(applicationViewCollection_->GetViewForHwnd(GetForegroundWindow(), view.put()));

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "VirtualDesktopCache.h"
 
+#include <functional>
+
 #include "Private/VirtualDesktopDelegate.h"
 
 using namespace winrt;
@@ -9,7 +11,7 @@ using namespace app::desktop;
 
 VirtualDesktopCache::~VirtualDesktopCache() {
 	app::lock_guard lock { locker_ };
-	for (auto cache : cache_) {
+	for (auto&& cache : cache_) {
 		IVirtualDesktopDelegate* delegate = std::exchange(cache.second, nullptr);
 		WINRT_ASSERT(delegate);
 		delete delegate;
@@ -287,5 +289,54 @@ HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop20231* iface, IVirtua
 		}
 	}
 	*ppDesktop = delegate;
+	return S_OK;
+}
+
+constexpr bool isFirst(std::pair<guid, IVirtualDesktopDelegate*> p) noexcept {
+	return p.second->Index() == 0;
+}
+
+HRESULT VirtualDesktopCache::First(IVirtualDesktopDelegate** ppDesktop) noexcept {
+	container_type::const_iterator itr;
+	{
+		app::lock_guard lock { locker_ };
+		itr = std::find_if(cache_.cbegin(), cache_.cend(), isFirst);
+		if (itr == cache_.cend()) {
+			return TYPE_E_OUTOFBOUNDS;
+		}
+	}
+	*ppDesktop = itr->second;
+	return S_OK;
+}
+
+constexpr bool isIndex(std::pair<guid, IVirtualDesktopDelegate*> p, int index) noexcept {
+	return p.second->Index() == index;
+}
+
+HRESULT VirtualDesktopCache::GetAt(int index, IVirtualDesktopDelegate** ppDesktop) noexcept {
+	if (index >= cache_.size()) return TYPE_E_OUTOFBOUNDS;
+
+	container_type::const_iterator itr;
+	{
+		app::lock_guard lock { locker_ };
+		itr = std::find_if(cache_.cbegin(), cache_.cend(), std::bind(isIndex, std::placeholders::_1, index));
+		if (itr == cache_.cend()) {
+			return TYPE_E_OUTOFBOUNDS;
+		}
+	}
+	*ppDesktop = itr->second;
+	return S_OK;
+}
+
+HRESULT VirtualDesktopCache::Last(IVirtualDesktopDelegate** ppDesktop) noexcept {
+	container_type::const_iterator itr;
+	{
+		app::lock_guard lock { locker_ };
+		itr = std::find_if(cache_.cbegin(), cache_.cend(), std::bind(isIndex, std::placeholders::_1, static_cast<int>(cache_.size() - 1)));
+		if (itr == cache_.cend()) {
+			return TYPE_E_OUTOFBOUNDS;
+		}
+	}
+	*ppDesktop = itr->second;
 	return S_OK;
 }

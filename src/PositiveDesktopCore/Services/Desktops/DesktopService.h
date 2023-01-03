@@ -21,6 +21,8 @@ namespace app::desktop {
 		void moveForegroundWindowAndSwitch(int target) noexcept;
 
 	private:
+		HRESULT GetTargetDesktop(int target, IVirtualDesktopDelegate** ppDesktop) const noexcept;
+
 		HRESULT __stdcall VirtualDesktopCreated(IVirtualDesktopDelegate* pDesktop) noexcept override;
 		HRESULT __stdcall VirtualDesktopDestroyed(IVirtualDesktopDelegate* pDesktopDestroyed) noexcept override;
 		HRESULT __stdcall VirtualDesktopMoved(IVirtualDesktopDelegate* pDesktop, int nFromIndex) noexcept override;

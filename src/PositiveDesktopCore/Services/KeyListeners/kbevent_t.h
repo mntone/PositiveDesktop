@@ -55,17 +55,17 @@ namespace app::keylistener {
 		kbe_close_desktop_exclude = kbe_op_extend | 0x00,
 
 		kbe_target_mask = 0x0F,
-		kbe_first = 0x00, ALL_ACTION_ENUM(first),
-		kbe_desktop1 = 0x01, ALL_ACTION_ENUM(desktop1),
-		kbe_desktop2 = 0x02, ALL_ACTION_ENUM(desktop2),
-		kbe_desktop3 = 0x03, ALL_ACTION_ENUM(desktop3),
-		kbe_desktop4 = 0x04, ALL_ACTION_ENUM(desktop4),
-		kbe_desktop5 = 0x05, ALL_ACTION_ENUM(desktop5),
-		kbe_desktop6 = 0x06, ALL_ACTION_ENUM(desktop6),
-		kbe_desktop7 = 0x07, ALL_ACTION_ENUM(desktop7),
-		kbe_desktop8 = 0x08, ALL_ACTION_ENUM(desktop8),
-		kbe_desktop9 = 0x09, ALL_ACTION_ENUM(desktop9),
-		kbe_desktop10 = 0x0A, ALL_ACTION_ENUM(desktop10),
+		kbe_desktop1 = 0x00, ALL_ACTION_ENUM(desktop1),
+		kbe_desktop2 = 0x01, ALL_ACTION_ENUM(desktop2),
+		kbe_desktop3 = 0x02, ALL_ACTION_ENUM(desktop3),
+		kbe_desktop4 = 0x03, ALL_ACTION_ENUM(desktop4),
+		kbe_desktop5 = 0x04, ALL_ACTION_ENUM(desktop5),
+		kbe_desktop6 = 0x05, ALL_ACTION_ENUM(desktop6),
+		kbe_desktop7 = 0x06, ALL_ACTION_ENUM(desktop7),
+		kbe_desktop8 = 0x07, ALL_ACTION_ENUM(desktop8),
+		kbe_desktop9 = 0x08, ALL_ACTION_ENUM(desktop9),
+		kbe_desktop10 = 0x09, ALL_ACTION_ENUM(desktop10),
+		kbe_first = 0x0A, ALL_ACTION_ENUM(first),
 		kbe_last = 0x0B, ALL_ACTION_ENUM(last),
 		kbe_left = 0x0C, ALL_ACTION_ENUM(left),
 		kbe_right = 0x0D, ALL_ACTION_ENUM(right),
@@ -79,6 +79,11 @@ namespace app::keylistener {
 
 	constexpr int desktop(kbevent_t ev) noexcept {
 		return ev & 0x0F;
+	}
+
+	template<typename T, std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
+	constexpr kbevent_t addingDesktop(kbevent_t ev, T desktop) noexcept {
+		return static_cast<kbevent_t>(ev | desktop);
 	}
 
 #undef ALL_ACTION_ENUM
