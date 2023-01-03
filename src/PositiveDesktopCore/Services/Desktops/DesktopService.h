@@ -37,7 +37,7 @@ namespace app::desktop {
 		IVirtualDesktopNotificationListener* listener_;
 		DWORD cookie_;
 
-		std::shared_ptr<VirtualDesktopCache> cache_;
+		std::shared_ptr<VirtualDesktopCache> virtualDesktopCache_;
 	};
 
 }

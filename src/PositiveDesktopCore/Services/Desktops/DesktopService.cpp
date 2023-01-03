@@ -41,7 +41,7 @@ DesktopService::DesktopService()
 	, virtualDesktopManagerDelegate_(nullptr)
 	, virtualDesktopNotificationService_(nullptr)
 	, cookie_(0)
-	, cache_(std::make_shared<VirtualDesktopCache>()) {
+	, virtualDesktopCache_(std::make_shared<VirtualDesktopCache>()) {
 }
 
 DesktopService::~DesktopService() {
@@ -68,17 +68,17 @@ void DesktopService::initialize(uint32_t build) {
 
 	bool nameEnabled = true;
 	if (build >= 22449) {
-		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate22449>(build, cache_, serviceProvider_.get());
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate22449>(build, virtualDesktopCache_, serviceProvider_.get());
 	} else if (build >= 21313) {
-		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate21313>(build, cache_, serviceProvider_.get());
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate21313>(build, virtualDesktopCache_, serviceProvider_.get());
 	} else if (build >= 20231) {
-		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate20231>(build, cache_, serviceProvider_.get());
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate20231>(build, virtualDesktopCache_, serviceProvider_.get());
 	} else if (build >= 20211) {
 		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
 	} else if (build >= 14238) try {
-		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate19041>(cache_, serviceProvider_.get());
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate19041>(virtualDesktopCache_, serviceProvider_.get());
 	} catch (winrt::hresult_error const& /*err*/) {
-		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate14238>(cache_, serviceProvider_.get());
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate14238>(virtualDesktopCache_, serviceProvider_.get());
 		nameEnabled = false;
 	} else {
 		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
@@ -90,17 +90,17 @@ void DesktopService::initialize(uint32_t build) {
 		virtualDesktopNotificationService_.put_void()));
 
 	if (build >= 21359 /* Windows 10 Insider, Windows 11 */) {
-		com_ptr<VirtualDesktopNotificationListener21359> listener = make_self<VirtualDesktopNotificationListener21359>(cache_, this);
+		com_ptr<VirtualDesktopNotificationListener21359> listener = make_self<VirtualDesktopNotificationListener21359>(virtualDesktopCache_, this);
 		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification21359>().get(), &cookie_));
 		listener_ = listener.detach();
 	} else if (build >= 20231 /* Windows 10 Insider */) {
-		com_ptr<VirtualDesktopNotificationListener20231> listener = make_self<VirtualDesktopNotificationListener20231>(cache_, this);
+		com_ptr<VirtualDesktopNotificationListener20231> listener = make_self<VirtualDesktopNotificationListener20231>(virtualDesktopCache_, this);
 		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification20241>().get(), &cookie_));
 		listener_ = listener.detach();
 	} else if (build >= 20211) {
 		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
 	} else if (build >= 10159 /* general Windows 10 */) {
-		com_ptr<VirtualDesktopNotificationListener10240> listener = make_self<VirtualDesktopNotificationListener10240>(nameEnabled, cache_, this);
+		com_ptr<VirtualDesktopNotificationListener10240> listener = make_self<VirtualDesktopNotificationListener10240>(nameEnabled, virtualDesktopCache_, this);
 		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification2>().get(), &cookie_));
 		listener_ = listener.detach();
 	} else {
