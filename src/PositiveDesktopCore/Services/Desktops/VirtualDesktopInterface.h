@@ -6,10 +6,7 @@ namespace app::desktop {
 		virtual ~IVirtualDesktopDelegate() = default;
 
 		virtual int Index() const noexcept = 0;
-		virtual void Index(int value) noexcept = 0;
-
 		virtual winrt::hstring Name() = 0;
-		virtual void Name(HSTRING value) = 0;
 	};
 
 	struct IVirtualDesktopManagerInternalDelegate {

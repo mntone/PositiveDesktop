@@ -180,21 +180,21 @@ HRESULT VirtualDesktopCache::MoveDelegate(IVirtualDesktop20231* iface, int nFrom
 		if (itr == cache_.end()) {
 			return E_INVALIDARG;
 		}
-		itr->second->Index(nToIndex);
+		reinterpret_cast<VirtualDesktopDelegate20231*>(itr->second)->Index(nToIndex);
 
 		// e.g. [A, B, C, D]
 		if (nFromIndex > nToIndex) { // 3 to 1, expected: [A, D, B, C]
 			for (auto& cache : cache_) {
 				int const nCacheIndex { cache.second->Index() };
 				if (nFromIndex <= nCacheIndex && nCacheIndex < nToIndex) {
-					cache.second->Index(nCacheIndex + 1);
+					reinterpret_cast<VirtualDesktopDelegate20231*>(cache.second)->Index(nCacheIndex + 1);
 				}
 			}
 		} else if (nFromIndex < nToIndex) { // 1 to 3, expected: [A, C, D, B]
 			for (auto& cache : cache_) {
 				int const nCacheIndex { cache.second->Index() };
 				if (nFromIndex < nCacheIndex && nCacheIndex <= nToIndex) {
-					cache.second->Index(nCacheIndex - 1);
+					reinterpret_cast<VirtualDesktopDelegate20231*>(cache.second)->Index(nCacheIndex - 1);
 				}
 			}
 		} else {
@@ -226,7 +226,7 @@ HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop* iface, IVirtualDesk
 		for (auto& cache : cache_) {
 			int const cacheIndex = cache.second->Index();
 			if (cacheIndex > targetIndex) {
-				cache.second->Index(cacheIndex - 1);
+				reinterpret_cast<VirtualDesktopDelegate10240*>(cache.second)->Index(cacheIndex - 1);
 			}
 		}
 	}
@@ -254,7 +254,7 @@ HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop2* iface, IVirtualDes
 		for (auto& cache : cache_) {
 			int const cacheIndex = cache.second->Index();
 			if (cacheIndex > targetIndex) {
-				cache.second->Index(cacheIndex - 1);
+				reinterpret_cast<VirtualDesktopDelegate19041*>(cache.second)->Index(cacheIndex - 1);
 			}
 		}
 	}
@@ -282,7 +282,7 @@ HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop20231* iface, IVirtua
 		for (auto& cache : cache_) {
 			int const cacheIndex = cache.second->Index();
 			if (cacheIndex > targetIndex) {
-				cache.second->Index(cacheIndex - 1);
+				reinterpret_cast<VirtualDesktopDelegate20231*>(cache.second)->Index(cacheIndex - 1);
 			}
 		}
 	}

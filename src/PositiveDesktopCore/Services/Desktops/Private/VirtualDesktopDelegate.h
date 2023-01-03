@@ -24,7 +24,6 @@ namespace app::desktop {
 		constexpr void Index(int value) noexcept { index_ = value; }
 
 		inline winrt::hstring Name() override { return winrt::hstring(); }
-		constexpr void Name(HSTRING /*value*/) override { }
 
 		constexpr IVirtualDesktop* iface() const noexcept { return iface_; }
 
@@ -67,8 +66,11 @@ namespace app::desktop {
 			ForceCache();
 			return name_;
 		}
-		inline void Name(HSTRING value) override {
+		inline void Name(HSTRING value) {
 			winrt::copy_from_abi(name_, value);
+		}
+		inline void Name(HSTRING&& value) noexcept {
+			winrt::attach_abi(name_, value);
 		}
 
 		constexpr IVirtualDesktop2* iface() const noexcept { return iface_; }
@@ -114,8 +116,11 @@ namespace app::desktop {
 			ForceCache();
 			return name_;
 		}
-		inline void Name(HSTRING value) override {
+		inline void Name(HSTRING value) {
 			winrt::copy_from_abi(name_, value);
+		}
+		inline void Name(HSTRING&& value) noexcept {
+			winrt::attach_abi(name_, value);
 		}
 
 		constexpr IVirtualDesktop20231* iface() const noexcept { return iface_; }
