@@ -48,6 +48,9 @@
     <ClInclude Include="UI\register_value_t.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="UI\ResourceManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
     <ClInclude Include="UI\UIHelper.h">
       <Filter>UI</Filter>
     </ClInclude>

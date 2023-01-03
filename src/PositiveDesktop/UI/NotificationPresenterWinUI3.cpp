@@ -4,6 +4,7 @@
 #include <winrt/Microsoft.Windows.ApplicationModel.Resources.h>
 
 #include "NotificationWindow.xaml.h"
+#include "ResourceManager.h"
 #include "UIHelper.h"
 
 namespace app::ui {
@@ -14,10 +15,13 @@ namespace app::ui {
 			: finalize_(false)
 			, config_(config)
 			, hint_(hint)
-			, resourceManager_()
-			, resources_(resourceManager_.MainResourceMap().GetSubtree(L"CodeResources"))
+			, resourceManager_(L"CodeResources")
 			, dispatcherQueue_(nullptr)
 			, window_(nullptr) {
+		}
+
+		void changeLanguage(winrt::param::hstring const& language) noexcept {
+			resourceManager_.changeLanguage(language);
 		}
 
 		void show(NotificationPresenterData data) noexcept override {
@@ -30,21 +34,14 @@ namespace app::ui {
 
 	private:
 		void showPrivate(NotificationPresenterData data) noexcept;
-		void changeLanguage(winrt::param::hstring const& language) const noexcept;
 
 		inline winrt::hstring GetFormatDesktopMessage(NotificationPresenterData data) noexcept {
 			if (data.name.empty()) {
-				winrt::hstring messageKey { L"Notification_Message_DesktopIndex" };
-				winrt::hstring messageFormat { resources_.GetValue(messageKey).ValueAsString() };
-				wchar_t buf[256];
-				swprintf_s(buf, messageFormat.c_str(), data.index + 1);
-				return winrt::hstring { buf };
+				winrt::hstring messageFormat { resourceManager_.get<resource::R::Notification_Message_DesktopIndex>(data.index + 1) };
+				return messageFormat;
 			} else {
-				winrt::hstring messageKey { L"Notification_Message_DesktopIndexAndNumber" };
-				winrt::hstring messageFormat { resources_.GetValue(messageKey).ValueAsString() };
-				wchar_t buf[256];
-				swprintf_s(buf, messageFormat.c_str(), data.index + 1, data.name.c_str());
-				return winrt::hstring { buf };
+				winrt::hstring messageFormat { resourceManager_.get<resource::R::Notification_Message_DesktopIndexAndNumber>(data.index + 1, data.name.c_str()) };
+				return messageFormat;
 			}
 		}
 
@@ -52,8 +49,7 @@ namespace app::ui {
 		bool finalize_;
 		app::storage::config_t const& config_;
 		NotificationPresenterHint hint_;
-		winrt::Microsoft::Windows::ApplicationModel::Resources::ResourceManager resourceManager_;
-		winrt::Microsoft::Windows::ApplicationModel::Resources::ResourceMap resources_;
+		resource::ResourceManager resourceManager_;
 		winrt::Windows::System::DispatcherQueueController dispatcherQueue_;
 		winrt::PositiveDesktop::NotificationWindow window_;
 	};
@@ -98,19 +94,13 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 	}
 
 	// Set data
-	winrt::hstring captionKey { L"Notification_Caption_VirtualDesktopChanged" };
-	winrt::hstring caption { resources_.GetValue(captionKey).ValueAsString() };
+	winrt::hstring caption { resourceManager_.get<resource::R::Notification_Caption_VirtualDesktopChanged>() };
 	winrt::hstring message { GetFormatDesktopMessage(data) };
 	NotificationWindowViewModel viewModel = winrt::make<implementation::NotificationWindowViewModel>(caption, message);
 	window_.ViewModel(viewModel);
 
 	// Show window
 	window_.Show(app::storage::actualDuration(config_.defaultDesktop.duration));
-}
-
-void NotificationPresenterWinUI3::changeLanguage(winrt::param::hstring const& language) const noexcept {
-	winrt::Microsoft::Windows::ApplicationModel::Resources::ResourceContext resourceContext = resourceManager_.CreateResourceContext();
-	resourceContext.QualifierValues().Insert(L"Language", language);
 }
 
 INotificationPresenter* CreateWinUI3NotificationPresenter(app::storage::config_t const& config, NotificationPresenterHint hint) {
