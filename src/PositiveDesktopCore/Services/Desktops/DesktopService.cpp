@@ -3,9 +3,7 @@
 
 #include "Private/VirtualDesktopDelegate.h"
 #include "Private/VirtualDesktopManagerInternalDelegate.h"
-#include "Private/VirtualDesktopNotificationListener10240.h"
-#include "Private/VirtualDesktopNotificationListener20231.h"
-#include "Private/VirtualDesktopNotificationListener21359.h"
+#include "Private/VirtualDesktopNotificationListener.h"
 
 namespace app::desktop {
 
@@ -66,7 +64,6 @@ void DesktopService::initialize(uint32_t build) {
 		__uuidof(IApplicationViewCollection),
 		applicationViewCollection_.put_void()));
 
-	bool nameEnabled = true;
 	if (build >= 22449) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate22449>(build, virtualDesktopCache_, serviceProvider_.get());
 	} else if (build >= 21313) {
@@ -75,11 +72,10 @@ void DesktopService::initialize(uint32_t build) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate20231>(build, virtualDesktopCache_, serviceProvider_.get());
 	} else if (build >= 20211) {
 		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
-	} else if (build >= 14238) try {
-		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate19041>(virtualDesktopCache_, serviceProvider_.get());
-	} catch (winrt::hresult_error const& /*err*/) {
+	} else if (build >= 18963) {
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate18963>(virtualDesktopCache_, serviceProvider_.get());
+	} else if (build >= 14238) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate14238>(virtualDesktopCache_, serviceProvider_.get());
-		nameEnabled = false;
 	} else {
 		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
 	}
@@ -99,9 +95,13 @@ void DesktopService::initialize(uint32_t build) {
 		listener_ = listener.detach();
 	} else if (build >= 20211) {
 		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
-	} else if (build >= 10159 /* general Windows 10 */) {
-		com_ptr<VirtualDesktopNotificationListener10240> listener = make_self<VirtualDesktopNotificationListener10240>(nameEnabled, virtualDesktopCache_, this);
+	} else if (build >= 18963 /* general Windows 10 */) {
+		com_ptr<VirtualDesktopNotificationListener18963> listener = make_self<VirtualDesktopNotificationListener18963>(virtualDesktopCache_, this);
 		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification2>().get(), &cookie_));
+		listener_ = listener.detach();
+	} else if (build >= 10159 /* previous Windows 10 */) {
+		com_ptr<VirtualDesktopNotificationListener10240> listener = make_self<VirtualDesktopNotificationListener10240>(virtualDesktopCache_, this);
+		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification>().get(), &cookie_));
 		listener_ = listener.detach();
 	} else {
 		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);

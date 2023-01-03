@@ -6,7 +6,9 @@
 namespace app::desktop {
 
 	struct VirtualDesktopDelegate10240 final: public IVirtualDesktopDelegate {
-		constexpr VirtualDesktopDelegate10240(IVirtualDesktop* iface, int index) noexcept: iface_(iface), index_(index) { }
+		inline VirtualDesktopDelegate10240(IVirtualDesktop* iface, int index) noexcept: iface_(iface), index_(index) {
+			iface_->AddRef();
+		}
 		VirtualDesktopDelegate10240(VirtualDesktopDelegate10240 const&) = delete;
 		VirtualDesktopDelegate10240& operator=(VirtualDesktopDelegate10240 const&) = delete;
 		~VirtualDesktopDelegate10240() override {
@@ -32,11 +34,13 @@ namespace app::desktop {
 		int index_;
 	};
 
-	struct VirtualDesktopDelegate19041 final: public IVirtualDesktopDelegate {
-		constexpr VirtualDesktopDelegate19041(IVirtualDesktop2* iface, int index) noexcept: iface_(iface), index_(index), cachedName_(false) { }
-		VirtualDesktopDelegate19041(VirtualDesktopDelegate19041 const&) = delete;
-		VirtualDesktopDelegate19041& operator=(VirtualDesktopDelegate19041 const&) = delete;
-		~VirtualDesktopDelegate19041() override {
+	struct VirtualDesktopDelegate18963 final: public IVirtualDesktopDelegate {
+		inline VirtualDesktopDelegate18963(IVirtualDesktop2* iface, int index) noexcept: iface_(iface), index_(index), cachedName_(false) {
+			iface_->AddRef();
+		}
+		VirtualDesktopDelegate18963(VirtualDesktopDelegate18963 const&) = delete;
+		VirtualDesktopDelegate18963& operator=(VirtualDesktopDelegate18963 const&) = delete;
+		~VirtualDesktopDelegate18963() override {
 			DeletePointer();
 		}
 
@@ -83,7 +87,9 @@ namespace app::desktop {
 	};
 
 	struct VirtualDesktopDelegate20231 final: public IVirtualDesktopDelegate {
-		constexpr VirtualDesktopDelegate20231(IVirtualDesktop20231* iface, int index) noexcept: iface_(iface), index_(index), cachedName_(false) { }
+		inline VirtualDesktopDelegate20231(IVirtualDesktop20231* iface, int index) noexcept: iface_(iface), index_(index), cachedName_(false) {
+			iface_->AddRef();
+		}
 		VirtualDesktopDelegate20231(VirtualDesktopDelegate20231 const&) = delete;
 		VirtualDesktopDelegate20231& operator=(VirtualDesktopDelegate20231 const&) = delete;
 		~VirtualDesktopDelegate20231() override {

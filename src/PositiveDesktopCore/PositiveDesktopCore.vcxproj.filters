@@ -11,6 +11,9 @@
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener10240.cpp">
       <Filter>Services\Desktops\Private</Filter>
     </ClCompile>
+    <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener18963.cpp">
+      <Filter>Services\Desktops\Private</Filter>
+    </ClCompile>
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener20231.cpp">
       <Filter>Services\Desktops\Private</Filter>
     </ClCompile>
@@ -54,13 +57,7 @@
     <ClInclude Include="Services\Desktops\Private\VirtualDesktopManagerInternalDelegate.h">
       <Filter>Services\Desktops\Private</Filter>
     </ClInclude>
-    <ClInclude Include="Services\Desktops\Private\VirtualDesktopNotificationListener10240.h">
-      <Filter>Services\Desktops\Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Services\Desktops\Private\VirtualDesktopNotificationListener20231.h">
-      <Filter>Services\Desktops\Private</Filter>
-    </ClInclude>
-    <ClInclude Include="Services\Desktops\Private\VirtualDesktopNotificationListener21359.h">
+    <ClInclude Include="Services\Desktops\Private\VirtualDesktopNotificationListener.h">
       <Filter>Services\Desktops\Private</Filter>
     </ClInclude>
     <ClInclude Include="Services\Desktops\vdevent_t.h">

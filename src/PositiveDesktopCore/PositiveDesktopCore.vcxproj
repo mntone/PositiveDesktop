@@ -113,9 +113,7 @@
     <ClInclude Include="Services\Desktops\DesktopService.h" />
     <ClInclude Include="Services\Desktops\Private\VirtualDesktopDelegate.h" />
     <ClInclude Include="Services\Desktops\Private\VirtualDesktopManagerInternalDelegate.h" />
-    <ClInclude Include="Services\Desktops\Private\VirtualDesktopNotificationListener10240.h" />
-    <ClInclude Include="Services\Desktops\Private\VirtualDesktopNotificationListener20231.h" />
-    <ClInclude Include="Services\Desktops\Private\VirtualDesktopNotificationListener21359.h" />
+    <ClInclude Include="Services\Desktops\Private\VirtualDesktopNotificationListener.h" />
     <ClInclude Include="Services\Desktops\VirtualDesktopInterface.h" />
     <ClInclude Include="Services\Desktops\VirtualDesktopCache.h" />
     <ClInclude Include="Services\KeyListeners\kbevent_t.h" />
@@ -129,6 +127,7 @@
     <ClCompile Include="Services\Desktops\VirtualDesktopCache.cpp" />
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopManagerInternalDelegate.cpp" />
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener10240.cpp" />
+    <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener18963.cpp" />
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener20231.cpp" />
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener21359.cpp" />
     <ClCompile Include="Services\KeyListeners\KeyListenerService.cpp" />

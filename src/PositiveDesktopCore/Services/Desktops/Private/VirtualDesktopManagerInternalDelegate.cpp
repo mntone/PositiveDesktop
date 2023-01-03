@@ -31,7 +31,7 @@ HRESULT VirtualDesktopManagerInternalDelegate14238::LoadDesktops() noexcept {
 	return hr;
 }
 
-HRESULT VirtualDesktopManagerInternalDelegate19041::LoadDesktops() noexcept {
+HRESULT VirtualDesktopManagerInternalDelegate18963::LoadDesktops() noexcept {
 	HRESULT hr = S_OK;
 
 	winrt::com_ptr<IObjectArray> desktops;

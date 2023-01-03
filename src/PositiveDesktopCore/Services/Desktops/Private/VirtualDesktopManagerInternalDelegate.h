@@ -66,8 +66,8 @@ namespace app::desktop {
 		winrt::com_ptr<IVirtualDesktopManagerInternal14328> iface_;
 	};
 
-	struct VirtualDesktopManagerInternalDelegate19041 final: public IVirtualDesktopManagerInternalDelegate {
-		VirtualDesktopManagerInternalDelegate19041(std::shared_ptr<VirtualDesktopCache> cache, IServiceProvider* serviceProvider): cache_(cache) {
+	struct VirtualDesktopManagerInternalDelegate18963 final: public IVirtualDesktopManagerInternalDelegate {
+		VirtualDesktopManagerInternalDelegate18963(std::shared_ptr<VirtualDesktopCache> cache, IServiceProvider* serviceProvider): cache_(cache) {
 			winrt::check_hresult(serviceProvider->QueryService(
 				clsidVirtualDesktopManagerInternal,
 				__uuidof(IVirtualDesktopManagerInternal14328_2),
@@ -76,7 +76,7 @@ namespace app::desktop {
 
 		inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
-			return iface_->MoveViewToDesktop(pView, reinterpret_cast<VirtualDesktopDelegate19041*>(pDesktop)->iface());
+			return iface_->MoveViewToDesktop(pView, reinterpret_cast<VirtualDesktopDelegate18963*>(pDesktop)->iface());
 		}
 
 		inline HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept override {
@@ -104,7 +104,7 @@ namespace app::desktop {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop* pDesktop { nullptr };
-			HRESULT hr = iface_->GetAdjacentDesktop(reinterpret_cast<VirtualDesktopDelegate19041*>(pDesktopOrigin)->iface(), nDirection, &pDesktop);
+			HRESULT hr = iface_->GetAdjacentDesktop(reinterpret_cast<VirtualDesktopDelegate18963*>(pDesktopOrigin)->iface(), nDirection, &pDesktop);
 			if (SUCCEEDED(hr)) {
 				IVirtualDesktop2* pDesktop2 { nullptr };
 				hr = pDesktop->QueryInterface(&pDesktop2);
@@ -118,7 +118,7 @@ namespace app::desktop {
 
 		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
-			return iface_->SwitchDesktop(reinterpret_cast<VirtualDesktopDelegate19041*>(pDesktop)->iface());
+			return iface_->SwitchDesktop(reinterpret_cast<VirtualDesktopDelegate18963*>(pDesktop)->iface());
 		}
 
 		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept override {
@@ -286,7 +286,7 @@ namespace app::desktop {
 
 	struct VirtualDesktopManagerInternalDelegate22449 final: public IVirtualDesktopManagerInternalDelegate {
 		VirtualDesktopManagerInternalDelegate22449(DWORD build, std::shared_ptr<VirtualDesktopCache> cache, IServiceProvider* serviceProvider): cache_(cache) {
-			if (build >= 21359) {
+			if (build >= 25158) {
 				winrt::check_hresult(serviceProvider->QueryService(
 					clsidVirtualDesktopManagerInternal,
 					__uuidof(IVirtualDesktopManagerInternal25158),

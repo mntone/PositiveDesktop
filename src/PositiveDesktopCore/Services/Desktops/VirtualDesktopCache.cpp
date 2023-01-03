@@ -39,7 +39,7 @@ HRESULT VirtualDesktopCache::CreateDelegate(IVirtualDesktop2* iface, int index, 
 	if (FAILED(hr)) return hr;
 	WINRT_ASSERT(cache_.find(id) == cache_.end());
 
-	IVirtualDesktopDelegate* delegate = new VirtualDesktopDelegate19041(iface, index);
+	IVirtualDesktopDelegate* delegate = new VirtualDesktopDelegate18963(iface, index);
 	{
 		app::lock_guard lock { locker_ };
 		cache_.emplace(id, delegate);
@@ -93,7 +93,7 @@ HRESULT VirtualDesktopCache::CreateDelegateIfNeeded(IVirtualDesktop2* iface, IVi
 		app::lock_guard lock { locker_ };
 		itr = cache_.find(id);
 		if (itr == cache_.end()) {
-			IVirtualDesktopDelegate* delegate = new VirtualDesktopDelegate19041(iface, static_cast<int>(cache_.size()));
+			IVirtualDesktopDelegate* delegate = new VirtualDesktopDelegate18963(iface, static_cast<int>(cache_.size()));
 			cache_.emplace(id, delegate);
 			*ppDelegate = delegate;
 			return hr;
@@ -256,7 +256,7 @@ HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop2* iface, IVirtualDes
 		for (auto& cache : cache_) {
 			int const cacheIndex = cache.second->Index();
 			if (cacheIndex > targetIndex) {
-				reinterpret_cast<VirtualDesktopDelegate19041*>(cache.second)->Index(cacheIndex - 1);
+				reinterpret_cast<VirtualDesktopDelegate18963*>(cache.second)->Index(cacheIndex - 1);
 			}
 		}
 	}

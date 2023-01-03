@@ -59,7 +59,7 @@ namespace app::desktop {
 
 	// Add this in Windows 10 Version 2004
 	//
-	// Supported OS:
+	// Supported OS: Build 18963? and later
 	// - [19041] May 2020 Update      (2004) / 20H1
 	// - [19042] October 2020 Update  (20H2) / 20H2
 	// - [19043] May 2021 Update      (21H1) / 21H1
@@ -135,7 +135,7 @@ namespace app::desktop {
 		virtual HRESULT __stdcall FindDesktop(winrt::guid desktopId, IVirtualDesktop** ppDesktop) = 0;
 	};
 
-	// Supported OS:
+	// Supported OS: Build 18963? and later
 	// - [19041] May 2020 Update      (2004) / 20H1
 	// - [19042] October 2020 Update  (20H2) / 20H2
 	// - [19043] May 2021 Update      (21H1) / 21H1
@@ -257,7 +257,7 @@ namespace app::desktop {
 
 	// Add this in Windows 10 Version 2004
 	//
-	// Supported OS:
+	// Supported OS: Build 18963? and later
 	// - [19041] May 2020 Update      (2004) / 20H1
 	// - [19042] October 2020 Update  (20H2) / 20H2
 	// - [19043] May 2021 Update      (21H1) / 21H1
