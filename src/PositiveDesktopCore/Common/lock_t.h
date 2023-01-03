@@ -7,7 +7,12 @@ namespace app {
 	struct lock_t {
 		inline void lock() noexcept {
 			bool expected = false;
-			_ASSERTE(flag_.compare_exchange_strong(expected, true, std::memory_order_acquire));
+#if DEBUG
+			bool result = flag_.compare_exchange_strong(expected, true, std::memory_order_acquire);
+			_ASSERTE(result);
+#else
+			flag_.compare_exchange_strong(expected, true, std::memory_order_acquire);
+#endif
 		}
 
 		inline void unlock() noexcept {
