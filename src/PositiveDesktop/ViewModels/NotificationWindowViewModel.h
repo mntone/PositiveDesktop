@@ -6,8 +6,8 @@ namespace winrt::PositiveDesktop::ViewModels::implementation {
 	struct NotificationWindowViewModel: NotificationWindowViewModelT<NotificationWindowViewModel> {
 		NotificationWindowViewModel() noexcept;
 		NotificationWindowViewModel(winrt::hstring caption, winrt::hstring message) noexcept
-			: caption_(caption)
-			, message_(message)
+			: caption_(std::move(caption))
+			, message_(std::move(message))
 		{ }
 
 		winrt::hstring Caption() const noexcept {
