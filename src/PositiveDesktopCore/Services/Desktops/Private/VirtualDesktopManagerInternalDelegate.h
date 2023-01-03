@@ -11,12 +11,12 @@ namespace app::desktop {
 				iface_.put_void()));
 		}
 
-		inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) noexcept override {
+		inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->MoveViewToDesktop(pView, reinterpret_cast<VirtualDesktopDelegate10240*>(pDesktop)->iface());
 		}
 
-		inline HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop* pDesktop { nullptr };
@@ -27,12 +27,12 @@ namespace app::desktop {
 			return hr;
 		}
 
-		inline HRESULT GetDesktops(IObjectArray** ppArray) noexcept override {
+		inline HRESULT GetDesktops(IObjectArray** ppArray) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->GetDesktops(ppArray);
 		}
 
-		inline HRESULT GetAdjacentDesktop(IVirtualDesktopDelegate* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT GetAdjacentDesktop(IVirtualDesktopDelegate* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop* pDesktop { nullptr };
@@ -43,12 +43,12 @@ namespace app::desktop {
 			return hr;
 		}
 
-		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) noexcept override {
+		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->SwitchDesktop(reinterpret_cast<VirtualDesktopDelegate10240*>(pDesktop)->iface());
 		}
 
-		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop* pDesktop { nullptr };
@@ -74,12 +74,12 @@ namespace app::desktop {
 				iface_.put_void()));
 		}
 
-		inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) noexcept override {
+		inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->MoveViewToDesktop(pView, reinterpret_cast<VirtualDesktopDelegate19041*>(pDesktop)->iface());
 		}
 
-		inline HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop* pDesktop { nullptr };
@@ -95,12 +95,12 @@ namespace app::desktop {
 			return hr;
 		}
 
-		inline HRESULT GetDesktops(IObjectArray** ppArray) noexcept override {
+		inline HRESULT GetDesktops(IObjectArray** ppArray) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->GetDesktops(ppArray);
 		}
 
-		inline HRESULT GetAdjacentDesktop(IVirtualDesktopDelegate* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT GetAdjacentDesktop(IVirtualDesktopDelegate* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop* pDesktop { nullptr };
@@ -116,12 +116,12 @@ namespace app::desktop {
 			return hr;
 		}
 
-		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) noexcept override {
+		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->SwitchDesktop(reinterpret_cast<VirtualDesktopDelegate19041*>(pDesktop)->iface());
 		}
 
-		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop* pDesktop { nullptr };
@@ -159,12 +159,12 @@ namespace app::desktop {
 			}
 		}
 
-		inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) noexcept override {
+		inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->MoveViewToDesktop(pView, reinterpret_cast<VirtualDesktopDelegate20231*>(pDesktop)->iface());
 		}
 
-		inline HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop20231* pDesktop { nullptr };
@@ -175,12 +175,12 @@ namespace app::desktop {
 			return hr;
 		}
 
-		inline HRESULT GetDesktops(IObjectArray** ppArray) noexcept override {
+		inline HRESULT GetDesktops(IObjectArray** ppArray) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->GetDesktops(nullptr, ppArray);
 		}
 
-		inline HRESULT GetAdjacentDesktop(IVirtualDesktopDelegate* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT GetAdjacentDesktop(IVirtualDesktopDelegate* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop20231* pDesktop { nullptr };
@@ -191,12 +191,12 @@ namespace app::desktop {
 			return hr;
 		}
 
-		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) noexcept override {
+		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->SwitchDesktop(nullptr, reinterpret_cast<VirtualDesktopDelegate20231*>(pDesktop)->iface());
 		}
 
-		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop20231* pDesktop { nullptr };
@@ -229,12 +229,12 @@ namespace app::desktop {
 			}
 		}
 
-		inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) noexcept override {
+		inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->MoveViewToDesktop(pView, reinterpret_cast<VirtualDesktopDelegate20231*>(pDesktop)->iface());
 		}
 
-		inline HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop20231* pDesktop { nullptr };
@@ -245,12 +245,12 @@ namespace app::desktop {
 			return hr;
 		}
 
-		inline HRESULT GetDesktops(IObjectArray** ppArray) noexcept override {
+		inline HRESULT GetDesktops(IObjectArray** ppArray) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->GetDesktops(nullptr, ppArray);
 		}
 
-		inline HRESULT GetAdjacentDesktop(IVirtualDesktopDelegate* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT GetAdjacentDesktop(IVirtualDesktopDelegate* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop20231* pDesktop { nullptr };
@@ -261,12 +261,12 @@ namespace app::desktop {
 			return hr;
 		}
 
-		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) noexcept override {
+		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->SwitchDesktop(nullptr, reinterpret_cast<VirtualDesktopDelegate20231*>(pDesktop)->iface());
 		}
 
-		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop20231* pDesktop { nullptr };
@@ -299,12 +299,12 @@ namespace app::desktop {
 			}
 		}
 
-		inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) noexcept override {
+		inline HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->MoveViewToDesktop(pView, reinterpret_cast<VirtualDesktopDelegate20231*>(pDesktop)->iface());
 		}
 
-		inline HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop20231* pDesktop { nullptr };
@@ -315,12 +315,12 @@ namespace app::desktop {
 			return hr;
 		}
 
-		inline HRESULT GetDesktops(IObjectArray** ppArray) noexcept override {
+		inline HRESULT GetDesktops(IObjectArray** ppArray) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->GetDesktops(nullptr, ppArray);
 		}
 
-		inline HRESULT GetAdjacentDesktop(IVirtualDesktopDelegate* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT GetAdjacentDesktop(IVirtualDesktopDelegate* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop20231* pDesktop { nullptr };
@@ -331,12 +331,12 @@ namespace app::desktop {
 			return hr;
 		}
 
-		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) noexcept override {
+		inline HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 			return iface_->SwitchDesktop(nullptr, reinterpret_cast<VirtualDesktopDelegate20231*>(pDesktop)->iface());
 		}
 
-		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept override {
+		inline HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept override {
 			WINRT_ASSERT(iface_);
 
 			IVirtualDesktop20231* pDesktop { nullptr };

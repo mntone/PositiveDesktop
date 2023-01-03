@@ -13,12 +13,12 @@ namespace app::desktop {
 		virtual ~IVirtualDesktopManagerInternalDelegate() = default;
 
 		// Delegates
-		virtual HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) noexcept = 0;
-		virtual HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept = 0;
-		virtual HRESULT GetDesktops(IObjectArray** ppArray) noexcept = 0;
-		virtual HRESULT GetAdjacentDesktop(IVirtualDesktopDelegate* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktopDelegate** ppDesktop) noexcept = 0;
-		virtual HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) noexcept = 0;
-		virtual HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) noexcept = 0;
+		virtual HRESULT MoveViewToDesktop(IUnknown* pView, IVirtualDesktopDelegate* pDesktop) const noexcept = 0;
+		virtual HRESULT GetCurrentDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept = 0;
+		virtual HRESULT GetDesktops(IObjectArray** ppArray) const noexcept = 0;
+		virtual HRESULT GetAdjacentDesktop(IVirtualDesktopDelegate* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktopDelegate** ppDesktop) const noexcept = 0;
+		virtual HRESULT SwitchDesktop(IVirtualDesktopDelegate* pDesktop) const noexcept = 0;
+		virtual HRESULT CreateDesktop(IVirtualDesktopDelegate** ppDesktop) const noexcept = 0;
 
 		// Helpers
 		virtual HRESULT LoadDesktops() noexcept = 0;
