@@ -29,6 +29,7 @@ In the future, you will be able to customize keys.
 - `Win`+`Ctrl`+`Alt`+`←` or `PgUp`: Move foreground window to the left desktop and switch it.
 - `Win`+`Ctrl`+`Alt`+`→` or `PgDn`: Move foreground window to the right desktop and switch it.
 - `Win`+`Ctrl`+`Alt`+`D`: Move foreground window to the new desktop and switch it.
+- `Win`+`Ctrl`+`Alt`+`T`: Pin and unpin foreground window on the current desktop.
 
 ## Requirements
 

@@ -16,6 +16,7 @@ namespace app {
 		}
 
 		void close() noexcept {
+			if (terminating_) return;
 			{
 				std::lock_guard<std::mutex> locker(mutex_);
 				terminating_ = true;

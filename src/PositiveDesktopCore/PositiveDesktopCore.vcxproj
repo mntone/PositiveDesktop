@@ -109,6 +109,7 @@
     <ClInclude Include="Common\RepsBase.h" />
     <ClInclude Include="Common\RepsUtil.h" />
     <ClInclude Include="Common\VirtualDesktop.h" />
+    <ClInclude Include="Common\WindowUtil.h" />
     <ClInclude Include="Services\Desktops\vdevent_t.h" />
     <ClInclude Include="Services\Desktops\DesktopService.h" />
     <ClInclude Include="Services\Desktops\Private\VirtualDesktopDelegate.h" />

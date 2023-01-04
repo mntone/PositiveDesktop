@@ -45,7 +45,13 @@
     <ClInclude Include="Common\RepsBase.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Common\RepsUtil.h">
+      <Filter>Common</Filter>
+    </ClInclude>
     <ClInclude Include="Common\VirtualDesktop.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\WindowUtil.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Services\Desktops\DesktopService.h">
@@ -74,9 +80,6 @@
     </ClInclude>
     <ClInclude Include="Services\KeyListeners\KeyListenerService.h">
       <Filter>Services\KeyListeners</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\RepsUtil.h">
-      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

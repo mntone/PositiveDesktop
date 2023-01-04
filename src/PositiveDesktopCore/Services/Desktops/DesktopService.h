@@ -21,6 +21,11 @@ namespace app::desktop {
 		void moveForegroundWindow(int target) noexcept;
 		void moveForegroundWindowAndSwitch(int target) noexcept;
 
+		// - Window actions
+		void setTopmostToForegroundWindow() noexcept;
+		void unsetTopmostToForegroundWindow() noexcept;
+		void toggleTopmostToForegroundWindow() noexcept;
+
 	private:
 		HRESULT GetTargetDesktop(int target, IVirtualDesktopDelegate** ppDesktop) const noexcept;
 
@@ -30,6 +35,8 @@ namespace app::desktop {
 		HRESULT __stdcall VirtualDesktopNameChanged(IVirtualDesktopDelegate* pDesktop) noexcept override;
 		HRESULT __stdcall CurrentVirtualDesktopChanged(IVirtualDesktopDelegate* pDesktopNew) noexcept override;
 
+		void unsetTopmostAll() noexcept;
+
 		//void FASTCALL on(reps::bag_t const& value) noexcept override;
 
 	private:
@@ -37,7 +44,6 @@ namespace app::desktop {
 		winrt::com_ptr<IApplicationViewCollection> applicationViewCollection_;
 		std::unique_ptr<IVirtualDesktopManagerInternalDelegate> virtualDesktopManagerDelegate_;
 		winrt::com_ptr<IVirtualDesktopNotificationService> virtualDesktopNotificationService_;
-		IVirtualDesktopNotificationListener* listener_;
 		DWORD cookie_;
 
 		std::shared_ptr<VirtualDesktopCache> virtualDesktopCache_;

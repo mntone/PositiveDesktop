@@ -21,6 +21,7 @@ namespace app {
 		~app_t() noexcept;
 
 		void initialize();
+		void close() noexcept;
 
 	private:
 		void FASTCALL on(reps::bag_t<app::keylistener::kbevent_t> const& value) noexcept;

@@ -26,12 +26,10 @@ app_t::app_t()
 }
 
 app_t::~app_t() noexcept {
+	// Stop message service
 	message_service_t::close();
 
-	release(desktop_);
-	release(keysLitener_);
-	release(presenter_);
-	release(configManager_);
+	close();
 }
 
 void app_t::initialize() {
@@ -39,9 +37,7 @@ void app_t::initialize() {
 	OSVERSIONINFOW osver { sizeof(OSVERSIONINFOW) };
 #pragma warning(push)
 #pragma warning(disable: 4996)
-	if (!GetVersionExW(&osver)) {
-		winrt::throw_last_error();
-	}
+	winrt::check_bool(GetVersionExW(&osver));
 #pragma warning(pop)
 	if (osver.dwMajorVersion != 10 || osver.dwMinorVersion != 0) {
 		winrt::throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
@@ -69,6 +65,14 @@ void app_t::initialize() {
 
 	// Start message service
 	message_service_t::initialize();
+}
+
+void app_t::close() noexcept {
+	// Release each service
+	release(desktop_);
+	release(keysLitener_);
+	release(presenter_);
+	release(configManager_);
 }
 
 void FASTCALL app_t::on(reps::bag_t<app::keylistener::kbevent_t> const& value) noexcept {
@@ -109,14 +113,6 @@ void app_t::process(keylistener::kbevent_t ev) noexcept {
 	using namespace app::keylistener;
 
 	switch (flag(ev)) {
-	case kbe_extend:
-		switch (ev) {
-		case kbe_exit:
-			message_service_t::terminateWithoutLock();
-			presenter_->closeAll();
-			break;
-		}
-		break;
 	case kbe_switch:
 	{
 		int target = app::keylistener::desktop(ev);
@@ -135,5 +131,23 @@ void app_t::process(keylistener::kbevent_t ev) noexcept {
 		desktop_->moveForegroundWindowAndSwitch(target);
 		break;
 	}
+	case kbe_extend:
+		switch (ev) {
+		case kbe_exit:
+			message_service_t::terminateWithoutLock();
+			presenter_->closeAll();
+			close();
+			break;
+		case kbe_topmost_toggle:
+			desktop_->toggleTopmostToForegroundWindow();
+			break;
+		case kbe_topmost:
+			desktop_->setTopmostToForegroundWindow();
+			break;
+		case kbe_topmost_remove:
+			desktop_->unsetTopmostToForegroundWindow();
+			break;
+		}
+		break;
 	}
 }

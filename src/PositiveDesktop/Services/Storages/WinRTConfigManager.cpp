@@ -193,10 +193,6 @@ namespace app::storage {
 			: container_(winrt::Windows::Storage::ApplicationData::Current().LocalSettings()) {
 		}
 
-		~WinRTConfigManager() {
-			container_.Close();
-		}
-
 		void Reset() override {
 			winrt::Windows::Storage::ApplicationData::Current().ClearAsync().get();
 		}
