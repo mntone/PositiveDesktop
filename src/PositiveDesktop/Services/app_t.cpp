@@ -117,6 +117,12 @@ void app_t::process(keylistener::kbevent_t ev) noexcept {
 			break;
 		}
 		break;
+	case kbe_switch:
+	{
+		int target = app::keylistener::desktop(ev);
+		desktop_->switchDesktop(target);
+		break;
+	}
 	case kbe_move_window:
 	{
 		int target = app::keylistener::desktop(ev);

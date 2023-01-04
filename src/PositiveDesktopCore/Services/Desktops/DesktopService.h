@@ -17,6 +17,7 @@ namespace app::desktop {
 		void initialize(uint32_t build);
 
 		// - Desktop actions
+		void switchDesktop(int target) noexcept;
 		void moveForegroundWindow(int target) noexcept;
 		void moveForegroundWindowAndSwitch(int target) noexcept;
 

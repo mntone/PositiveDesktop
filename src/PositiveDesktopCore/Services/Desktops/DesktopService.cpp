@@ -153,6 +153,14 @@ HRESULT DesktopService::GetTargetDesktop(int target, IVirtualDesktopDelegate** p
 	return hr;
 }
 
+void DesktopService::switchDesktop(int target) noexcept try {
+	IVirtualDesktopDelegate* targetDesktop { nullptr };
+	check_hresult(GetTargetDesktop(target, &targetDesktop));
+	check_hresult(virtualDesktopManagerDelegate_->SwitchDesktop(targetDesktop));
+} catch (winrt::hresult_error const& /*err*/) {
+	// TODO: error log
+}
+
 void DesktopService::moveForegroundWindow(int target) noexcept try {
 	IVirtualDesktopDelegate* targetDesktop { nullptr };
 	check_hresult(GetTargetDesktop(target, &targetDesktop));

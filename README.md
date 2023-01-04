@@ -11,7 +11,24 @@ https://user-images.githubusercontent.com/901816/209556339-4c579869-0df4-44a7-97
   - [x] View desktop index
 - [x] Set notification position
 - [x] Apply window corner (square, round, small round) to notification window (Windows 11)
-- [x] Listen for key input from global hook (Win+Ctrl+X to exit application in experimental version)
+- [x] Listen for key input from global hook (about keys in the following section for experimental version)
+
+### Shortcut keys
+
+In the future, you will be able to customize keys.
+
+- `Win`+`Ctrl`+`X`: Exit application.
+- `Win`+`Ctrl`+`1` to `9` and `0`: Switch "Desktop 1" to "Desktop 9" and "Desktop 10."
+- `Win`+`Ctrl`+`Home`: Switch the first desktop.
+- `Win`+`Ctrl`+`End`: Switch the last desktop.
+- `Win`+`Ctrl`+`PgUp`: Switch the left desktop (`Win`+`Ctrl`+`←` is provided by Windows default).
+- `Win`+`Ctrl`+`PgDn`: Switch the right desktop (`Win`+`Ctrl`+`→` is provided by Windows default).
+- `Win`+`Ctrl`+`Alt`+`1` to `9` and `0`: Move foreground window to "Desktop 1" to "Desktop 9" and "Desktop 10" and switch it.
+- `Win`+`Ctrl`+`Alt`+`Home`: Move foreground window to the first desktop and switch it.
+- `Win`+`Ctrl`+`Alt`+`End`: Move foreground window to the last desktop and switch it.
+- `Win`+`Ctrl`+`Alt`+`←` or `PgUp`: Move foreground window to the left desktop and switch it.
+- `Win`+`Ctrl`+`Alt`+`→` or `PgDn`: Move foreground window to the right desktop and switch it.
+- `Win`+`Ctrl`+`Alt`+`D`: Move foreground window to the new desktop and switch it.
 
 ## Requirements
 

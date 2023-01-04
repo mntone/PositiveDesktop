@@ -32,8 +32,18 @@ KeysListenerService::~KeysListenerService() {
 
 void KeysListenerService::initialize() {
 	app::storage::key_config_t config;
-	config.map.reserve(16);
+	config.map.reserve(30);
 	config.map.push_back({ kbe_exit, { 'X', 0x28 /* LCtrl+LWin */ } }); // Exit application.
+
+	// Switch desktop.
+	for (char i = 0; i < 9; ++i) {
+		config.map.push_back({ addingDesktop(kbe_switch, i), { '1' + i, 0x28 /* LCtrl+LWin*/ } });
+	}
+	config.map.push_back({ kbe_switch_desktop10, { '0', 0x28 /* LCtrl+LWin*/ } });
+	config.map.push_back({ kbe_switch_first, { VK_HOME, 0x28 /* LCtrl+LWin*/ } });
+	config.map.push_back({ kbe_switch_last, { VK_END, 0x28 /* LCtrl+LWin*/ } });
+	config.map.push_back({ kbe_switch_left, { VK_PRIOR, 0x28 /* LCtrl+LWin*/ } });
+	config.map.push_back({ kbe_switch_right, { VK_NEXT, 0x28 /* LCtrl+LWin*/ } });
 
 	// Move window to the X desktop and switch.
 	for (char i = 0; i < 9; ++i) {
