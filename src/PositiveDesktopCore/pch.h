@@ -39,3 +39,5 @@
 #include <hstring.h>
 
 #include <winrt/base.h>
+
+#include "Services/Loggers/log_t.h"

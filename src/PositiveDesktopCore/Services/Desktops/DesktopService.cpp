@@ -30,6 +30,27 @@ namespace app::desktop {
 
 	constexpr std::wstring_view PositiveDesktop_Mark_Topmost = L"PositiveDesktop.Mark.Topmost";
 
+	namespace nonlocalized {
+
+		constexpr std::string_view ErrorMessage_InitIServiceProvider = "Failed to init IServiceProvider.";
+		constexpr std::string_view ErrorMessage_InitIApplicationViewCollection = "Failed to init IApplicationViewCollection.";
+		constexpr std::string_view ErrorMessage_InitIVirtualDesktopNotificationService = "Failed to init IVirtualDesktopNotificationService.";
+		constexpr std::string_view ErrorMessage_NotSupported = "This Windows build isn't supported.";
+
+		constexpr std::string_view ErrorMessage_GetExstyle = "Failed to get exstyle.";
+		constexpr std::string_view ErrorMessage_SetTopmost = "Failed to set topmost.";
+		constexpr std::string_view ErrorMessage_UnsetTopmost = "Failed to unset topmost.";
+		constexpr std::string_view ErrorMessage_SetTopmostProp = "Failed to set topmost prop.";
+		constexpr std::string_view ErrorMessage_RemoveTopmostProp = "Failed to remove topmost prop.";
+
+		constexpr std::string_view ErrorMessage_LoadDesktops = "Failed to load desktops.";
+		constexpr std::string_view ErrorMessage_GetTargetDesktop = "Failed to get a target desktop.";
+		constexpr std::string_view ErrorMessage_GetForegroundView = "Failed to get the foreground view.";
+		constexpr std::string_view ErrorMessage_SwitchTargetDesktop = "Failed to switch the target desktop.";
+		constexpr std::string_view ErrorMessage_MoveViewToTargetDesktop = "Failed to move the view to the target desktop.";
+
+	}
+
 }
 
 using namespace winrt;
@@ -37,7 +58,7 @@ using namespace winrt;
 using namespace app::desktop;
 
 DesktopService::DesktopService()
-	:  serviceProvider_(nullptr)
+	: serviceProvider_(nullptr)
 	, applicationViewCollection_(nullptr)
 	, virtualDesktopManagerDelegate_(nullptr)
 	, virtualDesktopNotificationService_(nullptr)
@@ -57,17 +78,21 @@ DesktopService::~DesktopService() {
 }
 
 void DesktopService::initialize(uint32_t build) {
-	check_hresult(CoCreateInstance(
+	LOG_TRACE_BEGIN_INTHROW(logger::ltg_desktop);
+
+	CHECK_FATAL_HRESULT_THROW(CoCreateInstance(
 		clsidImmersiveShell,
 		nullptr,
 		CLSCTX_LOCAL_SERVER,
 		guid_of<IServiceProvider>(),
-		serviceProvider_.put_void()));
+		serviceProvider_.put_void()),
+		nonlocalized::ErrorMessage_InitIServiceProvider);
 
-	check_hresult(serviceProvider_->QueryService(
+	CHECK_FATAL_HRESULT_THROW(serviceProvider_->QueryService(
 		__uuidof(IApplicationViewCollection),
 		__uuidof(IApplicationViewCollection),
-		applicationViewCollection_.put_void()));
+		applicationViewCollection_.put_void()),
+		nonlocalized::ErrorMessage_InitIApplicationViewCollection);
 
 	if (build >= 22449) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate22449>(build, virtualDesktopCache_, serviceProvider_.get());
@@ -76,39 +101,50 @@ void DesktopService::initialize(uint32_t build) {
 	} else if (build >= 20231) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate20231>(build, virtualDesktopCache_, serviceProvider_.get());
 	} else if (build >= 20211) {
-		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
+		CHECK_FATAL_HRESULT_THROW(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
 	} else if (build >= 18963) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate18963>(virtualDesktopCache_, serviceProvider_.get());
 	} else if (build >= 14238) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate14238>(virtualDesktopCache_, serviceProvider_.get());
 	} else {
-		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
+		CHECK_FATAL_HRESULT_THROW(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
 	}
 
-	check_hresult(serviceProvider_->QueryService(
+	CHECK_FATAL_HRESULT_THROW(serviceProvider_->QueryService(
 		clsidVirtualNotificationService,
 		__uuidof(IVirtualDesktopNotificationService),
-		virtualDesktopNotificationService_.put_void()));
+		virtualDesktopNotificationService_.put_void()),
+		nonlocalized::ErrorMessage_InitIVirtualDesktopNotificationService);
 
 	if (build >= 21359 /* Windows 10 Insider, Windows 11 */) {
 		com_ptr<VirtualDesktopNotificationListener21359> listener = make_self<VirtualDesktopNotificationListener21359>(virtualDesktopCache_, this);
-		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification21359>().get(), &cookie_));
+		CHECK_FATAL_HRESULT_THROW(
+			virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification21359>().get(), &cookie_),
+			"Failed to register IVirtualDesktopNotification21359.");
 	} else if (build >= 20231 /* Windows 10 Insider */) {
 		com_ptr<VirtualDesktopNotificationListener20231> listener = make_self<VirtualDesktopNotificationListener20231>(virtualDesktopCache_, this);
-		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification20241>().get(), &cookie_));
+		CHECK_FATAL_HRESULT_THROW(
+			virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification20241>().get(), &cookie_),
+			"Failed to register IVirtualDesktopNotification20241.");
 	} else if (build >= 20211) {
-		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
+		CHECK_FATAL_HRESULT_THROW(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
 	} else if (build >= 18963 /* general Windows 10 */) {
 		com_ptr<VirtualDesktopNotificationListener18963> listener = make_self<VirtualDesktopNotificationListener18963>(virtualDesktopCache_, this);
-		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification2>().get(), &cookie_));
+		CHECK_FATAL_HRESULT_THROW(
+			virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification2>().get(), &cookie_),
+			"Failed to register IVirtualDesktopNotification2.");
 	} else if (build >= 10159 /* previous Windows 10 */) {
 		com_ptr<VirtualDesktopNotificationListener10240> listener = make_self<VirtualDesktopNotificationListener10240>(virtualDesktopCache_, this);
-		check_hresult(virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification>().get(), &cookie_));
+		CHECK_FATAL_HRESULT_THROW(
+			virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification>().get(), &cookie_),
+			"Failed to register IVirtualDesktopNotification.");
 	} else {
-		throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
+		CHECK_FATAL_HRESULT_THROW(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
 	}
 
-	check_hresult(virtualDesktopManagerDelegate_->LoadDesktops());
+	CHECK_FATAL_HRESULT_THROW(virtualDesktopManagerDelegate_->LoadDesktops(), nonlocalized::ErrorMessage_LoadDesktops);
+
+	LOG_TRACE_END_INTHROW();
 }
 
 #pragma region Operation implementation
@@ -155,7 +191,9 @@ HRESULT DesktopService::GetTargetDesktop(int target, IVirtualDesktopDelegate** p
 }
 
 void DesktopService::unsetTopmostAll() noexcept {
-	check_bool(EnumWindows([](HWND hWnd, LPARAM lParam) -> BOOL {
+	LOG_TRACE_BEGIN(logger::ltg_desktop);
+
+	check_bool(EnumWindows([](HWND hWnd, LPARAM /*lParam*/) -> BOOL {
 		HANDLE hTopmost = RemovePropW(hWnd, PositiveDesktop_Mark_Topmost.data());
 		if (!hTopmost) {
 			return TRUE;
@@ -166,83 +204,100 @@ void DesktopService::unsetTopmostAll() noexcept {
 		}
 		return TRUE;
 	}, 0));
+
+	LOG_TRACE_END_NOLABEL();
 }
 
-void DesktopService::setTopmostToForegroundWindow() noexcept try {
+void DesktopService::setTopmostToForegroundWindow() noexcept {
+	LOG_TRACE_BEGIN(logger::ltg_desktop);
+
 	HWND hWnd = GetForegroundWindow();
 	LONG_PTR exStyle = GetWindowLongPtrW(hWnd, GWL_EXSTYLE);
-	check_bool(exStyle);
+	CHECK_ERROR_BOOL_GOTO(exStyle, nonlocalized::ErrorMessage_GetExstyle);
+
 	if (!(exStyle & WS_EX_TOPMOST)) {
-		check_bool(SetTopmost(hWnd));
-		check_bool(SetPropW(hWnd, PositiveDesktop_Mark_Topmost.data(), reinterpret_cast<HANDLE>(TRUE))); // MARK
+		CHECK_ERROR_BOOL_GOTO(SetTopmost(hWnd), nonlocalized::ErrorMessage_SetTopmost);
+		CHECK_WARN_BOOL_PASS(SetPropW(hWnd, PositiveDesktop_Mark_Topmost.data(), reinterpret_cast<HANDLE>(TRUE)), nonlocalized::ErrorMessage_SetTopmostProp); // MARK
 	}
-} catch (winrt::hresult_error const& /*err*/) {
-	// TODO: error log
+
+	LOG_TRACE_END();
 }
 
-void DesktopService::unsetTopmostToForegroundWindow() noexcept try {
+void DesktopService::unsetTopmostToForegroundWindow() noexcept {
+	LOG_TRACE_BEGIN(logger::ltg_desktop);
+
 	HWND hWnd = GetForegroundWindow();
 	LONG_PTR exStyle = GetWindowLongPtrW(hWnd, GWL_EXSTYLE);
-	check_bool(exStyle);
+	CHECK_ERROR_BOOL_GOTO(exStyle, nonlocalized::ErrorMessage_GetExstyle);
+
 	if (exStyle & WS_EX_TOPMOST) {
-		RemovePropW(hWnd, PositiveDesktop_Mark_Topmost.data()); // UNMARK; discard return value
-		check_bool(UnsetTopmost(hWnd));
+		CHECK_WARN_BOOL_PASS(RemovePropW(hWnd, PositiveDesktop_Mark_Topmost.data()), nonlocalized::ErrorMessage_RemoveTopmostProp); // UNMARK; discard return value
+		CHECK_ERROR_BOOL_PASS(UnsetTopmost(hWnd), nonlocalized::ErrorMessage_UnsetTopmost);
 	}
-} catch (winrt::hresult_error const& /*err*/) {
-	// TODO: error log
+
+	LOG_TRACE_END();
 }
 
-void DesktopService::toggleTopmostToForegroundWindow() noexcept try {
+void DesktopService::toggleTopmostToForegroundWindow() noexcept {
+	LOG_TRACE_BEGIN(logger::ltg_desktop);
+
 	HWND hWnd = GetForegroundWindow();
 	LONG_PTR exStyle = GetWindowLongPtrW(hWnd, GWL_EXSTYLE);
-	check_bool(exStyle);
+	CHECK_ERROR_BOOL_GOTO(exStyle, nonlocalized::ErrorMessage_GetExstyle);
+
 	if (exStyle & WS_EX_TOPMOST) {
-		RemovePropW(hWnd, PositiveDesktop_Mark_Topmost.data()); // UNMARK; discard return value
-		check_bool(UnsetTopmost(hWnd));
+		CHECK_WARN_BOOL_PASS(RemovePropW(hWnd, PositiveDesktop_Mark_Topmost.data()), nonlocalized::ErrorMessage_RemoveTopmostProp); // UNMARK; discard return value
+		CHECK_ERROR_BOOL_PASS(UnsetTopmost(hWnd), nonlocalized::ErrorMessage_UnsetTopmost);
 	} else {
-		check_bool(SetTopmost(hWnd));
-		check_bool(SetPropW(hWnd, PositiveDesktop_Mark_Topmost.data(), reinterpret_cast<HANDLE>(TRUE))); // MARK
+		CHECK_ERROR_BOOL_GOTO(SetTopmost(hWnd), nonlocalized::ErrorMessage_SetTopmost);
+		CHECK_WARN_BOOL_PASS(SetPropW(hWnd, PositiveDesktop_Mark_Topmost.data(), reinterpret_cast<HANDLE>(TRUE)), nonlocalized::ErrorMessage_SetTopmostProp); // MARK
 	}
-} catch (winrt::hresult_error const& /*err*/) {
-	// TODO: error log
+
+	LOG_TRACE_END();
 }
 
-void DesktopService::switchDesktop(int target) noexcept try {
+void DesktopService::switchDesktop(int target) noexcept {
+	LOG_TRACE_BEGIN(logger::ltg_desktop);
+
 	IVirtualDesktopDelegate* targetDesktop { nullptr };
-	check_hresult(GetTargetDesktop(target, &targetDesktop));
-	check_hresult(virtualDesktopManagerDelegate_->SwitchDesktop(targetDesktop));
-} catch (winrt::hresult_error const& /*err*/) {
-	// TODO: error log
+	CHECK_ERROR_HRESULT_GOTO(GetTargetDesktop(target, &targetDesktop), nonlocalized::ErrorMessage_GetTargetDesktop);
+	CHECK_ERROR_HRESULT_PASS(virtualDesktopManagerDelegate_->SwitchDesktop(targetDesktop), nonlocalized::ErrorMessage_SwitchTargetDesktop);
+
+	LOG_TRACE_END();
 }
 
-void DesktopService::moveForegroundWindow(int target) noexcept try {
-	IVirtualDesktopDelegate* targetDesktop { nullptr };
-	check_hresult(GetTargetDesktop(target, &targetDesktop));
+void DesktopService::moveForegroundWindow(int target) noexcept {
+	LOG_TRACE_BEGIN(logger::ltg_desktop);
 
+	IVirtualDesktopDelegate* targetDesktop { nullptr };
 	com_ptr<IUnknown> view;
-	check_hresult(applicationViewCollection_->GetViewForHwnd(GetForegroundWindow(), view.put()));
-	check_hresult(virtualDesktopManagerDelegate_->MoveViewToDesktop(view.get(), targetDesktop));
-} catch (winrt::hresult_error const& /*err*/) {
-	// TODO: error log
+	CHECK_ERROR_HRESULT_GOTO(GetTargetDesktop(target, &targetDesktop), nonlocalized::ErrorMessage_GetTargetDesktop);
+	CHECK_ERROR_HRESULT_GOTO(applicationViewCollection_->GetViewForHwnd(GetForegroundWindow(), view.put()), nonlocalized::ErrorMessage_GetForegroundView);
+	CHECK_ERROR_HRESULT_PASS(virtualDesktopManagerDelegate_->MoveViewToDesktop(view.get(), targetDesktop), nonlocalized::ErrorMessage_MoveViewToTargetDesktop);
+
+	LOG_TRACE_END();
 }
 
-void DesktopService::moveForegroundWindowAndSwitch(int target) noexcept try {
-	IVirtualDesktopDelegate* targetDesktop { nullptr };
-	check_hresult(GetTargetDesktop(target, &targetDesktop));
+void DesktopService::moveForegroundWindowAndSwitch(int target) noexcept {
+	LOG_TRACE_BEGIN(logger::ltg_desktop);
 
+	IVirtualDesktopDelegate* targetDesktop { nullptr };
 	com_ptr<IUnknown> view;
-	check_hresult(applicationViewCollection_->GetViewForHwnd(GetForegroundWindow(), view.put()));
-	check_hresult(virtualDesktopManagerDelegate_->MoveViewToDesktop(view.get(), targetDesktop));
-	check_hresult(virtualDesktopManagerDelegate_->SwitchDesktop(targetDesktop));
-} catch (winrt::hresult_error const& /*err*/) {
-	// TODO: error log
+	CHECK_ERROR_HRESULT_GOTO(GetTargetDesktop(target, &targetDesktop), nonlocalized::ErrorMessage_GetTargetDesktop);
+	CHECK_ERROR_HRESULT_GOTO(applicationViewCollection_->GetViewForHwnd(GetForegroundWindow(), view.put()), nonlocalized::ErrorMessage_GetForegroundView);
+	CHECK_ERROR_HRESULT_GOTO(virtualDesktopManagerDelegate_->MoveViewToDesktop(view.get(), targetDesktop), nonlocalized::ErrorMessage_MoveViewToTargetDesktop);
+	CHECK_ERROR_HRESULT_PASS(virtualDesktopManagerDelegate_->SwitchDesktop(targetDesktop), nonlocalized::ErrorMessage_SwitchTargetDesktop);
+
+	LOG_TRACE_END();
 }
 
 #pragma endregion
 
 #pragma region Callback implementation
 
-HRESULT DesktopService::VirtualDesktopCreated(IVirtualDesktopDelegate* pDesktop) noexcept try {
+HRESULT DesktopService::VirtualDesktopCreated(IVirtualDesktopDelegate* pDesktop) noexcept {
+	LOG_TRACE_BEGIN(logger::ltg_desktop_listener);
+
 	vdevent_t data {
 		vde_created,
 		0,
@@ -250,10 +305,9 @@ HRESULT DesktopService::VirtualDesktopCreated(IVirtualDesktopDelegate* pDesktop)
 		L"",
 	};
 	next(std::move(data));
+
+	LOG_TRACE_END_NOLABEL();
 	return S_OK;
-} catch (winrt::hresult_error const& err) {
-	// TODO: error log
-	return err.code();
 }
 
 HRESULT DesktopService::VirtualDesktopDestroyed(IVirtualDesktopDelegate* pDesktopDestroyed) noexcept try {

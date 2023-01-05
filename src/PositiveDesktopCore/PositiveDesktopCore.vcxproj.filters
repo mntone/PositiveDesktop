@@ -26,6 +26,9 @@
     <ClCompile Include="Services\KeyListeners\KeyListenerService.cpp">
       <Filter>Services\KeyListeners</Filter>
     </ClCompile>
+    <ClCompile Include="Services\Loggers\Logger.cpp">
+      <Filter>Services\Loggers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -81,6 +84,9 @@
     <ClInclude Include="Services\KeyListeners\KeyListenerService.h">
       <Filter>Services\KeyListeners</Filter>
     </ClInclude>
+    <ClInclude Include="Services\Loggers\log_t.h">
+      <Filter>Services\Loggers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -97,6 +103,9 @@
     </Filter>
     <Filter Include="Services\KeyListeners">
       <UniqueIdentifier>{14bc6c18-65b0-4707-b5ee-8f9d8922a8bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services\Loggers">
+      <UniqueIdentifier>{8ad1e0be-1593-4dc8-a973-cfa6a8fd6287}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

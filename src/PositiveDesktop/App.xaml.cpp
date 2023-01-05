@@ -19,6 +19,9 @@ using namespace PositiveDesktop::implementation;
 /// executed, and as such is the logical equivalent of main() or WinMain().
 /// </summary>
 App::App() {
+	// Init Logger
+	app::logger::initLogger();
+
 	// Save DispatcherQueue
 	app::ui::gDispatchQueue = winrt::Microsoft::UI::Dispatching::DispatcherQueue::GetForCurrentThread();
 	if (!app::ui::gDispatchQueue) {

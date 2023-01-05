@@ -51,6 +51,7 @@
 #include <winrt/Windows.System.h>
 #include <DispatcherQueue.h>
 
+#include "Services/Loggers/log_t.h"
 #include "Services/Storages/config_t.h"
 
 #include <winrt/Microsoft.Graphics.Display.h>
