@@ -50,6 +50,10 @@ LRESULT SettingsWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 		minmaxInfo.ptMinTrackSize.x = 320;
 		minmaxInfo.ptMinTrackSize.y = 240;
 		return FALSE;
+	} else if (WM_CLOSE == message) {
+		LRESULT result = WindowBase::WndProc(hWnd, message, wParam, lParam);
+		WindowBase::ReleaseSubclass(hWnd);
+		return result;
 	}
 	return WindowBase::WndProc(hWnd, message, wParam, lParam);
 }

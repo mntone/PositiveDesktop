@@ -29,6 +29,7 @@ namespace app::logger {
 		ltg_keylistener,
 		ltg_logger,
 		ltg_storage,
+		ltg_presenter,
 	};
 
 	enum logop_t: unsigned int {

@@ -6,12 +6,12 @@
 #include "ViewModels/NotificationWindowViewModel.h"
 #include "UI/register_value_t.h"
 #include "UI/NotificationPresenter.h"
+#include "UI/WindowBase.h"
 
 namespace winrt::PositiveDesktop::implementation {
 
-	struct NotificationWindow: NotificationWindowT<NotificationWindow> {
+	struct NotificationWindow: NotificationWindowT<NotificationWindow>, WindowBase {
 		NotificationWindow(app::ui::NotificationPresenterHint hint, app::storage::desktop_t config);
-		~NotificationWindow();
 
 		void Show(float visibleDuration);
 
@@ -27,8 +27,7 @@ namespace winrt::PositiveDesktop::implementation {
 		void ApplyThemeForAcrylic(Microsoft::UI::Xaml::FrameworkElement rootElement) noexcept;
 		void ApplyThemeForPlain(Microsoft::UI::Xaml::FrameworkElement rootElement) noexcept;
 
-		LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept;
-		static LRESULT WndProcStatic(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept;
+		LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept override final;
 
 	public:  // - Event delegates
 		void WindowSizeChanged(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::WindowSizeChangedEventArgs const& args);
@@ -82,7 +81,6 @@ namespace winrt::PositiveDesktop::implementation {
 
 		app::ui::NotificationPresenterHint hint_;
 		app::storage::desktop_t config_;
-		WNDPROC nextWndProc_;
 		Microsoft::UI::Composition::SystemBackdrops::SystemBackdropConfiguration configuration_;
 		Windows::Foundation::IInspectable backdropController_;
 		void (NotificationWindow::*applyTheme_)(Microsoft::UI::Xaml::FrameworkElement rootElement) noexcept;

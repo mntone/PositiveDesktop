@@ -13,8 +13,6 @@
 
 namespace app::ui::resources {
 
-	constexpr std::wstring_view PositiveDesktop_NotificationWindow_ClassPointer = L"PositiveDesktop.NotificationWindow.ClassPointer";
-
 	// High contrast resources
 	constexpr std::wstring_view WindowFillColorBrush_HighContrast = L"WindowFillColorBrush_HighContrast";
 	constexpr std::wstring_view WindowStrokeColorBrush_HighContrast = L"WindowStrokeColorBrush_HighContrast";
@@ -105,12 +103,6 @@ NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::stor
 	WINRT_ASSERT(hMonitor);
 	check_hresult(GetDpiForMonitor(hMonitor, MDT_EFFECTIVE_DPI, &dpiX_, &dpiY_));
 
-	// Hook WndProc
-	check_bool(SetPropW(hWnd, resources::PositiveDesktop_NotificationWindow_ClassPointer.data(), this)); // Set class pointer
-	LONG_PTR nextWndProc = SetWindowLongPtrW(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&NotificationWindow::WndProcStatic));
-	check_bool(nextWndProc);
-	nextWndProc_ = reinterpret_cast<WNDPROC>(nextWndProc);
-
 	// Override window styles
 	LONG currentStyle = GetWindowLongW(hWnd, GWL_STYLE);
 	if (0 == currentStyle) {
@@ -138,6 +130,9 @@ NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::stor
 	presenter.IsResizable(false);
 	presenter.SetBorderAndTitleBar(false, false);
 
+	// Subclassing
+	Subclass(hWnd);
+
 	// Init theme, backdrop, and etc...
 	FrameworkElement rootElement = Content().as<FrameworkElement>();
 	TrySetSystemBackdrop(rootElement);
@@ -148,21 +143,19 @@ NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::stor
 	}
 }
 
-NotificationWindow::~NotificationWindow() {
-	ReleasePrivate();
-}
-
 void NotificationWindow::ReleasePrivate() {
+	LOG_TRACE_BEGIN(app::logger::ltg_presenter);
+
+	// Don't receive WM_CLOSE when calling AppWindow::Close.
+	// So, we catch WindowClosed bacause of releasing subclass decently.
 	HWND hWnd { GetHwnd(m_inner) };
-	WNDPROC nextWndProc = std::exchange(nextWndProc_, nullptr);
-	if (!SetWindowLongPtrW(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(nextWndProc))) {
-		// TODO: Error message. Failed to unregister the own subclass.
-	}
-	RemovePropW(hWnd, resources::PositiveDesktop_NotificationWindow_ClassPointer.data());
+	WindowBase::ReleaseSubclass(hWnd);
 
 	actualThemeChangedRevoker_.revoke();
 	activatedRovoker_.revoke();
 	closedRovoker_.revoke();
+
+	LOG_TRACE_END_NOLABEL();
 }
 
 void NotificationWindow::Show(float visibleDuration) {
@@ -237,16 +230,7 @@ LRESULT NotificationWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPAR
 		dpiX_ = LOWORD(wParam);
 		dpiY_ = HIWORD(wParam);
 	}
-
-	return CallWindowProcW(nextWndProc_, hWnd, message, wParam, lParam);
-}
-
-LRESULT NotificationWindow::WndProcStatic(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept {
-	NotificationWindow* that = static_cast<NotificationWindow*>(GetPropW(hWnd, resources::PositiveDesktop_NotificationWindow_ClassPointer.data()));
-	if (that) {
-		return that->WndProc(hWnd, message, wParam, lParam);
-	}
-	return DefWindowProcW(hWnd, message, wParam, lParam);
+	return WindowBase::WndProc(hWnd, message, wParam, lParam);
 }
 
 void NotificationWindow::UpdatePosition() {

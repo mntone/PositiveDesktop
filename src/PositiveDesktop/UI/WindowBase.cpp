@@ -1,7 +1,16 @@
 #include "pch.h"
 #include "WindowBase.h"
 
-constexpr std::wstring_view PositiveDesktop_WindowBase_ClassPointer = L"PositiveDesktop.WindowBase.ClassPointer";
+namespace app::ui::nonlocalized {
+
+	constexpr std::wstring_view PositiveDesktop_WindowBase_ClassPointer = L"PositiveDesktop.WindowBase.ClassPointer";
+
+	constexpr std::string_view ErrorMessage_UnsetWndProc = "Failed to unset the wndproc.";
+	constexpr std::string_view ErrorMessage_RemoveWndProcProp = "Failed to remove the wndproc prop.";
+
+}
+
+using namespace app::ui::nonlocalized;
 
 using namespace winrt::PositiveDesktop::implementation;
 
@@ -12,16 +21,21 @@ void WindowBase::Subclass(HWND hWnd) {
 	nextWndProc_ = reinterpret_cast<WNDPROC>(nextWndProc);
 }
 
+void WindowBase::ReleaseSubclass(HWND hWnd) noexcept {
+	LOG_TRACE_BEGIN(app::logger::ltg_presenter);
+
+	WNDPROC nextWndProc = std::exchange(nextWndProc_, nullptr);
+	CHECK_WARN_BOOL_PASS(
+		SetWindowLongPtrW(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(nextWndProc)),
+		ErrorMessage_UnsetWndProc.data());
+	CHECK_INFO_BOOL_PASS(
+		RemovePropW(hWnd, PositiveDesktop_WindowBase_ClassPointer.data()),
+		ErrorMessage_RemoveWndProcProp.data());
+
+	LOG_TRACE_END_NOLABEL();
+}
+
 LRESULT WindowBase::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept {
-	if (WM_CLOSE == message) {
-		WNDPROC nextWndProc = std::exchange(nextWndProc_, nullptr);
-		LRESULT result = CallWindowProcW(nextWndProc, hWnd, message, wParam, lParam);
-		if (!SetWindowLongPtrW(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(nextWndProc))) {
-			// TODO: Error message. Failed to unregister the own subclass.
-		}
-		RemovePropW(hWnd, PositiveDesktop_WindowBase_ClassPointer.data());
-		return result;
-	}
 	return CallWindowProcW(nextWndProc_, hWnd, message, wParam, lParam);
 }
 
