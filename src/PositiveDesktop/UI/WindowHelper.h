@@ -2,6 +2,8 @@
 #include <microsoft.ui.xaml.window.h>
 #include <winrt/Microsoft.UI.Windowing.h>
 
+#include <Common/Math.h>
+
 inline winrt::Microsoft::UI::DisplayId GetPrimaryDisplayId() {
 	HMONITOR hMonitor = MonitorFromWindow(nullptr, MONITOR_DEFAULTTOPRIMARY);
 	WINRT_ASSERT(hMonitor);
@@ -39,4 +41,25 @@ inline winrt::Microsoft::UI::Windowing::AppWindow GetAppWindow(TWindow window) {
 	winrt::Microsoft::UI::WindowId windowId = winrt::Microsoft::UI::GetWindowIdFromWindow(hWnd);
 	winrt::Microsoft::UI::Windowing::AppWindow appWindow = winrt::Microsoft::UI::Windowing::AppWindow::GetFromWindowId(windowId);
 	return appWindow;
+}
+
+inline void SetCenter(HWND hWnd, winrt::Windows::Graphics::SizeInt32 expectedSize) {
+	winrt::Microsoft::UI::Windowing::AppWindow appWindow = GetAppWindow(hWnd);
+	winrt::Microsoft::UI::DisplayId primaryDisplayId = GetPrimaryDisplayId();
+	winrt::Microsoft::UI::Windowing::DisplayArea displayArea = winrt::Microsoft::UI::Windowing::DisplayArea::GetFromDisplayId(primaryDisplayId);
+	app::int32x4_t workArea = displayArea.WorkArea();
+	if (expectedSize.Width > workArea.z) {
+		expectedSize.Width = workArea.z - 24;
+	}
+	if (expectedSize.Height > workArea.w) {
+		expectedSize.Height = workArea.w - 24;
+	}
+
+	app::int32x2_t pt = (workArea.size() - expectedSize) >> 1;
+	appWindow.MoveAndResize(winrt::Windows::Graphics::RectInt32 {
+		pt.x,
+		pt.y,
+		expectedSize.Width,
+		expectedSize.Height,
+	});
 }

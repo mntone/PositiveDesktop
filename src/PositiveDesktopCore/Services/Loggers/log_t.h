@@ -8,16 +8,18 @@
 #include <unknwn.h>
 #include <winrt/base.h>
 
+#include "Common/RepsBase.h"
+
 namespace app::logger {
 
-	enum logtype_t: unsigned int {
-		ltp_unknown,
-		ltp_trace, // Show this level and upper on UI for debug build
-		ltp_debug,
-		ltp_info,  // Show this level and upper on UI for release build
-		ltp_warn,  // Write this level and upper to the log file for debug build
-		ltp_error, // Write this level and upper to the log file for release build
-		ltp_fatal,
+	enum loglvl_t: unsigned int {
+		llv_unknown,
+		llv_trace, // Show this level and upper on UI for debug build
+		llv_debug,
+		llv_info,  // Show this level and upper on UI for release build
+		llv_warn,  // Write this level and upper to the log file for debug build
+		llv_error, // Write this level and upper to the log file for release build
+		llv_fatal,
 	};
 
 	enum logtag_t: unsigned int {
@@ -36,7 +38,7 @@ namespace app::logger {
 	};
 
 	struct log_t final {
-		logtype_t type : 3;
+		loglvl_t level : 3;
 		logtag_t tag : 3;
 		logop_t op : 2;
 		unsigned short line;
@@ -51,12 +53,17 @@ namespace app::logger {
 	public:
 		virtual ~ILogger() = default;
 
+		virtual log_t const* first() const noexcept = 0;
+		virtual void next(log_t const** ptr) const noexcept = 0;
+		virtual void addObserver(reps::observer_t<log_t> const& observer) noexcept = 0;
+		virtual void clearObserver() noexcept = 0;
+
 		virtual void log(log_t&& log) noexcept = 0;
 
 #if _DEBUG
 		inline void trace(logtag_t tag, logop_t op, long line, std::string_view filename, std::string_view funcname, std::string_view message) noexcept {
 			log_t data {
-				ltp_trace,
+				llv_trace,
 				tag,
 				op,
 				static_cast<unsigned short>(line),
@@ -71,7 +78,7 @@ namespace app::logger {
 
 		inline void debug(logtag_t tag, long line, std::string_view filename, std::string_view funcname, std::string_view message) noexcept {
 			log_t data {
-				ltp_debug,
+				llv_debug,
 				tag,
 				lop_unknown,
 				static_cast<unsigned short>(line),
@@ -85,7 +92,7 @@ namespace app::logger {
 		}
 #endif
 
-		inline void log(logtype_t type, logtag_t tag, HRESULT hr, long line, std::string_view filename, std::string_view funcname, std::string_view message) noexcept {
+		inline void log(loglvl_t type, logtag_t tag, HRESULT hr, long line, std::string_view filename, std::string_view funcname, std::string_view message) noexcept {
 			log_t data {
 				type,
 				tag,
@@ -127,7 +134,7 @@ namespace app::logger {
 #define __CHECK_BOOL_PASS(__LVL__, __RET__, __MSG__) \
 	if (!(__RET__)) { \
 		HRESULT hr = ::winrt::impl::hresult_from_win32(GetLastError()); \
-		::app::logger::gLogger->log(::app::logger::ltp_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
+		::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
 	} \
 	static_cast<void>(0)
 #define CHECK_INFO_BOOL_PASS(__RET__, __MSG__)  __CHECK_BOOL_PASS(info, __RET__, __MSG__)
@@ -138,7 +145,7 @@ namespace app::logger {
 #define __CHECK_BOOL_THROW(__LVL__, __RET__, __MSG__) \
 	if (!(__RET__)) { \
 		HRESULT hr = ::winrt::impl::hresult_from_win32(GetLastError()); \
-		::app::logger::gLogger->log(::app::logger::ltp_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
+		::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
 		::winrt::throw_hresult(hr); \
 	} \
 	static_cast<void>(0)
@@ -150,7 +157,7 @@ namespace app::logger {
 #define __CHECK_BOOL_GOTO(__LVL__, __RET__, __MSG__) \
 	if (!(__RET__)) { \
 		HRESULT hr = ::winrt::impl::hresult_from_win32(GetLastError()); \
-		::app::logger::gLogger->log(::app::logger::ltp_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
+		::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
 		goto __LABEL_FINALIZE; \
 	} \
 	static_cast<void>(0)
@@ -163,7 +170,7 @@ namespace app::logger {
 	{ \
 		HRESULT hr = __RET__; \
 		if (FAILED(hr)) { \
-			::app::logger::gLogger->log(::app::logger::ltp_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
+			::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
 		} \
 	} \
 	static_cast<void>(0)
@@ -176,7 +183,7 @@ namespace app::logger {
 	{ \
 		HRESULT hr = __RET__; \
 		if (FAILED(hr)) { \
-			::app::logger::gLogger->log(::app::logger::ltp_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
+			::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
 			goto __LABEL_FINALIZE; \
 		} \
 	} \
@@ -190,7 +197,7 @@ namespace app::logger {
 	{ \
 		HRESULT hr = __RET__; \
 		if (FAILED(hr)) { \
-			::app::logger::gLogger->log(::app::logger::ltp_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
+			::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
 			::winrt::throw_hresult(hr); \
 		} \
 	} \

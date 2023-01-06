@@ -1,5 +1,5 @@
 #pragma once
-#include "ViewModels.NotificationWindowViewModel.g.h"
+#include "ViewModels/NotificationWindowViewModel.g.h"
 
 namespace winrt::PositiveDesktop::ViewModels::implementation {
 

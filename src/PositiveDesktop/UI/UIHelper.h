@@ -29,6 +29,18 @@ namespace app::ui {
 		return isQueued;
 	}
 
+	template<typename TFunction>
+	inline bool dispatch(TFunction callback,
+		winrt::Microsoft::UI::Dispatching::DispatcherQueuePriority priority = winrt::Microsoft::UI::Dispatching::DispatcherQueuePriority::Normal) {
+		bool isQueued = false;
+		if (gDispatchQueue.HasThreadAccess()) {
+			callback();
+		} else {
+			isQueued = gDispatchQueue.TryEnqueue(priority, callback);
+		}
+		return isQueued;
+	}
+
 	inline winrt::Windows::UI::Color getColor(winrt::Microsoft::UI::Xaml::ResourceDictionary dict, winrt::param::hstring const& key) {
 		winrt::Windows::Foundation::IInspectable iColor { dict.Lookup(winrt::box_value(key)) };
 		return winrt::unbox_value<winrt::Windows::UI::Color>(iColor);

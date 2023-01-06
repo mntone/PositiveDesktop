@@ -123,4 +123,13 @@
   <data name="NotificationWindow_Message.FontFamily" xml:space="preserve">
     <value>Segoe UI, Yu Gothic UI</value>
   </data>
+  <data name="SettingsWindow_Caption.Text" xml:space="preserve">
+    <value>ポジティブ☆デスクトップ</value>
+  </data>
+  <data name="SettingsWindow_ErrorLog.Content" xml:space="preserve">
+    <value>エラーログ</value>
+  </data>
+  <data name="SettingsWindow_Info.Content" xml:space="preserve">
+    <value>ポジティブ☆デスクトップについて</value>
+  </data>
 </root>

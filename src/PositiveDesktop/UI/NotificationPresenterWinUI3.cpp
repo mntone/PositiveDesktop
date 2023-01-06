@@ -4,6 +4,7 @@
 #include <winrt/Microsoft.Windows.ApplicationModel.Resources.h>
 
 #include "NotificationWindow.xaml.h"
+#include "SettingsWindow.xaml.h"
 #include "ResourceManager.h"
 #include "UIHelper.h"
 
@@ -25,8 +26,15 @@ namespace app::ui {
 		}
 
 		void show(NotificationPresenterData data) noexcept override {
-			dispatch(gDispatchQueue, [data, this]() mutable {
+			dispatch([data, this]() mutable {
 				showPrivate(std::move(data));
+			});
+		}
+
+		void showSettings() noexcept override {
+			dispatch([]() {
+				auto window = winrt::make<winrt::PositiveDesktop::implementation::SettingsWindow>();
+				window.Activate();
 			});
 		}
 

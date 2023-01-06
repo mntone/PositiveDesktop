@@ -37,6 +37,8 @@ namespace reps {
 		template<typename T>
 		struct single_observer_impl {
 		protected:
+			constexpr single_observer_impl(): observer_(nullptr) { }
+
 			constexpr void _setObserver(observer_t<T> const* observer) noexcept {
 				using std::swap;
 				swap(observer_, observer);

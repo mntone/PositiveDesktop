@@ -18,6 +18,7 @@ https://user-images.githubusercontent.com/901816/209556339-4c579869-0df4-44a7-97
 In the future, you will be able to customize keys.
 
 - `Win`+`Ctrl`+`X`: Exit application.
+- `Win`+`Ctrl`+`I`: Show settings window.
 - `Win`+`Ctrl`+`1` to `9` and `0`: Switch "Desktop 1" to "Desktop 9" and "Desktop 10."
 - `Win`+`Ctrl`+`Home`: Switch the first desktop.
 - `Win`+`Ctrl`+`End`: Switch the last desktop.

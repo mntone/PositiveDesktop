@@ -123,4 +123,13 @@
   <data name="NotificationWindow_Message.FontFamily" xml:space="preserve">
     <value>Segoe UI</value>
   </data>
+  <data name="SettingsWindow_Caption.Text" xml:space="preserve">
+    <value>Positive☆Desktop</value>
+  </data>
+  <data name="SettingsWindow_ErrorLog.Content" xml:space="preserve">
+    <value>Error Log</value>
+  </data>
+  <data name="SettingsWindow_Info.Content" xml:space="preserve">
+    <value>About Positive☆Desktop</value>
+  </data>
 </root>

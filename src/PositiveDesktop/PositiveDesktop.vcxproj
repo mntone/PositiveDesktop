@@ -24,6 +24,7 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
     <UseWinUI>true</UseWinUI>
+    <CppWinRTUsePrefixes>false</CppWinRTUsePrefixes>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup Label="ProjectConfigurations">
@@ -126,6 +127,26 @@
     <Manifest Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\ErrorLog.png" />
+    <Image Include="Assets\ErrorLog.scale-125.png" />
+    <Image Include="Assets\ErrorLog.scale-150.png" />
+    <Image Include="Assets\ErrorLog.scale-175.png" />
+    <Image Include="Assets\ErrorLog.scale-200.png" />
+    <Image Include="Assets\ErrorLog.scale-250.png" />
+    <Image Include="Assets\ErrorLog.scale-300.png" />
+    <Image Include="Assets\ErrorLog.scale-400.png" />
+    <Image Include="Assets\ErrorLog.scale-500.png" />
+    <Image Include="Assets\Info.png" />
+    <Image Include="Assets\Info.scale-125.png" />
+    <Image Include="Assets\Info.scale-150.png" />
+    <Image Include="Assets\Info.scale-175.png" />
+    <Image Include="Assets\Info.scale-200.png" />
+    <Image Include="Assets\Info.scale-250.png" />
+    <Image Include="Assets\Info.scale-300.png" />
+    <Image Include="Assets\Info.scale-400.png" />
+    <Image Include="Assets\Info.scale-500.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
@@ -138,13 +159,23 @@
     <ClInclude Include="Services\app_t.h" />
     <ClInclude Include="Services\Storages\config_t.h" />
     <ClInclude Include="Services\Storages\WinRTConfigManager.h" />
+    <ClInclude Include="SettingsPage_ErrorLog.xaml.h">
+      <DependentUpon>SettingsPage_ErrorLog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClInclude>
+    <ClInclude Include="SettingsWindow.xaml.h">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="UI\Converters\DateTimeToStringConverter.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />
     <ClInclude Include="UI\NotificationPresenterWinUI3.h" />
     <ClInclude Include="UI\register_value_t.h" />
     <ClInclude Include="UI\ResourceManager.h" />
     <ClInclude Include="UI\UIHelper.h" />
+    <ClInclude Include="UI\WindowBase.h" />
     <ClInclude Include="UI\WindowHelper.h" />
     <ClInclude Include="ViewModels\NotificationWindowViewModel.h" />
+    <ClInclude Include="ViewModels\Settings\ErrorLogViewModel.h" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -167,8 +198,18 @@
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SettingsPage_ErrorLog.xaml.cpp">
+      <DependentUpon>SettingsPage_ErrorLog.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
+    <ClCompile Include="SettingsWindow.xaml.cpp">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="UI\Converters\DateTimeToStringConverter.cpp" />
     <ClCompile Include="UI\NotificationPresenterWinUI3.cpp" />
+    <ClCompile Include="UI\WindowBase.cpp" />
     <ClCompile Include="ViewModels\NotificationWindowViewModel.cpp" />
+    <ClCompile Include="ViewModels\Settings\ErrorLogViewModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl">
@@ -180,6 +221,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="NotificationWindow.xaml" />
+    <Page Include="SettingsPage_ErrorLog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\CodeResources.lang-en-US.resw" />

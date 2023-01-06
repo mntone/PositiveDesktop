@@ -138,6 +138,9 @@ void app_t::process(keylistener::kbevent_t ev) noexcept {
 			presenter_->closeAll();
 			close();
 			break;
+		case kbe_settings:
+			presenter_->showSettings();
+			break;
 		case kbe_topmost_toggle:
 			desktop_->toggleTopmostToForegroundWindow();
 			break;

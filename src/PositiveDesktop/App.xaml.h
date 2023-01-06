@@ -1,4 +1,6 @@
 #pragma once
+#include "UI/Converters/DateTimeToStringConverter.h"
+
 #include "App.xaml.g.h"
 
 #include "Services/app_t.h"

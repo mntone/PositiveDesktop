@@ -7,6 +7,62 @@
     <Midl Include="App.idl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\ErrorLog.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ErrorLog.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ErrorLog.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ErrorLog.scale-175.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ErrorLog.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ErrorLog.scale-250.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ErrorLog.scale-300.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ErrorLog.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ErrorLog.scale-500.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Info.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Info.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Info.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Info.scale-175.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Info.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Info.scale-250.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Info.scale-300.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Info.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Info.scale-500.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="Services\app_t.cpp">
@@ -15,11 +71,20 @@
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
       <Filter>Services\Storages</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Converters\DateTimeToStringConverter.cpp">
+      <Filter>UI\Converters</Filter>
+    </ClCompile>
     <ClCompile Include="UI\NotificationPresenterWinUI3.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\WindowBase.cpp">
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="ViewModels\NotificationWindowViewModel.cpp">
       <Filter>ViewModels</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\Settings\ErrorLogViewModel.cpp">
+      <Filter>ViewModels\Settings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -39,6 +104,9 @@
     <ClInclude Include="Services\Storages\WinRTConfigManager.h">
       <Filter>Services\Storages</Filter>
     </ClInclude>
+    <ClInclude Include="UI\Converters\DateTimeToStringConverter.h">
+      <Filter>UI\Converters</Filter>
+    </ClInclude>
     <ClInclude Include="UI\NotificationPresenter.h">
       <Filter>UI</Filter>
     </ClInclude>
@@ -54,11 +122,17 @@
     <ClInclude Include="UI\UIHelper.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="UI\WindowBase.h">
+      <Filter>UI</Filter>
+    </ClInclude>
     <ClInclude Include="UI\WindowHelper.h">
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="ViewModels\NotificationWindowViewModel.h">
       <Filter>ViewModels</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\Settings\ErrorLogViewModel.h">
+      <Filter>ViewModels\Settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -80,8 +154,14 @@
     <Filter Include="UI">
       <UniqueIdentifier>{8e44507f-e73f-49c7-95ff-35309c012ea2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\Converters">
+      <UniqueIdentifier>{a002bba6-6821-479d-a480-69c822a82f4f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ViewModels">
       <UniqueIdentifier>{67303be4-bdec-4705-b9e9-42c3ed9d27cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ViewModels\Settings">
+      <UniqueIdentifier>{0288bf0e-27ac-4165-8afc-0bb660e7bb9f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +172,12 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="NotificationWindow.xaml">
+      <Filter>UI</Filter>
+    </Page>
+    <Page Include="SettingsPage_ErrorLog.xaml">
+      <Filter>UI</Filter>
+    </Page>
+    <Page Include="SettingsWindow.xaml">
       <Filter>UI</Filter>
     </Page>
   </ItemGroup>

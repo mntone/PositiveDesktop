@@ -32,8 +32,9 @@ KeysListenerService::~KeysListenerService() {
 
 void KeysListenerService::initialize() {
 	app::storage::key_config_t config;
-	config.map.reserve(31);
+	config.map.reserve(32);
 	config.map.push_back({ kbe_exit, { 'X', 0x28 /* LCtrl+LWin */ } }); // Exit application.
+	config.map.push_back({ kbe_settings, { 'I', 0x28 /* LCtrl+LWin */ } }); // Show settings window.
 
 	// Switch desktop.
 	for (char i = 0; i < 9; ++i) {

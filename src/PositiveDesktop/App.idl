@@ -1,29 +1,81 @@
 namespace PositiveDesktop
 {
-    namespace ViewModels {
-        [bindable]
-        [default_interface]
-        runtimeclass NotificationWindowViewModel
-        {
-            String Caption { get; };
-            String Message { get; };
-        }
-    }
 
-    //namespace UI {
+	namespace ViewModels
+	{
 
-        [interface_name("INotificationWindow", 880F8DB1-A418-5E9D-9B40-BEF749B8CE62)]
-        runtimeclass NotificationWindow : Microsoft.UI.Xaml.Window, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
-        {
-            void Show(Single visibleDuration);
-            PositiveDesktop.ViewModels.NotificationWindowViewModel ViewModel;
+		[interface_name("INotificationWindowViewModel", 1D992FCB-1992-5684-A2CC-CF52A0B98234)]
+		runtimeclass NotificationWindowViewModel
+		{
+			String Caption { get; };
+			String Message { get; };
+		}
 
-			[interface_name("INotificationWindow2", 73C7067D-7609-579A-903B-0B1DBBAF8B89)]
+		namespace Settings
+		{
+
+			[interface_name("IErrorLogViewModel", BB920A43-F5D2-443B-94D1-DCA41CE0F7A7)]
+			runtimeclass ErrorLogViewModel
 			{
-				Microsoft.UI.Xaml.Media.Brush Background { get; };
-				Microsoft.UI.Xaml.Media.Brush Border { get; };
-				Microsoft.UI.Xaml.Thickness BorderThickness { get; };
+				String Level { get; };
+				String Tag { get; };
+				String Operation { get; };
+				Int16 Line { get; };
+				Windows.Foundation.DateTime DateTime { get; };
+				String FileName { get; };
+				String FuncName { get; };
+				String Message { get; };
 			}
-        }
-    //}
+
+			[interface_name("IErrorLogsViewModel", 57C70EF5-FA73-4597-B4D5-F4FAFC05E920)]
+			runtimeclass ErrorLogsViewModel
+			{
+				Windows.Foundation.Collections.IObservableVector<ErrorLogViewModel> Logs { get; };
+			}
+
+		}
+	}
+
+	namespace UI
+	{
+
+		namespace Converters
+		{
+
+			[constructor_name("IDateTimeToStringConverterFactory", 3B317E48-32FE-4922-8812-671E697B31B1)]
+			[interface_name("IDateTimeToStringConverter", 3EEE62D6-3584-41DC-9BE8-2911A9BB7F54)]
+			runtimeclass DateTimeToStringConverter : Microsoft.UI.Xaml.Data.IValueConverter
+			{
+				DateTimeToStringConverter();
+			}
+
+		}
+
+	}
+
+	[interface_name("ISettingsPage_ErrorLog", B9074017-349B-418F-9396-D484A3A8851D)]
+	runtimeclass SettingsPage_ErrorLog : Microsoft.UI.Xaml.Controls.Page
+	{
+		PositiveDesktop.ViewModels.Settings.ErrorLogsViewModel ViewModel { get; };
+	}
+
+	[interface_name("ISettingsWindow", BD92255C-3BC5-54CE-A0FD-18D90F6CD803)]
+	runtimeclass SettingsWindow : Microsoft.UI.Xaml.Window
+	{
+	}
+
+	[interface_name("INotificationWindow", 880F8DB1-A418-5E9D-9B40-BEF749B8CE62)]
+	runtimeclass NotificationWindow : Microsoft.UI.Xaml.Window, Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+	{
+		void Show(Single visibleDuration);
+		PositiveDesktop.ViewModels.NotificationWindowViewModel ViewModel;
+
+		[interface_name("INotificationWindow2", 73C7067D-7609-579A-903B-0B1DBBAF8B89)]
+		{
+			Microsoft.UI.Xaml.Media.Brush Background { get; };
+			Microsoft.UI.Xaml.Media.Brush Border { get; };
+			Microsoft.UI.Xaml.Thickness BorderThickness { get; };
+		}
+	}
+
 }

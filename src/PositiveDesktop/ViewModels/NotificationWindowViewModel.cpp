@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "NotificationWindowViewModel.h"
-#if __has_include("NotificationWindowViewModel.g.cpp")
-#include "NotificationWindowViewModel.g.cpp"
+#if __has_include("ViewModels/NotificationWindowViewModel.g.cpp")
+#include "ViewModels/NotificationWindowViewModel.g.cpp"
 #endif
 
 using namespace winrt;

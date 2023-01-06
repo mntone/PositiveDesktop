@@ -17,6 +17,7 @@ namespace app::ui {
 		virtual ~INotificationPresenter() { }
 
 		virtual void show(NotificationPresenterData data) = 0;
+		virtual void showSettings() noexcept = 0;
 		virtual void closeAll() = 0;
 	};
 
