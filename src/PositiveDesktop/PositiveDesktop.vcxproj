@@ -83,10 +83,10 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)src\PositiveDesktopCore\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level4</WarningLevel>
-      <AdditionalOptions>%(AdditionalOptions) /bigobj /Zm200</AdditionalOptions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalOptions>/d1trimfile:"$(SolutionDir)\" /bigobj /Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>dwmapi.lib;shcore.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -130,7 +130,6 @@
     <Image Include="Assets\ErrorLog.png" />
     <Image Include="Assets\ErrorLog.scale-125.png" />
     <Image Include="Assets\ErrorLog.scale-150.png" />
-    <Image Include="Assets\ErrorLog.scale-175.png" />
     <Image Include="Assets\ErrorLog.scale-200.png" />
     <Image Include="Assets\ErrorLog.scale-250.png" />
     <Image Include="Assets\ErrorLog.scale-300.png" />
@@ -139,7 +138,6 @@
     <Image Include="Assets\Info.png" />
     <Image Include="Assets\Info.scale-125.png" />
     <Image Include="Assets\Info.scale-150.png" />
-    <Image Include="Assets\Info.scale-175.png" />
     <Image Include="Assets\Info.scale-200.png" />
     <Image Include="Assets\Info.scale-250.png" />
     <Image Include="Assets\Info.scale-300.png" />
