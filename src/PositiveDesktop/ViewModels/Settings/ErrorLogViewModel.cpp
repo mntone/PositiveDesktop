@@ -71,6 +71,7 @@ namespace winrt {
 
 #include <winrt/Windows.Foundation.Collections.h>
 
+#include "Common/Reps.BufferBounce.h"
 #include "UI/UIHelper.h"
 
 using namespace app::logger;
@@ -93,15 +94,16 @@ ErrorLogsViewModel::ErrorLogsViewModel() noexcept
 	for (log_t const* ptr = gLogger->first(); ptr != nullptr; gLogger->next(&ptr)) {
 		logs_.InsertAt(0, winrt::make<ErrorLogViewModel>(*ptr));
 	}
-	gLogger->addObserver(*this);
+	gLogger->addObserver(reps::make_buffer_debounce(observer(), std::chrono::milliseconds { 350 }));
 }
 
 ErrorLogsViewModel::~ErrorLogsViewModel() noexcept {
 	gLogger->clearObserver();
 }
 
-void FASTCALL ErrorLogsViewModel::on(reps::bag_t<app::logger::log_t> const& value) noexcept {
-	app::ui::dispatch([data = value.data, this] {
-		logs_.InsertAt(0, winrt::make<ErrorLogViewModel>(data));
-	});
+void FASTCALL ErrorLogsViewModel::on(reps::bag_t<std::vector<app::logger::log_t>> const& value) noexcept {
+	app::ui::ensureUIThread();
+	for (app::logger::log_t const& item : value.data) {
+		logs_.InsertAt(0, winrt::make<ErrorLogViewModel>(item));
+	}
 }

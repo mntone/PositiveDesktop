@@ -11,54 +11,72 @@ namespace reps {
 	template<typename T>
 	struct observable_t { };
 
-	namespace __impl {
+	using observer_token = void*;
 
-		template<typename T>
-		static constexpr void swap(observer_t<T> const*& a, observer_t<T> const*& b) noexcept {
-			observer_t<T> const* temp = std::move(a);
-			a = std::move(b);
-			b = std::move(temp);
-		}
+	namespace __impl {
 
 		template<typename T>
 		struct observer_impl {
 		protected:
-			constexpr void _setObserver(observer_t<T> const* observer) noexcept {
-				observers_.push_back(observer);
+			using item_type = observer_t<T>;
+			using container_type = std::vector<item_type>;
+
+		protected:
+			constexpr observer_token _addObserver(item_type observer) noexcept {
+				observer_token token { observer.impl() };
+				observers_.emplace_back(std::move(observer));
+				return token;
+			}
+
+			constexpr void _removeObserver(observer_token token) noexcept {
+				typename container_type::const_iterator itr = std::find([](observer_t<T> const& ob) { return ob.impl(); }, observers_.cbegin(), observers_.cend(), token);
+				if (itr != observers_.cend()) {
+					observers_.erase(itr);
+				}
 			}
 
 			constexpr void _clearObserver() noexcept {
 				observers_.clear();
 			}
 
-			std::vector<observer_t<T> const*> observers_;
+			container_type observers_;
 		};
 
 		template<typename T>
 		struct single_observer_impl {
 		protected:
+			using item_type = observer_t<T>;
+
+		protected:
 			constexpr single_observer_impl(): observer_(nullptr) { }
 
-			constexpr void _setObserver(observer_t<T> const* observer) noexcept {
-				using std::swap;
-				swap(observer_, observer);
+			constexpr observer_token _setObserver(item_type observer) noexcept {
+				observer_ = std::move(observer);
+				return observer_.impl();
+			}
+
+			constexpr void _removeObserver(observer_token token) noexcept {
+				if (token == static_cast<observer_token>(observer_.impl())) {
+					_clearObserver();
+				}
 			}
 
 			constexpr void _clearObserver() noexcept {
-				_setObserver(nullptr);
+				item_type nullItem { nullptr };
+				observer_ = std::move(nullItem);
 			}
 
-			observer_t<T> const* observer_;
+			item_type observer_;
 		};
 
 	}
 
 	template<typename T>
-	struct subject_t: public observable_t<T>, __impl::observer_impl<T> {
+	struct subject_t: observable_t<T>, __impl::observer_impl<T> {
 		inline void send(bag_t<T>&& val) noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
-			for (observer_t<T> const* observer : __impl::observer_impl<T>::observers_) {
-				const_cast<observer_t<T>*>(observer)->on(val);
+			for (observer_t<T> const& observer : __impl::observer_impl<T>::observers_) {
+				observer.on(val);
 			}
 		}
 
@@ -83,9 +101,14 @@ namespace reps {
 			send(std::move(bag));
 		}
 
-		inline void addObserver(observer_t<T> const& observer) noexcept {
+		inline observer_token addObserver(observer_t<T> observer) noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
-			__impl::observer_impl<T>::_setObserver(&observer);
+			return __impl::observer_impl<T>::_addObserver(std::move(observer));
+		}
+
+		inline void removeObserver(observer_token token) noexcept {
+			app::lock_guard<app::lock_t> lock { locker_ };
+			__impl::observer_impl<T>::_removeObserver(token);
 		}
 
 		inline void clearObserver() noexcept {
@@ -99,12 +122,12 @@ namespace reps {
 	};
 
 	template<typename T>
-	struct single_subject_t: public observable_t<T>, __impl::single_observer_impl<T> {
+	struct single_subject_t: observable_t<T>, __impl::single_observer_impl<T> {
 		inline void send(bag_t<T>&& val) noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
-			observer_t<T> const* observer = __impl::single_observer_impl<T>::observer_;
+			observer_t<T>& observer = __impl::single_observer_impl<T>::observer_;
 			if (observer) {
-				const_cast<observer_t<T>*>(observer)->on(val);
+				observer.on(val);
 			}
 		}
 
@@ -129,9 +152,14 @@ namespace reps {
 			send(std::move(bag));
 		}
 
-		inline void addObserver(observer_t<T> const& observer) noexcept {
+		inline observer_token addObserver(observer_t<T> observer) noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
-			__impl::single_observer_impl<T>::_setObserver(&observer);
+			return __impl::single_observer_impl<T>::_setObserver(std::move(observer));
+		}
+
+		inline void removeObserver(observer_token token) noexcept {
+			app::lock_guard<app::lock_t> lock { locker_ };
+			__impl::observer_impl<T>::_removeObserver(token);
 		}
 
 		inline void clearObserver() noexcept {
@@ -145,15 +173,15 @@ namespace reps {
 	};
 
 	template<typename T>
-	struct buffered_subject_t: public observable_t<T>, __impl::observer_impl<T> {
+	struct buffered_subject_t: observable_t<T>, __impl::observer_impl<T> {
 		buffered_subject_t() = delete;
 		constexpr buffered_subject_t(bag_t<T>&& init) noexcept: cache_(std::move(init)) { }
 
 		inline void send(bag_t<T>&& val) noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
 			cache_ = std::move(val);
-			for (observer_t<T> const* observer : __impl::observer_impl<T>::observers_) {
-				const_cast<observer_t<T>*>(observer)->on(cache_);
+			for (observer_t<T> const& observer : __impl::observer_impl<T>::observers_) {
+				observer.on(cache_);
 			}
 		}
 
@@ -178,13 +206,19 @@ namespace reps {
 			send(std::move(bag));
 		}
 
-		inline void addObserver(observer_t<T> const& observer) noexcept {
+		inline observer_token addObserver(observer_t<T> observer) noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
-			__impl::observer_impl<T>::_setObserver(&observer);
+			observer_token token { __impl::observer_impl<T>::_setObserver(std::move(observer)) };
 
 			bag_t<T> bag;
 			memcpy(&bag, &cache_, sizeof(T));
 			observer.send(std::move(bag));
+			return token;
+		}
+
+		inline void removeObserver(observer_token token) noexcept {
+			app::lock_guard<app::lock_t> lock { locker_ };
+			__impl::observer_impl<T>::_removeObserver(token);
 		}
 
 		inline void clearObserver() noexcept {
@@ -199,7 +233,7 @@ namespace reps {
 	};
 
 	template<typename T>
-	struct single_buffered_subject_t: public observable_t<T>, __impl::single_observer_impl<T> {
+	struct single_buffered_subject_t: observable_t<T>, __impl::single_observer_impl<T> {
 		single_buffered_subject_t() = delete;
 		constexpr single_buffered_subject_t(bag_t<T>&& init) noexcept: cache_(std::move(init)) { }
 
@@ -207,9 +241,9 @@ namespace reps {
 			app::lock_guard<app::lock_t> lock { locker_ };
 			cache_ = std::move(val);
 
-			observer_t<T>* observer = __impl::single_observer_impl<T>::observer_;
+			observer_t<T>& observer = __impl::single_observer_impl<T>::observer_;
 			if (observer) {
-				const_cast<observer_t<T>*>(observer)->on(cache_);
+				observer.on(cache_);
 			}
 		}
 
@@ -234,13 +268,19 @@ namespace reps {
 			send(std::move(bag));
 		}
 
-		inline void addObserver(observer_t<T> const& observer) noexcept {
+		inline observer_token addObserver(observer_t<T> observer) noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
-			__impl::single_observer_impl<T>::_setObserver(&observer);
+			observer_token token { __impl::single_observer_impl<T>::_setObserver(observer) };
 
 			bag_t<T> bag;
 			memcpy(&bag, &cache_, sizeof(T));
 			observer.send(std::move(bag));
+			return token;
+		}
+
+		inline void removeObserver(observer_token token) noexcept {
+			app::lock_guard<app::lock_t> lock { locker_ };
+			__impl::observer_impl<T>::_removeObserver(token);
 		}
 
 		inline void clearObserver() noexcept {
@@ -252,6 +292,51 @@ namespace reps {
 	private:
 		app::lock_t locker_;
 		bag_t<T> cache_;
+	};
+
+	template<typename T>
+	struct sink_t: single_subject_t<T> {
+	private:
+		using subject_type = single_subject_t<T>;
+
+	public:
+		sink_t(observer_t<T> observer) noexcept {
+			subject_type::addObserver(std::move(observer));
+		}
+
+		~sink_t() {
+			subject_type::clearObserver();
+		}
+
+	protected:
+		inline void forwardNext(T&& val) noexcept {
+			bag_t<T> bag {
+				event_t::next,
+				val,
+			};
+			subject_type::send(std::move(bag));
+		}
+
+		inline void forwardError(HRESULT hr) noexcept {
+			bag_t<T> bag {};
+			bag.hr = hr;
+			subject_type::send(std::move(bag));
+		}
+
+		inline void forwardComplete() noexcept {
+			bag_t<T> bag {
+				event_t::completed,
+			};
+			subject_type::send(std::move(bag));
+		}
+
+		constexpr bool closed() const noexcept { return closed_; }
+
+	protected:
+		constexpr void close() noexcept { closed_ = true; }
+
+	private:
+		bool closed_;
 	};
 
 	template<typename T>

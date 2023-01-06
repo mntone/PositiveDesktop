@@ -55,12 +55,12 @@ void app_t::initialize() {
 
 	// Init key listener
 	keysLitener_ = new keylistener::KeysListenerService();
-	keysLitener_->addObserver(*this);
+	keysLitener_->addObserver(reps::basic_observer_t<app::keylistener::kbevent_t>::observer());
 	keysLitener_->initialize();
 
 	// Init desktop service
 	desktop_ = new desktop::DesktopService();
-	desktop_->addObserver(*this);
+	desktop_->addObserver(reps::basic_observer_t<app::desktop::vdevent_t>::observer());
 	desktop_->initialize(osver.dwBuildNumber);
 
 	// Start message service

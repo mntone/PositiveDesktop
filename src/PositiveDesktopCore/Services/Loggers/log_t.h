@@ -56,7 +56,7 @@ namespace app::logger {
 
 		virtual log_t const* first() const noexcept = 0;
 		virtual void next(log_t const** ptr) const noexcept = 0;
-		virtual void addObserver(reps::observer_t<log_t> const& observer) noexcept = 0;
+		virtual void addObserver(reps::observer_t<log_t> observer) noexcept = 0;
 		virtual void clearObserver() noexcept = 0;
 
 		virtual void log(log_t&& log) noexcept = 0;

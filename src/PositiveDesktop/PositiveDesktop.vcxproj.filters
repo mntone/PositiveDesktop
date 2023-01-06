@@ -95,6 +95,9 @@
     <ClInclude Include="Common\message_service_t.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Common\Reps.BufferBounce.h">
+      <Filter>Common</Filter>
+    </ClInclude>
     <ClInclude Include="Services\app_t.h">
       <Filter>Services</Filter>
     </ClInclude>

@@ -16,6 +16,10 @@ namespace app::ui {
 		return { dispatchQueueController, winrt::take_ownership_from_abi };
 	}
 
+	inline void ensureUIThread() noexcept {
+		WINRT_ASSERT(gDispatchQueue.HasThreadAccess());
+	}
+
 	template<typename TFunction>
 	inline bool dispatch(winrt::Microsoft::UI::Dispatching::DispatcherQueue dispatcherQueue,
 						 TFunction callback,

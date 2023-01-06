@@ -51,12 +51,12 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 		winrt::hstring message_;
 	};
 
-	struct ErrorLogsViewModel: ErrorLogsViewModelT<ErrorLogsViewModel>, reps::observer_t<app::logger::log_t> {
+	struct ErrorLogsViewModel: ErrorLogsViewModelT<ErrorLogsViewModel>, reps::basic_observer_t<std::vector<app::logger::log_t>> {
 		ErrorLogsViewModel() noexcept;
 		~ErrorLogsViewModel() noexcept;
 
 	private:
-		void FASTCALL on(reps::bag_t<app::logger::log_t> const& value) noexcept override;
+		void FASTCALL on(reps::bag_t<std::vector<app::logger::log_t>> const& value) noexcept override;
 
 	public:  // - Properties
 		inline winrt::Windows::Foundation::Collections::IObservableVector<winrt::PositiveDesktop::ViewModels::Settings::ErrorLogViewModel> Logs() const noexcept {

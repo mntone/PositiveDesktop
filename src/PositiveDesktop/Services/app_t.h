@@ -14,8 +14,8 @@ namespace app {
 
 	class app_t final
 		: public message_service_t<app::keylistener::kbevent_t>
-		, reps::observer_t<app::keylistener::kbevent_t>
-		, reps::observer_t<app::desktop::vdevent_t> {
+		, reps::basic_observer_t<app::keylistener::kbevent_t>
+		, reps::basic_observer_t<app::desktop::vdevent_t> {
 	public:
 		app_t();
 		~app_t() noexcept;

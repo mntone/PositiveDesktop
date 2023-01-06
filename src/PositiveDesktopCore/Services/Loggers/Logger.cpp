@@ -33,8 +33,8 @@ namespace app::logger {
 			}
 		}
 
-		void addObserver(reps::observer_t<log_t> const& observer) noexcept override {
-			reps::single_subject_t<log_t>::addObserver(observer);
+		void addObserver(reps::observer_t<log_t> observer) noexcept override {
+			reps::single_subject_t<log_t>::addObserver(std::move(observer));
 		}
 
 		void clearObserver() noexcept override {
