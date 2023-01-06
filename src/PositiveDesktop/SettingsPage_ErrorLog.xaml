@@ -74,25 +74,29 @@
 		</DataTemplate>
 	</Page.Resources>
 
-	<VisualStateManager.VisualStateGroups>
-		<VisualStateGroup x:Name="LayoutVisualStates">
-			<VisualState x:Name="WideLayout">
-				<VisualState.StateTriggers>
-					<AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-				</VisualState.StateTriggers>
-			</VisualState>
-			<VisualState x:Name="NarrowLayout">
-				<VisualState.StateTriggers>
-					<AdaptiveTrigger MinWindowWidth="0" />
-				</VisualState.StateTriggers>
-				<VisualState.Setters>
-					<Setter Target="contentRoot.Padding"
-							Value="12,0,12,36" />
-				</VisualState.Setters>
-			</VisualState>
-		</VisualStateGroup>
-	</VisualStateManager.VisualStateGroups>
+	<Border>
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="LayoutVisualStates">
+				<VisualState x:Name="WideLayout">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+					</VisualState.StateTriggers>
+				</VisualState>
+				<VisualState x:Name="NarrowLayout">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="contentRoot.Padding"
+								Value="12,48,12,36" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
 
-	<ListView ItemsSource="{x:Bind ViewModel.Logs}"
-			  ItemTemplate="{StaticResource ErrorLogTemplate}" />
+		<ListView x:Name="contentRoot"
+				  Padding="56,0,56,36"
+				  ItemsSource="{x:Bind ViewModel.Logs}"
+				  ItemTemplate="{StaticResource ErrorLogTemplate}" />
+	</Border>
 </Page>

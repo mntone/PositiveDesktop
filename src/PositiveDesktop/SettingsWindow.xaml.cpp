@@ -8,8 +8,19 @@
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Globalization.h>
 
+#include "UI/UIHelper.h"
 #include "UI/WindowHelper.h"
 #include "SettingsPage_ErrorLog.xaml.h"
+
+namespace app::ui::resources {
+
+	constexpr std::wstring_view WindowButtonForegroundColor = L"WindowButtonForegroundColor";
+	constexpr std::wstring_view WindowButtonHoverBackgroundColor = L"WindowButtonHoverBackgroundColor";
+	constexpr std::wstring_view WindowButtonPressedBackgroundColor = L"WindowButtonPressedBackgroundColor";
+	constexpr std::wstring_view WindowButtonPressedForegroundColor = L"WindowButtonPressedForegroundColor";
+	constexpr std::wstring_view WindowButtonInactiveForegroundColor = L"WindowButtonInactiveForegroundColor";
+
+}
 
 namespace winrt {
 
@@ -56,6 +67,20 @@ LRESULT SettingsWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 		return result;
 	}
 	return WindowBase::WndProc(hWnd, message, wParam, lParam);
+}
+
+void SettingsWindow::ActualThemeChanged(winrt::FrameworkElement const& sender, winrt::Windows::Foundation::IInspectable const& /*args*/) {
+	WINRT_ASSERT(winrt::AppWindowTitleBar::IsCustomizationSupported()); // Note: Return true in Windows SDK 1.2
+
+	winrt::AppWindow appWindow { GetAppWindow(m_inner) };
+	winrt::AppWindowTitleBar titlebar { appWindow.TitleBar() };
+	ResourceDictionary resources { sender.Resources() };
+	titlebar.ForegroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonForegroundColor));
+	titlebar.ButtonForegroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonForegroundColor));
+	titlebar.ButtonHoverBackgroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonInactiveForegroundColor));
+	titlebar.ButtonPressedBackgroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonPressedBackgroundColor));
+	titlebar.ButtonPressedForegroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonPressedForegroundColor));
+	titlebar.ButtonInactiveForegroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonInactiveForegroundColor));
 }
 
 void SettingsWindow::NavigationViewDisplayModeChanged(winrt::NavigationView const& sender, winrt::NavigationViewDisplayModeChangedEventArgs const& /*args*/) {

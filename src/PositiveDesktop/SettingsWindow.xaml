@@ -5,7 +5,21 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		mc:Ignorable="d">
 
-	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<Grid ActualThemeChanged="ActualThemeChanged"
+		  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+		<Grid.Resources>
+			<StaticResource x:Key="WindowButtonForegroundColor"
+							ResourceKey="TextFillColorPrimary" />
+			<StaticResource x:Key="WindowButtonHoverBackgroundColor"
+							ResourceKey="SubtleFillColorSecondary" />
+			<StaticResource x:Key="WindowButtonPressedBackgroundColor"
+							ResourceKey="SubtleFillColorTertiary" />
+			<StaticResource x:Key="WindowButtonPressedForegroundColor"
+							ResourceKey="TextFillColorSecondary" />
+			<StaticResource x:Key="WindowButtonInactiveForegroundColor"
+							ResourceKey="TextFillColorDisabled" />
+		</Grid.Resources>
+
 		<NavigationView x:Name="navigationView"
 						DisplayModeChanged="NavigationViewDisplayModeChanged"
 						IsSettingsVisible="False"
@@ -44,8 +58,10 @@
 			<TextBlock x:Name="caption"
 					   x:Uid="SettingsWindow_Caption"
 					   VerticalAlignment="Top"
-					   Margin="0,15,0,0"
-					   Style="{StaticResource CaptionTextBlockStyle}" />
+					   Margin="0,15,144,0"
+					   Style="{StaticResource CaptionTextBlockStyle}"
+					   TextTrimming="CharacterEllipsis"
+					   TextWrapping="NoWrap" />
 		</Border>
 	</Grid>
 </Window>
