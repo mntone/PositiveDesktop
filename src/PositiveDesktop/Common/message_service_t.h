@@ -57,7 +57,7 @@ namespace app {
 		}
 
 	private:
-		bool terminating_;
+		bool terminating_ { false };
 		std::queue<Msg> queue_;
 		std::mutex mutex_;
 		std::condition_variable cond_;
