@@ -131,60 +131,59 @@ namespace app::logger {
 #define LOG_DEBUG(__MSG__)         static_cast<void>(0)
 #endif
 
-#define LOG_TRACE_BEGIN(__TAG__) constexpr ::app::logger::logtag_t __tag = __TAG__; LOG_TRACE(::app::logger::lop_function_begin, "")
-#define LOG_TRACE_END()          __LABEL_FINALIZE: LOG_TRACE(::app::logger::lop_function_end, "")
-#define LOG_TRACE_END_NOLABEL()  LOG_TRACE(::app::logger::lop_function_end, "")
-#define LOG_TRACE_BEGIN_INTHROW(__TAG__) constexpr ::app::logger::logtag_t __tag = __TAG__; LOG_TRACE(::app::logger::lop_function_begin, ""); try { static_cast<void>(0)
-#define LOG_TRACE_END_INTHROW()          LOG_TRACE(::app::logger::lop_function_end, ""); } catch (...) { LOG_TRACE(::app::logger::lop_function_end, ""); throw; } static_cast<void>(0)
+#define LOG_BEGIN(__TAG__) constexpr ::app::logger::logtag_t __tag = __TAG__; LOG_TRACE(::app::logger::lop_function_begin, "")
+#define LOG_END()          __LABEL_FINALIZE: LOG_TRACE(::app::logger::lop_function_end, "")
+#define LOG_END_NOLABEL()  LOG_TRACE(::app::logger::lop_function_end, "")
+#define LOG_BEGIN_INTHROW(__TAG__) constexpr ::app::logger::logtag_t __tag = __TAG__; LOG_TRACE(::app::logger::lop_function_begin, ""); try { static_cast<void>(0)
+#define LOG_END_INTHROW()          LOG_TRACE(::app::logger::lop_function_end, ""); } catch (...) { LOG_TRACE(::app::logger::lop_function_end, ""); throw; } static_cast<void>(0)
 
 #define LOG_WARN(__MSG__, __HR__)  ::app::logger::gLogger->warn(__tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__)
 #define LOG_ERROR(__MSG__, __HR__) ::app::logger::gLogger->error(__tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__)
 
-#define __CHECK_BOOL_PASS(__LVL__, __RET__, __MSG__) \
-	if (!(__RET__)) { \
+#define __LOG_IF_BOOL(__LVL__, __FLAG__, __MSG__) \
+	if (!(__FLAG__)) { \
 		HRESULT hr = ::winrt::impl::hresult_from_win32(GetLastError()); \
 		::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
 	} \
 	static_cast<void>(0)
-#define CHECK_INFO_BOOL_PASS(__RET__, __MSG__)  __CHECK_BOOL_PASS(info, __RET__, __MSG__)
-#define CHECK_WARN_BOOL_PASS(__RET__, __MSG__)  __CHECK_BOOL_PASS(warn, __RET__, __MSG__)
-#define CHECK_ERROR_BOOL_PASS(__RET__, __MSG__) __CHECK_BOOL_PASS(error, __RET__, __MSG__)
-#define CHECK_FATAL_BOOL_PASS(__RET__, __MSG__) __CHECK_BOOL_PASS(fatal, __RET__, __MSG__)
+#define LOG_IF_BOOL_INFO(__FLAG__, __MSG__)  __LOG_IF_BOOL(info, __FLAG__, __MSG__)
+#define LOG_IF_BOOL_WARN(__FLAG__, __MSG__)  __LOG_IF_BOOL(warn, __FLAG__, __MSG__)
+#define LOG_IF_BOOL_ERROR(__FLAG__, __MSG__) __LOG_IF_BOOL(error, __FLAG__, __MSG__)
+#define LOG_IF_BOOL_FATAL(__FLAG__, __MSG__) __LOG_IF_BOOL(fatal, __FLAG__, __MSG__)
 
-#define __CHECK_BOOL_THROW(__LVL__, __RET__, __MSG__) \
-	if (!(__RET__)) { \
+#define __THROW_IF_BOOL(__LVL__, __FLAG__, __MSG__) \
+	if (!(__FLAG__)) { \
 		HRESULT hr = ::winrt::impl::hresult_from_win32(GetLastError()); \
 		::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
 		::winrt::throw_hresult(hr); \
 	} \
 	static_cast<void>(0)
-#define CHECK_INFO_BOOL_THROW(__RET__, __MSG__)  __CHECK_BOOL_THROW(info, __RET__, __MSG__)
-#define CHECK_WARN_BOOL_THROW(__RET__, __MSG__)  __CHECK_BOOL_THROW(warn, __RET__, __MSG__)
-#define CHECK_ERROR_BOOL_THROW(__RET__, __MSG__) __CHECK_BOOL_THROW(error, __RET__, __MSG__)
-#define CHECK_FATAL_BOOL_THROW(__RET__, __MSG__) __CHECK_BOOL_THROW(fatal, __RET__, __MSG__)
+#define THROW_IF_BOOL_INFO(__FLAG__, __MSG__)  __THROW_IF_BOOL(info, __FLAG__, __MSG__)
+#define THROW_IF_BOOL_WARN(__FLAG__, __MSG__)  __THROW_IF_BOOL(warn, __FLAG__, __MSG__)
+#define THROW_IF_BOOL_ERROR(__FLAG__, __MSG__) __THROW_IF_BOOL(error, __FLAG__, __MSG__)
+#define THROW_IF_BOOL_FATAL(__FLAG__, __MSG__) __THROW_IF_BOOL(fatal, __FLAG__, __MSG__)
 
-#define __CHECK_BOOL_GOTO(__LVL__, __RET__, __MSG__) \
+#define __GOTO_IF_BOOL(__LVL__, __RET__, __MSG__) \
 	if (!(__RET__)) { \
 		HRESULT hr = ::winrt::impl::hresult_from_win32(GetLastError()); \
 		::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
 		goto __LABEL_FINALIZE; \
 	} \
 	static_cast<void>(0)
-#define CHECK_INFO_BOOL_GOTO(__RET__, __MSG__)  __CHECK_BOOL_GOTO(info, __RET__, __MSG__)
-#define CHECK_WARN_BOOL_GOTO(__RET__, __MSG__)  __CHECK_BOOL_GOTO(warn, __RET__, __MSG__)
-#define CHECK_ERROR_BOOL_GOTO(__RET__, __MSG__) __CHECK_BOOL_GOTO(error, __RET__, __MSG__)
-#define CHECK_FATAL_BOOL_GOTO(__RET__, __MSG__) __CHECK_BOOL_GOTO(fatal, __RET__, __MSG__)
+#define GOTO_IF_BOOL_INFO(__RET__, __MSG__)  __GOTO_IF_BOOL(info, __RET__, __MSG__)
+#define GOTO_IF_BOOL_WARN(__RET__, __MSG__)  __GOTO_IF_BOOL(warn, __RET__, __MSG__)
+#define GOTO_IF_BOOL_ERROR(__RET__, __MSG__) __GOTO_IF_BOOL(error, __RET__, __MSG__)
+#define GOTO_IF_BOOL_FATAL(__RET__, __MSG__) __GOTO_IF_BOOL(fatal, __RET__, __MSG__)
 
 #define __LOG_HRESULT(__LVL__, __HR__, __MSG__) \
 	::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
 	static_cast<void>(0)
-#define LOG_INFO_HRESULT(__HR__, __MSG__)  __LOG_HRESULT(info, __HR__, __MSG__)
-#define LOG_WARN_HRESULT(__HR__, __MSG__)  __LOG_HRESULT(warn, __HR__, __MSG__)
-#define LOG_ERROR_HRESULT(__HR__, __MSG__) __LOG_HRESULT(error, __HR__, __MSG__)
-#define LOG_FATAL_HRESULT(__HR__, __MSG__) __LOG_HRESULT(fatal, __HR__, __MSG__)
+#define LOG_HRESULT_INFO(__HR__, __MSG__)  __LOG_HRESULT(info, __HR__, __MSG__)
+#define LOG_HRESULT_WARN(__HR__, __MSG__)  __LOG_HRESULT(warn, __HR__, __MSG__)
+#define LOG_HRESULT_ERROR(__HR__, __MSG__) __LOG_HRESULT(error, __HR__, __MSG__)
+#define LOG_HRESULT_FATAL(__HR__, __MSG__) __LOG_HRESULT(fatal, __HR__, __MSG__)
 
-
-#define __CHECK_HRESULT_PASS(__LVL__, __RET__, __MSG__) \
+#define __LOG_IF_HRESULT(__LVL__, __RET__, __MSG__) \
 	{ \
 		HRESULT hr = __RET__; \
 		if (FAILED(hr)) { \
@@ -192,12 +191,12 @@ namespace app::logger {
 		} \
 	} \
 	static_cast<void>(0)
-#define CHECK_INFO_HRESULT_PASS(__RET__, __MSG__)  __CHECK_HRESULT_PASS(info, __RET__, __MSG__)
-#define CHECK_WARN_HRESULT_PASS(__RET__, __MSG__)  __CHECK_HRESULT_PASS(warn, __RET__, __MSG__)
-#define CHECK_ERROR_HRESULT_PASS(__RET__, __MSG__) __CHECK_HRESULT_PASS(error, __RET__, __MSG__)
-#define CHECK_FATAL_HRESULT_PASS(__RET__, __MSG__) __CHECK_HRESULT_PASS(fatal, __RET__, __MSG__)
+#define LOG_IF_HRESULT_INFO(__RET__, __MSG__)  __LOG_IF_HRESULT(info, __RET__, __MSG__)
+#define LOG_IF_HRESULT_WARN(__RET__, __MSG__)  __LOG_IF_HRESULT(warn, __RET__, __MSG__)
+#define LOG_IF_HRESULT_ERROR(__RET__, __MSG__) __LOG_IF_HRESULT(error, __RET__, __MSG__)
+#define LOG_IF_HRESULT_FATAL(__RET__, __MSG__) __LOG_IF_HRESULT(fatal, __RET__, __MSG__)
 
-#define __CHECK_HRESULT_GOTO(__LVL__, __RET__, __MSG__) \
+#define __GOTO_IF_HRESULT(__LVL__, __RET__, __MSG__) \
 	{ \
 		HRESULT hr = __RET__; \
 		if (FAILED(hr)) { \
@@ -206,12 +205,12 @@ namespace app::logger {
 		} \
 	} \
 	static_cast<void>(0)
-#define CHECK_INFO_HRESULT_GOTO(__RET__, __MSG__)  __CHECK_HRESULT_GOTO(info, __RET__, __MSG__)
-#define CHECK_WARN_HRESULT_GOTO(__RET__, __MSG__)  __CHECK_HRESULT_GOTO(warn, __RET__, __MSG__)
-#define CHECK_ERROR_HRESULT_GOTO(__RET__, __MSG__) __CHECK_HRESULT_GOTO(error, __RET__, __MSG__)
-#define CHECK_FATAL_HRESULT_GOTO(__RET__, __MSG__) __CHECK_HRESULT_GOTO(fatal, __RET__, __MSG__)
+#define GOTO_IF_HRESULT_INFO(__RET__, __MSG__)  __GOTO_IF_HRESULT(info, __RET__, __MSG__)
+#define GOTO_IF_HRESULT_WARN(__RET__, __MSG__)  __GOTO_IF_HRESULT(warn, __RET__, __MSG__)
+#define GOTO_IF_HRESULT_ERROR(__RET__, __MSG__) __GOTO_IF_HRESULT(error, __RET__, __MSG__)
+#define GOTO_IF_HRESULT_FATAL(__RET__, __MSG__) __GOTO_IF_HRESULT(fatal, __RET__, __MSG__)
 
-#define __CHECK_HRESULT_THROW(__LVL__, __RET__, __MSG__) \
+#define __THROW_IF_HRESULT(__LVL__, __RET__, __MSG__) \
 	{ \
 		HRESULT hr = __RET__; \
 		if (FAILED(hr)) { \
@@ -220,9 +219,9 @@ namespace app::logger {
 		} \
 	} \
 	static_cast<void>(0)
-#define CHECK_INFO_HRESULT_THROW(__RET__, __MSG__)  __CHECK_HRESULT_THROW(info, __RET__, __MSG__)
-#define CHECK_WARN_HRESULT_THROW(__RET__, __MSG__)  __CHECK_HRESULT_THROW(warn, __RET__, __MSG__)
-#define CHECK_ERROR_HRESULT_THROW(__RET__, __MSG__) __CHECK_HRESULT_THROW(error, __RET__, __MSG__)
-#define CHECK_FATAL_HRESULT_THROW(__RET__, __MSG__) __CHECK_HRESULT_THROW(fatal, __RET__, __MSG__)
+#define THROW_IF_HRESULT_INFO(__RET__, __MSG__)  __THROW_IF_HRESULT(info, __RET__, __MSG__)
+#define THROW_IF_HRESULT_WARN(__RET__, __MSG__)  __THROW_IF_HRESULT(warn, __RET__, __MSG__)
+#define THROW_IF_HRESULT_ERROR(__RET__, __MSG__) __THROW_IF_HRESULT(error, __RET__, __MSG__)
+#define THROW_IF_HRESULT_FATAL(__RET__, __MSG__) __THROW_IF_HRESULT(fatal, __RET__, __MSG__)
 
 }

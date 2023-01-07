@@ -144,7 +144,7 @@ NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::stor
 }
 
 void NotificationWindow::ReleasePrivate() {
-	LOG_TRACE_BEGIN(app::logger::ltg_presenter);
+	LOG_BEGIN(app::logger::ltg_presenter);
 
 	// Don't receive WM_CLOSE when calling AppWindow::Close.
 	// So, we catch WindowClosed bacause of releasing subclass decently.
@@ -155,7 +155,7 @@ void NotificationWindow::ReleasePrivate() {
 	activatedRovoker_.revoke();
 	closedRovoker_.revoke();
 
-	LOG_TRACE_END_NOLABEL();
+	LOG_END_NOLABEL();
 }
 
 void NotificationWindow::Show(float visibleDuration) {

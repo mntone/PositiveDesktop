@@ -22,17 +22,17 @@ void WindowBase::Subclass(HWND hWnd) {
 }
 
 void WindowBase::ReleaseSubclass(HWND hWnd) noexcept {
-	LOG_TRACE_BEGIN(app::logger::ltg_presenter);
+	LOG_BEGIN(app::logger::ltg_presenter);
 
 	WNDPROC nextWndProc = std::exchange(nextWndProc_, nullptr);
-	CHECK_WARN_BOOL_PASS(
+	LOG_IF_BOOL_WARN(
 		SetWindowLongPtrW(hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(nextWndProc)),
 		ErrorMessage_UnsetWndProc.data());
-	CHECK_INFO_BOOL_PASS(
+	LOG_IF_BOOL_INFO(
 		RemovePropW(hWnd, PositiveDesktop_WindowBase_ClassPointer.data()),
 		ErrorMessage_RemoveWndProcProp.data());
 
-	LOG_TRACE_END_NOLABEL();
+	LOG_END_NOLABEL();
 }
 
 LRESULT WindowBase::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept {
