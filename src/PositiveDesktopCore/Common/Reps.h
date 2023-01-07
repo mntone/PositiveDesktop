@@ -49,6 +49,7 @@ namespace reps {
 
 		protected:
 			constexpr single_observer_impl(): observer_(nullptr) { }
+			constexpr single_observer_impl(item_type observer): observer_(std::move(observer)) { }
 
 			constexpr observer_token _setObserver(item_type observer) noexcept {
 				observer_ = std::move(observer);
@@ -123,6 +124,9 @@ namespace reps {
 
 	template<typename T>
 	struct single_subject_t: observable_t<T>, __impl::single_observer_impl<T> {
+		constexpr single_subject_t() noexcept = default;
+		constexpr single_subject_t(observer_t<T> observer) noexcept: __impl::single_observer_impl<T>(std::move(observer)) { }
+
 		inline void send(bag_t<T>&& val) noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
 			observer_t<T>& observer = __impl::single_observer_impl<T>::observer_;
@@ -300,11 +304,9 @@ namespace reps {
 		using subject_type = single_subject_t<T>;
 
 	public:
-		sink_t(observer_t<T> observer) noexcept {
-			subject_type::addObserver(std::move(observer));
-		}
+		sink_t(observer_t<T> observer) noexcept: subject_type(std::move(observer)) { } // lock-free init
 
-		~sink_t() {
+		virtual ~sink_t() {
 			subject_type::clearObserver();
 		}
 
