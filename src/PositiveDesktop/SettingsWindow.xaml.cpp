@@ -6,6 +6,7 @@
 
 #include <winrt/Microsoft.UI.Windowing.h>
 
+#include "UI/Helpers/NavigationHelper.h"
 #include "UI/UIHelper.h"
 #include "UI/WindowHelper.h"
 #include "SettingsPage_ErrorLog.xaml.h"
@@ -31,7 +32,10 @@ namespace winrt {
 	using namespace ::winrt::Microsoft::UI::Xaml::Controls;
 	using namespace ::winrt::Microsoft::UI::Windowing;
 
+	using namespace ::winrt::PositiveDesktop::UI::Helpers;
 }
+
+#include "UI/SettingsPage_Notification.xaml.h"
 
 using namespace winrt::PositiveDesktop::implementation;
 
@@ -46,7 +50,7 @@ SettingsWindow::SettingsWindow() {
 
 	IVectorView<hstring> languages { ApplicationLanguages::Languages() };
 	frame.Language(languages.GetAt(0));
-	frame.Content(make<SettingsPage_ErrorLog>());
+	frame.Content(make<PositiveDesktop::UI::implementation::SettingsPage_Notification>());
 
 	HWND hWnd { GetHwnd(m_inner) };
 	SetCenter(hWnd, SizeInt32 { 1200, 900 });
@@ -56,8 +60,8 @@ SettingsWindow::SettingsWindow() {
 LRESULT SettingsWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept {
 	if (WM_GETMINMAXINFO == message) {
 		MINMAXINFO& minmaxInfo { *reinterpret_cast<MINMAXINFO*>(lParam) };
-		minmaxInfo.ptMinTrackSize.x = 320;
-		minmaxInfo.ptMinTrackSize.y = 240;
+		minmaxInfo.ptMinTrackSize.x = 360;
+		minmaxInfo.ptMinTrackSize.y = 270;
 		return FALSE;
 	} else if (WM_CLOSE == message) {
 		LRESULT result = WindowBase::WndProc(hWnd, message, wParam, lParam);
@@ -90,8 +94,10 @@ void SettingsWindow::NavigationViewDisplayModeChanged(NavigationView const& send
 	Thickness margin { titlebar.Margin() };
 	if (NavigationViewDisplayMode::Minimal == sender.DisplayMode()) {
 		margin.Left = 2.0 * sender.CompactPaneLength();
+		navigationView().IsPaneToggleButtonVisible(true);
 	} else {
 		margin.Left = sender.CompactPaneLength();
+		navigationView().IsPaneToggleButtonVisible(false);
 	}
 	titlebar.Margin(std::move(margin));
 
@@ -120,4 +126,17 @@ void SettingsWindow::UpdateTitlebarMargin(NavigationView const& navigationView) 
 	} else {
 		caption.Translation({ largeLeftIndent, 0, 0 });
 	}
+}
+
+void SettingsWindow::NavigationViewSelectionChanged(NavigationView const& sender, NavigationViewSelectionChangedEventArgs const& args) {
+	LOG_BEGIN(app::logger::ltg_presenter);
+
+	NavigationViewItem item { args.SelectedItem().as<NavigationViewItem>() };
+	if (item) {
+		TypeName pageTypeName { NavigationHelper::GetPageType(item) };
+		rootFrame().Navigate(pageTypeName);
+		LOG_DEBUG(std::format("Navigated to {}.", to_string(pageTypeName.Name)));
+	}
+
+	LOG_END_NOLABEL();
 }

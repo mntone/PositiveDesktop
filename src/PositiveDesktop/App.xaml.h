@@ -1,5 +1,8 @@
 #pragma once
+#include <winrt/Microsoft.UI.Xaml.Controls.AnimatedVisuals.h>
+
 #include "UI/Converters/DateTimeToStringConverter.h"
+#include "UI/Helpers/NavigationHelper.h"
 
 #include "App.xaml.g.h"
 

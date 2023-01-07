@@ -55,6 +55,30 @@
     <Image Include="Assets\Info.scale-500.png">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\Notification.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-250.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-300.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-500.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -79,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="ViewModels\Settings\ErrorLogViewModel.cpp">
       <Filter>ViewModels\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Helpers\NavigationHelper.cpp">
+      <Filter>UI\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +158,9 @@
     <ClInclude Include="ViewModels\Settings\ErrorLogViewModel.h">
       <Filter>ViewModels\Settings</Filter>
     </ClInclude>
+    <ClInclude Include="UI\Helpers\NavigationHelper.h">
+      <Filter>UI\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -160,6 +190,9 @@
     <Filter Include="ViewModels\Settings">
       <UniqueIdentifier>{0288bf0e-27ac-4165-8afc-0bb660e7bb9f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\Helpers">
+      <UniqueIdentifier>{5a328322-22fa-4611-9110-8343c6630889}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -175,6 +208,9 @@
       <Filter>UI</Filter>
     </Page>
     <Page Include="SettingsWindow.xaml">
+      <Filter>UI</Filter>
+    </Page>
+    <Page Include="UI\SettingsPage_Notification.xaml">
       <Filter>UI</Filter>
     </Page>
   </ItemGroup>

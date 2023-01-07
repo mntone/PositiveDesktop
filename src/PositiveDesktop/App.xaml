@@ -8,6 +8,7 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+				<ResourceDictionary Source="/Mntone.AngelUmbrella/Themes/Generic.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
 			<!-- Converters -->
@@ -15,6 +16,7 @@
 
 			<!-- Breakpoints -->
 			<x:Double x:Key="Breakpoint640Plus">641</x:Double>
+			<x:Double x:Key="Breakpoint800Plus">801</x:Double>
 			
 			<!-- Window -->
 			<SolidColorBrush x:Key="WindowCaptionBackground"

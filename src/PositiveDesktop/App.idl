@@ -17,6 +17,7 @@ namespace PositiveDesktop
 			[interface_name("IErrorLogViewModel", BB920A43-F5D2-443B-94D1-DCA41CE0F7A7)]
 			runtimeclass ErrorLogViewModel
 			{
+				String LevelIcon { get; };
 				String Level { get; };
 				String Tag { get; };
 				String Operation { get; };
@@ -25,6 +26,9 @@ namespace PositiveDesktop
 				String FileName { get; };
 				String FuncName { get; };
 				String Message { get; };
+
+				String Header { get; };
+				String Description { get; };
 			}
 
 			[interface_name("IErrorLogsViewModel", 57C70EF5-FA73-4597-B4D5-F4FAFC05E920)]
@@ -39,14 +43,36 @@ namespace PositiveDesktop
 	namespace UI
 	{
 
+		[interface_name("ISettingsPage_Notification", E7D8D230-EED2-4909-919A-2969419B62DD)]
+		[webhosthidden]
+		runtimeclass SettingsPage_Notification : Microsoft.UI.Xaml.Controls.Page
+		{
+			SettingsPage_Notification();
+		}
+
 		namespace Converters
 		{
 
-			[constructor_name("IDateTimeToStringConverterFactory", 3B317E48-32FE-4922-8812-671E697B31B1)]
+			//[constructor_name("IDateTimeToStringConverterFactory", 3B317E48-32FE-4922-8812-671E697B31B1)]
 			[interface_name("IDateTimeToStringConverter", 3EEE62D6-3584-41DC-9BE8-2911A9BB7F54)]
 			runtimeclass DateTimeToStringConverter : Microsoft.UI.Xaml.Data.IValueConverter
 			{
 				DateTimeToStringConverter();
+			}
+
+		}
+
+		namespace Helpers
+		{
+
+			[interface_name("INavigationHelper", 53398815-9FCC-4381-9F4B-A90E05DB272A)]
+			[static_name("INavigationHelperStatics", 514F7EE7-3A01-51CD-AA81-C320C329FCDC)]
+			runtimeclass NavigationHelper
+			{
+				static Windows.UI.Xaml.Interop.TypeName GetPageType(Microsoft.UI.Xaml.Controls.NavigationViewItem item);
+				static void SetPageType(Microsoft.UI.Xaml.Controls.NavigationViewItem item, Windows.UI.Xaml.Interop.TypeName value);
+
+				static Microsoft.UI.Xaml.DependencyProperty PageTypeProperty { get; };
 			}
 
 		}
@@ -56,6 +82,8 @@ namespace PositiveDesktop
 	[interface_name("ISettingsPage_ErrorLog", B9074017-349B-418F-9396-D484A3A8851D)]
 	runtimeclass SettingsPage_ErrorLog : Microsoft.UI.Xaml.Controls.Page
 	{
+		SettingsPage_ErrorLog();
+
 		PositiveDesktop.ViewModels.Settings.ErrorLogsViewModel ViewModel { get; };
 	}
 

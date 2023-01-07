@@ -143,6 +143,14 @@
     <Image Include="Assets\Info.scale-300.png" />
     <Image Include="Assets\Info.scale-400.png" />
     <Image Include="Assets\Info.scale-500.png" />
+    <Image Include="Assets\Notification.png" />
+    <Image Include="Assets\Notification.scale-125.png" />
+    <Image Include="Assets\Notification.scale-150.png" />
+    <Image Include="Assets\Notification.scale-200.png" />
+    <Image Include="Assets\Notification.scale-250.png" />
+    <Image Include="Assets\Notification.scale-300.png" />
+    <Image Include="Assets\Notification.scale-400.png" />
+    <Image Include="Assets\Notification.scale-500.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -166,10 +174,14 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="UI\Converters\DateTimeToStringConverter.h" />
+    <ClInclude Include="UI\Helpers\NavigationHelper.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />
     <ClInclude Include="UI\NotificationPresenterWinUI3.h" />
     <ClInclude Include="UI\register_value_t.h" />
     <ClInclude Include="UI\ResourceManager.h" />
+    <ClInclude Include="UI\SettingsPage_Notification.xaml.h">
+      <DependentUpon>UI\SettingsPage_Notification.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="UI\UIHelper.h" />
     <ClInclude Include="UI\WindowBase.h" />
     <ClInclude Include="UI\WindowHelper.h" />
@@ -205,7 +217,12 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="UI\Converters\DateTimeToStringConverter.cpp" />
+    <ClCompile Include="UI\Helpers\NavigationHelper.cpp" />
     <ClCompile Include="UI\NotificationPresenterWinUI3.cpp" />
+    <ClCompile Include="UI\SettingsPage_Notification.xaml.cpp">
+      <DependentUpon>UI\SettingsPage_Notification.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="UI\WindowBase.cpp" />
     <ClCompile Include="ViewModels\NotificationWindowViewModel.cpp" />
     <ClCompile Include="ViewModels\Settings\ErrorLogViewModel.cpp" />
@@ -224,6 +241,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SettingsWindow.xaml" />
+    <Page Include="UI\SettingsPage_Notification.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\CodeResources.lang-en-US.resw" />
@@ -241,6 +261,7 @@
     <Import Project="..\..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.targets')" />
     <Import Project="..\..\packages\Microsoft.WindowsAppSDK.1.2.221209.1\build\native\Microsoft.WindowsAppSDK.targets" Condition="Exists('..\..\packages\Microsoft.WindowsAppSDK.1.2.221209.1\build\native\Microsoft.WindowsAppSDK.targets')" />
     <Import Project="..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.targets" Condition="Exists('..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.targets')" />
+    <Import Project="..\..\packages\Mntone.AngelUmbrella.1.0.0\build\native\Mntone.AngelUmbrella.targets" Condition="Exists('..\..\packages\Mntone.AngelUmbrella.1.0.0\build\native\Mntone.AngelUmbrella.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -252,5 +273,6 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.WindowsAppSDK.1.2.221209.1\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.WindowsAppSDK.1.2.221209.1\build\native\Microsoft.WindowsAppSDK.targets'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Mntone.AngelUmbrella.1.0.0\build\native\Mntone.AngelUmbrella.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Mntone.AngelUmbrella.1.0.0\build\native\Mntone.AngelUmbrella.targets'))" />
   </Target>
 </Project>

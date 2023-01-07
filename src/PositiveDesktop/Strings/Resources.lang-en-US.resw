@@ -132,4 +132,16 @@
   <data name="SettingsWindow_Info.Content" xml:space="preserve">
     <value>About Positive☆Desktop</value>
   </data>
+  <data name="SettingsWindow_Notification.Content" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="Settings_Notification_Duration.Header" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="Settings_Notification_HorizontalPosition.Header" xml:space="preserve">
+    <value>Horizontal Position</value>
+  </data>
+  <data name="Settings_Notification_VerticalPosition.Header" xml:space="preserve">
+    <value>Vertical Position</value>
+  </data>
 </root>
