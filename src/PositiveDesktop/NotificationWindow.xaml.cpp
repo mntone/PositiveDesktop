@@ -64,18 +64,18 @@ extern std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
 
 using namespace winrt;
 
-using namespace Microsoft::UI;
-using namespace Microsoft::UI::Composition;
-using namespace Microsoft::UI::Composition::SystemBackdrops;
-using namespace Microsoft::UI::Xaml;
-using namespace Microsoft::UI::Xaml::Controls;
-using namespace Windows::Foundation;
-using namespace Windows::Graphics;
-using namespace Windows::UI;
+using namespace winrt::Microsoft::UI;
+using namespace winrt::Microsoft::UI::Composition;
+using namespace winrt::Microsoft::UI::Composition::SystemBackdrops;
+using namespace winrt::Microsoft::UI::Xaml;
+using namespace winrt::Microsoft::UI::Xaml::Controls;
+using namespace winrt::Windows::Foundation;
+using namespace winrt::Windows::Graphics;
+using namespace winrt::Windows::UI;
 
 using namespace app::ui;
 
-using namespace PositiveDesktop::implementation;
+using namespace winrt::PositiveDesktop::implementation;
 
 namespace muw = winrt::Microsoft::UI::Windowing;
 

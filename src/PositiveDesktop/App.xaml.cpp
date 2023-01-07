@@ -1,18 +1,17 @@
 #include "pch.h"
 #include "App.xaml.h"
 
-namespace app::ui {
-	winrt::Microsoft::UI::Dispatching::DispatcherQueue gDispatchQueue = nullptr;
+namespace winrt {
+	using namespace winrt::Microsoft::UI::Dispatching;
+	using namespace winrt::Microsoft::UI::Xaml;
+	using namespace winrt::Windows::Foundation;
 }
 
-using namespace winrt;
+namespace app::ui {
+	winrt::DispatcherQueue gDispatchQueue = nullptr;
+}
 
-using namespace Microsoft::UI::Xaml;
-using namespace Microsoft::UI::Xaml::Controls;
-using namespace Microsoft::UI::Xaml::Navigation;
-using namespace Windows::Foundation;
-
-using namespace PositiveDesktop::implementation;
+using namespace winrt::PositiveDesktop::implementation;
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code
@@ -23,7 +22,7 @@ App::App() {
 	app::logger::initLogger();
 
 	// Save DispatcherQueue
-	app::ui::gDispatchQueue = winrt::Microsoft::UI::Dispatching::DispatcherQueue::GetForCurrentThread();
+	app::ui::gDispatchQueue = winrt::DispatcherQueue::GetForCurrentThread();
 	if (!app::ui::gDispatchQueue) {
 		Exit();
 		return;
@@ -32,7 +31,7 @@ App::App() {
 	InitializeComponent();
 
 #if defined _DEBUG && !defined DISABLE_XAML_GENERATED_BREAK_ON_UNHANDLED_EXCEPTION
-	UnhandledException([this](IInspectable const&, UnhandledExceptionEventArgs const& e) {
+	UnhandledException([this](winrt::IInspectable const&, winrt::UnhandledExceptionEventArgs const& e) {
 		if (IsDebuggerPresent()) {
 			auto errorMessage = e.Message();
 			__debugbreak();
@@ -46,7 +45,7 @@ App::App() {
 /// will be used such as when the application is launched to open a specific file.
 /// </summary>
 /// <param name="e">Details about the launch request and process.</param>
-void App::OnLaunched(LaunchActivatedEventArgs const&) {
+void App::OnLaunched(winrt::LaunchActivatedEventArgs const&) {
 	if (initialized_) {
 		return;
 	}

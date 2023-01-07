@@ -46,6 +46,8 @@
 // conflict with Storyboard::GetCurrentTime
 #undef GetCurrentTime
 
+#include <WindowsAppSDK-VersionInfo.h>
+
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.System.h>

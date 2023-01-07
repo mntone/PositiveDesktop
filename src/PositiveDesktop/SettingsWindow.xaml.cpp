@@ -70,7 +70,11 @@ LRESULT SettingsWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 }
 
 void SettingsWindow::ActualThemeChanged(winrt::FrameworkElement const& sender, winrt::Windows::Foundation::IInspectable const& /*args*/) {
+#if WINDOWSAPPSDK_RELEASE_MAJORMINOR >= 0x00010002  // Include WindowsAppSDK-VersionInfo.h
 	WINRT_ASSERT(winrt::AppWindowTitleBar::IsCustomizationSupported()); // Note: Return true in Windows SDK 1.2
+#else
+	if (!winrt::AppWindowTitleBar::IsCustomizationSupported()) return;
+#endif
 
 	winrt::AppWindow appWindow { GetAppWindow(m_inner) };
 	winrt::AppWindowTitleBar titlebar { appWindow.TitleBar() };
