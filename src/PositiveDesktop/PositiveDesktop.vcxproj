@@ -165,6 +165,7 @@
     <ClInclude Include="SettingsWindow.xaml.h">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="UI\Controls\SettingsCard.h" />
     <ClInclude Include="UI\Converters\DateTimeToStringConverter.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />
     <ClInclude Include="UI\NotificationPresenterWinUI3.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="SettingsWindow.xaml.cpp">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="UI\Controls\SettingsCard.cpp" />
     <ClCompile Include="UI\Converters\DateTimeToStringConverter.cpp" />
     <ClCompile Include="UI\NotificationPresenterWinUI3.cpp" />
     <ClCompile Include="UI\WindowBase.cpp" />
@@ -220,6 +222,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="NotificationWindow.xaml" />
+    <Page Include="UI\Controls\SettingsCard.xaml">
+      <Type>DefaultStyle</Type>
+    </Page>
     <Page Include="SettingsPage_ErrorLog.xaml">
       <SubType>Designer</SubType>
     </Page>

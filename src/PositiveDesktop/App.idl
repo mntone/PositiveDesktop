@@ -39,10 +39,36 @@ namespace PositiveDesktop
 	namespace UI
 	{
 
+		namespace Controls
+		{
+
+			[interface_name("ISettingsCard", A98BF3E6-1595-4879-A198-93B5F6242233)]
+			[webhosthidden]
+			unsealed runtimeclass SettingsCard : Microsoft.UI.Xaml.Controls.Primitives.ButtonBase
+			{
+				SettingsCard();
+
+				Microsoft.UI.Xaml.Controls.IconElement ActionIcon;
+				String ActionIconTooltip;
+				Object Description;
+				Microsoft.UI.Xaml.Controls.IconElement HeaderIcon;
+				Object Header;
+				Boolean IsClickEnabled;
+
+				static Microsoft.UI.Xaml.DependencyProperty ActionIconProperty { get; };
+				static Microsoft.UI.Xaml.DependencyProperty ActionIconTooltipProperty { get; };
+				static Microsoft.UI.Xaml.DependencyProperty DescriptionProperty { get; };
+				static Microsoft.UI.Xaml.DependencyProperty HeaderIconProperty { get; };
+				static Microsoft.UI.Xaml.DependencyProperty HeaderProperty { get; };
+				static Microsoft.UI.Xaml.DependencyProperty IsClickEnabledProperty { get; };
+			}
+
+		}
+
 		namespace Converters
 		{
 
-			[constructor_name("IDateTimeToStringConverterFactory", 3B317E48-32FE-4922-8812-671E697B31B1)]
+			//[constructor_name("IDateTimeToStringConverterFactory", 3B317E48-32FE-4922-8812-671E697B31B1)]
 			[interface_name("IDateTimeToStringConverter", 3EEE62D6-3584-41DC-9BE8-2911A9BB7F54)]
 			runtimeclass DateTimeToStringConverter : Microsoft.UI.Xaml.Data.IValueConverter
 			{

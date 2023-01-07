@@ -58,8 +58,8 @@ SettingsWindow::SettingsWindow() {
 LRESULT SettingsWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept {
 	if (WM_GETMINMAXINFO == message) {
 		MINMAXINFO& minmaxInfo { *reinterpret_cast<MINMAXINFO*>(lParam) };
-		minmaxInfo.ptMinTrackSize.x = 320;
-		minmaxInfo.ptMinTrackSize.y = 240;
+		minmaxInfo.ptMinTrackSize.x = 360;
+		minmaxInfo.ptMinTrackSize.y = 270;
 		return FALSE;
 	} else if (WM_CLOSE == message) {
 		LRESULT result = WindowBase::WndProc(hWnd, message, wParam, lParam);

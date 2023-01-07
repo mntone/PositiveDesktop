@@ -3,7 +3,8 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		mc:Ignorable="d">
+		mc:Ignorable="d"
+		xmlns:ctrl="using:PositiveDesktop.UI.Controls">
 
 	<Grid ActualThemeChanged="ActualThemeChanged"
 		  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -49,7 +50,54 @@
 				</NavigationViewItem>
 			</NavigationView.PaneFooter>
 
-			<Frame x:Name="rootFrame" />
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Frame x:Name="rootFrame" />
+				<StackPanel Grid.Row="1"
+							Margin="12,4,12,4"
+							Spacing="4">
+					<ctrl:SettingsCard Header="Button"
+									   Description="Description, description, description, description and description!"
+									   IsClickEnabled="True">
+						<Button Content="Content!!" />
+					</ctrl:SettingsCard>
+					<ctrl:SettingsCard Header="ComboBox"
+									   Description="Description, description, description, description and description!"
+									   IsClickEnabled="True">
+						<ComboBox SelectedIndex="0">
+							<ComboBoxItem>Option 1</ComboBoxItem>
+							<ComboBoxItem>Option 2</ComboBoxItem>
+							<ComboBoxItem>Option 3</ComboBoxItem>
+						</ComboBox>
+					</ctrl:SettingsCard>
+					<ctrl:SettingsCard Header="Slider"
+									   Description="Description, description, description, description and description!"
+									   IsClickEnabled="True">
+						<Slider />
+					</ctrl:SettingsCard>
+					<ctrl:SettingsCard Header="TextBox"
+									   Description="Description, description, description, description and description!"
+									   IsClickEnabled="True">
+						<ctrl:SettingsCard.HeaderIcon>
+							<FontIcon FontFamily="Segoe MDL2 Assets"
+									  Glyph="&#xE97E;" />
+						</ctrl:SettingsCard.HeaderIcon>
+						<TextBox />
+					</ctrl:SettingsCard>
+					<ctrl:SettingsCard Header="ToggleSwitch"
+									   Description="Description, description, description, description and description!"
+									   IsClickEnabled="True">
+						<ctrl:SettingsCard.HeaderIcon>
+							<FontIcon FontFamily="Segoe MDL2 Assets"
+									  Glyph="&#xF19E;" />
+						</ctrl:SettingsCard.HeaderIcon>
+						<ToggleSwitch />
+					</ctrl:SettingsCard>
+				</StackPanel>
+			</Grid>
 		</NavigationView>
 
 		<Border x:Name="titlebar"

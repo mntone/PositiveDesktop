@@ -45,9 +45,13 @@ namespace app {
 
 	private:
 		void proc() noexcept {
+			HANDLE hThread = GetCurrentThread();
+
 			std::unique_lock<std::mutex> locker(mutex_);
 			while (!terminating_) {
+				winrt::check_bool(SetThreadPriority(hThread, THREAD_MODE_BACKGROUND_BEGIN));
 				cond_.wait(locker);
+				winrt::check_bool(SetThreadPriority(hThread, THREAD_MODE_BACKGROUND_END));
 				while (!queue_.empty()) {
 					Msg msg = queue_.front();
 					process(std::move(msg));
