@@ -49,6 +49,8 @@ namespace app::desktop {
 		constexpr std::string_view ErrorMessage_SwitchTargetDesktop = "Failed to switch the target desktop.";
 		constexpr std::string_view ErrorMessage_MoveViewToTargetDesktop = "Failed to move the view to the target desktop.";
 
+		constexpr std::string_view ErrorMessage_GetName = "Failed to get desktop name.";
+
 	}
 
 }
@@ -195,15 +197,15 @@ void DesktopService::unsetTopmostAll() noexcept {
 
 	check_bool(EnumWindows([](HWND hWnd, LPARAM /*lParam*/) -> BOOL {
 		HANDLE hTopmost = RemovePropW(hWnd, PositiveDesktop_Mark_Topmost.data());
-		if (!hTopmost) {
-			return TRUE;
-		}
-		BOOL topmost = reinterpret_cast<BOOL>(hTopmost);
-		if (topmost) {
-			UnsetTopmost(hWnd); // Discard return value
-		}
+	if (!hTopmost) {
 		return TRUE;
-	}, 0));
+	}
+	BOOL topmost = reinterpret_cast<BOOL>(hTopmost);
+	if (topmost) {
+		UnsetTopmost(hWnd); // Discard return value
+	}
+	return TRUE;
+		}, 0));
 
 	LOG_TRACE_END_NOLABEL();
 }
@@ -310,68 +312,103 @@ HRESULT DesktopService::VirtualDesktopCreated(IVirtualDesktopDelegate* pDesktop)
 	return S_OK;
 }
 
-HRESULT DesktopService::VirtualDesktopDestroyed(IVirtualDesktopDelegate* pDesktopDestroyed) noexcept try {
+HRESULT DesktopService::VirtualDesktopDestroyed(IVirtualDesktopDelegate* pDesktopDestroyed) noexcept {
+	LOG_TRACE_BEGIN(logger::ltg_desktop_listener);
+
 	vdevent_t data {
 		vde_removed,
 		0,
 		pDesktopDestroyed->Index(),
-		pDesktopDestroyed->Name(),
+		pDesktopDestroyed->Name(), // NO TRY. The name is cached before destroying.
 	};
 
 	delete pDesktopDestroyed;
 
+	LOG_DEBUG(std::format("Create a new desktop #{}.", data.index + 1));
 	next(std::move(data));
+
+	LOG_TRACE_END_NOLABEL();
 	return S_OK;
-} catch (winrt::hresult_error const& err) {
-	// TODO: error log
-	return err.code();
 }
 
-HRESULT DesktopService::VirtualDesktopMoved(IVirtualDesktopDelegate* pDesktop, int nFromIndex) noexcept try {
+HRESULT DesktopService::VirtualDesktopMoved(IVirtualDesktopDelegate* pDesktop, int nFromIndex) noexcept {
+	LOG_TRACE_BEGIN(logger::ltg_desktop_listener);
+
 	if (nFromIndex > 0x1FFFFFFF) {
 		// TODO: error log
 		return E_INVALIDARG;
+	}
+
+	HRESULT hr = S_OK;
+	winrt::hstring name;
+	try {
+		name = pDesktop->Name();
+	} catch (winrt::hresult_error const& err) {
+		hr = err.code();
+		LOG_WARN_HRESULT(hr, nonlocalized::ErrorMessage_GetName);
 	}
 
 	vdevent_t data {
 		vde_moved,
 		nFromIndex,
 		pDesktop->Index(),
-		pDesktop->Name(),
+		name,
 	};
+	LOG_DEBUG(std::format("Move the desktop #{} ({}).", data.index + 1, winrt::to_string(data.name)));
 	next(std::move(data));
-	return S_OK;
-} catch (winrt::hresult_error const& err) {
-	// TODO: error log
-	return err.code();
+
+	LOG_TRACE_END_NOLABEL();
+	return hr;
 }
 
-HRESULT DesktopService::VirtualDesktopNameChanged(IVirtualDesktopDelegate* pDesktop) noexcept try {
+HRESULT DesktopService::VirtualDesktopNameChanged(IVirtualDesktopDelegate* pDesktop) noexcept {
+	LOG_TRACE_BEGIN(logger::ltg_desktop_listener);
+
+	HRESULT hr = S_OK;
+	winrt::hstring name;
+	try {
+		name = pDesktop->Name();
+	} catch (winrt::hresult_error const& err) {
+		hr = err.code();
+		LOG_WARN_HRESULT(hr, nonlocalized::ErrorMessage_GetName);
+	}
+
 	vdevent_t data {
 		vde_renamed,
 		0,
 		pDesktop->Index(),
-		pDesktop->Name(),
+		name,
 	};
+	LOG_DEBUG(std::format("Rename the desktop #{} ({}).", data.index + 1, winrt::to_string(data.name)));
 	next(std::move(data));
-	return S_OK;
-} catch (winrt::hresult_error const& err) {
-	// TODO: error log
-	return err.code();
+
+	LOG_TRACE_END_NOLABEL();
+	return hr;
 }
 
-HRESULT DesktopService::CurrentVirtualDesktopChanged(IVirtualDesktopDelegate* pDesktopNew) noexcept try {
+HRESULT DesktopService::CurrentVirtualDesktopChanged(IVirtualDesktopDelegate* pDesktopNew) noexcept {
+	LOG_TRACE_BEGIN(logger::ltg_desktop_listener);
+
+	HRESULT hr = S_OK;
+	winrt::hstring name;
+	try {
+		name = pDesktopNew->Name();
+	} catch (winrt::hresult_error const& err) {
+		hr = err.code();
+		LOG_WARN_HRESULT(hr, nonlocalized::ErrorMessage_GetName);
+	}
+
 	vdevent_t data {
 		vde_changed,
 		0,
 		pDesktopNew->Index(),
-		pDesktopNew->Name(),
+		name,
 	};
+	LOG_DEBUG(std::format("Change the desktop #{} ({}).", data.index + 1, winrt::to_string(data.name)));
 	next(std::move(data));
-	return S_OK;
-} catch (winrt::hresult_error const& err) {
-	// TODO: error log
-	return err.code();
+
+	LOG_TRACE_END_NOLABEL();
+	return hr;
 }
 
 #pragma endregion

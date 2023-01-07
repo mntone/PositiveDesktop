@@ -175,6 +175,15 @@ namespace app::logger {
 #define CHECK_ERROR_BOOL_GOTO(__RET__, __MSG__) __CHECK_BOOL_GOTO(error, __RET__, __MSG__)
 #define CHECK_FATAL_BOOL_GOTO(__RET__, __MSG__) __CHECK_BOOL_GOTO(fatal, __RET__, __MSG__)
 
+#define __LOG_HRESULT(__LVL__, __HR__, __MSG__) \
+	::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
+	static_cast<void>(0)
+#define LOG_INFO_HRESULT(__HR__, __MSG__)  __LOG_HRESULT(info, __HR__, __MSG__)
+#define LOG_WARN_HRESULT(__HR__, __MSG__)  __LOG_HRESULT(warn, __HR__, __MSG__)
+#define LOG_ERROR_HRESULT(__HR__, __MSG__) __LOG_HRESULT(error, __HR__, __MSG__)
+#define LOG_FATAL_HRESULT(__HR__, __MSG__) __LOG_HRESULT(fatal, __HR__, __MSG__)
+
+
 #define __CHECK_HRESULT_PASS(__LVL__, __RET__, __MSG__) \
 	{ \
 		HRESULT hr = __RET__; \
