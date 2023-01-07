@@ -176,8 +176,7 @@ namespace app::logger {
 #define GOTO_IF_BOOL_FATAL(__RET__, __MSG__) __GOTO_IF_BOOL(fatal, __RET__, __MSG__)
 
 #define __LOG_HRESULT(__LVL__, __HR__, __MSG__) \
-	::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
-	static_cast<void>(0)
+	::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__)
 #define LOG_HRESULT_INFO(__HR__, __MSG__)  __LOG_HRESULT(info, __HR__, __MSG__)
 #define LOG_HRESULT_WARN(__HR__, __MSG__)  __LOG_HRESULT(warn, __HR__, __MSG__)
 #define LOG_HRESULT_ERROR(__HR__, __MSG__) __LOG_HRESULT(error, __HR__, __MSG__)
@@ -209,6 +208,18 @@ namespace app::logger {
 #define GOTO_IF_HRESULT_WARN(__RET__, __MSG__)  __GOTO_IF_HRESULT(warn, __RET__, __MSG__)
 #define GOTO_IF_HRESULT_ERROR(__RET__, __MSG__) __GOTO_IF_HRESULT(error, __RET__, __MSG__)
 #define GOTO_IF_HRESULT_FATAL(__RET__, __MSG__) __GOTO_IF_HRESULT(fatal, __RET__, __MSG__)
+
+#define __THROW_HRESULT(__LVL__, __HR__, __MSG__) \
+	{ \
+		HRESULT hr = __HR__; \
+		::app::logger::gLogger->log(::app::logger::llv_##__LVL__, __tag, hr, __LINE__, __FILE__, __FUNCTION__, __MSG__); \
+		::winrt::throw_hresult(hr); \
+	} \
+	static_cast<void>(0)
+#define THROW_HRESULT_INFO(__HR__, __MSG__)  __THROW_HRESULT(info, __HR__, __MSG__)
+#define THROW_HRESULT_WARN(__HR__, __MSG__)  __THROW_HRESULT(warn, __HR__, __MSG__)
+#define THROW_HRESULT_ERROR(__HR__, __MSG__) __THROW_HRESULT(error, __HR__, __MSG__)
+#define THROW_HRESULT_FATAL(__HR__, __MSG__) __THROW_HRESULT(fatal, __HR__, __MSG__)
 
 #define __THROW_IF_HRESULT(__LVL__, __RET__, __MSG__) \
 	{ \

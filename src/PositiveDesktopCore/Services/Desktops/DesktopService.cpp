@@ -119,13 +119,13 @@ void DesktopService::initialize(uint32_t build) {
 	} else if (build >= 20231) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate20231>(build, virtualDesktopCache_, serviceProvider_.get());
 	} else if (build >= 20211) {
-		THROW_IF_HRESULT_FATAL(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
+		THROW_HRESULT_FATAL(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
 	} else if (build >= 18963) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate18963>(virtualDesktopCache_, serviceProvider_.get());
 	} else if (build >= 14238) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate14238>(virtualDesktopCache_, serviceProvider_.get());
 	} else {
-		THROW_IF_HRESULT_FATAL(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
+		THROW_HRESULT_FATAL(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
 	}
 
 	THROW_IF_HRESULT_FATAL(serviceProvider_->QueryService(
@@ -145,7 +145,7 @@ void DesktopService::initialize(uint32_t build) {
 			virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification20241>().get(), &cookie_),
 			"Failed to register IVirtualDesktopNotification20241.");
 	} else if (build >= 20211) {
-		THROW_IF_HRESULT_FATAL(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
+		THROW_HRESULT_FATAL(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
 	} else if (build >= 18963 /* general Windows 10 */) {
 		com_ptr<VirtualDesktopNotificationListener18963> listener = make_self<VirtualDesktopNotificationListener18963>(virtualDesktopCache_, this);
 		THROW_IF_HRESULT_FATAL(
@@ -157,7 +157,7 @@ void DesktopService::initialize(uint32_t build) {
 			virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification>().get(), &cookie_),
 			"Failed to register IVirtualDesktopNotification.");
 	} else {
-		THROW_IF_HRESULT_FATAL(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
+		THROW_HRESULT_FATAL(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
 	}
 
 	THROW_IF_HRESULT_FATAL(virtualDesktopManagerDelegate_->LoadDesktops(), nonlocalized::ErrorMessage_LoadDesktops);
