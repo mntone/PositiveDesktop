@@ -46,6 +46,7 @@ namespace reps {
 
 		constexpr observer_t<T>& operator=(observer_t<T>&& other) noexcept {
 			if (&other != this) {
+				release();
 				flag_ = std::exchange(other.flag_, reference);
 				observer_ = std::exchange(other.observer_, nullptr);
 			}
@@ -53,9 +54,7 @@ namespace reps {
 		}
 
 		constexpr ~observer_t() {
-			if (actual == flag_) {
-				delete observer_;
-			}
+			release();
 		}
 
 		inline void on(bag_t<T> const& value) noexcept {
@@ -76,6 +75,13 @@ namespace reps {
 
 		constexpr bool operator !=(observer_t<T> const& other) const noexcept {
 			return observer_ != other.observer_;
+		}
+
+	private:
+		constexpr void release() noexcept {
+			if (actual == flag_) {
+				delete observer_;
+			}
 		}
 
 	private:
