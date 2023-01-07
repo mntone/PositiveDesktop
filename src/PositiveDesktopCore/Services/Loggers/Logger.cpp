@@ -42,8 +42,8 @@ namespace app::logger {
 		}
 
 		void log(log_t&& log) noexcept override {
-			logs_.push_back(std::move(log));
-			reps::single_subject_t<log_t>::next(log);
+			logs_.push_back(log);
+			reps::single_subject_t<log_t>::next(std::move(log));
 		}
 
 	private:

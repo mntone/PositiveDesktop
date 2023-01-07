@@ -47,7 +47,11 @@ namespace app::logger {
 		std::chrono::system_clock::time_point datetime;
 		std::string_view filename;
 		std::string_view funcname;
+#if _DEBUG
+		std::string message;
+#else
 		std::string_view message;
+#endif
 	};
 
 	class ILogger {
@@ -72,12 +76,12 @@ namespace app::logger {
 				std::chrono::system_clock::now(),
 				filename,
 				funcname,
-				message,
+				std::string { message },
 			};
 			log(std::move(data));
 		}
 
-		inline void debug(logtag_t tag, long line, std::string_view filename, std::string_view funcname, std::string_view message) noexcept {
+		inline void debug(logtag_t tag, long line, std::string_view filename, std::string_view funcname, std::string message) noexcept {
 			log_t data {
 				llv_debug,
 				tag,
@@ -103,7 +107,11 @@ namespace app::logger {
 				std::chrono::system_clock::now(),
 				filename,
 				funcname,
+#if _DEBUG
+				std::string { message },
+#else
 				message,
+#endif
 			};
 			log(std::move(data));
 		}
