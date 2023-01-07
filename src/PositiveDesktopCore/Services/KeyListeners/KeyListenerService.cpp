@@ -55,7 +55,7 @@ void KeysListenerService::initialize() {
 	config.map.push_back({ kbe_move_window_and_switch_last, { VK_END, 0x2A /* LCtrl+LWin+LAlt*/ } });
 	config.map.push_back({ kbe_move_window_and_switch_left, { VK_LEFT, 0x2A /* LCtrl+LWin+LAlt*/ }, { VK_PRIOR, 0x2A /* LCtrl+LWin+LAlt*/ } });
 	config.map.push_back({ kbe_move_window_and_switch_right, { VK_RIGHT, 0x2A /* LCtrl+LWin+LAlt*/ }, { VK_NEXT, 0x2A /* LCtrl+LWin+LAlt*/ } });
-	config.map.push_back({ kbe_move_window_and_switch_new, { 'D', 0x2A /* LCtrl+LWin+LAlt*/ } });
+	config.map.push_back({ kbe_move_window_and_switch_new_last, { 'D', 0x2A /* LCtrl+LWin+LAlt*/ } });
 
 	// Toggle topmost window.
 	config.map.push_back({ kbe_topmost_toggle, { 'T', 0x2A /* LCtrl+LWin+LAlt*/ } });

@@ -20,12 +20,28 @@ namespace app::desktop {
 		vdt_desktop8,
 		vdt_desktop9,
 		vdt_desktop10,
+		vdt_desktop11,
+		vdt_desktop12,
+		vdt_desktop13,
+		vdt_desktop14,
+		vdt_desktop15,
+		vdt_desktop16,
+		vdt_desktop17,
+		vdt_desktop18,
+		vdt_desktop19,
+		vdt_desktop20,
 		vdt_first,
 		vdt_last,
 		vdt_left,
 		vdt_right,
-		vdt_new,
+		vdt_new_first,
+		vdt_new_last,
+		vdt_new_left,
+		vdt_new_right,
 		vdt_previous,
+		vdt_forward,
+
+		vdt_desktop_max = vdt_desktop20,
 	};
 
 	constexpr std::wstring_view PositiveDesktop_Mark_Topmost = L"PositiveDesktop.Mark.Topmost";
@@ -178,14 +194,18 @@ HRESULT DesktopService::GetTargetDesktop(int target, IVirtualDesktopDelegate** p
 	case vdt_last:
 		hr = virtualDesktopCache_->Last(ppDesktop);
 		break;
-	case vdt_new:
+	case vdt_new_last:
 		hr = virtualDesktopManagerDelegate_->CreateDesktop(ppDesktop);
 		break;
+	case vdt_new_first:
+	case vdt_new_left:
+	case vdt_new_right:
 	case vdt_previous:
+	case vdt_forward:
 		hr = E_NOTIMPL;
 		break;
 	default:
-		WINRT_ASSERT(target <= 9);
+		WINRT_ASSERT(target <= vdt_desktop_max);
 		hr = virtualDesktopCache_->GetAt(target, ppDesktop);
 		break;
 	}
