@@ -9,6 +9,7 @@
 			<ResourceDictionary.MergedDictionaries>
 				<XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
 				<ResourceDictionary Source="/UI/Controls/SettingsCard.xaml" />
+				<ResourceDictionary Source="/UI/Controls/SettingsExpander.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
 			<!-- Converters -->

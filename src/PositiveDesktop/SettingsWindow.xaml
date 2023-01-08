@@ -47,7 +47,7 @@
 				<NavigationViewItem x:Uid="SettingsWindow_Notification"
 									helpers:NavigationHelper.PageType="ui:SettingsPage_Notification">
 					<NavigationViewItem.Icon>
-						<ImageIcon Source="/Assets/ErrorLog.png" />
+						<ImageIcon Source="/Assets/Notification.png" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 				<NavigationViewItem x:Uid="SettingsWindow_ErrorLog"
@@ -74,33 +74,32 @@
 				<StackPanel Grid.Row="1"
 							Margin="24,4,24,4"
 							Spacing="4">
+					<ctrl:SettingsExpander Header="Header">
+						<ctrl:SettingsExpander.CardContent>
+							<Button Content="button" />
+						</ctrl:SettingsExpander.CardContent>
+						<ToggleButton Content="ToggleButton" />
+					</ctrl:SettingsExpander>
 					<ctrl:SettingsCard Header="Button"
 									   Description="Description, description, description, description and description!"
 									   IsClickEnabled="True">
 						<ctrl:SettingsCard.ActionIcon>
 							<FontIcon FontFamily="Segoe MDL2 Assets"
 									  FontSize="12"
-									  Glyph="&#xE974;" />
+									  Glyph="&#xE974;"
+									  IsTextScaleFactorEnabled="False"  />
 						</ctrl:SettingsCard.ActionIcon>
 						<Button Content="Content!!"
 								MinWidth="{StaticResource SettingsCardContentMinWidth}" />
-					</ctrl:SettingsCard>
-					<ctrl:SettingsCard Header="NumberBox"
-									   Description="Description, description, description, description and description!">
-						<NumberBox MinWidth="{StaticResource SettingsCardContentMinWidth}" />
 					</ctrl:SettingsCard>
 					<ctrl:SettingsCard Header="TextBox"
 									   Description="Description, description, description, description and description!">
 						<ctrl:SettingsCard.HeaderIcon>
 							<FontIcon FontFamily="Segoe MDL2 Assets"
-									  Glyph="&#xE97E;" />
+									  Glyph="&#xE97E;"
+									  IsTextScaleFactorEnabled="False" />
 						</ctrl:SettingsCard.HeaderIcon>
 						<TextBox MinWidth="{StaticResource SettingsCardContentMinWidth}" />
-					</ctrl:SettingsCard>
-					<ctrl:SettingsCard Header="ToggleButton"
-									   Description="Description, description, description, description and description!">
-						<ToggleButton Content="ToggleButton!!"
-									  MinWidth="{StaticResource SettingsCardContentMinWidth}" />
 					</ctrl:SettingsCard>
 				</StackPanel>
 			</Grid>

@@ -135,4 +135,13 @@
   <data name="SettingsWindow_Notification.Content" xml:space="preserve">
     <value>通知</value>
   </data>
+  <data name="Settings_Notification_Duration.Header" xml:space="preserve">
+    <value>表示時間</value>
+  </data>
+  <data name="Settings_Notification_HorizontalPosition.Header" xml:space="preserve">
+    <value>水平方向の表示位置</value>
+  </data>
+  <data name="Settings_Notification_VerticalPosition.Header" xml:space="preserve">
+    <value>垂直方向の表示位置</value>
+  </data>
 </root>

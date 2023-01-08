@@ -7,9 +7,33 @@
 #include "ViewModels/Settings/ErrorLogsViewModel.g.cpp"
 #endif
 
+namespace app {
+	inline winrt::hstring to_glyph(app::logger::loglvl_t level) noexcept {
+		using namespace app::logger;
+
+		switch (level) {
+		case llv_trace:
+			return L"";
+		case llv_debug:
+			return L"";
+		case llv_info:
+			return L"\uE946";
+		case llv_warn:
+			return L"\uE7BA";
+		case llv_error:
+			return L"\uEA39";
+		case llv_fatal:
+			return L"\uEB90";
+		case llv_unknown:
+		default:
+			return L"\uE9CE";
+		}
+	}
+}
+
 namespace winrt {
 
-	inline hstring to_hstring(app::logger::loglvl_t level) {
+	inline hstring to_hstring(app::logger::loglvl_t level) noexcept {
 		using namespace app::logger;
 
 		switch (level) {
@@ -31,7 +55,7 @@ namespace winrt {
 		}
 	}
 
-	inline hstring to_hstring(app::logger::logtag_t tag) {
+	inline hstring to_hstring(app::logger::logtag_t tag) noexcept {
 		using namespace app::logger;
 
 		switch (tag) {
@@ -53,7 +77,7 @@ namespace winrt {
 		}
 	}
 
-	inline hstring to_hstring(app::logger::logop_t op) {
+	inline hstring to_hstring(app::logger::logop_t op) noexcept {
 		using namespace app::logger;
 
 		switch (op) {
@@ -79,14 +103,17 @@ using namespace app::logger;
 using namespace winrt::PositiveDesktop::ViewModels::Settings::implementation;
 
 ErrorLogViewModel::ErrorLogViewModel(log_t const& log) noexcept
-	: level_(winrt::to_hstring(log.level))
+	: levelIcon_(app::to_glyph(log.level))
+	, level_(winrt::to_hstring(log.level))
 	, tag_(winrt::to_hstring(log.tag))
 	, operation_(winrt::to_hstring(log.op))
 	, line_(log.line)
 	, datetime_(winrt::clock::from_sys(log.datetime))
 	, filename_(winrt::to_hstring(log.filename))
 	, funcname_(winrt::to_hstring(log.funcname))
-	, message_(winrt::to_hstring(log.message)) {
+	, message_(winrt::to_hstring(log.message))
+	, Header_(winrt::to_hstring(log.message.empty() ? std::format("{} in line {}", log.funcname, log.line) : log.message))
+	, Description_(winrt::to_hstring(!log.message.empty() ? std::format("{} in line {}", log.funcname, log.line) : "")) {
 }
 
 ErrorLogsViewModel::ErrorLogsViewModel() noexcept

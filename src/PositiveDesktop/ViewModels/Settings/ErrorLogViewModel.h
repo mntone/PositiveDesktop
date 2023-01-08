@@ -8,6 +8,10 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 		ErrorLogViewModel(app::logger::log_t const& log) noexcept;
 
 	public:  // - Properties
+		inline winrt::hstring LevelIcon() const noexcept {
+			return level_;
+		}
+
 		inline winrt::hstring Level() const noexcept {
 			return level_;
 		}
@@ -40,7 +44,16 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 			return message_;
 		}
 
+		inline winrt::hstring Header() const noexcept {
+			return Header_;
+		}
+
+		inline winrt::hstring Description() const noexcept {
+			return Description_;
+		}
+
 	private:
+		winrt::hstring levelIcon_;
 		winrt::hstring level_;
 		winrt::hstring tag_;
 		winrt::hstring operation_;
@@ -49,6 +62,9 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 		winrt::hstring filename_;
 		winrt::hstring funcname_;
 		winrt::hstring message_;
+
+		winrt::hstring Header_;
+		winrt::hstring Description_;
 	};
 
 	struct ErrorLogsViewModel: ErrorLogsViewModelT<ErrorLogsViewModel>, reps::basic_observer_t<std::vector<app::logger::log_t>> {

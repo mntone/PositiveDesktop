@@ -17,6 +17,7 @@ namespace PositiveDesktop
 			[interface_name("IErrorLogViewModel", BB920A43-F5D2-443B-94D1-DCA41CE0F7A7)]
 			runtimeclass ErrorLogViewModel
 			{
+				String LevelIcon { get; };
 				String Level { get; };
 				String Tag { get; };
 				String Operation { get; };
@@ -25,6 +26,9 @@ namespace PositiveDesktop
 				String FileName { get; };
 				String FuncName { get; };
 				String Message { get; };
+
+				String Header { get; };
+				String Description { get; };
 			}
 
 			[interface_name("IErrorLogsViewModel", 57C70EF5-FA73-4597-B4D5-F4FAFC05E920)]
@@ -40,6 +44,7 @@ namespace PositiveDesktop
 	{
 
 		[interface_name("ISettingsPage_Notification", E7D8D230-EED2-4909-919A-2969419B62DD)]
+		[webhosthidden]
 		runtimeclass SettingsPage_Notification : Microsoft.UI.Xaml.Controls.Page
 		{
 			SettingsPage_Notification();
@@ -48,7 +53,9 @@ namespace PositiveDesktop
 		namespace Controls
 		{
 
+			[constructor_name("ISettingsCardFactory", CEA37F79-B848-562C-BC32-4046419F28A7)]
 			[interface_name("ISettingsCard", A98BF3E6-1595-4879-A198-93B5F6242233)]
+			[static_name("ISettingsCardStatics", 34C8763E-7086-5B2F-9117-4A2C78455171)]
 			[webhosthidden]
 			unsealed runtimeclass SettingsCard : Microsoft.UI.Xaml.Controls.Primitives.ButtonBase
 			{
@@ -68,6 +75,29 @@ namespace PositiveDesktop
 				static Microsoft.UI.Xaml.DependencyProperty HeaderIconProperty { get; };
 				static Microsoft.UI.Xaml.DependencyProperty HeaderProperty { get; };
 				static Microsoft.UI.Xaml.DependencyProperty IsClickEnabledProperty { get; };
+				static Microsoft.UI.Xaml.DependencyProperty OrientationProperty { get; };
+			}
+
+			[constructor_name("ISettingsExpanderFactory", D8AE545F-BEB9-48A0-AD0F-5470C827D102)]
+			[interface_name("ISettingsExpander", 4AF7A35C-93BB-4560-8813-06CD71C70CF7)]
+			[static_name("ISettingsExpanderStatics", 8C6C1111-678F-4BB1-A910-6EAE3B9E471F)]
+			[webhosthidden]
+			unsealed runtimeclass SettingsExpander : Microsoft.UI.Xaml.Controls.ContentControl
+			{
+				SettingsExpander();
+
+				Object CardContent;
+				Object Description;
+				Microsoft.UI.Xaml.Controls.IconElement HeaderIcon;
+				Object Header;
+				Boolean IsExpanded;
+				Microsoft.UI.Xaml.Controls.Orientation Orientation;
+
+				static Microsoft.UI.Xaml.DependencyProperty CardContentProperty { get; };
+				static Microsoft.UI.Xaml.DependencyProperty DescriptionProperty { get; };
+				static Microsoft.UI.Xaml.DependencyProperty HeaderIconProperty { get; };
+				static Microsoft.UI.Xaml.DependencyProperty HeaderProperty { get; };
+				static Microsoft.UI.Xaml.DependencyProperty IsExpandedProperty { get; };
 				static Microsoft.UI.Xaml.DependencyProperty OrientationProperty { get; };
 			}
 

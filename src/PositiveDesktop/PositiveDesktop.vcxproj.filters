@@ -55,6 +55,30 @@
     <Image Include="Assets\Info.scale-500.png">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\Notification.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-250.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-300.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Notification.scale-500.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -86,6 +110,7 @@
     <ClCompile Include="UI\Helpers\NavigationHelper.cpp">
       <Filter>UI\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Controls\SettingsExpander.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -143,6 +168,7 @@
     <ClInclude Include="UI\Helpers\NavigationHelper.h">
       <Filter>UI\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="UI\Controls\SettingsExpander.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -196,6 +222,9 @@
       <Filter>UI</Filter>
     </Page>
     <Page Include="UI\Controls\SettingsCard.xaml">
+      <Filter>UI\Controls</Filter>
+    </Page>
+    <Page Include="UI\Controls\SettingsExpander.xaml">
       <Filter>UI\Controls</Filter>
     </Page>
     <Page Include="UI\SettingsPage_Notification.xaml">

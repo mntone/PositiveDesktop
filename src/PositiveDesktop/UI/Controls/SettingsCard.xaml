@@ -6,10 +6,12 @@
 		<ResourceDictionary x:Key="Default">
 			<StaticResource x:Key="SettingsCardBackground"
 							ResourceKey="CardBackgroundFillColorDefaultBrush" />
-			<StaticResource x:Key="SettingsCardBackgroundPointerOver"
-							ResourceKey="ControlFillColorSecondaryBrush" />
-			<StaticResource x:Key="SettingsCardBackgroundPressed"
-							ResourceKey="ControlFillColorTertiaryBrush" />
+			<SolidColorBrush x:Key="SettingsCardBackgroundAlt"
+							 Color="#08FFFFFF" />
+			<SolidColorBrush x:Key="SettingsCardBackgroundPointerOver"
+							 Color="#12FFFFFF" />
+			<SolidColorBrush x:Key="SettingsCardBackgroundPressed"
+							 Color="#12FFFFFF" />
 			<StaticResource x:Key="SettingsCardBackgroundDisabled"
 							ResourceKey="ControlFillColorDisabledBrush" />
 
@@ -34,10 +36,12 @@
 		<ResourceDictionary x:Key="Light">
 			<StaticResource x:Key="SettingsCardBackground"
 							ResourceKey="CardBackgroundFillColorDefaultBrush" />
-			<StaticResource x:Key="SettingsCardBackgroundPointerOver"
-							ResourceKey="ControlFillColorSecondaryBrush" />
-			<StaticResource x:Key="SettingsCardBackgroundPressed"
-							ResourceKey="ControlFillColorTertiaryBrush" />
+			<SolidColorBrush x:Key="SettingsCardBackgroundAlt"
+							 Color="#80F6F6F6" />
+			<SolidColorBrush x:Key="SettingsCardBackgroundPointerOver"
+							 Color="#FFFFFF" />
+			<SolidColorBrush x:Key="SettingsCardBackgroundPressed"
+							 Color="#FFFFFF" />
 			<StaticResource x:Key="SettingsCardBackgroundDisabled"
 							ResourceKey="ControlFillColorDisabledBrush" />
 
@@ -61,6 +65,8 @@
 		</ResourceDictionary>
 		<ResourceDictionary x:Key="HighContrast">
 			<StaticResource x:Key="SettingsCardBackground"
+							ResourceKey="SystemColorButtonFaceColorBrush" />
+			<StaticResource x:Key="SettingsCardBackgroundAlt"
 							ResourceKey="SystemColorButtonFaceColorBrush" />
 			<StaticResource x:Key="SettingsCardBackgroundPointerOver"
 							ResourceKey="SystemColorHighlightTextColorBrush" />
@@ -128,14 +134,16 @@
 					Value="{ThemeResource ControlContentThemeFontSize}" />
 			<Setter Property="FontWeight"
 					Value="Normal" />
+			<Setter Property="Foreground"
+					Value="{ThemeResource SettingsCardForeground}" />
 			<Setter Property="HorizontalContentAlignment"
 					Value="Stretch" />
 			<Setter Property="MinHeight"
-					Value="{ThemeResource SettingsCardMinHeight}" />
+					Value="{StaticResource SettingsCardMinHeight}" />
 			<Setter Property="MaxWidth"
-					Value="{ThemeResource SettingsCardMaxWidth}" />
+					Value="{StaticResource SettingsCardMaxWidth}" />
 			<Setter Property="MinWidth"
-					Value="{ThemeResource SettingsCardMinWidth}" />
+					Value="{StaticResource SettingsCardMinWidth}" />
 			<Setter Property="IsTabStop"
 					Value="False" />
 			<Setter Property="Padding"
@@ -165,7 +173,7 @@
 										<VisualState.Setters>
 											<Setter Target="HeaderIconPresenter.Foreground"
 													Value="{ThemeResource SettingsCardForegroundPointerOver}" />
-											<Setter Target="HeaderPresenter.Foreground"
+											<Setter Target="Header.Foreground"
 													Value="{ThemeResource SettingsCardForegroundPointerOver}" />
 											<Setter Target="RootGrid.Background"
 													Value="{ThemeResource SettingsCardBackgroundPointerOver}" />
@@ -181,7 +189,7 @@
 													Value="{ThemeResource SettingsCardForegroundPressed}" />
 											<Setter Target="HeaderIconPresenter.Foreground"
 													Value="{ThemeResource SettingsCardForegroundPressed}" />
-											<Setter Target="HeaderPresenter.Foreground"
+											<Setter Target="Header.Foreground"
 													Value="{ThemeResource SettingsCardForegroundPressed}" />
 											<Setter Target="RootGrid.Background"
 													Value="{ThemeResource SettingsCardBackgroundPressed}" />
@@ -197,25 +205,13 @@
 													Value="{ThemeResource SettingsCardForegroundDisabled}" />
 											<Setter Target="HeaderIconPresenter.Foreground"
 													Value="{ThemeResource SettingsCardForegroundDisabled}" />
-											<Setter Target="HeaderPresenter.Foreground"
+											<Setter Target="Header.Foreground"
 													Value="{ThemeResource SettingsCardForegroundDisabled}" />
 											<Setter Target="RootGrid.(muxc:AnimatedIcon.State)"
 													Value="Normal" />
 										</VisualState.Setters>
 									</VisualState>
 								</VisualStateGroup>
-								<!--<VisualStateGroup x:Name="LayoutStates">
-									<VisualState x:Name="TextAndIconState" />
-									<VisualState x:Name="TextOnlyState">
-										<Storyboard>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="FirstColumn"
-																		   Storyboard.TargetProperty="MinWidth">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="0" />
-											</ObjectAnimationUsingKeyFrames>
-										</Storyboard>
-									</VisualState>
-								</VisualStateGroup>-->
 								<VisualStateGroup x:Name="Orientation">
 									<VisualState x:Name="Horizontal" />
 									<VisualState x:Name="Vertical">
@@ -224,6 +220,8 @@
 													Value="1" />
 											<Setter Target="Content.(Grid.Row)"
 													Value="1" />
+											<Setter Target="Content.HorizontalAlignment"
+													Value="Left" />
 										</VisualState.Setters>
 									</VisualState>
 								</VisualStateGroup>
@@ -250,13 +248,14 @@
 									 Width="{StaticResource SettingsCardHeaderIconMaxSize}">
 								<ContentPresenter x:Name="HeaderIconPresenter"
 												  Content="{TemplateBinding HeaderIcon}"
-												  HighContrastAdjustment="None" />
+												  HighContrastAdjustment="None"
+												  IsTextScaleFactorEnabled="False" />
 							</Viewbox>
 
 							<StackPanel Grid.Column="1"
 										Margin="0,0,16,0"
 										VerticalAlignment="Center">
-								<ContentPresenter x:Name="HeaderPresenter"
+								<ContentPresenter x:Name="Header"
 												  Content="{TemplateBinding Header}"
 												  TextWrapping="Wrap" />
 								<ContentPresenter x:Name="Description"
@@ -288,13 +287,24 @@
 										 StretchDirection="DownOnly"
 										 Width="{StaticResource SettingsCardActionIconMaxSize}">
 									<ContentPresenter Content="{TemplateBinding ActionIcon}"
-													  HighContrastAdjustment="None" />
+													  HighContrastAdjustment="None"
+													  IsTextScaleFactorEnabled="False" />
 								</Viewbox>
 							</ContentControl>
 						</Grid>
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
+		</Style.Setters>
+	</Style>
+
+
+	<Style x:Key="SettingsCardAltStyle"
+		   TargetType="ctrl:SettingsCard"
+		   BasedOn="{StaticResource DefaultSettingsCardStyle}">
+		<Style.Setters>
+			<Setter Property="Background"
+					Value="{ThemeResource SettingsCardBackgroundAlt}" />
 		</Style.Setters>
 	</Style>
 

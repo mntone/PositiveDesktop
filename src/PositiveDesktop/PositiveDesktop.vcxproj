@@ -143,6 +143,14 @@
     <Image Include="Assets\Info.scale-300.png" />
     <Image Include="Assets\Info.scale-400.png" />
     <Image Include="Assets\Info.scale-500.png" />
+    <Image Include="Assets\Notification.png" />
+    <Image Include="Assets\Notification.scale-125.png" />
+    <Image Include="Assets\Notification.scale-150.png" />
+    <Image Include="Assets\Notification.scale-200.png" />
+    <Image Include="Assets\Notification.scale-250.png" />
+    <Image Include="Assets\Notification.scale-300.png" />
+    <Image Include="Assets\Notification.scale-400.png" />
+    <Image Include="Assets\Notification.scale-500.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -166,6 +174,7 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="UI\Controls\SettingsCard.h" />
+    <ClInclude Include="UI\Controls\SettingsExpander.h" />
     <ClInclude Include="UI\Converters\DateTimeToStringConverter.h" />
     <ClInclude Include="UI\Helpers\NavigationHelper.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />
@@ -210,6 +219,7 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="UI\Controls\SettingsCard.cpp" />
+    <ClCompile Include="UI\Controls\SettingsExpander.cpp" />
     <ClCompile Include="UI\Converters\DateTimeToStringConverter.cpp" />
     <ClCompile Include="UI\Helpers\NavigationHelper.cpp" />
     <ClCompile Include="UI\NotificationPresenterWinUI3.cpp" />
@@ -232,6 +242,9 @@
   <ItemGroup>
     <Page Include="NotificationWindow.xaml" />
     <Page Include="UI\Controls\SettingsCard.xaml">
+      <Type>DefaultStyle</Type>
+    </Page>
+    <Page Include="UI\Controls\SettingsExpander.xaml">
       <Type>DefaultStyle</Type>
     </Page>
     <Page Include="SettingsPage_ErrorLog.xaml">

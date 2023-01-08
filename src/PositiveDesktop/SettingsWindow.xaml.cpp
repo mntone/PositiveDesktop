@@ -54,7 +54,6 @@ SettingsWindow::SettingsWindow() {
 
 	winrt::IVectorView<winrt::hstring> languages { winrt::ApplicationLanguages::Languages() };
 	frame.Language(languages.GetAt(0));
-	//frame.Content(make<SettingsPage_ErrorLog>());
 	frame.Content(make<PositiveDesktop::UI::implementation::SettingsPage_Notification>());
 
 	HWND hWnd { GetHwnd(m_inner) };
