@@ -12,8 +12,9 @@ namespace resources {
 }
 
 namespace controls {
-	constexpr std::wstring_view DescriptionPresenter { L"DescriptionPresenter" };
-	constexpr std::wstring_view HeaderIconPresenter { L"HeaderIconPresenter" };
+	constexpr std::wstring_view ActionIcon { L"ActionIcon" };
+	constexpr std::wstring_view Description { L"Description" };
+	constexpr std::wstring_view HeaderIcon { L"HeaderIcon" };
 	constexpr std::wstring_view HeaderPresenter { L"HeaderPresenter" };
 }
 
@@ -25,6 +26,9 @@ namespace states {
 
 	constexpr std::wstring_view TextAndIconState { L"TextAndIconState" };
 	constexpr std::wstring_view TextOnlyState { L"TextOnlyState" };
+
+	constexpr std::wstring_view Vertical { L"Vertical" };
+	constexpr std::wstring_view Horizontal { L"Horizontal" };
 }
 
 namespace winrt {
@@ -38,29 +42,30 @@ namespace winrt {
 using namespace winrt::PositiveDesktop::UI::Controls::implementation;
 
 SettingsCard::SettingsCard() noexcept {
-	DefaultStyleKey(winrt::box_value(resources::PositiveDesktop_UI_Controls_SettingsCard));
+	DefaultStyleKey(box_value(resources::PositiveDesktop_UI_Controls_SettingsCard));
 }
 
 void SettingsCard::OnApplyTemplate() {
+	OnOrientationChanged(Orientation());
 	OnDescriptionChanged(Description());
 	OnHeaderChanged(Header());
 	OnHeaderIconChanged(HeaderIcon());
 	OnIsClickEnabledChanged();
-	winrt::VisualStateManager::GoToState(*this, IsEnabled() ? states::NormalState : states::DisabledState, true);
-	isEnabledChangedRevoker_ = IsEnabledChanged(winrt::auto_revoke, { this, &SettingsCard::OnIsEnabledChanged });
+	VisualStateManager::GoToState(*this, IsEnabled() ? states::NormalState : states::DisabledState, true);
+	isEnabledChangedRevoker_ = IsEnabledChanged(auto_revoke, { this, &SettingsCard::OnIsEnabledChanged });
 }
 
-void SettingsCard::OnIsEnabledChanged(winrt::IInspectable const& sender, winrt::DependencyPropertyChangedEventArgs const& e) {
-	winrt::VisualStateManager::GoToState(*this, IsEnabled() ? states::NormalState : states::DisabledState, true);
+void SettingsCard::OnIsEnabledChanged(IInspectable const& sender, DependencyPropertyChangedEventArgs const& e) {
+	VisualStateManager::GoToState(*this, IsEnabled() ? states::NormalState : states::DisabledState, true);
 }
 
 void SettingsCard::RegisterButtonEvents() {
 	UnregisterButtonEvents();
 
-	pointerEnteredRevoker_ = PointerEntered(winrt::auto_revoke, { this, &SettingsCard::OnControlPointerEntered });
-	pointerExitedRevoker_ = PointerExited(winrt::auto_revoke, { this, &SettingsCard::OnControlPointerExited });
-	previewKeyDownRevoker_ = PreviewKeyDown(winrt::auto_revoke, { this, &SettingsCard::OnControlPreviewKeyDown });
-	previewKeyUpRevoker_ = PreviewKeyUp(winrt::auto_revoke, { this, &SettingsCard::OnControlPreviewKeyUp });
+	pointerEnteredRevoker_ = PointerEntered(auto_revoke, { this, &SettingsCard::OnControlPointerEntered });
+	pointerExitedRevoker_ = PointerExited(auto_revoke, { this, &SettingsCard::OnControlPointerExited });
+	previewKeyDownRevoker_ = PreviewKeyDown(auto_revoke, { this, &SettingsCard::OnControlPreviewKeyDown });
+	previewKeyUpRevoker_ = PreviewKeyUp(auto_revoke, { this, &SettingsCard::OnControlPreviewKeyUp });
 }
 
 void SettingsCard::UnregisterButtonEvents() noexcept {
@@ -70,94 +75,121 @@ void SettingsCard::UnregisterButtonEvents() noexcept {
 	pointerEnteredRevoker_.revoke();
 }
 
-void SettingsCard::OnControlPointerEntered(winrt::IInspectable const& sender, winrt::PointerRoutedEventArgs const& args) {
-	winrt::VisualStateManager::GoToState(*this, states::PointerOverState, true);
+void SettingsCard::OnControlPointerEntered(IInspectable const& sender, PointerRoutedEventArgs const& args) {
+	VisualStateManager::GoToState(*this, states::PointerOverState, true);
 }
 
-void SettingsCard::OnControlPointerExited(winrt::IInspectable const& sender, winrt::PointerRoutedEventArgs const& args) {
-	winrt::VisualStateManager::GoToState(*this, states::NormalState, true);
+void SettingsCard::OnControlPointerExited(IInspectable const& sender, PointerRoutedEventArgs const& args) {
+	VisualStateManager::GoToState(*this, states::NormalState, true);
 }
 
-void SettingsCard::OnControlPreviewKeyDown(winrt::IInspectable const& sender, winrt::KeyRoutedEventArgs const& args) const {
+void SettingsCard::OnControlPreviewKeyDown(IInspectable const& sender, KeyRoutedEventArgs const& args) const {
 	switch (args.Key()) {
-	case winrt::VirtualKey::Enter:
-	case winrt::VirtualKey::Space:
-	case winrt::VirtualKey::GamepadA:
-		winrt::VisualStateManager::GoToState(*this, states::PressedState, true);
+	case VirtualKey::Enter:
+	case VirtualKey::Space:
+	case VirtualKey::GamepadA:
+		VisualStateManager::GoToState(*this, states::PressedState, true);
 		break;
 	}
 }
 
-void SettingsCard::OnControlPreviewKeyUp(winrt::IInspectable const& sender, winrt::KeyRoutedEventArgs const& args) const {
+void SettingsCard::OnControlPreviewKeyUp(IInspectable const& sender, KeyRoutedEventArgs const& args) const {
 	switch (args.Key()) {
-	case winrt::VirtualKey::Enter:
-	case winrt::VirtualKey::Space:
-	case winrt::VirtualKey::GamepadA:
-		winrt::VisualStateManager::GoToState(*this, states::NormalState, true);
+	case VirtualKey::Enter:
+	case VirtualKey::Space:
+	case VirtualKey::GamepadA:
+		VisualStateManager::GoToState(*this, states::NormalState, true);
 		break;
 	}
 }
 
-void SettingsCard::OnPointerPressed(winrt::Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args) const {
+void SettingsCard::OnPointerPressed(Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args) const {
 	if (IsClickEnabled()) {
 		__super::OnPointerPressed(args);
-		winrt::VisualStateManager::GoToState(*this, states::PressedState, true);
+		VisualStateManager::GoToState(*this, states::PressedState, true);
 	}
 }
 
-void SettingsCard::OnPointerReleased(winrt::Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args) const {
+void SettingsCard::OnPointerReleased(Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args) const {
 	if (IsClickEnabled()) {
 		__super::OnPointerReleased(args);
-		winrt::VisualStateManager::GoToState(*this, states::NormalState, true);
+		VisualStateManager::GoToState(*this, states::NormalState, true);
 	}
 }
 
+void SettingsCard::OnButtonIconChanged(bool isClickEnabled) {
+	FrameworkElement element { GetTemplateChild(controls::ActionIcon).try_as<FrameworkElement>() };
+	if (element) {
+		element.Visibility(isClickEnabled ? Visibility::Visible : Visibility::Collapsed);
+	}
+}
 
-void SettingsCard::OnDescriptionChanged(winrt::IInspectable const& newValue) {
-	winrt::FrameworkElement element { GetTemplateChild(controls::DescriptionPresenter).try_as<winrt::FrameworkElement>() };
+void SettingsCard::OnDescriptionChanged(IInspectable const& newValue) {
+	FrameworkElement element { GetTemplateChild(controls::Description).try_as<FrameworkElement>() };
+	if (element) {
+		if (newValue == nullptr) {
+			element.Visibility(Visibility::Collapsed);
+		} else {
+			std::optional<hstring> newString { newValue.try_as<hstring>() };
+			element.Visibility(newString.has_value() && newString.value().empty() ? Visibility::Collapsed : Visibility::Visible);
+		}
+	}
+}
+
+void SettingsCard::OnHeaderIconChanged(IconElement const& newValue) {
+	//VisualStateManager::GoToState(*this, newValue != nullptr ? states::TextAndIconState : states::TextOnlyState, true);
+	FrameworkElement element { GetTemplateChild(controls::HeaderIcon).try_as<FrameworkElement>() };
 	if (element) {
 		element.Visibility(newValue != nullptr ? Visibility::Visible : Visibility::Collapsed);
 	}
 }
 
-void SettingsCard::OnHeaderIconChanged(winrt::IconElement const& newValue) {
-	//winrt::VisualStateManager::GoToState(*this, newValue != nullptr ? states::TextAndIconState : states::TextOnlyState, true);
-	winrt::FrameworkElement element { GetTemplateChild(controls::HeaderIconPresenter).try_as<winrt::FrameworkElement>() };
+void SettingsCard::OnHeaderChanged(IInspectable const& newValue) {
+	FrameworkElement element { GetTemplateChild(controls::HeaderPresenter).try_as<FrameworkElement>() };
 	if (element) {
-		element.Visibility(newValue != nullptr ? Visibility::Visible : Visibility::Collapsed);
-	}
-}
-
-void SettingsCard::OnHeaderChanged(winrt::IInspectable const& newValue) {
-	winrt::FrameworkElement element { GetTemplateChild(controls::HeaderPresenter).try_as<winrt::FrameworkElement>() };
-	if (element) {
-		element.Visibility(newValue != nullptr ? Visibility::Visible : Visibility::Collapsed);
+		if (newValue == nullptr) {
+			element.Visibility(Visibility::Collapsed);
+		} else {
+			std::optional<hstring> newString { newValue.try_as<hstring>() };
+			element.Visibility(newString.has_value() && newString.value().empty() ? Visibility::Collapsed : Visibility::Visible);
+		}
 	}
 }
 
 void SettingsCard::OnIsClickEnabledChanged() {
 	if (IsClickEnabled()) {
+		OnButtonIconChanged(true);
 		RegisterButtonEvents();
 	} else {
+		OnButtonIconChanged(false);
 		UnregisterButtonEvents();
 	}
 }
 
-void SettingsCard::OnDescriptionChangedStatic(winrt::DependencyObject const& sender, winrt::DependencyPropertyChangedEventArgs const& args) {
-	winrt::get_self<SettingsCard>(sender.as<winrt::PositiveDesktop::UI::Controls::SettingsCard>())->OnDescriptionChanged(args.NewValue());
+void SettingsCard::OnOrientationChanged(winrt::Orientation newValue) {
+	VisualStateManager::GoToState(*this, newValue == Orientation::Vertical ? states::Vertical : states::Horizontal, true);
 }
 
-void SettingsCard::OnHeaderIconChangedStatic(winrt::DependencyObject const& sender, winrt::DependencyPropertyChangedEventArgs const& args) {
-	winrt::get_self<SettingsCard>(sender.as<winrt::PositiveDesktop::UI::Controls::SettingsCard>())->OnHeaderIconChanged(
-		args.NewValue().as<winrt::Microsoft::UI::Xaml::Controls::IconElement>());
+void SettingsCard::OnDescriptionChangedStatic(DependencyObject const& sender, DependencyPropertyChangedEventArgs const& args) {
+	get_self<SettingsCard>(sender.as<PositiveDesktop::UI::Controls::SettingsCard>())->OnDescriptionChanged(args.NewValue());
 }
 
-void SettingsCard::OnHeaderChangedStatic(winrt::DependencyObject const& sender, winrt::DependencyPropertyChangedEventArgs const& args) {
-	winrt::get_self<SettingsCard>(sender.as<winrt::PositiveDesktop::UI::Controls::SettingsCard>())->OnHeaderChanged(args.NewValue());
+void SettingsCard::OnHeaderIconChangedStatic(DependencyObject const& sender, DependencyPropertyChangedEventArgs const& args) {
+	get_self<SettingsCard>(sender.as<PositiveDesktop::UI::Controls::SettingsCard>())->OnHeaderIconChanged(
+		args.NewValue().as<Microsoft::UI::Xaml::Controls::IconElement>());
 }
 
-void SettingsCard::OnIsClickEnabledChangedStatic(winrt::DependencyObject const& sender, winrt::DependencyPropertyChangedEventArgs const& args) {
-	winrt::get_self<SettingsCard>(sender.as<winrt::PositiveDesktop::UI::Controls::SettingsCard>())->OnIsClickEnabledChanged();
+void SettingsCard::OnHeaderChangedStatic(DependencyObject const& sender, DependencyPropertyChangedEventArgs const& args) {
+	get_self<SettingsCard>(sender.as<PositiveDesktop::UI::Controls::SettingsCard>())->OnHeaderChanged(args.NewValue());
+}
+
+void SettingsCard::OnIsClickEnabledChangedStatic(DependencyObject const& sender, DependencyPropertyChangedEventArgs const& args) {
+	get_self<SettingsCard>(sender.as<PositiveDesktop::UI::Controls::SettingsCard>())->OnIsClickEnabledChanged();
+}
+
+void SettingsCard::OnOrientationChangedStatic(DependencyObject const& sender, DependencyPropertyChangedEventArgs const& args) {
+	get_self<SettingsCard>(sender.as<PositiveDesktop::UI::Controls::SettingsCard>())->OnOrientationChanged(
+		winrt::unbox_value<winrt::Orientation>(args.NewValue()));
 }
 
 winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::ActionIconProperty_ {
@@ -181,7 +213,7 @@ winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::DescriptionProperty
 		L"Description",
 		winrt::xaml_typename<winrt::IInspectable>(),
 		winrt::xaml_typename<winrt::PositiveDesktop::UI::Controls::SettingsCard>(),
-		winrt::PropertyMetadata { nullptr, winrt::PropertyChangedCallback(&SettingsCard::OnDescriptionChangedStatic) })
+		winrt::PropertyMetadata(winrt::IInspectable { nullptr }, winrt::PropertyChangedCallback(&SettingsCard::OnDescriptionChangedStatic)))
 };
 
 winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::HeaderIconProperty_ {
@@ -189,7 +221,7 @@ winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::HeaderIconProperty_
 		L"HeaderIcon",
 		winrt::xaml_typename<winrt::Microsoft::UI::Xaml::Controls::IconElement>(),
 		winrt::xaml_typename<winrt::PositiveDesktop::UI::Controls::SettingsCard>(),
-		winrt::PropertyMetadata { nullptr, winrt::PropertyChangedCallback(&SettingsCard::OnHeaderIconChangedStatic) })
+		winrt::PropertyMetadata(winrt::Microsoft::UI::Xaml::Controls::IconElement { nullptr }, winrt::PropertyChangedCallback(&SettingsCard::OnHeaderIconChangedStatic)))
 };
 
 winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::HeaderProperty_ {
@@ -197,7 +229,7 @@ winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::HeaderProperty_ {
 		L"Header",
 		winrt::xaml_typename<winrt::IInspectable>(),
 		winrt::xaml_typename<winrt::PositiveDesktop::UI::Controls::SettingsCard>(),
-		winrt::PropertyMetadata { nullptr, winrt::PropertyChangedCallback(&SettingsCard::OnHeaderChangedStatic) })
+		winrt::PropertyMetadata(winrt::IInspectable { nullptr }, winrt::PropertyChangedCallback(&SettingsCard::OnHeaderChangedStatic)))
 };
 
 winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::IsClickEnabledProperty_ {
@@ -205,6 +237,13 @@ winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::IsClickEnabledPrope
 		L"IsClickEnabled",
 		winrt::xaml_typename<bool>(),
 		winrt::xaml_typename<winrt::PositiveDesktop::UI::Controls::SettingsCard>(),
-		winrt::PropertyMetadata { winrt::box_value(false), winrt::PropertyChangedCallback(&SettingsCard::OnIsClickEnabledChangedStatic) })
+		winrt::PropertyMetadata(winrt::box_value(false), winrt::PropertyChangedCallback(&SettingsCard::OnIsClickEnabledChangedStatic)))
 };
 
+winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::OrientationProperty_ {
+	winrt::DependencyProperty::Register(
+		L"Orientation",
+		winrt::xaml_typename<winrt::Microsoft::UI::Xaml::Controls::Orientation>(),
+		winrt::xaml_typename<winrt::PositiveDesktop::UI::Controls::SettingsCard>(),
+		winrt::PropertyMetadata { winrt::box_value(winrt::Microsoft::UI::Xaml::Controls::Orientation::Horizontal), winrt::PropertyChangedCallback(&SettingsCard::OnOrientationChangedStatic) })
+};

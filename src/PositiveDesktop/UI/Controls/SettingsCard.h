@@ -15,23 +15,27 @@ namespace winrt::PositiveDesktop::UI::Controls::implementation {
 		void RegisterButtonEvents();
 		void UnregisterButtonEvents() noexcept;
 
-		void OnIsEnabledChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::DependencyPropertyChangedEventArgs const& e);
 		void OnControlPointerEntered(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args);
 		void OnControlPointerExited(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args);
 		void OnControlPreviewKeyDown(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args) const;
 		void OnControlPreviewKeyUp(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args) const;
+		void OnIsEnabledChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::DependencyPropertyChangedEventArgs const& e);
+
+		inline void OnButtonIconChanged(bool isClickEnabled);
 
 	public:
 		inline void OnDescriptionChanged(winrt::Windows::Foundation::IInspectable const& newValue);
 		inline void OnHeaderIconChanged(winrt::Microsoft::UI::Xaml::Controls::IconElement const& newValue);
 		inline void OnHeaderChanged(winrt::Windows::Foundation::IInspectable const& newValue);
 		inline void OnIsClickEnabledChanged();
+		inline void OnOrientationChanged(winrt::Microsoft::UI::Xaml::Controls::Orientation newValue);
 
 	private:
 		static void OnDescriptionChangedStatic(winrt::Microsoft::UI::Xaml::DependencyObject const& sender, winrt::Microsoft::UI::Xaml::DependencyPropertyChangedEventArgs const& args);
 		static void OnHeaderIconChangedStatic(winrt::Microsoft::UI::Xaml::DependencyObject const& sender, winrt::Microsoft::UI::Xaml::DependencyPropertyChangedEventArgs const& args);
 		static void OnHeaderChangedStatic(winrt::Microsoft::UI::Xaml::DependencyObject const& sender, winrt::Microsoft::UI::Xaml::DependencyPropertyChangedEventArgs const& args);
 		static void OnIsClickEnabledChangedStatic(winrt::Microsoft::UI::Xaml::DependencyObject const& sender, winrt::Microsoft::UI::Xaml::DependencyPropertyChangedEventArgs const& args);
+		static void OnOrientationChangedStatic(winrt::Microsoft::UI::Xaml::DependencyObject const& sender, winrt::Microsoft::UI::Xaml::DependencyPropertyChangedEventArgs const& args);
 
 	public:
 		inline winrt::Microsoft::UI::Xaml::Controls::IconElement ActionIcon() const { return GetValue(ActionIconProperty_).as<winrt::Microsoft::UI::Xaml::Controls::IconElement>(); }
@@ -52,12 +56,16 @@ namespace winrt::PositiveDesktop::UI::Controls::implementation {
 		inline bool IsClickEnabled() const { return winrt::unbox_value<bool>(GetValue(IsClickEnabledProperty_)); }
 		inline void IsClickEnabled(bool value) const { SetValue(IsClickEnabledProperty_, winrt::box_value(value)); }
 
+		inline winrt::Microsoft::UI::Xaml::Controls::Orientation Orientation() const { return winrt::unbox_value<winrt::Microsoft::UI::Xaml::Controls::Orientation>(GetValue(OrientationProperty_)); }
+		inline void Orientation(winrt::Microsoft::UI::Xaml::Controls::Orientation value) const { SetValue(OrientationProperty_, winrt::box_value(value)); }
+
 		static winrt::Microsoft::UI::Xaml::DependencyProperty ActionIconProperty() noexcept { return ActionIconProperty_; }
 		static winrt::Microsoft::UI::Xaml::DependencyProperty ActionIconTooltipProperty() noexcept { return ActionIconTooltipProperty_; }
 		static winrt::Microsoft::UI::Xaml::DependencyProperty DescriptionProperty() noexcept { return DescriptionProperty_; }
 		static winrt::Microsoft::UI::Xaml::DependencyProperty HeaderIconProperty() noexcept { return HeaderIconProperty_; }
 		static winrt::Microsoft::UI::Xaml::DependencyProperty HeaderProperty() noexcept { return HeaderProperty_; }
 		static winrt::Microsoft::UI::Xaml::DependencyProperty IsClickEnabledProperty() noexcept { return IsClickEnabledProperty_; }
+		static winrt::Microsoft::UI::Xaml::DependencyProperty OrientationProperty() noexcept { return OrientationProperty_; }
 
 	private:
 		winrt::Microsoft::UI::Xaml::Controls::Primitives::ButtonBase::IsEnabledChanged_revoker isEnabledChangedRevoker_ {};
@@ -72,6 +80,7 @@ namespace winrt::PositiveDesktop::UI::Controls::implementation {
 		static winrt::Microsoft::UI::Xaml::DependencyProperty HeaderIconProperty_;
 		static winrt::Microsoft::UI::Xaml::DependencyProperty HeaderProperty_;
 		static winrt::Microsoft::UI::Xaml::DependencyProperty IsClickEnabledProperty_;
+		static winrt::Microsoft::UI::Xaml::DependencyProperty OrientationProperty_;
 	};
 
 }

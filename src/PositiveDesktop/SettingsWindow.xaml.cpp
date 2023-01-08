@@ -8,6 +8,7 @@
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Globalization.h>
 
+#include "UI/Helpers/NavigationHelper.h"
 #include "UI/UIHelper.h"
 #include "UI/WindowHelper.h"
 #include "SettingsPage_ErrorLog.xaml.h"
@@ -32,8 +33,13 @@ namespace winrt {
 	using namespace Windows::Foundation::Collections;
 	using namespace Windows::Globalization;
 	using namespace Windows::Graphics;
+	using namespace Windows::UI::Xaml::Interop;
+
+	using namespace PositiveDesktop::UI::Helpers;
 
 }
+
+#include "UI/SettingsPage_Notification.xaml.h"
 
 using namespace winrt::PositiveDesktop::implementation;
 
@@ -48,7 +54,8 @@ SettingsWindow::SettingsWindow() {
 
 	winrt::IVectorView<winrt::hstring> languages { winrt::ApplicationLanguages::Languages() };
 	frame.Language(languages.GetAt(0));
-	frame.Content(make<SettingsPage_ErrorLog>());
+	//frame.Content(make<SettingsPage_ErrorLog>());
+	frame.Content(make<PositiveDesktop::UI::implementation::SettingsPage_Notification>());
 
 	HWND hWnd { GetHwnd(m_inner) };
 	SetCenter(hWnd, winrt::SizeInt32 { 1200, 900 });
@@ -92,8 +99,10 @@ void SettingsWindow::NavigationViewDisplayModeChanged(winrt::NavigationView cons
 	winrt::Thickness margin { titlebar.Margin() };
 	if (winrt::NavigationViewDisplayMode::Minimal == sender.DisplayMode()) {
 		margin.Left = 2.0 * sender.CompactPaneLength();
+		navigationView().IsPaneToggleButtonVisible(true);
 	} else {
 		margin.Left = sender.CompactPaneLength();
+		navigationView().IsPaneToggleButtonVisible(false);
 	}
 	titlebar.Margin(std::move(margin));
 
@@ -122,4 +131,17 @@ void SettingsWindow::UpdateTitlebarMargin(winrt::NavigationView const& navigatio
 	} else {
 		caption.Translation({ largeLeftIndent, 0, 0 });
 	}
+}
+
+void SettingsWindow::NavigationViewSelectionChanged(winrt::NavigationView const& sender, winrt::NavigationViewSelectionChangedEventArgs const& args) {
+	LOG_BEGIN(app::logger::ltg_presenter);
+
+	winrt::NavigationViewItem item { args.SelectedItem().as<winrt::NavigationViewItem>() };
+	if (item) {
+		winrt::TypeName pageTypeName { winrt::NavigationHelper::GetPageType(item) };
+		rootFrame().Navigate(pageTypeName);
+		LOG_DEBUG(std::format("Navigated to {}.", winrt::to_string(pageTypeName.Name)));
+	}
+
+	LOG_END_NOLABEL();
 }

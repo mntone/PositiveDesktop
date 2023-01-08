@@ -167,10 +167,14 @@
     </ClInclude>
     <ClInclude Include="UI\Controls\SettingsCard.h" />
     <ClInclude Include="UI\Converters\DateTimeToStringConverter.h" />
+    <ClInclude Include="UI\Helpers\NavigationHelper.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />
     <ClInclude Include="UI\NotificationPresenterWinUI3.h" />
     <ClInclude Include="UI\register_value_t.h" />
     <ClInclude Include="UI\ResourceManager.h" />
+    <ClInclude Include="UI\SettingsPage_Notification.xaml.h">
+      <DependentUpon>UI\SettingsPage_Notification.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="UI\UIHelper.h" />
     <ClInclude Include="UI\WindowBase.h" />
     <ClInclude Include="UI\WindowHelper.h" />
@@ -207,7 +211,12 @@
     </ClCompile>
     <ClCompile Include="UI\Controls\SettingsCard.cpp" />
     <ClCompile Include="UI\Converters\DateTimeToStringConverter.cpp" />
+    <ClCompile Include="UI\Helpers\NavigationHelper.cpp" />
     <ClCompile Include="UI\NotificationPresenterWinUI3.cpp" />
+    <ClCompile Include="UI\SettingsPage_Notification.xaml.cpp">
+      <DependentUpon>UI\SettingsPage_Notification.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </ClCompile>
     <ClCompile Include="UI\WindowBase.cpp" />
     <ClCompile Include="ViewModels\NotificationWindowViewModel.cpp" />
     <ClCompile Include="ViewModels\Settings\ErrorLogViewModel.cpp" />
@@ -229,6 +238,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SettingsWindow.xaml" />
+    <Page Include="UI\SettingsPage_Notification.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\CodeResources.lang-en-US.resw" />

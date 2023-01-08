@@ -1,6 +1,7 @@
 #pragma once
 #include "UI/Controls/SettingsCard.h"
 #include "UI/Converters/DateTimeToStringConverter.h"
+#include "UI/Helpers/NavigationHelper.h"
 
 #include "App.xaml.g.h"
 

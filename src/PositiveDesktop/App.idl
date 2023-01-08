@@ -39,6 +39,12 @@ namespace PositiveDesktop
 	namespace UI
 	{
 
+		[interface_name("ISettingsPage_Notification", E7D8D230-EED2-4909-919A-2969419B62DD)]
+		runtimeclass SettingsPage_Notification : Microsoft.UI.Xaml.Controls.Page
+		{
+			SettingsPage_Notification();
+		}
+
 		namespace Controls
 		{
 
@@ -54,6 +60,7 @@ namespace PositiveDesktop
 				Microsoft.UI.Xaml.Controls.IconElement HeaderIcon;
 				Object Header;
 				Boolean IsClickEnabled;
+				Microsoft.UI.Xaml.Controls.Orientation Orientation;
 
 				static Microsoft.UI.Xaml.DependencyProperty ActionIconProperty { get; };
 				static Microsoft.UI.Xaml.DependencyProperty ActionIconTooltipProperty { get; };
@@ -61,6 +68,7 @@ namespace PositiveDesktop
 				static Microsoft.UI.Xaml.DependencyProperty HeaderIconProperty { get; };
 				static Microsoft.UI.Xaml.DependencyProperty HeaderProperty { get; };
 				static Microsoft.UI.Xaml.DependencyProperty IsClickEnabledProperty { get; };
+				static Microsoft.UI.Xaml.DependencyProperty OrientationProperty { get; };
 			}
 
 		}
@@ -77,11 +85,27 @@ namespace PositiveDesktop
 
 		}
 
+		namespace Helpers
+		{
+
+			[interface_name("INavigationHelper", 53398815-9FCC-4381-9F4B-A90E05DB272A)]
+			runtimeclass NavigationHelper
+			{
+				static Windows.UI.Xaml.Interop.TypeName GetPageType(Microsoft.UI.Xaml.Controls.NavigationViewItem item);
+				static void SetPageType(Microsoft.UI.Xaml.Controls.NavigationViewItem item, Windows.UI.Xaml.Interop.TypeName value);
+
+				static Microsoft.UI.Xaml.DependencyProperty PageTypeProperty { get; };
+			}
+
+		}
+
 	}
 
 	[interface_name("ISettingsPage_ErrorLog", B9074017-349B-418F-9396-D484A3A8851D)]
 	runtimeclass SettingsPage_ErrorLog : Microsoft.UI.Xaml.Controls.Page
 	{
+		SettingsPage_ErrorLog();
+
 		PositiveDesktop.ViewModels.Settings.ErrorLogsViewModel ViewModel { get; };
 	}
 

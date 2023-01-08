@@ -4,73 +4,65 @@
 	  xmlns:vms="using:PositiveDesktop.ViewModels.Settings"
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	  mc:Ignorable="d">
+	  mc:Ignorable="d"
+	  xmlns:ctrl="using:PositiveDesktop.UI.Controls">
 	<Page.Resources>
 		<DataTemplate x:Key="ErrorLogTemplate"
 					  x:DataType="vms:ErrorLogViewModel">
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition />
-					<RowDefinition />
-					<RowDefinition />
-					<RowDefinition />
-					<RowDefinition />
-					<RowDefinition />
-					<RowDefinition />
-					<RowDefinition />
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="12" />
-					<ColumnDefinition />
-				</Grid.ColumnDefinitions>
+			<ctrl:SettingsCard Header="{x:Bind FuncName}"
+							   Description="{x:Bind Message}"
+							   Margin="0,0,0,4"
+							   Orientation="Vertical">
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+						<RowDefinition />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="12" />
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
 
-				<TextBlock Text="Level:" />
-				<TextBlock Grid.Column="2"
-						   Text="{x:Bind Level}" />
+					<TextBlock Text="Level:" />
+					<TextBlock Grid.Column="2"
+							   Text="{x:Bind Level}" />
 
-				<TextBlock Grid.Row="1"
-						   Text="Tag:" />
-				<TextBlock Grid.Row="1"
-						   Grid.Column="2"
-						   Text="{x:Bind Tag}" />
+					<TextBlock Grid.Row="1"
+							   Text="Tag:" />
+					<TextBlock Grid.Row="1"
+							   Grid.Column="2"
+							   Text="{x:Bind Tag}" />
 
-				<TextBlock Grid.Row="2"
-						   Text="Operation:" />
-				<TextBlock Grid.Row="2"
-						   Grid.Column="2"
-						   Text="{x:Bind Operation}" />
+					<TextBlock Grid.Row="2"
+							   Text="Operation:" />
+					<TextBlock Grid.Row="2"
+							   Grid.Column="2"
+							   Text="{x:Bind Operation}" />
 
-				<TextBlock Grid.Row="3"
-						   Text="Line:" />
-				<TextBlock Grid.Row="3"
-						   Grid.Column="2"
-						   Text="{x:Bind Line}" />
+					<TextBlock Grid.Row="3"
+							   Text="Line:" />
+					<TextBlock Grid.Row="3"
+							   Grid.Column="2"
+							   Text="{x:Bind Line}" />
 
-				<TextBlock Grid.Row="4"
-						   Text="DateTime:" />
-				<TextBlock Grid.Row="4"
-						   Grid.Column="2"
-						   Text="{x:Bind DateTime, Converter={StaticResource DateTimeToStringConverter}}" />
+					<TextBlock Grid.Row="4"
+							   Text="DateTime:" />
+					<TextBlock Grid.Row="4"
+							   Grid.Column="2"
+							   Text="{x:Bind DateTime, Converter={StaticResource DateTimeToStringConverter}}" />
 
-				<TextBlock Grid.Row="5"
-						   Text="FileName:" />
-				<TextBlock Grid.Row="5"
-						   Grid.Column="2"
-						   Text="{x:Bind FileName}" />
-
-				<TextBlock Grid.Row="6"
-						   Text="FuncName:" />
-				<TextBlock Grid.Row="6"
-						   Grid.Column="2"
-						   Text="{x:Bind FuncName}" />
-
-				<TextBlock Grid.Row="7"
-						   Text="Message:" />
-				<TextBlock Grid.Row="7"
-						   Grid.Column="2"
-						   Text="{x:Bind Message}" />
-			</Grid>
+					<TextBlock Grid.Row="5"
+							   Text="FileName:" />
+					<TextBlock Grid.Row="5"
+							   Grid.Column="2"
+							   Text="{x:Bind FileName}" />
+				</Grid>
+			</ctrl:SettingsCard>
 		</DataTemplate>
 	</Page.Resources>
 
@@ -95,8 +87,9 @@
 		</VisualStateManager.VisualStateGroups>
 
 		<ListView x:Name="contentRoot"
-				  Padding="56,0,56,36"
 				  ItemsSource="{x:Bind ViewModel.Logs}"
-				  ItemTemplate="{StaticResource ErrorLogTemplate}" />
+				  ItemTemplate="{StaticResource ErrorLogTemplate}"
+				  Padding="56,0,56,36"
+				  SelectionMode="None" />
 	</Border>
 </Page>

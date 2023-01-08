@@ -4,7 +4,10 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		mc:Ignorable="d"
-		xmlns:ctrl="using:PositiveDesktop.UI.Controls">
+		xmlns:local="using:PositiveDesktop"
+		xmlns:ui="using:PositiveDesktop.UI"
+		xmlns:ctrl="using:PositiveDesktop.UI.Controls"
+		xmlns:helpers="using:PositiveDesktop.UI.Helpers">
 
 	<Grid ActualThemeChanged="ActualThemeChanged"
 		  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -22,11 +25,16 @@
 		</Grid.Resources>
 
 		<NavigationView x:Name="navigationView"
+						CompactModeThresholdWidth="{StaticResource Breakpoint800Plus}"
 						DisplayModeChanged="NavigationViewDisplayModeChanged"
+						ExpandedModeThresholdWidth="{StaticResource Breakpoint800Plus}"
+						IsPaneToggleButtonVisible="False"
 						IsSettingsVisible="False"
 						IsTitleBarAutoPaddingEnabled="False"
 						PaneOpening="NavigationViewPaneOpening"
-						PaneClosing="NavigationViewPaneClosing">
+						PaneClosing="NavigationViewPaneClosing"
+						OpenPaneLength="300"
+						SelectionChanged="NavigationViewSelectionChanged">
 			<NavigationView.Resources>
 				<Thickness x:Key="NavigationViewContentGridBorderThickness">0</Thickness>
 				<Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
@@ -36,7 +44,14 @@
 								 Color="Transparent" />
 			</NavigationView.Resources>
 			<NavigationView.MenuItems>
-				<NavigationViewItem x:Uid="SettingsWindow_ErrorLog">
+				<NavigationViewItem x:Uid="SettingsWindow_Notification"
+									helpers:NavigationHelper.PageType="ui:SettingsPage_Notification">
+					<NavigationViewItem.Icon>
+						<ImageIcon Source="/Assets/ErrorLog.png" />
+					</NavigationViewItem.Icon>
+				</NavigationViewItem>
+				<NavigationViewItem x:Uid="SettingsWindow_ErrorLog"
+									helpers:NavigationHelper.PageType="local:SettingsPage_ErrorLog">
 					<NavigationViewItem.Icon>
 						<ImageIcon Source="/Assets/ErrorLog.png" />
 					</NavigationViewItem.Icon>
@@ -57,44 +72,35 @@
 				</Grid.RowDefinitions>
 				<Frame x:Name="rootFrame" />
 				<StackPanel Grid.Row="1"
-							Margin="12,4,12,4"
+							Margin="24,4,24,4"
 							Spacing="4">
 					<ctrl:SettingsCard Header="Button"
 									   Description="Description, description, description, description and description!"
 									   IsClickEnabled="True">
-						<Button Content="Content!!" />
+						<ctrl:SettingsCard.ActionIcon>
+							<FontIcon FontFamily="Segoe MDL2 Assets"
+									  FontSize="12"
+									  Glyph="&#xE974;" />
+						</ctrl:SettingsCard.ActionIcon>
+						<Button Content="Content!!"
+								MinWidth="{StaticResource SettingsCardContentMinWidth}" />
 					</ctrl:SettingsCard>
-					<ctrl:SettingsCard Header="ComboBox"
-									   Description="Description, description, description, description and description!"
-									   IsClickEnabled="True">
-						<ComboBox SelectedIndex="0">
-							<ComboBoxItem>Option 1</ComboBoxItem>
-							<ComboBoxItem>Option 2</ComboBoxItem>
-							<ComboBoxItem>Option 3</ComboBoxItem>
-						</ComboBox>
-					</ctrl:SettingsCard>
-					<ctrl:SettingsCard Header="Slider"
-									   Description="Description, description, description, description and description!"
-									   IsClickEnabled="True">
-						<Slider />
+					<ctrl:SettingsCard Header="NumberBox"
+									   Description="Description, description, description, description and description!">
+						<NumberBox MinWidth="{StaticResource SettingsCardContentMinWidth}" />
 					</ctrl:SettingsCard>
 					<ctrl:SettingsCard Header="TextBox"
-									   Description="Description, description, description, description and description!"
-									   IsClickEnabled="True">
+									   Description="Description, description, description, description and description!">
 						<ctrl:SettingsCard.HeaderIcon>
 							<FontIcon FontFamily="Segoe MDL2 Assets"
 									  Glyph="&#xE97E;" />
 						</ctrl:SettingsCard.HeaderIcon>
-						<TextBox />
+						<TextBox MinWidth="{StaticResource SettingsCardContentMinWidth}" />
 					</ctrl:SettingsCard>
-					<ctrl:SettingsCard Header="ToggleSwitch"
-									   Description="Description, description, description, description and description!"
-									   IsClickEnabled="True">
-						<ctrl:SettingsCard.HeaderIcon>
-							<FontIcon FontFamily="Segoe MDL2 Assets"
-									  Glyph="&#xF19E;" />
-						</ctrl:SettingsCard.HeaderIcon>
-						<ToggleSwitch />
+					<ctrl:SettingsCard Header="ToggleButton"
+									   Description="Description, description, description, description and description!">
+						<ToggleButton Content="ToggleButton!!"
+									  MinWidth="{StaticResource SettingsCardContentMinWidth}" />
 					</ctrl:SettingsCard>
 				</StackPanel>
 			</Grid>

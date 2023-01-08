@@ -132,4 +132,7 @@
   <data name="SettingsWindow_Info.Content" xml:space="preserve">
     <value>ポジティブ☆デスクトップについて</value>
   </data>
+  <data name="SettingsWindow_Notification.Content" xml:space="preserve">
+    <value>通知</value>
+  </data>
 </root>

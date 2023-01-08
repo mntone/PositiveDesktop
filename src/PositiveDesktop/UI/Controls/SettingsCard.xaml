@@ -92,16 +92,17 @@
 	<Thickness x:Key="SettingsCardBorderThickness">1</Thickness>
 	<Thickness x:Key="SettingsCardPadding">15,12,15,16</Thickness>
 	<Thickness x:Key="SettingsCardIconMargin">2,0,0,0</Thickness>
-	<x:Double x:Key="SettingsCardMaxWidth">1000</x:Double>
+	<x:Double x:Key="SettingsCardMaxWidth">640</x:Double>
+	<!-- Default: 1000 -->
 	<x:Double x:Key="SettingsCardMinWidth">320</x:Double>
 	<x:Double x:Key="SettingsCardMinHeight">68</x:Double>
 	<x:Double x:Key="SettingsCardActionButtonWidth">32</x:Double>
 	<x:Double x:Key="SettingsCardActionButtonHeight">32</x:Double>
 	<x:Double x:Key="SettingsCardDescriptionFontSize">12</x:Double>
 	<x:Double x:Key="SettingsCardHeaderIconMaxSize">20</x:Double>
-	<x:Double x:Key="SettingsCardActionIconMaxSize">13</x:Double>
-	<x:Double x:Key="SettingsCardLeftIndention">25</x:Double>
-	<x:Double x:Key="SettingsCardContentMinWidth">120</x:Double>
+	<x:Double x:Key="SettingsCardActionIconMaxSize">16</x:Double>
+	<x:Double x:Key="SettingsCardLeftIndention">0</x:Double>
+	<x:Double x:Key="SettingsCardContentMinWidth">130</x:Double>
 	<Thickness x:Key="SettingsCardHeaderIconMargin">2,0,20,0</Thickness>
 	<Thickness x:Key="SettingsCardVerticalHeaderContentSpacing">0,4,0,0</Thickness>
 	<x:Double x:Key="SettingsCardWrapThreshold">460</x:Double>
@@ -119,12 +120,16 @@
 					Value="{ThemeResource SettingsCardBorderThickness}" />
 			<Setter Property="CornerRadius"
 					Value="{ThemeResource ControlCornerRadius}" />
+			<Setter Property="FocusVisualMargin"
+					Value="-3" />
 			<Setter Property="FontFamily"
 					Value="{ThemeResource ContentControlThemeFontFamily}" />
 			<Setter Property="FontSize"
 					Value="{ThemeResource ControlContentThemeFontSize}" />
 			<Setter Property="FontWeight"
 					Value="Normal" />
+			<Setter Property="HorizontalContentAlignment"
+					Value="Stretch" />
 			<Setter Property="MinHeight"
 					Value="{ThemeResource SettingsCardMinHeight}" />
 			<Setter Property="MaxWidth"
@@ -158,87 +163,45 @@
 									<VisualState x:Name="Normal" />
 									<VisualState x:Name="PointerOver">
 										<VisualState.Setters>
+											<Setter Target="HeaderIconPresenter.Foreground"
+													Value="{ThemeResource SettingsCardForegroundPointerOver}" />
+											<Setter Target="HeaderPresenter.Foreground"
+													Value="{ThemeResource SettingsCardForegroundPointerOver}" />
+											<Setter Target="RootGrid.Background"
+													Value="{ThemeResource SettingsCardBackgroundPointerOver}" />
+											<Setter Target="RootGrid.BorderBrush"
+													Value="{ThemeResource SettingsCardBorderBrushPointerOver}" />
 											<Setter Target="RootGrid.(muxc:AnimatedIcon.State)"
 													Value="PointerOver" />
 										</VisualState.Setters>
-										<Storyboard>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
-																		   Storyboard.TargetProperty="Background">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="{ThemeResource SettingsCardBackgroundPointerOver}" />
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
-																		   Storyboard.TargetProperty="BorderBrush">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="{ThemeResource SettingsCardBorderBrushPointerOver}" />
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderIconPresenter"
-																		   Storyboard.TargetProperty="Foreground">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="{ThemeResource SettingsCardForegroundPointerOver}" />
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderPresenter"
-																		   Storyboard.TargetProperty="Foreground">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="{ThemeResource SettingsCardForegroundPointerOver}" />
-											</ObjectAnimationUsingKeyFrames>
-										</Storyboard>
 									</VisualState>
 									<VisualState x:Name="Pressed">
 										<VisualState.Setters>
+											<Setter Target="Description.Foreground"
+													Value="{ThemeResource SettingsCardForegroundPressed}" />
+											<Setter Target="HeaderIconPresenter.Foreground"
+													Value="{ThemeResource SettingsCardForegroundPressed}" />
+											<Setter Target="HeaderPresenter.Foreground"
+													Value="{ThemeResource SettingsCardForegroundPressed}" />
+											<Setter Target="RootGrid.Background"
+													Value="{ThemeResource SettingsCardBackgroundPressed}" />
+											<Setter Target="RootGrid.BorderBrush"
+													Value="{ThemeResource SettingsCardBorderBrushPressed}" />
 											<Setter Target="RootGrid.(muxc:AnimatedIcon.State)"
 													Value="Pressed" />
 										</VisualState.Setters>
-										<Storyboard>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
-																		   Storyboard.TargetProperty="Background">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="{ThemeResource SettingsCardBackgroundPressed}" />
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootGrid"
-																		   Storyboard.TargetProperty="BorderBrush">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="{ThemeResource SettingsCardBorderBrushPressed}" />
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderIconPresenter"
-																		   Storyboard.TargetProperty="Foreground">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="{ThemeResource SettingsCardForegroundPressed}" />
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderPresenter"
-																		   Storyboard.TargetProperty="Foreground">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="{ThemeResource SettingsCardForegroundPressed}" />
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="DescriptionPresenter"
-																		   Storyboard.TargetProperty="Foreground">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="{ThemeResource SettingsCardForegroundPressed}" />
-											</ObjectAnimationUsingKeyFrames>
-										</Storyboard>
 									</VisualState>
 									<VisualState x:Name="Disabled">
 										<VisualState.Setters>
+											<Setter Target="Description.Foreground"
+													Value="{ThemeResource SettingsCardForegroundDisabled}" />
+											<Setter Target="HeaderIconPresenter.Foreground"
+													Value="{ThemeResource SettingsCardForegroundDisabled}" />
+											<Setter Target="HeaderPresenter.Foreground"
+													Value="{ThemeResource SettingsCardForegroundDisabled}" />
 											<Setter Target="RootGrid.(muxc:AnimatedIcon.State)"
 													Value="Normal" />
 										</VisualState.Setters>
-										<Storyboard>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderIconPresenter"
-																		   Storyboard.TargetProperty="Foreground">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="{ThemeResource SettingsCardForegroundDisabled}" />
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="HeaderPresenter"
-																		   Storyboard.TargetProperty="Foreground">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="{ThemeResource SettingsCardForegroundDisabled}" />
-											</ObjectAnimationUsingKeyFrames>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="DescriptionPresenter"
-																		   Storyboard.TargetProperty="Foreground">
-												<DiscreteObjectKeyFrame KeyTime="0"
-																		Value="{ThemeResource SettingsCardForegroundDisabled}" />
-											</ObjectAnimationUsingKeyFrames>
-										</Storyboard>
 									</VisualState>
 								</VisualStateGroup>
 								<!--<VisualStateGroup x:Name="LayoutStates">
@@ -253,27 +216,38 @@
 										</Storyboard>
 									</VisualState>
 								</VisualStateGroup>-->
+								<VisualStateGroup x:Name="Orientation">
+									<VisualState x:Name="Horizontal" />
+									<VisualState x:Name="Vertical">
+										<VisualState.Setters>
+											<Setter Target="Content.(Grid.Column)"
+													Value="1" />
+											<Setter Target="Content.(Grid.Row)"
+													Value="1" />
+										</VisualState.Setters>
+									</VisualState>
+								</VisualStateGroup>
 							</VisualStateManager.VisualStateGroups>
 							<Grid.BackgroundTransition>
 								<BrushTransition Duration="0:0:0.083" />
 							</Grid.BackgroundTransition>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="*" />
-								<RowDefinition Height="Auto" />
-							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition x:Name="FirstColumn"
-												  Width="Auto"
+								<ColumnDefinition Width="Auto"
 												  MinWidth="{StaticResource SettingsCardLeftIndention}" />
 								<ColumnDefinition />
 								<ColumnDefinition Width="Auto" />
 								<ColumnDefinition Width="Auto" />
 							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="*" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
 
-							<Viewbox x:Name="HeaderIconPresenterViewbox"
+							<Viewbox x:Name="HeaderIcon"
+									 Height="{StaticResource SettingsCardHeaderIconMaxSize}"
 									 Margin="{StaticResource SettingsCardHeaderIconMargin}"
-									 MaxHeight="{StaticResource SettingsCardHeaderIconMaxSize}"
-									 MaxWidth="{StaticResource SettingsCardHeaderIconMaxSize}">
+									 StretchDirection="DownOnly"
+									 Width="{StaticResource SettingsCardHeaderIconMaxSize}">
 								<ContentPresenter x:Name="HeaderIconPresenter"
 												  Content="{TemplateBinding HeaderIcon}"
 												  HighContrastAdjustment="None" />
@@ -285,19 +259,38 @@
 								<ContentPresenter x:Name="HeaderPresenter"
 												  Content="{TemplateBinding Header}"
 												  TextWrapping="Wrap" />
-								<ContentPresenter x:Name="DescriptionPresenter"
+								<ContentPresenter x:Name="Description"
 												  Content="{TemplateBinding Description}"
 												  FontSize="{StaticResource SettingsCardDescriptionFontSize}"
 												  Foreground="{ThemeResource TextFillColorSecondaryBrush}"
 												  TextWrapping="Wrap" />
 							</StackPanel>
 
-							<ContentPresenter Grid.Column="2"
+							<ContentPresenter x:Name="Content"
+											  Grid.Column="2"
 											  Content="{TemplateBinding Content}"
 											  HorizontalAlignment="Right"
 											  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
 											  VerticalAlignment="Center"
 											  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+
+							<ContentControl x:Name="ActionIcon"
+											Grid.Column="3"
+											CornerRadius="{StaticResource ControlCornerRadius}"
+											Height="{StaticResource SettingsCardActionButtonHeight}"
+											HorizontalAlignment="Center"
+											HorizontalContentAlignment="Center"
+											Margin="4,0,-12,0"
+											VerticalAlignment="Center"
+											VerticalContentAlignment="Center"
+											Width="{StaticResource SettingsCardActionButtonWidth}">
+								<Viewbox Height="{StaticResource SettingsCardActionIconMaxSize}"
+										 StretchDirection="DownOnly"
+										 Width="{StaticResource SettingsCardActionIconMaxSize}">
+									<ContentPresenter Content="{TemplateBinding ActionIcon}"
+													  HighContrastAdjustment="None" />
+								</Viewbox>
+							</ContentControl>
 						</Grid>
 					</ControlTemplate>
 				</Setter.Value>

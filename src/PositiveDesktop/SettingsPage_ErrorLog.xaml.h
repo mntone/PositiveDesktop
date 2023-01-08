@@ -17,3 +17,10 @@ namespace winrt::PositiveDesktop::implementation {
 	};
 
 }
+
+namespace winrt::PositiveDesktop::factory_implementation {
+
+	struct SettingsPage_ErrorLog: SettingsPage_ErrorLogT<SettingsPage_ErrorLog, implementation::SettingsPage_ErrorLog> {
+	};
+
+}
