@@ -78,7 +78,23 @@
 						<ctrl:SettingsExpander.CardContent>
 							<Button Content="button" />
 						</ctrl:SettingsExpander.CardContent>
-						<ToggleButton Content="ToggleButton" />
+						<StackPanel>
+							<ctrl:SettingsCard Style="{StaticResource SettingsMiddleCardStyle}">
+								<ctrl:SettingsCard.Header>
+									<CheckBox Content="This is checkbox!!!!!!!" />
+								</ctrl:SettingsCard.Header>
+							</ctrl:SettingsCard>
+							<ctrl:SettingsCard Header="NumberBox"
+											   Description="Description, description, description, description and description!"
+											   Style="{StaticResource SettingsBottomCardStyle}">
+								<ctrl:SettingsCard.HeaderIcon>
+									<FontIcon FontFamily="Segoe MDL2 Assets"
+											  Glyph="&#xE97E;"
+											  IsTextScaleFactorEnabled="False" />
+								</ctrl:SettingsCard.HeaderIcon>
+								<NumberBox MinWidth="{StaticResource SettingsCardContentMinWidth}" />
+							</ctrl:SettingsCard>
+						</StackPanel>
 					</ctrl:SettingsExpander>
 					<ctrl:SettingsCard Header="Button"
 									   Description="Description, description, description, description and description!"
@@ -87,7 +103,7 @@
 							<FontIcon FontFamily="Segoe MDL2 Assets"
 									  FontSize="12"
 									  Glyph="&#xE974;"
-									  IsTextScaleFactorEnabled="False"  />
+									  IsTextScaleFactorEnabled="False" />
 						</ctrl:SettingsCard.ActionIcon>
 						<Button Content="Content!!"
 								MinWidth="{StaticResource SettingsCardContentMinWidth}" />

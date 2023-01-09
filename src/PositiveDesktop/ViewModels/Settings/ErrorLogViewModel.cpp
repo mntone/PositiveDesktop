@@ -111,7 +111,7 @@ ErrorLogViewModel::ErrorLogViewModel(log_t const& log) noexcept
 	, datetime_(clock::from_sys(log.datetime))
 	, filename_(to_hstring(log.filename))
 	, funcname_(to_hstring(log.funcname))
-	, message_(to_hstring(log.message)) {
+	, message_(to_hstring(log.message))
 	, Header_(to_hstring(log.message.empty() ? std::format("{} in line {}", log.funcname, log.line) : log.message))
 	, Description_(to_hstring(!log.message.empty() ? std::format("{} in line {}", log.funcname, log.line) : "")) {
 }

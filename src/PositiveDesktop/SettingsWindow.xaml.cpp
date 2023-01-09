@@ -32,6 +32,7 @@ namespace winrt {
 	using namespace ::winrt::Microsoft::UI::Xaml::Controls;
 	using namespace ::winrt::Microsoft::UI::Windowing;
 
+	using namespace ::winrt::PositiveDesktop::UI::Helpers;
 }
 
 #include "UI/SettingsPage_Notification.xaml.h"
@@ -127,14 +128,14 @@ void SettingsWindow::UpdateTitlebarMargin(NavigationView const& navigationView) 
 	}
 }
 
-void SettingsWindow::NavigationViewSelectionChanged(winrt::NavigationView const& sender, winrt::NavigationViewSelectionChangedEventArgs const& args) {
+void SettingsWindow::NavigationViewSelectionChanged(NavigationView const& sender, NavigationViewSelectionChangedEventArgs const& args) {
 	LOG_BEGIN(app::logger::ltg_presenter);
 
-	winrt::NavigationViewItem item { args.SelectedItem().as<winrt::NavigationViewItem>() };
+	NavigationViewItem item { args.SelectedItem().as<NavigationViewItem>() };
 	if (item) {
-		winrt::TypeName pageTypeName { winrt::NavigationHelper::GetPageType(item) };
+		TypeName pageTypeName { NavigationHelper::GetPageType(item) };
 		rootFrame().Navigate(pageTypeName);
-		LOG_DEBUG(std::format("Navigated to {}.", winrt::to_string(pageTypeName.Name)));
+		LOG_DEBUG(std::format("Navigated to {}.", to_string(pageTypeName.Name)));
 	}
 
 	LOG_END_NOLABEL();

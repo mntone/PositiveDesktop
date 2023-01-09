@@ -169,6 +169,9 @@
       <Filter>UI\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="UI\Controls\SettingsExpander.h" />
+    <ClInclude Include="UI\Helpers\DependencyPropertyHelper.h">
+      <Filter>UI\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">

@@ -4,6 +4,7 @@
 #include "./UI/Controls/SettingsCard.g.cpp"
 #endif
 
+#include <winrt/Microsoft.UI.Input.h>
 #include <winrt/Microsoft.UI.Xaml.Input.h>
 
 namespace resources {
@@ -23,19 +24,20 @@ namespace states {
 	constexpr std::wstring_view Pressed { L"Pressed" };
 	constexpr std::wstring_view Disabled { L"Disabled" };
 
-	constexpr std::wstring_view TextAndIcon { L"TextAndIconState" };
-	constexpr std::wstring_view TextOnly { L"TextOnlyState" };
-
 	constexpr std::wstring_view Vertical { L"Vertical" };
 	constexpr std::wstring_view Horizontal { L"Horizontal" };
 }
 
 namespace winrt {
+	using namespace ::winrt::Windows::Foundation;
+	using namespace ::winrt::Windows::System;
+
+	using namespace ::winrt::Microsoft::UI::Input;
 	using namespace ::winrt::Microsoft::UI::Xaml;
 	using namespace ::winrt::Microsoft::UI::Xaml::Controls;
 	using namespace ::winrt::Microsoft::UI::Xaml::Input;
-	using namespace ::winrt::Windows::Foundation;
-	using namespace ::winrt::Windows::System;
+
+	using namespace ::winrt::PositiveDesktop::UI::Controls;
 }
 
 using namespace winrt::PositiveDesktop::UI::Controls::implementation;
@@ -51,67 +53,75 @@ void SettingsCard::OnApplyTemplate() {
 	OnHeaderIconChanged(HeaderIcon());
 	OnIsClickEnabledChanged(IsClickEnabled());
 	VisualStateManager::GoToState(*this, IsEnabled() ? states::Normal : states::Disabled, true);
-	isEnabledChangedRevoker_ = IsEnabledChanged(auto_revoke, { this, &SettingsCard::OnIsEnabledChanged });
+	IsEnabledChanged(&SettingsCard::OnIsEnabledChangedStatic); // The listener is the same lifecycle to the object.
 }
 
-void SettingsCard::OnIsEnabledChanged(IInspectable const& sender, DependencyPropertyChangedEventArgs const& e) {
-	VisualStateManager::GoToState(*this, winrt::unbox_value<bool>(e.NewValue()) ? states::Normal : states::Disabled, true);
+void SettingsCard::OnIsEnabledChangedStatic(IInspectable const& sender, DependencyPropertyChangedEventArgs const& args) {
+	VisualStateManager::GoToState(sender.as<Control>(), unbox_value<bool>(args.NewValue()) ? states::Normal : states::Disabled, true);
 }
 
-void SettingsCard::RegisterButtonEvents() {
-	UnregisterButtonEvents();
+void SettingsCard::OnPreviewKeyDown(KeyRoutedEventArgs const& args) const {
+	if (IsClickEnabled()) {
+		__super::OnPreviewKeyDown(args);
 
-	pointerEnteredRevoker_ = PointerEntered(auto_revoke, { this, &SettingsCard::OnControlPointerEntered });
-	pointerExitedRevoker_ = PointerExited(auto_revoke, { this, &SettingsCard::OnControlPointerExited });
-	previewKeyDownRevoker_ = PreviewKeyDown(auto_revoke, { this, &SettingsCard::OnControlPreviewKeyDown });
-	previewKeyUpRevoker_ = PreviewKeyUp(auto_revoke, { this, &SettingsCard::OnControlPreviewKeyUp });
-}
-
-void SettingsCard::UnregisterButtonEvents() noexcept {
-	previewKeyUpRevoker_.revoke();
-	previewKeyDownRevoker_.revoke();
-	pointerExitedRevoker_.revoke();
-	pointerEnteredRevoker_.revoke();
-}
-
-void SettingsCard::OnControlPointerEntered(IInspectable const& sender, PointerRoutedEventArgs const& args) {
-	VisualStateManager::GoToState(*this, states::PointerOver, true);
-}
-
-void SettingsCard::OnControlPointerExited(IInspectable const& sender, PointerRoutedEventArgs const& args) {
-	VisualStateManager::GoToState(*this, states::Normal, true);
-}
-
-void SettingsCard::OnControlPreviewKeyDown(IInspectable const& sender, KeyRoutedEventArgs const& args) const {
-	switch (args.Key()) {
-	case VirtualKey::Enter:
-	case VirtualKey::Space:
-	case VirtualKey::GamepadA:
-		VisualStateManager::GoToState(*this, states::Pressed, true);
-		break;
+		switch (args.Key()) {
+		case VirtualKey::Enter:
+		case VirtualKey::Space:
+		case VirtualKey::GamepadA:
+			VisualStateManager::GoToState(*this, states::Pressed, true);
+			break;
+		}
 	}
 }
 
-void SettingsCard::OnControlPreviewKeyUp(IInspectable const& sender, KeyRoutedEventArgs const& args) const {
-	switch (args.Key()) {
-	case VirtualKey::Enter:
-	case VirtualKey::Space:
-	case VirtualKey::GamepadA:
-		VisualStateManager::GoToState(*this, states::Normal, true);
-		break;
+void SettingsCard::OnPreviewKeyUp(KeyRoutedEventArgs const& args) const {
+	if (IsClickEnabled()) {
+		__super::OnPreviewKeyDown(args);
+
+		switch (args.Key()) {
+		case VirtualKey::Enter:
+		case VirtualKey::Space:
+		case VirtualKey::GamepadA:
+			VisualStateManager::GoToState(*this, states::Normal, true);
+			break;
+		}
 	}
 }
 
-void SettingsCard::OnPointerPressed(Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args) const {
+void SettingsCard::OnPointerEntered(PointerRoutedEventArgs const& args) const {
+	if (IsClickEnabled()) {
+		__super::OnPointerEntered(args);
+
+		VisualStateManager::GoToState(*this, states::PointerOver, true);
+	}
+}
+
+void SettingsCard::OnPointerPressed(PointerRoutedEventArgs const& args) const {
 	if (IsClickEnabled()) {
 		__super::OnPointerPressed(args);
+
 		VisualStateManager::GoToState(*this, states::Pressed, true);
 	}
 }
 
-void SettingsCard::OnPointerReleased(Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args) const {
+void SettingsCard::OnPointerReleased(PointerRoutedEventArgs const& args) const {
 	if (IsClickEnabled()) {
 		__super::OnPointerReleased(args);
+
+		winrt::SettingsCard proj { *this };
+		winrt::Windows::Foundation::Numerics::float2 point { args.GetCurrentPoint(proj).Position() };
+		if (point.x < 0 || point.y < 0 || point.x > ActualWidth() || point.y > ActualHeight()) {
+			VisualStateManager::GoToState(proj, states::Normal, true);
+		} else {
+			VisualStateManager::GoToState(proj, states::PointerOver, true);
+		}
+	}
+}
+
+void SettingsCard::OnPointerExited(PointerRoutedEventArgs const& args) const {
+	if (IsClickEnabled()) {
+		__super::OnPointerExited(args);
+
 		VisualStateManager::GoToState(*this, states::Normal, true);
 	}
 }
@@ -136,7 +146,6 @@ void SettingsCard::OnDescriptionChanged(IInspectable const& newValue) {
 }
 
 void SettingsCard::OnHeaderIconChanged(IconElement const& newValue) {
-	//VisualStateManager::GoToState(*this, newValue != nullptr ? states::TextAndIconState : states::TextOnlyState, true);
 	FrameworkElement element { GetTemplateChild(controls::HeaderIcon).try_as<FrameworkElement>() };
 	if (element) {
 		element.Visibility(newValue != nullptr ? Visibility::Visible : Visibility::Collapsed);
@@ -158,10 +167,11 @@ void SettingsCard::OnHeaderChanged(IInspectable const& newValue) {
 void SettingsCard::OnIsClickEnabledChanged(bool newValue) {
 	if (newValue) {
 		OnButtonIconChanged(true);
-		RegisterButtonEvents();
+		//RegisterButtonEvents();
 	} else {
+		VisualStateManager::GoToState(*this, states::Normal, true); // Force-reset states.
 		OnButtonIconChanged(false);
-		UnregisterButtonEvents();
+		//UnregisterButtonEvents();
 	}
 }
 

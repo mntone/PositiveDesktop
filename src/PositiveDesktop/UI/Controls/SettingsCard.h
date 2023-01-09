@@ -8,18 +8,18 @@ namespace winrt::PositiveDesktop::UI::Controls::implementation {
 
 		void OnApplyTemplate();
 
-		void OnPointerPressed(winrt::Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& e) const;
-		void OnPointerReleased(winrt::Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& e) const;
+		void OnPointerEntered(winrt::Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args) const;
+		void OnPointerPressed(winrt::Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args) const;
+		void OnPointerReleased(winrt::Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args) const;
+		void OnPointerExited(winrt::Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args) const;
+
+		void OnPreviewKeyDown(winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args) const;
+		void OnPreviewKeyUp(winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args) const;
 
 	private:
-		void RegisterButtonEvents();
-		void UnregisterButtonEvents() noexcept;
-
-		void OnControlPointerEntered(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args);
-		void OnControlPointerExited(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Input::PointerRoutedEventArgs const& args);
-		void OnControlPreviewKeyDown(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args) const;
-		void OnControlPreviewKeyUp(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args) const;
-		void OnIsEnabledChanged(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::DependencyPropertyChangedEventArgs const& e);
+		//static void OnControlPreviewKeyDownStatic(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args);
+		//static void OnControlPreviewKeyUpStatic(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args);
+		static void OnIsEnabledChangedStatic(winrt::Windows::Foundation::IInspectable const& sender, winrt::Microsoft::UI::Xaml::DependencyPropertyChangedEventArgs const& args);
 
 		inline void OnButtonIconChanged(bool isClickEnabled);
 
@@ -68,11 +68,11 @@ namespace winrt::PositiveDesktop::UI::Controls::implementation {
 		static winrt::Microsoft::UI::Xaml::DependencyProperty OrientationProperty() noexcept { return OrientationProperty_; }
 
 	private:
-		winrt::Microsoft::UI::Xaml::Controls::Primitives::ButtonBase::IsEnabledChanged_revoker isEnabledChangedRevoker_ {};
-		winrt::Microsoft::UI::Xaml::Controls::Primitives::ButtonBase::PointerEntered_revoker pointerEnteredRevoker_ {};
-		winrt::Microsoft::UI::Xaml::Controls::Primitives::ButtonBase::PointerExited_revoker pointerExitedRevoker_ {};
-		winrt::Microsoft::UI::Xaml::Controls::Primitives::ButtonBase::PreviewKeyDown_revoker previewKeyDownRevoker_ {};
-		winrt::Microsoft::UI::Xaml::Controls::Primitives::ButtonBase::PreviewKeyUp_revoker previewKeyUpRevoker_ {};
+		//winrt::Microsoft::UI::Xaml::Controls::Primitives::ButtonBase::IsEnabledChanged_revoker isEnabledChangedRevoker_ {};
+		//winrt::Microsoft::UI::Xaml::Controls::Primitives::ButtonBase::PointerEntered_revoker pointerEnteredRevoker_ {};
+		//winrt::Microsoft::UI::Xaml::Controls::Primitives::ButtonBase::PointerExited_revoker pointerExitedRevoker_ {};
+		//winrt::Microsoft::UI::Xaml::Controls::Primitives::ButtonBase::PreviewKeyDown_revoker previewKeyDownRevoker_ {};
+		//winrt::Microsoft::UI::Xaml::Controls::Primitives::ButtonBase::PreviewKeyUp_revoker previewKeyUpRevoker_ {};
 
 		static winrt::Microsoft::UI::Xaml::DependencyProperty ActionIconProperty_;
 		static winrt::Microsoft::UI::Xaml::DependencyProperty ActionIconTooltipProperty_;

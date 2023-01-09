@@ -9,7 +9,7 @@
 
 namespace app::desktop {
 
-	enum vdtarget_t: int {
+	enum vdtarget_t : int {
 		vdt_desktop1,
 		vdt_desktop2,
 		vdt_desktop3,
