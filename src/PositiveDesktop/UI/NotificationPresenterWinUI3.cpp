@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "NotificationPresenterWinUI3.h"
 
-#include <winrt/Microsoft.Windows.ApplicationModel.Resources.h>
+#include "Services/Storages/config_t.h"
 
 #include "NotificationWindow.xaml.h"
 #include "SettingsWindow.xaml.h"

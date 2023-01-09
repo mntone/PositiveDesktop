@@ -5,8 +5,6 @@
 #endif
 
 #include <winrt/Microsoft.UI.Windowing.h>
-#include <winrt/Windows.Foundation.Collections.h>
-#include <winrt/Windows.Globalization.h>
 
 #include "UI/UIHelper.h"
 #include "UI/WindowHelper.h"
@@ -23,15 +21,15 @@ namespace app::ui::resources {
 }
 
 namespace winrt {
+	using namespace ::winrt::Windows::Foundation::Collections;
+	using namespace ::winrt::Windows::Globalization;
+	using namespace ::winrt::Windows::Graphics;
+	using namespace ::winrt::Windows::UI::Xaml::Interop;
 
-	using namespace Microsoft::UI;
-	using namespace Microsoft::UI::Xaml;
-	using namespace Microsoft::UI::Xaml::Controls;
-	using namespace Microsoft::UI::Windowing;
-
-	using namespace Windows::Foundation::Collections;
-	using namespace Windows::Globalization;
-	using namespace Windows::Graphics;
+	using namespace ::winrt::Microsoft::UI;
+	using namespace ::winrt::Microsoft::UI::Xaml;
+	using namespace ::winrt::Microsoft::UI::Xaml::Controls;
+	using namespace ::winrt::Microsoft::UI::Windowing;
 
 }
 
@@ -42,16 +40,16 @@ SettingsWindow::SettingsWindow() {
 	ExtendsContentIntoTitleBar(true);
 	SetTitleBar(titlebar());
 
-	winrt::Frame frame { rootFrame() };
+	Frame frame { rootFrame() };
 	WINRT_ASSERT(frame);
 	WINRT_ASSERT(!frame.Content());
 
-	winrt::IVectorView<winrt::hstring> languages { winrt::ApplicationLanguages::Languages() };
+	IVectorView<hstring> languages { ApplicationLanguages::Languages() };
 	frame.Language(languages.GetAt(0));
 	frame.Content(make<SettingsPage_ErrorLog>());
 
 	HWND hWnd { GetHwnd(m_inner) };
-	SetCenter(hWnd, winrt::SizeInt32 { 1200, 900 });
+	SetCenter(hWnd, SizeInt32 { 1200, 900 });
 	Subclass(hWnd);
 }
 
@@ -69,15 +67,15 @@ LRESULT SettingsWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 	return WindowBase::WndProc(hWnd, message, wParam, lParam);
 }
 
-void SettingsWindow::ActualThemeChanged(winrt::FrameworkElement const& sender, winrt::Windows::Foundation::IInspectable const& /*args*/) {
+void SettingsWindow::ActualThemeChanged(FrameworkElement const& sender, IInspectable const& /*args*/) {
 #if WINDOWSAPPSDK_RELEASE_MAJORMINOR >= 0x00010002  // Include WindowsAppSDK-VersionInfo.h
-	WINRT_ASSERT(winrt::AppWindowTitleBar::IsCustomizationSupported()); // Note: Return true in Windows SDK 1.2
+	WINRT_ASSERT(AppWindowTitleBar::IsCustomizationSupported()); // Note: Return true in Windows SDK 1.2
 #else
-	if (!winrt::AppWindowTitleBar::IsCustomizationSupported()) return;
+	if (!AppWindowTitleBar::IsCustomizationSupported()) return;
 #endif
 
-	winrt::AppWindow appWindow { GetAppWindow(m_inner) };
-	winrt::AppWindowTitleBar titlebar { appWindow.TitleBar() };
+	AppWindow appWindow { GetAppWindow(m_inner) };
+	AppWindowTitleBar titlebar { appWindow.TitleBar() };
 	ResourceDictionary resources { sender.Resources() };
 	titlebar.ForegroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonForegroundColor));
 	titlebar.ButtonForegroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonForegroundColor));
@@ -87,10 +85,10 @@ void SettingsWindow::ActualThemeChanged(winrt::FrameworkElement const& sender, w
 	titlebar.ButtonInactiveForegroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonInactiveForegroundColor));
 }
 
-void SettingsWindow::NavigationViewDisplayModeChanged(winrt::NavigationView const& sender, winrt::NavigationViewDisplayModeChangedEventArgs const& /*args*/) {
-	winrt::Border titlebar { this->titlebar() };
-	winrt::Thickness margin { titlebar.Margin() };
-	if (winrt::NavigationViewDisplayMode::Minimal == sender.DisplayMode()) {
+void SettingsWindow::NavigationViewDisplayModeChanged(NavigationView const& sender, NavigationViewDisplayModeChangedEventArgs const& /*args*/) {
+	Border titlebar { this->titlebar() };
+	Thickness margin { titlebar.Margin() };
+	if (NavigationViewDisplayMode::Minimal == sender.DisplayMode()) {
 		margin.Left = 2.0 * sender.CompactPaneLength();
 	} else {
 		margin.Left = sender.CompactPaneLength();
@@ -100,24 +98,24 @@ void SettingsWindow::NavigationViewDisplayModeChanged(winrt::NavigationView cons
 	UpdateTitlebarMargin(sender);
 }
 
-void SettingsWindow::NavigationViewPaneClosing(winrt::NavigationView const& sender, winrt::NavigationViewPaneClosingEventArgs const& /*args*/) {
+void SettingsWindow::NavigationViewPaneClosing(NavigationView const& sender, NavigationViewPaneClosingEventArgs const& /*args*/) {
 	UpdateTitlebarMargin(sender);
 }
 
-void SettingsWindow::NavigationViewPaneOpening(winrt::NavigationView const& sender, winrt::Windows::Foundation::IInspectable const& /*args*/) {
+void SettingsWindow::NavigationViewPaneOpening(NavigationView const& sender, IInspectable const& /*args*/) {
 	UpdateTitlebarMargin(sender);
 }
 
 constexpr int smallLeftIndent = 4;
 constexpr int largeLeftIndent = 24;
 
-void SettingsWindow::UpdateTitlebarMargin(winrt::NavigationView const& navigationView) {
-	winrt::TextBlock caption { this->caption() };
+void SettingsWindow::UpdateTitlebarMargin(NavigationView const& navigationView) {
+	TextBlock caption { this->caption() };
 	caption.TranslationTransition(Vector3Transition());
 
-	winrt::NavigationViewDisplayMode displayMode { navigationView.DisplayMode() };
-	if (winrt::NavigationViewDisplayMode::Expanded == displayMode && navigationView.IsPaneOpen()
-		|| winrt::NavigationViewDisplayMode::Minimal == displayMode) {
+	NavigationViewDisplayMode displayMode { navigationView.DisplayMode() };
+	if (NavigationViewDisplayMode::Expanded == displayMode && navigationView.IsPaneOpen()
+		|| NavigationViewDisplayMode::Minimal == displayMode) {
 		caption.Translation({ smallLeftIndent, 0, 0 });
 	} else {
 		caption.Translation({ largeLeftIndent, 0, 0 });

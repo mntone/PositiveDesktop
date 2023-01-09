@@ -7,6 +7,6 @@
 using namespace winrt::PositiveDesktop::implementation;
 
 SettingsPage_ErrorLog::SettingsPage_ErrorLog() noexcept
-	: viewModel_(winrt::make<winrt::PositiveDesktop::ViewModels::Settings::implementation::ErrorLogsViewModel>()) {
+	: viewModel_(make<::winrt::PositiveDesktop::ViewModels::Settings::implementation::ErrorLogsViewModel>()) {
 	InitializeComponent();
 }
