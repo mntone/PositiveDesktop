@@ -9,94 +9,100 @@
 	<Page.Resources>
 		<DataTemplate x:Key="ErrorLogTemplate"
 					  x:DataType="vms:ErrorLogViewModel">
-			<ctrl:SettingsCard Header="{x:Bind Header}"
-							   Description="{x:Bind Description}"
-							   Margin="0,0,0,4"
-							   Orientation="Vertical">
-				<ctrl:SettingsCard.ActionIcon>
+
+			<ctrl:SettingsExpander Header="{x:Bind Header}"
+								   Description="{x:Bind Description}"
+								   Margin="0,0,0,4"
+								   Orientation="Vertical">
+				<ctrl:SettingsExpander.HeaderIcon>
 					<FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
 							  FontSize="12"
 							  Glyph="{x:Bind LevelIcon}" />
-				</ctrl:SettingsCard.ActionIcon>
-				
-				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition />
-						<RowDefinition />
-						<RowDefinition />
-						<RowDefinition />
-						<RowDefinition />
-						<RowDefinition />
-						<RowDefinition />
-						<RowDefinition />
-					</Grid.RowDefinitions>
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="12" />
-						<ColumnDefinition />
-					</Grid.ColumnDefinitions>
+				</ctrl:SettingsExpander.HeaderIcon>
 
-					<TextBlock Text="Level:" />
-					<TextBlock Grid.Column="2"
-							   IsTextSelectionEnabled="True"
-							   Text="{x:Bind Level}"
-							   TextWrapping="Wrap" />
+				<ctrl:SettingsExpander.ExpanderContent>
+					<ctrl:SettingsCard Orientation="Vertical"
+									   Style="{StaticResource SettingsBottomCardAltStyle}">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition />
+								<RowDefinition />
+								<RowDefinition />
+								<RowDefinition />
+								<RowDefinition />
+								<RowDefinition />
+								<RowDefinition />
+								<RowDefinition />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="12" />
+								<ColumnDefinition />
+							</Grid.ColumnDefinitions>
 
-					<TextBlock Grid.Row="1"
-							   Text="Tag:" />
-					<TextBlock Grid.Row="1"
-							   Grid.Column="2"
-							   IsTextSelectionEnabled="True"
-							   Text="{x:Bind Tag}"
-							   TextWrapping="Wrap" />
+							<TextBlock Text="Level:" />
+							<TextBlock Grid.Column="2"
+									   IsTextSelectionEnabled="True"
+									   Text="{x:Bind Level}"
+									   TextWrapping="Wrap" />
 
-					<TextBlock Grid.Row="2"
-							   Text="Operation:" />
-					<TextBlock Grid.Row="2"
-							   Grid.Column="2"
-							   IsTextSelectionEnabled="True"
-							   Text="{x:Bind Operation}"
-							   TextWrapping="Wrap" />
+							<TextBlock Grid.Row="1"
+									   Text="Tag:" />
+							<TextBlock Grid.Row="1"
+									   Grid.Column="2"
+									   IsTextSelectionEnabled="True"
+									   Text="{x:Bind Tag}"
+									   TextWrapping="Wrap" />
 
-					<TextBlock Grid.Row="3"
-							   Text="Line:" />
-					<TextBlock Grid.Row="3"
-							   Grid.Column="2"
-							   IsTextSelectionEnabled="True"
-							   Text="{x:Bind Line}" />
+							<TextBlock Grid.Row="2"
+									   Text="Operation:" />
+							<TextBlock Grid.Row="2"
+									   Grid.Column="2"
+									   IsTextSelectionEnabled="True"
+									   Text="{x:Bind Operation}"
+									   TextWrapping="Wrap" />
 
-					<TextBlock Grid.Row="4"
-							   Text="DateTime:" />
-					<TextBlock Grid.Row="4"
-							   Grid.Column="2"
-							   IsTextSelectionEnabled="True"
-							   Text="{x:Bind DateTime, Converter={StaticResource DateTimeToStringConverter}}"
-							   TextWrapping="Wrap" />
+							<TextBlock Grid.Row="3"
+									   Text="Line:" />
+							<TextBlock Grid.Row="3"
+									   Grid.Column="2"
+									   IsTextSelectionEnabled="True"
+									   Text="{x:Bind Line}" />
 
-					<TextBlock Grid.Row="5"
-							   Text="FileName:" />
-					<TextBlock Grid.Row="5"
-							   Grid.Column="2"
-							   IsTextSelectionEnabled="True"
-							   Text="{x:Bind FileName}"
-							   TextWrapping="Wrap" />
+							<TextBlock Grid.Row="4"
+									   Text="DateTime:" />
+							<TextBlock Grid.Row="4"
+									   Grid.Column="2"
+									   IsTextSelectionEnabled="True"
+									   Text="{x:Bind DateTime, Converter={StaticResource DateTimeToStringConverter}}"
+									   TextWrapping="Wrap" />
 
-					<TextBlock Grid.Row="6"
-							   Text="FuncName:" />
-					<TextBlock Grid.Row="6"
-							   Grid.Column="2"
-							   IsTextSelectionEnabled="True"
-							   Text="{x:Bind FuncName}"
-							   TextWrapping="Wrap" />
+							<TextBlock Grid.Row="5"
+									   Text="FileName:" />
+							<TextBlock Grid.Row="5"
+									   Grid.Column="2"
+									   IsTextSelectionEnabled="True"
+									   Text="{x:Bind FileName}"
+									   TextWrapping="Wrap" />
 
-					<TextBlock Grid.Row="7"
-							   Text="Message:" />
-					<TextBlock Grid.Row="7"
-							   Grid.Column="2"
-							   IsTextSelectionEnabled="True"
-							   Text="{x:Bind Message}" />
-				</Grid>
-			</ctrl:SettingsCard>
+							<TextBlock Grid.Row="6"
+									   Text="FuncName:" />
+							<TextBlock Grid.Row="6"
+									   Grid.Column="2"
+									   IsTextSelectionEnabled="True"
+									   Text="{x:Bind FuncName}"
+									   TextWrapping="Wrap" />
+
+							<TextBlock Grid.Row="7"
+									   Text="Message:" />
+							<TextBlock Grid.Row="7"
+									   Grid.Column="2"
+									   IsTextSelectionEnabled="True"
+									   Text="{x:Bind Message}" />
+						</Grid>
+					</ctrl:SettingsCard>
+				</ctrl:SettingsExpander.ExpanderContent>
+			</ctrl:SettingsExpander>
 		</DataTemplate>
 	</Page.Resources>
 

@@ -9,7 +9,7 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 
 	public:  // - Properties
 		inline winrt::hstring LevelIcon() const noexcept {
-			return level_;
+			return levelIcon_;
 		}
 
 		inline winrt::hstring Level() const noexcept {

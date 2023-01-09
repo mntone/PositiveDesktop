@@ -104,9 +104,7 @@
     <ClCompile Include="ViewModels\Settings\ErrorLogViewModel.cpp">
       <Filter>ViewModels\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Controls\SettingsCard.cpp">
-      <Filter>UI\Controls</Filter>
-    </ClCompile>
+    <ClCompile Include="UI\Controls\SettingsCard.cpp" />
     <ClCompile Include="UI\Helpers\NavigationHelper.cpp">
       <Filter>UI\Helpers</Filter>
     </ClCompile>

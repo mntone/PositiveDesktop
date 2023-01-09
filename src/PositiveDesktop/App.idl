@@ -82,22 +82,18 @@ namespace PositiveDesktop
 			[interface_name("ISettingsExpander", 4AF7A35C-93BB-4560-8813-06CD71C70CF7)]
 			[static_name("ISettingsExpanderStatics", 8C6C1111-678F-4BB1-A910-6EAE3B9E471F)]
 			[webhosthidden]
-			unsealed runtimeclass SettingsExpander : Microsoft.UI.Xaml.Controls.ContentControl
+			unsealed runtimeclass SettingsExpander : Microsoft.UI.Xaml.Controls.Expander
 			{
 				SettingsExpander();
 
-				Object CardContent;
 				Object Description;
+				Object ExpanderContent;
 				Microsoft.UI.Xaml.Controls.IconElement HeaderIcon;
-				Object Header;
-				Boolean IsExpanded;
 				Microsoft.UI.Xaml.Controls.Orientation Orientation;
 
-				static Microsoft.UI.Xaml.DependencyProperty CardContentProperty { get; };
 				static Microsoft.UI.Xaml.DependencyProperty DescriptionProperty { get; };
+				static Microsoft.UI.Xaml.DependencyProperty ExpanderContentProperty { get; };
 				static Microsoft.UI.Xaml.DependencyProperty HeaderIconProperty { get; };
-				static Microsoft.UI.Xaml.DependencyProperty HeaderProperty { get; };
-				static Microsoft.UI.Xaml.DependencyProperty IsExpandedProperty { get; };
 				static Microsoft.UI.Xaml.DependencyProperty OrientationProperty { get; };
 			}
 

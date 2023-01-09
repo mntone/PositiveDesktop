@@ -75,26 +75,28 @@
 							Margin="24,4,24,4"
 							Spacing="4">
 					<ctrl:SettingsExpander Header="Header">
-						<ctrl:SettingsExpander.CardContent>
-							<Button Content="button" />
-						</ctrl:SettingsExpander.CardContent>
-						<StackPanel>
-							<ctrl:SettingsCard Style="{StaticResource SettingsMiddleCardStyle}">
-								<ctrl:SettingsCard.Header>
-									<CheckBox Content="This is checkbox!!!!!!!" />
-								</ctrl:SettingsCard.Header>
-							</ctrl:SettingsCard>
-							<ctrl:SettingsCard Header="NumberBox"
-											   Description="Description, description, description, description and description!"
-											   Style="{StaticResource SettingsBottomCardStyle}">
-								<ctrl:SettingsCard.HeaderIcon>
-									<FontIcon FontFamily="Segoe MDL2 Assets"
-											  Glyph="&#xE97E;"
-											  IsTextScaleFactorEnabled="False" />
-								</ctrl:SettingsCard.HeaderIcon>
-								<NumberBox MinWidth="{StaticResource SettingsCardContentMinWidth}" />
-							</ctrl:SettingsCard>
-						</StackPanel>
+						<Button Content="button"
+								MinWidth="{StaticResource SettingsCardContentMinWidth}" />
+
+						<ctrl:SettingsExpander.ExpanderContent>
+							<StackPanel>
+								<ctrl:SettingsCard Style="{StaticResource SettingsMiddleCardAltStyle}">
+									<ctrl:SettingsCard.Header>
+										<CheckBox Content="This is checkbox!!!!!!!" />
+									</ctrl:SettingsCard.Header>
+								</ctrl:SettingsCard>
+								<ctrl:SettingsCard Header="NumberBox"
+												   Description="Description, description, description, description and description!"
+												   Style="{StaticResource SettingsBottomCardAltStyle}">
+									<ctrl:SettingsCard.HeaderIcon>
+										<FontIcon FontFamily="Segoe MDL2 Assets"
+												  Glyph="&#xE97E;"
+												  IsTextScaleFactorEnabled="False" />
+									</ctrl:SettingsCard.HeaderIcon>
+									<NumberBox MinWidth="{StaticResource SettingsCardContentMinWidth}" />
+								</ctrl:SettingsCard>
+							</StackPanel>
+						</ctrl:SettingsExpander.ExpanderContent>
 					</ctrl:SettingsExpander>
 					<ctrl:SettingsCard Header="Button"
 									   Description="Description, description, description, description and description!"

@@ -20,39 +20,18 @@ void SettingsExpander::DependencyProperties::DelayInitIfNeeded() {
 
 	DEFINE_PARENT_TYPENAME(SettingsExpander);
 
-	DEFINE_DP(CardContent, winrt::IInspectable, SettingsExpander);
+	DEFINE_DP(Description, winrt::IInspectable, SettingsExpander);
 
-	DEFINE_DP_CALLBACK(
-		Description,
-		winrt::IInspectable,
-		SettingsExpander,
-		&SettingsExpander::OnDescriptionChangedStatic);
+	DEFINE_DP(ExpanderContent, winrt::IInspectable, SettingsExpander);
 
-	DEFINE_DP_CALLBACK(
-		HeaderIcon,
-		winrt::Microsoft::UI::Xaml::Controls::IconElement,
-		SettingsExpander,
-		&SettingsExpander::OnHeaderIconChangedStatic);
-
-	DEFINE_DP_CALLBACK(
-		Header,
-		winrt::IInspectable,
-		SettingsExpander,
-		&SettingsExpander::OnHeaderChangedStatic);
-
-	DEFINE_DP_CALLBACK(
-		IsExpanded,
-		bool,
-		SettingsExpander,
-		&SettingsExpander::OnIsExpandedChangedStatic);
+	DEFINE_DP(HeaderIcon, winrt::Microsoft::UI::Xaml::Controls::IconElement, SettingsExpander);
 
 	DEFINE_DP_METADATA(
 		Orientation,
 		winrt::Microsoft::UI::Xaml::Controls::Orientation,
 		SettingsExpander,
 		winrt::PropertyMetadata(
-			winrt::box_value(winrt::Microsoft::UI::Xaml::Controls::Orientation::Horizontal),
-			winrt::PropertyChangedCallback(&SettingsExpander::OnOrientationChangedStatic)));
+			winrt::box_value(winrt::Microsoft::UI::Xaml::Controls::Orientation::Horizontal)));
 
 	initialized_ = true;
 }

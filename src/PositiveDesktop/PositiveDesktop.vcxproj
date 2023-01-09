@@ -221,7 +221,12 @@
     <ClCompile Include="SettingsWindow.xaml.cpp">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="UI\Controls\SettingsCard.cpp" />
+    <ClCompile Include="UI\Controls\SettingsCard.cpp">
+      <DependentUpon>UI\Controls\SettingsCard.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="UI\Controls\SettingsCard.properties.cpp">
+      <DependentUpon>UI\Controls\SettingsCard.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="UI\Controls\SettingsExpander.cpp">
       <DependentUpon>UI\Controls\SettingsExpander.xaml</DependentUpon>
     </ClCompile>

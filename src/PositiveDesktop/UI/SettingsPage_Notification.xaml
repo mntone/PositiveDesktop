@@ -31,12 +31,7 @@
 		<StackPanel Margin="24,0,24,36"
 					Spacing="4">
 			<ctrl:SettingsCard Header="Notification">
-				<ctrl:SettingsCard.HeaderIcon>
-					<FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-							  Glyph="&#xE7E7;" />
-				</ctrl:SettingsCard.HeaderIcon>
-
-				<ToggleSwitch MinWidth="{StaticResource SettingsCardContentMinWidth}" />
+				<ToggleSwitch />
 			</ctrl:SettingsCard>
 
 			<ctrl:SettingsCard Header="Theme">
@@ -68,8 +63,8 @@
 
 			<StackPanel>
 				<ctrl:SettingsCard x:Uid="Settings_Notification_HorizontalPosition"
-								   CornerRadius="4,4,0,0"
-								   Header="Horizontal Position">
+								   Header="Horizontal Position"
+								   Style="{StaticResource SettingsTopCardStyle}">
 					<StackPanel Orientation="Horizontal"
 								Spacing="8">
 						<TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -88,9 +83,8 @@
 				</ctrl:SettingsCard>
 
 				<ctrl:SettingsCard x:Uid="Settings_Notification_VerticalPosition"
-								   BorderThickness="1,0,1,1"
-								   CornerRadius="0,0,4,4"
-								   Header="Vertical Position">
+								   Header="Vertical Position"
+								   Style="{StaticResource SettingsBottomCardStyle}">
 					<StackPanel Orientation="Horizontal"
 								Spacing="8">
 						<TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}"

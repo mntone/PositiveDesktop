@@ -9,8 +9,6 @@ namespace resources {
 }
 
 namespace controls {
-	constexpr std::wstring_view ActionIcon { L"ActionIcon" };
-	constexpr std::wstring_view CardContentControl { L"CardContentControl" };
 	constexpr std::wstring_view Description { L"Description" };
 	constexpr std::wstring_view HeaderIcon { L"HeaderIcon" };
 	constexpr std::wstring_view Header { L"Header" };
@@ -21,6 +19,9 @@ namespace states {
 	constexpr std::wstring_view PointerOver { L"PointerOver" };
 	constexpr std::wstring_view Pressed { L"Pressed" };
 	constexpr std::wstring_view Disabled { L"Disabled" };
+
+	constexpr std::wstring_view HeaderOnly { L"HeaderOnly" };
+	constexpr std::wstring_view HeaderAndDescription { L"HeaderAndDescription" };
 
 	constexpr std::wstring_view Vertical { L"Vertical" };
 	constexpr std::wstring_view Horizontal { L"Horizontal" };
@@ -45,49 +46,24 @@ SettingsExpander::SettingsExpander() noexcept {
 }
 
 void SettingsExpander::OnApplyTemplate() {
-	cardContentControl_ = GetTemplateChild(controls::CardContentControl).as<ContentControl>();
+	__super::OnApplyTemplate();
+
 	OnOrientationChanged(Orientation());
 	OnDescriptionChanged(Description());
-	OnHeaderChanged(Header());
 	OnHeaderIconChanged(HeaderIcon());
-	VisualStateManager::GoToState(*this, IsEnabled() ? states::Normal : states::Disabled, true);
-	RegisterButtonEvents();
-	IsEnabledChanged(&SettingsExpander::OnIsEnabledChangedStatic); // The listener is the same lifecycle to the object.
+	//IsEnabledChanged(&SettingsExpander::OnIsEnabledChangedStatic); // The listener is the same lifecycle to the object.
 }
 
-void SettingsExpander::RegisterButtonEvents() {
-	// The listener is the same lifecycle to the object.
-	ContentControl cardContentControl { cardContentControl_ };
-	cardContentControl.PointerEntered(&SettingsExpander::OnControlPointerEnteredStatic);
-	cardContentControl.PointerPressed(&SettingsExpander::OnControlPointerPressedStatic);
-	cardContentControl.PointerReleased(&SettingsExpander::OnControlPointerReleasedStatic);
-	cardContentControl.PointerExited(&SettingsExpander::OnControlPointerExitedStatic);
+void SettingsExpander::OnPointerEntered(PointerRoutedEventArgs const& args) const {
+	__super::OnPointerEntered(args);
+
+	VisualStateManager::GoToState(*this, states::PointerOver, true);
 }
 
-void SettingsExpander::OnControlPointerEnteredStatic(IInspectable const& sender, PointerRoutedEventArgs const& /*args*/) {
-	VisualStateManager::GoToState(sender.as<Control>(), states::PointerOver, true);
-}
+void SettingsExpander::OnPointerExited(PointerRoutedEventArgs const& args) const {
+	__super::OnPointerExited(args);
 
-void SettingsExpander::OnControlPointerPressedStatic(IInspectable const& sender, PointerRoutedEventArgs const& /*args*/) {
-	VisualStateManager::GoToState(sender.as<Control>(), states::PointerOver, true);
-}
-
-void SettingsExpander::OnControlPointerReleasedStatic(IInspectable const& sender, PointerRoutedEventArgs const& args) {
-	Control proj { sender.as<Control>() };
-	winrt::Windows::Foundation::Numerics::float2 point { args.GetCurrentPoint(proj).Position() };
-	if (point.x < 0 || point.y < 0 || point.x > proj.ActualWidth() || point.y > proj.ActualHeight()) {
-		VisualStateManager::GoToState(proj, states::Normal, true);
-	} else {
-		VisualStateManager::GoToState(proj, states::PointerOver, true);
-	}
-}
-
-void SettingsExpander::OnControlPointerExitedStatic(IInspectable const& sender, PointerRoutedEventArgs const& /*args*/) {
-	VisualStateManager::GoToState(sender.as<Control>(), states::Normal, true);
-}
-
-void SettingsExpander::OnIsEnabledChangedStatic(IInspectable const& sender, DependencyPropertyChangedEventArgs const& args) {
-	VisualStateManager::GoToState(sender.as<Control>(), unbox_value<bool>(args.NewValue()) ? states::Normal : states::Disabled, true);
+	VisualStateManager::GoToState(*this, states::Normal, true);
 }
 
 void SettingsExpander::OnDescriptionChanged(IInspectable const& newValue) {
@@ -95,9 +71,16 @@ void SettingsExpander::OnDescriptionChanged(IInspectable const& newValue) {
 	if (element) {
 		if (newValue == nullptr) {
 			element.Visibility(Visibility::Collapsed);
+			VisualStateManager::GoToState(*this, states::HeaderOnly, true);
 		} else {
 			std::optional<hstring> newString { newValue.try_as<hstring>() };
-			element.Visibility(newString.has_value() && newString.value().empty() ? Visibility::Collapsed : Visibility::Visible);
+			if (newString.has_value() && newString.value().empty()) {
+				element.Visibility(Visibility::Collapsed);
+				VisualStateManager::GoToState(*this, states::HeaderOnly, true);
+			} else {
+				element.Visibility(Visibility::Visible);
+				VisualStateManager::GoToState(*this, states::HeaderAndDescription, true);
+			}
 		}
 	}
 }
@@ -109,43 +92,20 @@ void SettingsExpander::OnHeaderIconChanged(IconElement const& newValue) {
 	}
 }
 
-void SettingsExpander::OnHeaderChanged(IInspectable const& newValue) {
-	FrameworkElement element { GetTemplateChild(controls::Header).try_as<FrameworkElement>() };
-	if (element) {
-		if (newValue == nullptr) {
-			element.Visibility(Visibility::Collapsed);
-		} else {
-			std::optional<hstring> newString { newValue.try_as<hstring>() };
-			element.Visibility(newString.has_value() && newString.value().empty() ? Visibility::Collapsed : Visibility::Visible);
-		}
-	}
-}
-
-void SettingsExpander::OnIsExpandedChanged() {
-}
-
 void SettingsExpander::OnOrientationChanged(winrt::Orientation newValue) {
 	VisualStateManager::GoToState(*this, newValue == Orientation::Vertical ? states::Vertical : states::Horizontal, true);
 }
 
 void SettingsExpander::OnDescriptionChangedStatic(DependencyObject const& sender, DependencyPropertyChangedEventArgs const& args) {
-	get_self<SettingsExpander>(sender.as<PositiveDesktop::UI::Controls::SettingsExpander>())->OnDescriptionChanged(args.NewValue());
+	get_self<SettingsExpander>(sender.as<winrt::SettingsExpander>())->OnDescriptionChanged(args.NewValue());
 }
 
 void SettingsExpander::OnHeaderIconChangedStatic(DependencyObject const& sender, DependencyPropertyChangedEventArgs const& args) {
-	get_self<SettingsExpander>(sender.as<PositiveDesktop::UI::Controls::SettingsExpander>())->OnHeaderIconChanged(
+	get_self<SettingsExpander>(sender.as<winrt::SettingsExpander>())->OnHeaderIconChanged(
 		args.NewValue().as<Microsoft::UI::Xaml::Controls::IconElement>());
 }
 
-void SettingsExpander::OnHeaderChangedStatic(DependencyObject const& sender, DependencyPropertyChangedEventArgs const& args) {
-	get_self<SettingsExpander>(sender.as<PositiveDesktop::UI::Controls::SettingsExpander>())->OnHeaderChanged(args.NewValue());
-}
-
-void SettingsExpander::OnIsExpandedChangedStatic(DependencyObject const& sender, DependencyPropertyChangedEventArgs const& args) {
-	get_self<SettingsExpander>(sender.as<PositiveDesktop::UI::Controls::SettingsExpander>())->OnIsExpandedChanged();
-}
-
 void SettingsExpander::OnOrientationChangedStatic(DependencyObject const& sender, DependencyPropertyChangedEventArgs const& args) {
-	winrt::Orientation newOrientation { unbox_value<winrt::Orientation>(args.NewValue()) };
-	VisualStateManager::GoToState(sender.as<Control>(), newOrientation == Orientation::Vertical ? states::Vertical : states::Horizontal, true);
+	get_self<SettingsExpander>(sender.as<winrt::SettingsExpander>())->OnOrientationChanged(
+		winrt::unbox_value<winrt::Orientation>(args.NewValue()));
 }

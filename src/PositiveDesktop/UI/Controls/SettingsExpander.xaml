@@ -4,39 +4,132 @@
 					xmlns:ctrl="using:PositiveDesktop.UI.Controls"
 					xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives">
 
-	<primitives:CornerRadiusFilterConverter x:Key="TopCornerRadiusFilterConverter"
-											Filter="Top" />
-	<primitives:CornerRadiusFilterConverter x:Key="BottomCornerRadiusFilterConverter"
-											Filter="Bottom" />
-
 	<Style x:Key="SettingsExpanderHeaderDownStyle"
 		   TargetType="ToggleButton">
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ToggleButton">
-					<Grid Background="{TemplateBinding Background}"
+					<Grid x:Name="RootGrid"
 						  BackgroundSizing="{TemplateBinding BackgroundSizing}"
-						  BorderBrush="{TemplateBinding BorderBrush}"
-						  BorderThickness="{TemplateBinding BorderThickness}"
+						  BorderThickness="{StaticResource SettingsCardBorderThickness}"
 						  CornerRadius="{TemplateBinding CornerRadius}"
-						  HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
 						  MinHeight="{TemplateBinding MinHeight}"
-						  MinWidth="{TemplateBinding MinWidth}"
-						  MaxWidth="{TemplateBinding MaxWidth}"
 						  Padding="{TemplateBinding Padding}"
 						  VerticalAlignment="{TemplateBinding VerticalAlignment}">
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Normal">
+									<VisualState.Setters>
+										<Setter Target="ExpandCollapseChevron.Foreground"
+												Value="{ThemeResource ExpanderChevronForeground}" />
+										<Setter Target="RootGrid.Background"
+												Value="{ThemeResource SettingsCardBackground}" />
+										<Setter Target="RootGrid.BorderBrush"
+												Value="{ThemeResource SettingsCardBorderBrush}" />
+									</VisualState.Setters>
+								</VisualState>
+								<VisualState x:Name="PointerOver">
+									<VisualState.Setters>
+										<Setter Target="ExpandCollapseChevron.Foreground"
+												Value="{ThemeResource ExpanderChevronPointerOverForeground}" />
+										<Setter Target="ExpandCollapseChevron.(AnimatedIcon.State)"
+												Value="PointerOverOff" />
+										<Setter Target="RootGrid.Background"
+												Value="{ThemeResource SettingsCardBackgroundPointerOver}" />
+										<Setter Target="RootGrid.BorderBrush"
+												Value="{ThemeResource SettingsCardBorderBrushPointerOver}" />
+									</VisualState.Setters>
+								</VisualState>
+								<VisualState x:Name="Pressed">
+									<VisualState.Setters>
+										<Setter Target="ExpandCollapseChevron.Foreground"
+												Value="{ThemeResource ExpanderChevronPressedForeground}" />
+										<Setter Target="ExpandCollapseChevron.(AnimatedIcon.State)"
+												Value="PressedOff" />
+										<Setter Target="RootGrid.Background"
+												Value="{ThemeResource SettingsCardBackgroundPressed}" />
+										<Setter Target="RootGrid.BorderBrush"
+												Value="{ThemeResource SettingsCardBorderBrushPressed}" />
+									</VisualState.Setters>
+								</VisualState>
+								<VisualState x:Name="Disabled">
+									<VisualState.Setters>
+										<Setter Target="ExpandCollapseChevron.Foreground"
+												Value="{ThemeResource ExpanderHeaderDisabledForeground}" />
+									</VisualState.Setters>
+								</VisualState>
+								<VisualState x:Name="Checked">
+									<VisualState.Setters>
+										<Setter Target="ExpandCollapseChevron.Foreground"
+												Value="{ThemeResource ExpanderChevronForeground}" />
+										<Setter Target="ExpandCollapseChevron.(AnimatedIcon.State)"
+												Value="NormalOn" />
+										<Setter Target="RootGrid.Background"
+												Value="{ThemeResource SettingsCardBackground}" />
+										<Setter Target="RootGrid.BorderBrush"
+												Value="{ThemeResource SettingsCardBorderBrush}" />
+									</VisualState.Setters>
+								</VisualState>
+								<VisualState x:Name="CheckedPointerOver">
+									<VisualState.Setters>
+										<Setter Target="ExpandCollapseChevron.Foreground"
+												Value="{ThemeResource ExpanderChevronPointerOverForeground}" />
+										<Setter Target="ExpandCollapseChevron.(AnimatedIcon.State)"
+												Value="PointerOverOn" />
+										<Setter Target="RootGrid.Background"
+												Value="{ThemeResource SettingsCardBackgroundPointerOver}" />
+										<Setter Target="RootGrid.BorderBrush"
+												Value="{ThemeResource SettingsCardBorderBrushPointerOver}" />
+									</VisualState.Setters>
+								</VisualState>
+								<VisualState x:Name="CheckedPressed">
+									<VisualState.Setters>
+										<Setter Target="ExpandCollapseChevron.Foreground"
+												Value="{ThemeResource ExpanderChevronPressedForeground}" />
+										<Setter Target="ExpandCollapseChevron.(AnimatedIcon.State)"
+												Value="PressedOn" />
+										<Setter Target="RootGrid.Background"
+												Value="{ThemeResource SettingsCardBackgroundPressed}" />
+										<Setter Target="RootGrid.BorderBrush"
+												Value="{ThemeResource SettingsCardBorderBrushPressed}" />
+									</VisualState.Setters>
+								</VisualState>
+								<VisualState x:Name="CheckedDisabled">
+									<VisualState.Setters>
+										<Setter Target="ExpandCollapseChevron.Foreground"
+												Value="{ThemeResource ExpanderHeaderDisabledForeground}" />
+										<Setter Target="ExpandCollapseChevron.(AnimatedIcon.State)"
+												Value="NormalOn" />
+									</VisualState.Setters>
+								</VisualState>
+								<VisualState x:Name="Indeterminate" />
+								<VisualState x:Name="IndeterminatePointerOver" />
+								<VisualState x:Name="IndeterminatePressed" />
+								<VisualState x:Name="IndeterminateDisabled" />
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+						<Grid.BackgroundTransition>
+							<BrushTransition Duration="0:0:0.083" />
+						</Grid.BackgroundTransition>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition />
 							<ColumnDefinition Width="Auto" />
 						</Grid.ColumnDefinitions>
+
 						<ContentPresenter Content="{TemplateBinding Content}"
 										  ContentTransitions="{TemplateBinding ContentTransitions}"
 										  Foreground="{TemplateBinding Foreground}" />
 
-						<ContentControl Grid.Column="1"
+						<ContentControl x:Name="ExpandCollapseChevronBorder"
+										Grid.Column="1"
 										CornerRadius="{StaticResource ControlCornerRadius}"
-										IsTabStop="True">
-							<AnimatedIcon AnimatedIcon.State="NormalOn"
+										HorizontalAlignment="Right"
+										HorizontalContentAlignment="Center"
+										IsTabStop="False"
+										Margin="12,0,-4,0"
+										VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+							<AnimatedIcon x:Name="ExpandCollapseChevron"
+										  AnimatedIcon.State="NormalOff"
 										  Height="16"
 										  HorizontalAlignment="Center"
 										  RenderTransformOrigin=".5,.5"
@@ -57,8 +150,8 @@
 		</Setter>
 	</Style>
 
-	<Style x:Key="SettingsExpanderExpanderStyle"
-		   TargetType="Expander">
+	<Style x:Key="DefaultSettingsExpanderStyle"
+		   TargetType="ctrl:SettingsExpander">
 		<Setter Property="Background"
 				Value="{ThemeResource SettingsCardBackground}" />
 		<Setter Property="BackgroundSizing"
@@ -72,15 +165,17 @@
 		<Setter Property="FocusVisualMargin"
 				Value="-3" />
 		<Setter Property="FontFamily"
-				Value="{ThemeResource ContentControlThemeFontFamily}" />
+				Value="{StaticResource ContentControlThemeFontFamily}" />
 		<Setter Property="FontSize"
-				Value="{ThemeResource ControlContentThemeFontSize}" />
+				Value="{StaticResource ControlContentThemeFontSize}" />
 		<Setter Property="FontWeight"
 				Value="Normal" />
 		<Setter Property="Foreground"
 				Value="{ThemeResource SettingsCardForeground}" />
-		<Setter Property="HorizontalContentAlignment"
+		<Setter Property="HorizontalAlignment"
 				Value="Stretch" />
+		<Setter Property="HorizontalContentAlignment"
+				Value="Left" />
 		<Setter Property="MinHeight"
 				Value="{StaticResource SettingsCardMinHeight}" />
 		<Setter Property="MaxWidth"
@@ -90,7 +185,7 @@
 		<Setter Property="IsTabStop"
 				Value="False" />
 		<Setter Property="Padding"
-				Value="{ThemeResource SettingsCardPadding}" />
+				Value="{StaticResource SettingsCardPadding}" />
 		<Setter Property="UseSystemFocusVisuals"
 				Value="{StaticResource UseSystemFocusVisuals}" />
 		<Setter Property="VerticalAlignment"
@@ -99,10 +194,21 @@
 				Value="Top" />
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="Expander">
+				<ControlTemplate TargetType="ctrl:SettingsExpander">
 					<Grid MaxWidth="{TemplateBinding MaxWidth}"
 						  MinHeight="{TemplateBinding MinWidth}">
 						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Normal" />
+								<VisualState x:Name="PointerOver">
+									<VisualState.Setters>
+										<Setter Target="HeaderIconPresenter.Foreground"
+												Value="{ThemeResource SettingsCardForegroundPointerOver}" />
+										<Setter Target="Header.Foreground"
+												Value="{ThemeResource SettingsCardForegroundPointerOver}" />
+									</VisualState.Setters>
+								</VisualState>
+							</VisualStateGroup>
 							<VisualStateGroup x:Name="ExpandStates">
 								<VisualState x:Name="ExpandUp">
 									<VisualState.Setters>
@@ -181,8 +287,6 @@
 									<VisualState.Setters>
 										<Setter Target="ExpanderHeader.Style"
 												Value="{StaticResource ExpanderHeaderUpStyle}" />
-										<Setter Target="ExpanderContent.BorderThickness"
-												Value="{StaticResource ExpanderContentUpBorderThickness}" />
 										<Setter Target="ExpanderHeader.(Grid.Row)"
 												Value="1" />
 										<Setter Target="ExpanderContentClip.(Grid.Row)"
@@ -207,208 +311,79 @@
 									  BackgroundSizing="{TemplateBinding BackgroundSizing}"
 									  BorderBrush="{TemplateBinding BorderBrush}"
 									  BorderThickness="{TemplateBinding BorderThickness}"
-									  Content="{TemplateBinding Header}"
 									  CornerRadius="{TemplateBinding CornerRadius}"
 									  HorizontalAlignment="Stretch"
 									  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
 									  IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
 									  IsEnabled="{TemplateBinding IsEnabled}"
 									  IsTabStop="True"
+									  MinHeight="{TemplateBinding MinHeight}"
 									  Padding="{TemplateBinding Padding}"
-									  Style="{StaticResource SettingsExpanderHeaderDownStyle}" />
+									  Style="{StaticResource SettingsExpanderHeaderDownStyle}">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"
+													  MinWidth="{StaticResource SettingsCardLeftIndention}" />
+									<ColumnDefinition />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+
+								<Viewbox x:Name="HeaderIcon"
+										 Height="{StaticResource SettingsCardHeaderIconMaxSize}"
+										 Margin="{StaticResource SettingsCardHeaderIconMargin}"
+										 StretchDirection="DownOnly"
+										 Width="{StaticResource SettingsCardHeaderIconMaxSize}">
+									<ContentPresenter x:Name="HeaderIconPresenter"
+													  Content="{TemplateBinding HeaderIcon}"
+													  HighContrastAdjustment="None"
+													  IsTextScaleFactorEnabled="False" />
+								</Viewbox>
+
+								<StackPanel Grid.Column="1"
+											Margin="0,0,16,0"
+											VerticalAlignment="Center">
+									<ContentPresenter x:Name="Header"
+													  Content="{TemplateBinding Header}"
+													  Foreground="{TemplateBinding Foreground}"
+													  TextWrapping="Wrap" />
+									<ContentPresenter x:Name="Description"
+													  Content="{TemplateBinding Description}"
+													  FontSize="{StaticResource SettingsCardDescriptionFontSize}"
+													  Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+													  TextWrapping="Wrap" />
+								</StackPanel>
+
+								<ContentPresenter x:Name="Content"
+												  Grid.Column="2"
+												  Content="{TemplateBinding Content}"
+												  HorizontalAlignment="Right"
+												  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+												  VerticalAlignment="Center"
+												  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+							</Grid>
+						</ToggleButton>
 
 						<Border x:Name="ExpanderContentClip"
-								Grid.Row="1">
+								Grid.Row="1"
+								VerticalAlignment="Top">
 							<Border x:Name="ExpanderContent"
-									BackgroundSizing="{TemplateBinding BackgroundSizing}"
-									HorizontalAlignment="Stretch"
-									VerticalAlignment="Top"
 									Visibility="Collapsed">
 								<Border.RenderTransform>
 									<CompositeTransform TranslateY="{Binding TemplateSettings.NegativeContentHeight, RelativeSource={RelativeSource TemplatedParent}}" />
 								</Border.RenderTransform>
-								<ContentPresenter Content="{TemplateBinding Content}"
+								<ContentPresenter Content="{TemplateBinding ExpanderContent}"
 												  ContentTemplate="{TemplateBinding ContentTemplate}"
-												  ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" />
+												  ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" VerticalContentAlignment="Center" />
 							</Border>
 						</Border>
 					</Grid>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
-	</Style>
-
-	<Style x:Key="DefaultSettingsExpanderStyle"
-		   TargetType="ctrl:SettingsExpander">
-		<Style.Setters>
-			<Setter Property="Background"
-					Value="{ThemeResource SettingsCardBackground}" />
-			<Setter Property="BackgroundSizing"
-					Value="InnerBorderEdge" />
-			<Setter Property="BorderBrush"
-					Value="{ThemeResource SettingsCardBorderBrush}" />
-			<Setter Property="BorderThickness"
-					Value="{ThemeResource SettingsCardBorderThickness}" />
-			<Setter Property="CornerRadius"
-					Value="{ThemeResource ControlCornerRadius}" />
-			<Setter Property="FocusVisualMargin"
-					Value="-3" />
-			<Setter Property="FontFamily"
-					Value="{ThemeResource ContentControlThemeFontFamily}" />
-			<Setter Property="FontSize"
-					Value="{ThemeResource ControlContentThemeFontSize}" />
-			<Setter Property="FontWeight"
-					Value="Normal" />
-			<Setter Property="Foreground"
-					Value="{ThemeResource SettingsCardForeground}" />
-			<Setter Property="HorizontalContentAlignment"
-					Value="Stretch" />
-			<Setter Property="MinHeight"
-					Value="{StaticResource SettingsCardMinHeight}" />
-			<Setter Property="MaxWidth"
-					Value="{StaticResource SettingsCardMaxWidth}" />
-			<Setter Property="MinWidth"
-					Value="{StaticResource SettingsCardMinWidth}" />
-			<Setter Property="IsTabStop"
-					Value="False" />
-			<Setter Property="Padding"
-					Value="0" />
-			<Setter Property="UseSystemFocusVisuals"
-					Value="{StaticResource UseSystemFocusVisuals}" />
-			<Setter Property="VerticalAlignment"
-					Value="Top" />
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="ctrl:SettingsExpander">
-						<Expander x:Name="RootExpander"
-								  AnimatedIcon.State="Normal"
-								  CornerRadius="{TemplateBinding CornerRadius}"
-								  HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-								  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-								  IsExpanded="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-								  MaxWidth="{TemplateBinding MaxWidth}"
-								  Style="{StaticResource SettingsExpanderExpanderStyle}"
-								  VerticalAlignment="{TemplateBinding VerticalAlignment}"
-								  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
-							<VisualStateManager.VisualStateGroups>
-								<VisualStateGroup x:Name="CommonStates">
-									<VisualState x:Name="Normal" />
-									<VisualState x:Name="PointerOver">
-										<VisualState.Setters>
-											<Setter Target="HeaderIconPresenter.Foreground"
-													Value="{ThemeResource SettingsCardForegroundPointerOver}" />
-											<Setter Target="Header.Foreground"
-													Value="{ThemeResource SettingsCardForegroundPointerOver}" />
-											<Setter Target="RootExpander.Background"
-													Value="{ThemeResource SettingsCardBackgroundPointerOver}" />
-											<Setter Target="RootExpander.BorderBrush"
-													Value="{ThemeResource SettingsCardBorderBrushPointerOver}" />
-											<Setter Target="RootExpander.(AnimatedIcon.State)"
-													Value="PointerOver" />
-										</VisualState.Setters>
-									</VisualState>
-									<VisualState x:Name="Pressed">
-										<VisualState.Setters>
-											<Setter Target="Description.Foreground"
-													Value="{ThemeResource SettingsCardForegroundPressed}" />
-											<Setter Target="HeaderIconPresenter.Foreground"
-													Value="{ThemeResource SettingsCardForegroundPressed}" />
-											<Setter Target="Header.Foreground"
-													Value="{ThemeResource SettingsCardForegroundPressed}" />
-											<Setter Target="RootExpander.Background"
-													Value="{ThemeResource SettingsCardBackgroundPressed}" />
-											<Setter Target="RootExpander.BorderBrush"
-													Value="{ThemeResource SettingsCardBorderBrushPressed}" />
-											<Setter Target="RootExpander.(AnimatedIcon.State)"
-													Value="Pressed" />
-										</VisualState.Setters>
-									</VisualState>
-									<VisualState x:Name="Disabled">
-										<VisualState.Setters>
-											<Setter Target="Description.Foreground"
-													Value="{ThemeResource SettingsCardForegroundDisabled}" />
-											<Setter Target="HeaderIconPresenter.Foreground"
-													Value="{ThemeResource SettingsCardForegroundDisabled}" />
-											<Setter Target="Header.Foreground"
-													Value="{ThemeResource SettingsCardForegroundDisabled}" />
-											<Setter Target="RootExpander.(AnimatedIcon.State)"
-													Value="Normal" />
-										</VisualState.Setters>
-									</VisualState>
-								</VisualStateGroup>
-								<VisualStateGroup x:Name="Orientation">
-									<VisualState x:Name="Horizontal" />
-									<VisualState x:Name="Vertical">
-										<VisualState.Setters>
-											<Setter Target="CardContent.(Grid.Column)"
-													Value="1" />
-											<Setter Target="CardContent.(Grid.Row)"
-													Value="1" />
-											<Setter Target="CardContent.HorizontalAlignment"
-													Value="Left" />
-										</VisualState.Setters>
-									</VisualState>
-								</VisualStateGroup>
-							</VisualStateManager.VisualStateGroups>
-							<Expander.Header>
-								<ContentControl x:Name="CardContentControl"
-												HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-												HorizontalContentAlignment="Stretch"
-												VerticalAlignment="{TemplateBinding VerticalAlignment}"
-												VerticalContentAlignment="Stretch">
-									<Grid>
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="Auto"
-															  MinWidth="{StaticResource SettingsCardLeftIndention}" />
-											<ColumnDefinition />
-											<ColumnDefinition Width="Auto" />
-										</Grid.ColumnDefinitions>
-										<Grid.RowDefinitions>
-											<RowDefinition Height="*" />
-											<RowDefinition Height="Auto" />
-										</Grid.RowDefinitions>
-
-										<Viewbox x:Name="HeaderIcon"
-												 Height="{StaticResource SettingsCardHeaderIconMaxSize}"
-												 Margin="{StaticResource SettingsCardHeaderIconMargin}"
-												 StretchDirection="DownOnly"
-												 Width="{StaticResource SettingsCardHeaderIconMaxSize}">
-											<ContentPresenter x:Name="HeaderIconPresenter"
-															  Content="{TemplateBinding HeaderIcon}"
-															  HighContrastAdjustment="None" />
-										</Viewbox>
-
-										<StackPanel Grid.Column="1"
-													Margin="0,0,16,0"
-													VerticalAlignment="Center">
-											<ContentPresenter x:Name="Header"
-															  Content="{TemplateBinding Header}"
-															  TextWrapping="Wrap" />
-											<ContentPresenter x:Name="Description"
-															  Content="{TemplateBinding Description}"
-															  FontSize="{StaticResource SettingsCardDescriptionFontSize}"
-															  Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-															  TextWrapping="Wrap" />
-										</StackPanel>
-
-										<ContentPresenter x:Name="CardContent"
-														  Grid.Column="2"
-														  Content="{TemplateBinding CardContent}"
-														  HorizontalAlignment="Right"
-														  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-														  VerticalAlignment="Center"
-														  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
-									</Grid>
-								</ContentControl>
-							</Expander.Header>
-
-							<ContentPresenter x:Name="Content"
-											  Content="{TemplateBinding Content}" />
-						</Expander>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style.Setters>
 	</Style>
 
 	<Style TargetType="ctrl:SettingsExpander"

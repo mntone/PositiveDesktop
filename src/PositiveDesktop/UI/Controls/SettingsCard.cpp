@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "SettingsCard.h"
-#if __has_include("./UI/Controls/SettingsCard.g.cpp")
-#include "./UI/Controls/SettingsCard.g.cpp"
-#endif
 
 #include <winrt/Microsoft.UI.Input.h>
 #include <winrt/Microsoft.UI.Xaml.Input.h>
@@ -24,6 +21,9 @@ namespace states {
 	constexpr std::wstring_view Pressed { L"Pressed" };
 	constexpr std::wstring_view Disabled { L"Disabled" };
 
+	constexpr std::wstring_view HeaderOnly { L"HeaderOnly" };
+	constexpr std::wstring_view HeaderAndDescription { L"HeaderAndDescription" };
+
 	constexpr std::wstring_view Vertical { L"Vertical" };
 	constexpr std::wstring_view Horizontal { L"Horizontal" };
 }
@@ -43,10 +43,13 @@ namespace winrt {
 using namespace winrt::PositiveDesktop::UI::Controls::implementation;
 
 SettingsCard::SettingsCard() noexcept {
+	props_.DelayInitIfNeeded();
 	DefaultStyleKey(box_value(resources::PositiveDesktop_UI_Controls_SettingsCard));
 }
 
 void SettingsCard::OnApplyTemplate() {
+	__super::OnApplyTemplate();
+
 	OnOrientationChanged(Orientation());
 	OnDescriptionChanged(Description());
 	OnHeaderChanged(Header());
@@ -60,9 +63,9 @@ void SettingsCard::OnIsEnabledChangedStatic(IInspectable const& sender, Dependen
 	VisualStateManager::GoToState(sender.as<Control>(), unbox_value<bool>(args.NewValue()) ? states::Normal : states::Disabled, true);
 }
 
-void SettingsCard::OnPreviewKeyDown(KeyRoutedEventArgs const& args) const {
+void SettingsCard::OnKeyDown(KeyRoutedEventArgs const& args) const {
 	if (IsClickEnabled()) {
-		__super::OnPreviewKeyDown(args);
+		__super::OnKeyDown(args);
 
 		switch (args.Key()) {
 		case VirtualKey::Enter:
@@ -74,10 +77,9 @@ void SettingsCard::OnPreviewKeyDown(KeyRoutedEventArgs const& args) const {
 	}
 }
 
-void SettingsCard::OnPreviewKeyUp(KeyRoutedEventArgs const& args) const {
+void SettingsCard::OnKeyUp(KeyRoutedEventArgs const& args) const {
 	if (IsClickEnabled()) {
-		__super::OnPreviewKeyDown(args);
-
+		__super::OnKeyUp(args);
 		switch (args.Key()) {
 		case VirtualKey::Enter:
 		case VirtualKey::Space:
@@ -138,9 +140,16 @@ void SettingsCard::OnDescriptionChanged(IInspectable const& newValue) {
 	if (element) {
 		if (newValue == nullptr) {
 			element.Visibility(Visibility::Collapsed);
+			VisualStateManager::GoToState(*this, states::HeaderOnly, true);
 		} else {
 			std::optional<hstring> newString { newValue.try_as<hstring>() };
-			element.Visibility(newString.has_value() && newString.value().empty() ? Visibility::Collapsed : Visibility::Visible);
+			if (newString.has_value() && newString.value().empty()) {
+				element.Visibility(Visibility::Collapsed);
+				VisualStateManager::GoToState(*this, states::HeaderOnly, true);
+			} else {
+				element.Visibility(Visibility::Visible);
+				VisualStateManager::GoToState(*this, states::HeaderAndDescription, true);
+			}
 		}
 	}
 }
@@ -166,12 +175,12 @@ void SettingsCard::OnHeaderChanged(IInspectable const& newValue) {
 
 void SettingsCard::OnIsClickEnabledChanged(bool newValue) {
 	if (newValue) {
+		IsTabStop(true);
 		OnButtonIconChanged(true);
-		//RegisterButtonEvents();
 	} else {
+		IsTabStop(false);
 		VisualStateManager::GoToState(*this, states::Normal, true); // Force-reset states.
 		OnButtonIconChanged(false);
-		//UnregisterButtonEvents();
 	}
 }
 
@@ -201,59 +210,3 @@ void SettingsCard::OnOrientationChangedStatic(DependencyObject const& sender, De
 	get_self<SettingsCard>(sender.as<PositiveDesktop::UI::Controls::SettingsCard>())->OnOrientationChanged(
 		winrt::unbox_value<winrt::Orientation>(args.NewValue()));
 }
-
-winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::ActionIconProperty_ {
-	winrt::DependencyProperty::Register(
-		L"ActionIcon",
-		winrt::xaml_typename<winrt::Microsoft::UI::Xaml::Controls::IconElement>(),
-		winrt::xaml_typename<winrt::PositiveDesktop::UI::Controls::SettingsCard>(),
-		winrt::PropertyMetadata(winrt::box_value(winrt::hstring(L"\ue974"))))
-};
-
-winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::ActionIconTooltipProperty_ {
-	winrt::DependencyProperty::Register(
-		L"ActionIconTooltip",
-		winrt::xaml_typename<winrt::hstring>(),
-		winrt::xaml_typename<winrt::PositiveDesktop::UI::Controls::SettingsCard>(),
-		winrt::PropertyMetadata(winrt::box_value(winrt::hstring(L"More"))))
-};
-
-winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::DescriptionProperty_ {
-	winrt::DependencyProperty::Register(
-		L"Description",
-		winrt::xaml_typename<winrt::IInspectable>(),
-		winrt::xaml_typename<winrt::PositiveDesktop::UI::Controls::SettingsCard>(),
-		winrt::PropertyMetadata(winrt::IInspectable { nullptr }, winrt::PropertyChangedCallback(&SettingsCard::OnDescriptionChangedStatic)))
-};
-
-winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::HeaderIconProperty_ {
-	winrt::DependencyProperty::Register(
-		L"HeaderIcon",
-		winrt::xaml_typename<winrt::Microsoft::UI::Xaml::Controls::IconElement>(),
-		winrt::xaml_typename<winrt::PositiveDesktop::UI::Controls::SettingsCard>(),
-		winrt::PropertyMetadata(winrt::Microsoft::UI::Xaml::Controls::IconElement { nullptr }, winrt::PropertyChangedCallback(&SettingsCard::OnHeaderIconChangedStatic)))
-};
-
-winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::HeaderProperty_ {
-	winrt::DependencyProperty::Register(
-		L"Header",
-		winrt::xaml_typename<winrt::IInspectable>(),
-		winrt::xaml_typename<winrt::PositiveDesktop::UI::Controls::SettingsCard>(),
-		winrt::PropertyMetadata(winrt::IInspectable { nullptr }, winrt::PropertyChangedCallback(&SettingsCard::OnHeaderChangedStatic)))
-};
-
-winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::IsClickEnabledProperty_ {
-	winrt::DependencyProperty::Register(
-		L"IsClickEnabled",
-		winrt::xaml_typename<bool>(),
-		winrt::xaml_typename<winrt::PositiveDesktop::UI::Controls::SettingsCard>(),
-		winrt::PropertyMetadata(winrt::box_value(false), winrt::PropertyChangedCallback(&SettingsCard::OnIsClickEnabledChangedStatic)))
-};
-
-winrt::Microsoft::UI::Xaml::DependencyProperty SettingsCard::OrientationProperty_ {
-	winrt::DependencyProperty::Register(
-		L"Orientation",
-		winrt::xaml_typename<winrt::Microsoft::UI::Xaml::Controls::Orientation>(),
-		winrt::xaml_typename<winrt::PositiveDesktop::UI::Controls::SettingsCard>(),
-		winrt::PropertyMetadata(winrt::box_value(winrt::Microsoft::UI::Xaml::Controls::Orientation::Horizontal), winrt::PropertyChangedCallback(&SettingsCard::OnOrientationChangedStatic)))
-};
