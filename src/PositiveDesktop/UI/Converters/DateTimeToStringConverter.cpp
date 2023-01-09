@@ -7,11 +7,9 @@
 constexpr std::wstring_view kDateTimeFormat { L"longdate longtime" };
 
 namespace winrt {
-
 	using namespace ::winrt::Windows::Foundation;
 	using namespace ::winrt::Windows::Globalization::DateTimeFormatting;
 	using namespace ::winrt::Windows::UI::Xaml::Interop;
-
 }
 
 using namespace winrt::PositiveDesktop::UI::Converters::implementation;
@@ -34,5 +32,5 @@ winrt::IInspectable DateTimeToStringConverter::Convert(IInspectable const& value
 }
 
 winrt::IInspectable DateTimeToStringConverter::ConvertBack(IInspectable const& /*value*/, TypeName const& /*targetType*/, IInspectable const& /*parameter*/, hstring const& /*language*/) {
-	throw winrt::hresult_not_implemented();
+	throw hresult_not_implemented();
 }

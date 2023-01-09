@@ -1,4 +1,5 @@
 #pragma once
+#include <winrt/Microsoft.Windows.ApplicationModel.Resources.h>
 
 namespace app::ui::resource {
 

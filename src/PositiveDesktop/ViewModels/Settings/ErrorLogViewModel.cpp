@@ -104,16 +104,16 @@ using namespace winrt::PositiveDesktop::ViewModels::Settings::implementation;
 
 ErrorLogViewModel::ErrorLogViewModel(log_t const& log) noexcept
 	: levelIcon_(app::to_glyph(log.level))
-	, level_(winrt::to_hstring(log.level))
-	, tag_(winrt::to_hstring(log.tag))
-	, operation_(winrt::to_hstring(log.op))
+	, level_(to_hstring(log.level))
+	, tag_(to_hstring(log.tag))
+	, operation_(to_hstring(log.op))
 	, line_(log.line)
-	, datetime_(winrt::clock::from_sys(log.datetime))
-	, filename_(winrt::to_hstring(log.filename))
-	, funcname_(winrt::to_hstring(log.funcname))
-	, message_(winrt::to_hstring(log.message))
-	, Header_(winrt::to_hstring(log.message.empty() ? std::format("{} in line {}", log.funcname, log.line) : log.message))
-	, Description_(winrt::to_hstring(!log.message.empty() ? std::format("{} in line {}", log.funcname, log.line) : "")) {
+	, datetime_(clock::from_sys(log.datetime))
+	, filename_(to_hstring(log.filename))
+	, funcname_(to_hstring(log.funcname))
+	, message_(to_hstring(log.message)) {
+	, Header_(to_hstring(log.message.empty() ? std::format("{} in line {}", log.funcname, log.line) : log.message))
+	, Description_(to_hstring(!log.message.empty() ? std::format("{} in line {}", log.funcname, log.line) : "")) {
 }
 
 ErrorLogsViewModel::ErrorLogsViewModel() noexcept
