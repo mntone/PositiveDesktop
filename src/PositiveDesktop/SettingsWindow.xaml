@@ -6,7 +6,7 @@
 		mc:Ignorable="d"
 		xmlns:local="using:PositiveDesktop"
 		xmlns:ui="using:PositiveDesktop.UI"
-		xmlns:ctrl="using:PositiveDesktop.UI.Controls"
+		xmlns:ctrl="using:Mntone.AngelUmbrella.UI.Controls"
 		xmlns:helpers="using:PositiveDesktop.UI.Helpers">
 
 	<Grid ActualThemeChanged="ActualThemeChanged"
@@ -89,7 +89,7 @@
 												   Description="Description, description, description, description and description!"
 												   Style="{StaticResource SettingsBottomCardAltStyle}">
 									<ctrl:SettingsCard.HeaderIcon>
-										<FontIcon FontFamily="Segoe MDL2 Assets"
+										<FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
 												  Glyph="&#xE97E;"
 												  IsTextScaleFactorEnabled="False" />
 									</ctrl:SettingsCard.HeaderIcon>

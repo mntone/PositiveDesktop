@@ -160,16 +160,10 @@
     <ClInclude Include="ViewModels\Settings\ErrorLogViewModel.h">
       <Filter>ViewModels\Settings</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Controls\SettingsCard.h">
-      <Filter>UI\Controls</Filter>
-    </ClInclude>
     <ClInclude Include="UI\Helpers\NavigationHelper.h">
       <Filter>UI\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="UI\Controls\SettingsExpander.h" />
-    <ClInclude Include="UI\Helpers\DependencyPropertyHelper.h">
-      <Filter>UI\Helpers</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -189,9 +183,6 @@
     </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{8e44507f-e73f-49c7-95ff-35309c012ea2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Controls">
-      <UniqueIdentifier>{5e26f4a9-4ad9-4d62-b29e-2db72a4e6798}</UniqueIdentifier>
     </Filter>
     <Filter Include="UI\Converters">
       <UniqueIdentifier>{a002bba6-6821-479d-a480-69c822a82f4f}</UniqueIdentifier>
@@ -221,12 +212,6 @@
     </Page>
     <Page Include="SettingsWindow.xaml">
       <Filter>UI</Filter>
-    </Page>
-    <Page Include="UI\Controls\SettingsCard.xaml">
-      <Filter>UI\Controls</Filter>
-    </Page>
-    <Page Include="UI\Controls\SettingsExpander.xaml">
-      <Filter>UI\Controls</Filter>
     </Page>
     <Page Include="UI\SettingsPage_Notification.xaml">
       <Filter>UI</Filter>

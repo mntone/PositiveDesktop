@@ -8,8 +8,7 @@
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-				<ResourceDictionary Source="/UI/Controls/SettingsCard.xaml" />
-				<ResourceDictionary Source="/UI/Controls/SettingsExpander.xaml" />
+				<ResourceDictionary Source="/Mntone.AngelUmbrella/Themes/Generic.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
 			<!-- Converters -->
