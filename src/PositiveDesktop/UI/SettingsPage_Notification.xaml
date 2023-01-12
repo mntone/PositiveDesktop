@@ -15,6 +15,15 @@
 						<AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint800Plus}" />
 					</VisualState.StateTriggers>
 				</VisualState>
+				<VisualState x:Name="MiddleLayout">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="451" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="contentRoot.Margin"
+								Value="0,48,0,0" />
+					</VisualState.Setters>
+				</VisualState>
 				<VisualState x:Name="NarrowLayout">
 					<VisualState.StateTriggers>
 						<AdaptiveTrigger MinWindowWidth="0" />
@@ -22,13 +31,19 @@
 					<VisualState.Setters>
 						<Setter Target="contentRoot.Margin"
 								Value="0,48,0,0" />
+						<Setter Target="duration.Orientation"
+								Value="Vertical" />
+						<Setter Target="horizontalPosition.Orientation"
+								Value="Vertical" />
+						<Setter Target="verticalPosition.Orientation"
+								Value="Vertical" />
 					</VisualState.Setters>
 				</VisualState>
 			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
 
 		<StackPanel Margin="24,0,24,36"
-					Spacing="4">
+					Spacing="2">
 			<ctrl:SettingsCard Header="Notification">
 				<ToggleSwitch />
 			</ctrl:SettingsCard>
@@ -44,6 +59,7 @@
 			</ctrl:SettingsCard>
 
 			<ctrl:SettingsCard x:Uid="Settings_Notification_Duration"
+							   x:Name="duration"
 							   Header="Duration">
 				<StackPanel Orientation="Horizontal"
 							Spacing="8">
@@ -62,6 +78,7 @@
 
 			<StackPanel>
 				<ctrl:SettingsCard x:Uid="Settings_Notification_HorizontalPosition"
+								   x:Name="horizontalPosition"
 								   Header="Horizontal Position"
 								   Style="{StaticResource SettingsTopCardStyle}">
 					<StackPanel Orientation="Horizontal"
@@ -82,6 +99,7 @@
 				</ctrl:SettingsCard>
 
 				<ctrl:SettingsCard x:Uid="Settings_Notification_VerticalPosition"
+								   x:Name="verticalPosition"
 								   Header="Vertical Position"
 								   Style="{StaticResource SettingsBottomCardStyle}">
 					<StackPanel Orientation="Horizontal"

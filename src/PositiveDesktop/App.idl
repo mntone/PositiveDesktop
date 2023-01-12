@@ -26,6 +26,7 @@ namespace PositiveDesktop
 				String FileName { get; };
 				String FuncName { get; };
 				String Message { get; };
+				Boolean HasMessage { get; };
 
 				String Header { get; };
 				String Description { get; };

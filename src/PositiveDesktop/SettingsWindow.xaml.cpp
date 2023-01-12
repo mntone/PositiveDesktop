@@ -47,6 +47,7 @@ SettingsWindow::SettingsWindow() {
 	Frame frame { rootFrame() };
 	WINRT_ASSERT(frame);
 	WINRT_ASSERT(!frame.Content());
+	frame.CacheSize(2);
 
 	IVectorView<hstring> languages { ApplicationLanguages::Languages() };
 	frame.Language(languages.GetAt(0));

@@ -12,7 +12,7 @@
 
 			<ctrl:SettingsExpander Header="{x:Bind Header}"
 								   Description="{x:Bind Description}"
-								   Margin="0,0,0,4"
+								   Margin="0,1,0,1"
 								   Orientation="Vertical">
 				<ctrl:SettingsExpander.HeaderIcon>
 					<FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -32,7 +32,7 @@
 								<RowDefinition />
 								<RowDefinition />
 								<RowDefinition />
-								<RowDefinition />
+								<RowDefinition Height="Auto" />
 							</Grid.RowDefinitions>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto" />
@@ -94,11 +94,13 @@
 									   TextWrapping="Wrap" />
 
 							<TextBlock Grid.Row="7"
-									   Text="Message:" />
+									   Text="Message:"
+									   Visibility="{x:Bind HasMessage, Converter={StaticResource BooleanToVisibilityConverter}}" />
 							<TextBlock Grid.Row="7"
 									   Grid.Column="2"
 									   IsTextSelectionEnabled="True"
-									   Text="{x:Bind Message}" />
+									   Text="{x:Bind Message}"
+									   Visibility="{x:Bind HasMessage, Converter={StaticResource BooleanToVisibilityConverter}}" />
 						</Grid>
 					</ctrl:SettingsCard>
 				</ctrl:SettingsExpander.ExpanderContent>
