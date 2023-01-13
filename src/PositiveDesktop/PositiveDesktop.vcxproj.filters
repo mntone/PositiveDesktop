@@ -92,6 +92,15 @@
     <ClCompile Include="UI\Converters\DateTimeToStringConverter.cpp">
       <Filter>UI\Converters</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Helpers\DispatcherQueueSupport.cpp">
+      <Filter>UI\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Helpers\MicaSupport.cpp">
+      <Filter>UI\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Helpers\NavigationHelper.cpp">
+      <Filter>UI\Helpers</Filter>
+    </ClCompile>
     <ClCompile Include="UI\NotificationPresenterWinUI3.cpp">
       <Filter>UI</Filter>
     </ClCompile>
@@ -103,9 +112,6 @@
     </ClCompile>
     <ClCompile Include="ViewModels\Settings\ErrorLogViewModel.cpp">
       <Filter>ViewModels\Settings</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\Helpers\NavigationHelper.cpp">
-      <Filter>UI\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +136,18 @@
     </ClInclude>
     <ClInclude Include="UI\Converters\DateTimeToStringConverter.h">
       <Filter>UI\Converters</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Helpers\DispatcherQueueSupport.h">
+      <Filter>UI\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Helpers\MicaSupport.h">
+      <Filter>UI\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Helpers\NavigationHelper.h">
+      <Filter>UI\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Helpers\ThemeHelper.h">
+      <Filter>UI\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="UI\NotificationPresenter.h">
       <Filter>UI</Filter>
@@ -157,9 +175,6 @@
     </ClInclude>
     <ClInclude Include="ViewModels\Settings\ErrorLogViewModel.h">
       <Filter>ViewModels\Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\Helpers\NavigationHelper.h">
-      <Filter>UI\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

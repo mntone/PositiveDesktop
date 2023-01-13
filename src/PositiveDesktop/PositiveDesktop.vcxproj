@@ -174,7 +174,10 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="UI\Converters\DateTimeToStringConverter.h" />
+    <ClInclude Include="UI\Helpers\DispatcherQueueSupport.h" />
+    <ClInclude Include="UI\Helpers\MicaSupport.h" />
     <ClInclude Include="UI\Helpers\NavigationHelper.h" />
+    <ClInclude Include="UI\Helpers\ThemeHelper.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />
     <ClInclude Include="UI\NotificationPresenterWinUI3.h" />
     <ClInclude Include="UI\register_value_t.h" />
@@ -217,6 +220,8 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="UI\Converters\DateTimeToStringConverter.cpp" />
+    <ClCompile Include="UI\Helpers\DispatcherQueueSupport.cpp" />
+    <ClCompile Include="UI\Helpers\MicaSupport.cpp" />
     <ClCompile Include="UI\Helpers\NavigationHelper.cpp" />
     <ClCompile Include="UI\NotificationPresenterWinUI3.cpp" />
     <ClCompile Include="UI\SettingsPage_Notification.xaml.cpp">

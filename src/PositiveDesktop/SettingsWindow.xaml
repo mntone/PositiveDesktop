@@ -9,9 +9,12 @@
 		xmlns:ctrl="using:Mntone.AngelUmbrella.UI.Controls"
 		xmlns:helpers="using:PositiveDesktop.UI.Helpers">
 
-	<Grid ActualThemeChanged="ActualThemeChanged"
-		  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+	<Grid ActualThemeChanged="ActualThemeChanged">
 		<Grid.Resources>
+			<!-- Use StaticResource. DO NOT USE ThemeResource. -->
+			<StaticResource x:Key="WindowBackgroundFallbackColorBrush"
+							ResourceKey="ApplicationPageBackgroundThemeBrush" />
+
 			<StaticResource x:Key="WindowButtonForegroundColor"
 							ResourceKey="TextFillColorPrimary" />
 			<StaticResource x:Key="WindowButtonHoverBackgroundColor"

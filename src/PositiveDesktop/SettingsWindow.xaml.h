@@ -1,5 +1,7 @@
 #pragma once
 #include "SettingsWindow.g.h"
+
+#include "UI/Helpers/MicaSupport.h"
 #include "UI/WindowBase.h"
 
 namespace winrt::PositiveDesktop::implementation {
@@ -18,6 +20,9 @@ namespace winrt::PositiveDesktop::implementation {
 
 	private:
 		void UpdateTitlebarMargin(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& navigationView);
+
+	private:
+		app::ui::helper::MicaSupport micaSupport_;
 	};
 
 }

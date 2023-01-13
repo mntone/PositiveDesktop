@@ -55,6 +55,7 @@ SettingsWindow::SettingsWindow() {
 
 	HWND hWnd { GetHwnd(m_inner) };
 	SetCenter(hWnd, SizeInt32 { 1200, 900 });
+	micaSupport_.trysetSystemBackdrop(*this);
 	Subclass(hWnd);
 }
 
@@ -65,9 +66,13 @@ LRESULT SettingsWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 		minmaxInfo.ptMinTrackSize.y = 270;
 		return FALSE;
 	} else if (WM_CLOSE == message) {
+		micaSupport_.close();
 		LRESULT result = WindowBase::WndProc(hWnd, message, wParam, lParam);
 		WindowBase::ReleaseSubclass(hWnd);
 		return result;
+	} else if (WM_THEMECHANGED == message /* high contrast changed*/
+		|| WM_SETTINGCHANGE == message) {
+		micaSupport_.onSystemSettingsChanged(*this);
 	}
 	return WindowBase::WndProc(hWnd, message, wParam, lParam);
 }
@@ -129,7 +134,7 @@ void SettingsWindow::UpdateTitlebarMargin(NavigationView const& navigationView) 
 	}
 }
 
-void SettingsWindow::NavigationViewSelectionChanged(NavigationView const& sender, NavigationViewSelectionChangedEventArgs const& args) {
+void SettingsWindow::NavigationViewSelectionChanged(NavigationView const& /*sender*/, NavigationViewSelectionChangedEventArgs const& args) {
 	LOG_BEGIN(app::logger::ltg_presenter);
 
 	NavigationViewItem item { args.SelectedItem().as<NavigationViewItem>() };

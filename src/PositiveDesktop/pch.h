@@ -61,8 +61,6 @@
 #include <restrictederrorinfo.h>
 #include <hstring.h>
 
-#include <DispatcherQueue.h>
-
 // Undefine GetCurrentTime macro to prevent
 // conflict with Storyboard::GetCurrentTime
 #undef GetCurrentTime
@@ -82,6 +80,7 @@
 #include <WindowsAppSDK-VersionInfo.h>
 #include <winrt/Microsoft.Graphics.Display.h>
 #include <winrt/Microsoft.UI.Composition.h>
+#include <winrt/Microsoft.UI.Composition.SystemBackdrops.h>
 #include <winrt/Microsoft.UI.Dispatching.h>
 #include <winrt/Microsoft.UI.Interop.h>
 #include <winrt/Microsoft.UI.Xaml.h>

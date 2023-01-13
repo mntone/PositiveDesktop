@@ -1,21 +1,9 @@
 #pragma once
-#include <DispatcherQueue.h>
+#include "Helpers/DispatcherQueueSupport.h"
 
 namespace app::ui {
 
 	extern winrt::Microsoft::UI::Dispatching::DispatcherQueue gDispatchQueue;
-
-	inline winrt::Windows::System::DispatcherQueueController createSystemDispatcherQueueController() {
-		DispatcherQueueOptions options {
-			sizeof(DispatcherQueueOptions),
-			DQTYPE_THREAD_CURRENT,
-			DQTAT_COM_NONE,
-		};
-
-		ABI::Windows::System::IDispatcherQueueController* dispatchQueueController = nullptr;
-		winrt::check_hresult(CreateDispatcherQueueController(options, &dispatchQueueController));
-		return { dispatchQueueController, winrt::take_ownership_from_abi };
-	}
 
 	inline void ensureUIThread() noexcept {
 		WINRT_ASSERT(gDispatchQueue.HasThreadAccess());

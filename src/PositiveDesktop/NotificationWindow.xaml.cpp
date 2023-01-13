@@ -8,6 +8,7 @@
 #include <winrt/Windows.UI.ViewManagement.h>
 
 #include "Common/Math.h"
+#include "UI/Helpers/ThemeHelper.h"
 #include "UI/UIHelper.h"
 #include "UI/WindowHelper.h"
 
@@ -302,16 +303,6 @@ bool NotificationWindow::UpdateCorners() noexcept {
 		return false;
 	}
 	return true;
-}
-
-inline winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme ConvertToSystemBackdropTheme(ElementTheme const& theme) {
-	switch (theme) {
-	case ElementTheme::Dark:
-		return winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme::Dark;
-	case ElementTheme::Light:
-	default:
-		return winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme::Light;
-	}
 }
 
 void NotificationWindow::UpdateTheme(FrameworkElement rootElement) {

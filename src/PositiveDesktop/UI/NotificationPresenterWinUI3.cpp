@@ -6,6 +6,7 @@
 #include "NotificationWindow.xaml.h"
 #include "SettingsWindow.xaml.h"
 #include "ResourceManager.h"
+#include "Helpers/DispatcherQueueSupport.h"
 #include "UIHelper.h"
 
 namespace app::ui {
@@ -17,7 +18,6 @@ namespace app::ui {
 			, config_(config)
 			, hint_(hint)
 			, resourceManager_(L"CodeResources")
-			, dispatcherQueue_(nullptr)
 			, window_(nullptr) {
 		}
 
@@ -58,7 +58,6 @@ namespace app::ui {
 		app::storage::config_t const& config_;
 		NotificationPresenterHint hint_;
 		resource::ResourceManager resourceManager_;
-		winrt::Windows::System::DispatcherQueueController dispatcherQueue_;
 		winrt::PositiveDesktop::NotificationWindow window_;
 	};
 
@@ -84,12 +83,7 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 	if (finalize_) return; // Exit state
 
 	// Check previous DispatcherQueue (require it for Mica/DesktopAcrylicController)
-	if (nullptr == dispatcherQueue_) {
-		winrt::Windows::System::DispatcherQueue dispatcherQueue { winrt::Windows::System::DispatcherQueue::GetForCurrentThread() };
-		if (nullptr == dispatcherQueue) {
-			dispatcherQueue_ = createSystemDispatcherQueueController();
-		}
-	}
+	helper::DispatcherQueueSupport::ensureDispatcherQueueController();
 
 	// Check window
 	if (!window_) {
