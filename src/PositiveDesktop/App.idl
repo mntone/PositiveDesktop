@@ -59,6 +59,8 @@ namespace PositiveDesktop
 			runtimeclass DateTimeToStringConverter : Microsoft.UI.Xaml.Data.IValueConverter
 			{
 				DateTimeToStringConverter();
+
+				String Format;
 			}
 
 		}

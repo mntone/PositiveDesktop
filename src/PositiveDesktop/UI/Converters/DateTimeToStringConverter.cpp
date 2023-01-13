@@ -4,7 +4,7 @@
 #include "UI/Converters/DateTimeToStringConverter.g.cpp"
 #endif
 
-constexpr std::wstring_view kDateTimeFormat { L"longdate longtime" };
+constexpr std::wstring_view kDateTimeFormatDefault { L"longdate longtime" };
 
 namespace winrt {
 	using namespace ::winrt::Windows::Foundation;
@@ -14,16 +14,24 @@ namespace winrt {
 
 using namespace winrt::PositiveDesktop::UI::Converters::implementation;
 
-DateTimeToStringConverter::DateTimeToStringConverter() noexcept:
-	formatter_(kDateTimeFormat) {
+DateTimeToStringConverter::DateTimeToStringConverter() noexcept
+	: format_(kDateTimeFormatDefault)
+	, formatter_(nullptr) {
 }
 
 winrt::IInspectable DateTimeToStringConverter::Convert(IInspectable const& value, TypeName const& targetType, IInspectable const& /*parameter*/, hstring const& language) {
 	WINRT_ASSERT(xaml_typename<hstring>() == targetType);
 
-	if (!language.empty() && formatter_.Languages().GetAt(0) != language) {
+	if (nullptr == formatter_) {
+		if (!language.empty()) {
+			std::vector<hstring> languages { language };
+			formatter_ = { format_, languages };
+		} else {
+			formatter_ = { format_ };
+		}
+	} else if (!language.empty() && formatter_.Languages().GetAt(0) != language) {
 		std::vector<hstring> languages { language };
-		formatter_ = { kDateTimeFormat, languages };
+		formatter_ = { format_, languages };
 	}
 
 	DateTime datetime { unbox_value<DateTime>(value) };
