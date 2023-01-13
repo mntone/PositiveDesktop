@@ -8,9 +8,11 @@
 namespace reps {
 
 	template<typename T>
-	class listener_t final: public reps::observer_t<T> {
+	class listener_t final: public reps::basic_observer_t<T> {
 	public:
-		listener_t(std::function<void(reps::bag_t<T> const&)> callback) noexcept: callback_(callback) { }
+		listener_t(std::function<void(reps::bag_t<T> const&)> callback) noexcept
+			: callback_(callback) {
+		}
 
 	private:
 		void FASTCALL on(reps::bag_t<T> const& value) noexcept override {
@@ -22,20 +24,8 @@ namespace reps {
 	};
 
 	template<typename T>
-	class dangerous_listener_t final: public reps::observer_t<T> {
-	public:
-		dangerous_listener_t(std::function<void(reps::bag_t<T> const&)> callback) noexcept: callback_(callback) { }
-
-	private:
-		void FASTCALL on(reps::bag_t<T> const& value) noexcept override {
-			callback_(value);
-			if (reps::event_t::completed == value.ev) {
-				delete this;
-			}
-		}
-
-	private:
-		std::function<void(reps::bag_t<T> const&)> callback_;
-	};
+	observer_t<T> make_listener(std::function<void(reps::bag_t<T> const&)> callback) noexcept {
+		return { new listener_t<T>(callback), take_ownership };
+	}
 
 }

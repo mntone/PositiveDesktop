@@ -76,7 +76,7 @@ namespace reps {
 	struct subject_t: observable_t<T>, __impl::observer_impl<T> {
 		inline void send(bag_t<T>&& val) noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
-			for (observer_t<T> const& observer : __impl::observer_impl<T>::observers_) {
+			for (observer_t<T>& observer : __impl::observer_impl<T>::observers_) {
 				observer.on(val);
 			}
 		}
@@ -184,7 +184,7 @@ namespace reps {
 		inline void send(bag_t<T>&& val) noexcept {
 			app::lock_guard<app::lock_t> lock { locker_ };
 			cache_ = std::move(val);
-			for (observer_t<T> const& observer : __impl::observer_impl<T>::observers_) {
+			for (observer_t<T>& observer : __impl::observer_impl<T>::observers_) {
 				observer.on(cache_);
 			}
 		}

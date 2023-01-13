@@ -9,12 +9,12 @@
 using namespace reps;
 
 template<typename T>
-class RepsTest: public testing::Test, public reps::observer_t<int> {
+class RepsTest: public testing::Test, public reps::basic_observer_t<int> {
 protected:
 	RepsTest() = default;
 
 	void SetUp() override {
-		subject_.addObserver(*this);
+		subject_.addObserver(reps::observer_t<int>(this));
 	}
 
 	void next(int value) noexcept {

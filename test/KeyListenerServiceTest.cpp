@@ -59,11 +59,12 @@ constexpr void AddAllKeysUp(Container& c) {
 
 TEST(KeyListener, ExitApp) {
 	std::unique_ptr<KeysListenerService> service = std::make_unique<KeysListenerService>();
-	reps::listener_t<kbevent_t> listener([](reps::bag_t<kbevent_t> const& value) {
+	auto listener = reps::make_listener<kbevent_t>([](reps::bag_t<kbevent_t> const& value) {
+		if (reps::event_t::completed == value.ev) return;
 		EXPECT_EQ(value.data, kbe_exit);
 		SUCCEED() << "Receive \"kbe_exit\".";
 	});
-	service->addObserver(listener);
+	service->addObserver(std::move(listener));
 	service->initialize();
 
 	// Send key
@@ -77,14 +78,15 @@ TEST(KeyListener, ExitApp) {
 
 TEST(KeyListener, DuplicateKey) {
 	std::unique_ptr<KeysListenerService> service = std::make_unique<KeysListenerService>();
-	reps::listener_t<kbevent_t> listener([](reps::bag_t<kbevent_t> const& value) {
+	auto listener = reps::make_listener<kbevent_t>([](reps::bag_t<kbevent_t> const& value) {
+		if (reps::event_t::completed == value.ev) return;
 		static int i = 0;
 
 		EXPECT_EQ(value.data, kbe_exit);
 		EXPECT_EQ(i++, 0);
 		SUCCEED() << "Receive \"kbe_exit\".";
 	});
-	service->addObserver(listener);
+	service->addObserver(std::move(listener));
 	service->initialize();
 
 	// Send key
@@ -100,11 +102,12 @@ TEST(KeyListener, DuplicateKey) {
 
 TEST(KeyListener, MoveLeft) {
 	std::unique_ptr<KeysListenerService> service = std::make_unique<KeysListenerService>();
-	reps::listener_t<kbevent_t> listener([](reps::bag_t<kbevent_t> const& value) {
+	auto listener = reps::make_listener<kbevent_t>([](reps::bag_t<kbevent_t> const& value) {
+		if (reps::event_t::completed == value.ev) return;
 		EXPECT_EQ(value.data, kbe_move_window_and_switch_left);
 		SUCCEED() << "Receive \"kbe_move_window_and_switch_left\".";
 	});
-	service->addObserver(listener);
+	service->addObserver(std::move(listener));
 	service->initialize();
 
 	// Send key
