@@ -6,7 +6,7 @@
 		mc:Ignorable="d"
 		xmlns:local="using:PositiveDesktop"
 		xmlns:ui="using:PositiveDesktop.UI"
-		xmlns:ctrl="using:Mntone.AngelUmbrella.UI.Controls"
+		xmlns:ctrl="using:Mntone.AngelUmbrella.Controls"
 		xmlns:helpers="using:PositiveDesktop.UI.Helpers">
 
 	<Grid ActualThemeChanged="ActualThemeChanged">

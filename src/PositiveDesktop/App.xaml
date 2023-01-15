@@ -4,7 +4,7 @@
 			 xmlns:pd="using:PositiveDesktop"
 			 xmlns:conv="using:PositiveDesktop.UI.Converters"
 			 xmlns:conv2="using:Mntone.AngelUmbrella.Converters"
-			 xmlns:ctrl="using:Mntone.AngelUmbrella.UI.Controls">
+			 xmlns:ctrl="using:Mntone.AngelUmbrella.Controls">
 
 	<Application.Resources>
 		<ResourceDictionary>
