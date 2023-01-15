@@ -95,12 +95,12 @@
 
 							<TextBlock Grid.Row="7"
 									   Text="Message:"
-									   Visibility="{x:Bind HasMessage, Converter={StaticResource BooleanToVisibilityConverter}}" />
+									   Visibility="{x:Bind Message, Converter={StaticResource StringIsPresentToVisibilityConverter}}" />
 							<TextBlock Grid.Row="7"
 									   Grid.Column="2"
 									   IsTextSelectionEnabled="True"
 									   Text="{x:Bind Message}"
-									   Visibility="{x:Bind HasMessage, Converter={StaticResource BooleanToVisibilityConverter}}" />
+									   Visibility="{x:Bind Message, Converter={StaticResource StringIsPresentToVisibilityConverter}}" />
 						</Grid>
 					</ctrl:SettingsCard>
 				</ctrl:SettingsExpander.ExpanderContent>

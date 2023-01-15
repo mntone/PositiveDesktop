@@ -44,10 +44,6 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 			return message_;
 		}
 
-		inline bool HasMessage() const noexcept {
-			return !message_.empty();
-		}
-
 		inline winrt::hstring Header() const noexcept {
 			return Header_;
 		}
