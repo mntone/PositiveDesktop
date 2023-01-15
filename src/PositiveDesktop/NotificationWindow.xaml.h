@@ -1,6 +1,8 @@
 #pragma once
 #include "NotificationWindow.g.h"
 
+#include <dwmapi.h>
+
 #include "Services/Storages/config_t.h"
 #include "ViewModels/NotificationWindowViewModel.h"
 #include "UI/register_value_t.h"

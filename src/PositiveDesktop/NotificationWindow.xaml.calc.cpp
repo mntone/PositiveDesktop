@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include <dwmapi.h>
+
 #include <Common/Math.h>
 #include <Services/Storages/config_t.h>
 

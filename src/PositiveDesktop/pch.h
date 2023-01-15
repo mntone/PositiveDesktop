@@ -53,7 +53,6 @@
 
 // Windows base
 #include <windows.h>
-#include <dwmapi.h>
 
 // COM / WinRT (base)
 #include <unknwn.h>

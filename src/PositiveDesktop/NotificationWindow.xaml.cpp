@@ -6,6 +6,7 @@
 
 #include <ShellScalingApi.h>
 #include <winrt/Windows.UI.ViewManagement.h>
+#include <winrt/Mntone.AngelUmbrella.Composition.SystemBackdrops.h>
 
 #include "Common/Math.h"
 #include "UI/Helpers/ThemeHelper.h"
@@ -32,14 +33,6 @@ namespace app::ui::resources {
 	constexpr std::wstring_view Windows10WindowStrokeColorBrush_Accent = L"Windows10WindowStrokeColorBrush_Accent";
 
 	// AcrylicWindow resources
-	constexpr std::wstring_view AcrylicWindowFillTintColorBrush_Dark = L"AcrylicWindowFillTintColorBrush_Dark";
-	constexpr std::wstring_view AcrylicWindowFillTintColorBrush_Light = L"AcrylicWindowFillTintColorBrush_Light";
-	constexpr std::wstring_view AcrylicWindowFillTintColorBrush_Accent = L"AcrylicWindowFillTintColorBrush_Accent";
-
-	constexpr std::wstring_view AcrylicWindowFillLuminosityOpacity_Dark = L"AcrylicWindowFillLuminosityOpacity_Dark";
-	constexpr std::wstring_view AcrylicWindowFillLuminosityOpacity_Light = L"AcrylicWindowFillLuminosityOpacity_Light";
-	constexpr std::wstring_view AcrylicWindowFillLuminosityOpacity_Accent = L"AcrylicWindowFillLuminosityOpacity_Accent";
-
 	constexpr std::wstring_view AcrylicWindowStrokeColorBrush_Dark = L"AcrylicWindowStrokeColorBrush_Dark";
 	constexpr std::wstring_view AcrylicWindowStrokeColorBrush_Light = L"AcrylicWindowStrokeColorBrush_Light";
 	constexpr std::wstring_view AcrylicWindowStrokeColorBrush_Accent = L"AcrylicWindowStrokeColorBrush_Accent";
@@ -63,22 +56,25 @@ extern std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
 	bool isSquareCorner);
 #pragma warning(pop)
 
-using namespace winrt;
 
-using namespace winrt::Microsoft::UI;
-using namespace winrt::Microsoft::UI::Composition;
-using namespace winrt::Microsoft::UI::Composition::SystemBackdrops;
-using namespace winrt::Microsoft::UI::Xaml;
-using namespace winrt::Microsoft::UI::Xaml::Controls;
-using namespace winrt::Windows::Foundation;
-using namespace winrt::Windows::Graphics;
-using namespace winrt::Windows::UI;
+namespace winrt {
+	using namespace ::winrt::Windows::Foundation;
+	using namespace ::winrt::Windows::Graphics;
+	using namespace ::winrt::Windows::UI::ViewManagement;
+
+	using namespace ::winrt::Microsoft::UI;
+	using namespace ::winrt::Microsoft::UI::Composition;
+	using namespace ::winrt::Microsoft::UI::Composition::SystemBackdrops;
+	using namespace ::winrt::Microsoft::UI::Windowing;
+	using namespace ::winrt::Microsoft::UI::Xaml;
+	using namespace ::winrt::Microsoft::UI::Xaml::Controls;
+
+	using namespace ::winrt::Mntone::AngelUmbrella::Composition::SystemBackdrops;
+}
 
 using namespace app::ui;
 
 using namespace winrt::PositiveDesktop::implementation;
-
-namespace muw = winrt::Microsoft::UI::Windowing;
 
 NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::storage::desktop_t config)
 	: hint_(hint)
@@ -120,11 +116,11 @@ NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::stor
 	}
 
 	// Set window configs
-	muw::AppWindow appWindow = GetAppWindow(hWnd);
+	AppWindow appWindow { GetAppWindow(hWnd) };
 	appWindow.IsShownInSwitchers(false);
 	appWindow.ResizeClient(Windows::Graphics::SizeInt32 { 500, 95 });
 
-	muw::OverlappedPresenter presenter = appWindow.Presenter().as<muw::OverlappedPresenter>();
+	OverlappedPresenter presenter { appWindow.Presenter().as<OverlappedPresenter>() };
 	presenter.IsAlwaysOnTop(true);
 	presenter.IsMaximizable(false);
 	presenter.IsMinimizable(false);
@@ -307,7 +303,7 @@ bool NotificationWindow::UpdateCorners() noexcept {
 
 void NotificationWindow::UpdateTheme(FrameworkElement rootElement) {
 	ElementTheme theme;
-	if (ViewManagement::AccessibilitySettings().HighContrast()) {
+	if (AccessibilitySettings().HighContrast()) {
 		theme = ElementTheme::Default;
 	} else {
 		switch (config_.theme) {
@@ -349,7 +345,7 @@ void NotificationWindow::TrySetSystemBackdrop(FrameworkElement rootElement) {
 	configuration_ = nullptr;
 	transparencyEnabled_ = false;
 
-	if (!ViewManagement::AccessibilitySettings().HighContrast()) {
+	if (!AccessibilitySettings().HighContrast()) {
 		DWORD transparencyEnabled = enableTransparency_.value();
 		if (transparencyEnabled) {
 			if (MicaController::IsSupported()) {
@@ -406,7 +402,7 @@ void NotificationWindow::SetupSystemBackdropConfiguration(FrameworkElement rootE
 }
 
 void NotificationWindow::ApplyThemeForMica(FrameworkElement rootElement) noexcept {
-	WINRT_ASSERT(!ViewManagement::AccessibilitySettings().HighContrast());
+	WINRT_ASSERT(!AccessibilitySettings().HighContrast());
 	WINRT_ASSERT(backdropController_);
 
 	if (colorPrevalence_.value()) {
@@ -417,50 +413,35 @@ void NotificationWindow::ApplyThemeForMica(FrameworkElement rootElement) noexcep
 }
 
 void NotificationWindow::ApplyThemeForAcrylic(FrameworkElement rootElement) noexcept {
-	WINRT_ASSERT(!ViewManagement::AccessibilitySettings().HighContrast());
+	WINRT_ASSERT(!AccessibilitySettings().HighContrast());
 	WINRT_ASSERT(backdropController_);
 	if (!rootElement) {
 		rootElement = Content().as<FrameworkElement>();
 	}
 
-	ResourceDictionary res { rootElement.Resources() };
-	Media::Brush background { nullptr }, border { nullptr };
-	Color fallbackColor;
-	double luminosityOpacity;
-	winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme backdropTheme;
+	Media::Brush border { nullptr };
+	DesktopAcrylicController controller { backdropController_.as<DesktopAcrylicController>() };
 	if (colorPrevalence_.value()) {
-		background = getBrush(res, resources::AcrylicWindowFillTintColorBrush_Accent);
-		border = getBrush(res, resources::AcrylicWindowStrokeColorBrush_Accent);
-		luminosityOpacity = getDouble(res, resources::AcrylicWindowFillLuminosityOpacity_Accent);
-		fallbackColor = getColor(res, resources::Windows10WindowFillColor_Accent);
-		backdropTheme = winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme::Dark;
+		DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::AccentDark, DesktopAcrylicKind::Default);
+		configuration_.Theme(SystemBackdropTheme::Dark);
+		border = getBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Accent);
 	} else {
 		switch (rootElement.ActualTheme()) {
 		case ElementTheme::Dark:
-			background = getBrush(res, resources::AcrylicWindowFillTintColorBrush_Dark);
-			border = getBrush(res, resources::AcrylicWindowStrokeColorBrush_Dark);
-			luminosityOpacity = getDouble(res, resources::AcrylicWindowFillLuminosityOpacity_Dark);
-			fallbackColor = getColor(res, resources::Windows10WindowFillColor_Dark);
-			backdropTheme = winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme::Dark;
+			DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::Dark, DesktopAcrylicKind::Default);
+			configuration_.Theme(SystemBackdropTheme::Dark);
+			border = getBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Dark);
 			break;
 		case ElementTheme::Light:
 		default:
-			background = getBrush(res, resources::AcrylicWindowFillTintColorBrush_Light);
-			border = getBrush(res, resources::AcrylicWindowStrokeColorBrush_Light);
-			luminosityOpacity = getDouble(res, resources::AcrylicWindowFillLuminosityOpacity_Light);
-			fallbackColor = getColor(res, resources::Windows10WindowFillColor_Light);
-			backdropTheme = winrt::Microsoft::UI::Composition::SystemBackdrops::SystemBackdropTheme::Light;
+			DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::Light, DesktopAcrylicKind::Base);
+			configuration_.Theme(SystemBackdropTheme::Light);
+			border = getBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Light);
 			break;
 		}
 	}
 
-	Background(background);
 	Border(border);
-
-	DesktopAcrylicController controller = backdropController_.as<DesktopAcrylicController>();
-	controller.LuminosityOpacity(static_cast<float>(luminosityOpacity));
-	controller.FallbackColor(fallbackColor);
-	configuration_.Theme(backdropTheme);
 }
 
 void NotificationWindow::ApplyThemeForPlain(FrameworkElement rootElement) noexcept {
@@ -471,7 +452,7 @@ void NotificationWindow::ApplyThemeForPlain(FrameworkElement rootElement) noexce
 
 	ResourceDictionary res { rootElement.Resources() };
 	Media::Brush background { nullptr }, border { nullptr };
-	if (ViewManagement::AccessibilitySettings().HighContrast()) {
+	if (AccessibilitySettings().HighContrast()) {
 		background = getBrush(res, resources::WindowFillColorBrush_HighContrast);
 		border = getBrush(res, resources::WindowStrokeColorBrush_HighContrast);
 	} else if (hint_ == NotificationPresenterHint::Windows11) {
@@ -611,7 +592,7 @@ void NotificationWindow::corner(app::storage::corner_t value) noexcept {
 	}
 }
 
-event_token NotificationWindow::PropertyChanged(Data::PropertyChangedEventHandler const& handler) {
+winrt::event_token NotificationWindow::PropertyChanged(Data::PropertyChangedEventHandler const& handler) {
 	return propertyChanged_.add(handler);
 }
 
