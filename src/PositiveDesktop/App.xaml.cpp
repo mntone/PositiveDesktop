@@ -2,13 +2,14 @@
 #include "App.xaml.h"
 
 namespace winrt {
+	using namespace ::winrt::Windows::Foundation;
+
 	using namespace ::winrt::Microsoft::UI::Dispatching;
 	using namespace ::winrt::Microsoft::UI::Xaml;
-	using namespace ::winrt::Windows::Foundation;
 }
 
-namespace app::ui {
-	winrt::DispatcherQueue gDispatchQueue = nullptr;
+namespace winrt::PositiveDesktop::UI::Helpers::implementation {
+	winrt::DispatcherQueue gDispatchQueue { nullptr };
 }
 
 using namespace winrt::PositiveDesktop::implementation;
@@ -22,8 +23,8 @@ App::App() {
 	app::logger::initLogger();
 
 	// Save DispatcherQueue
-	app::ui::gDispatchQueue = DispatcherQueue::GetForCurrentThread();
-	if (!app::ui::gDispatchQueue) {
+	UI::Helpers::implementation::gDispatchQueue = DispatcherQueue::GetForCurrentThread();
+	if (!UI::Helpers::implementation::gDispatchQueue) {
 		Exit();
 		return;
 	}

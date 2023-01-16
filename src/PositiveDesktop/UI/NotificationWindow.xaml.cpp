@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "NotificationWindow.xaml.h"
-#if __has_include("NotificationWindow.g.cpp")
-#include "NotificationWindow.g.cpp"
+#if __has_include("UI/NotificationWindow.g.cpp")
+#include "UI/NotificationWindow.g.cpp"
 #endif
 
 #include <ShellScalingApi.h>
@@ -9,11 +9,11 @@
 #include <winrt/Mntone.AngelUmbrella.Composition.SystemBackdrops.h>
 
 #include "Common/Math.h"
-#include "UI/Helpers/ThemeHelper.h"
-#include "UI/UIHelper.h"
-#include "UI/WindowHelper.h"
+#include "Helpers/ThemeHelper.h"
+#include "Helpers/UIHelper.h"
+#include "Helpers/WindowHelper.h"
 
-namespace app::ui::resources {
+namespace resources {
 
 	// High contrast resources
 	constexpr std::wstring_view WindowFillColorBrush_HighContrast = L"WindowFillColorBrush_HighContrast";
@@ -72,11 +72,10 @@ namespace winrt {
 	using namespace ::winrt::Mntone::AngelUmbrella::Composition::SystemBackdrops;
 }
 
-using namespace app::ui;
+using namespace winrt::PositiveDesktop::UI::implementation;
+using namespace winrt::PositiveDesktop::UI::Helpers::implementation;
 
-using namespace winrt::PositiveDesktop::implementation;
-
-NotificationWindow::NotificationWindow(NotificationPresenterHint hint, app::storage::desktop_t config)
+NotificationWindow::NotificationWindow(app::ui::NotificationPresenterHint hint, app::storage::desktop_t config)
 	: hint_(hint)
 	, config_(std::move(config))
 	, configuration_(nullptr)
@@ -165,7 +164,7 @@ void NotificationWindow::Show(float visibleDuration) {
 	app::int32x4_t workArea = displayArea.WorkArea();
 	app::int32x4_t outerBounds = displayArea.OuterBounds();
 	bool isSquareCorner = true;
-	if (hint_ == NotificationPresenterHint::Windows11) {
+	if (hint_ == app::ui::NotificationPresenterHint::Windows11) {
 		switch (cornerPreference_) {
 		case DWMWCP_DEFAULT:
 		case DWMWCP_ROUND:
@@ -240,7 +239,7 @@ void NotificationWindow::UpdatePosition() {
 	app::int32x4_t workArea = displayArea.WorkArea();
 	app::int32x4_t outerBounds = displayArea.OuterBounds();
 	bool isSquareCorner = true;
-	if (hint_ == NotificationPresenterHint::Windows11) {
+	if (hint_ == app::ui::NotificationPresenterHint::Windows11) {
 		switch (cornerPreference_) {
 		case DWMWCP_DEFAULT:
 		case DWMWCP_ROUND:
@@ -424,19 +423,19 @@ void NotificationWindow::ApplyThemeForAcrylic(FrameworkElement rootElement) noex
 	if (colorPrevalence_.value()) {
 		DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::AccentDark, DesktopAcrylicKind::Default);
 		configuration_.Theme(SystemBackdropTheme::Dark);
-		border = getBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Accent);
+		border = GetBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Accent);
 	} else {
 		switch (rootElement.ActualTheme()) {
 		case ElementTheme::Dark:
 			DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::Dark, DesktopAcrylicKind::Default);
 			configuration_.Theme(SystemBackdropTheme::Dark);
-			border = getBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Dark);
+			border = GetBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Dark);
 			break;
 		case ElementTheme::Light:
 		default:
 			DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::Light, DesktopAcrylicKind::Base);
 			configuration_.Theme(SystemBackdropTheme::Light);
-			border = getBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Light);
+			border = GetBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Light);
 			break;
 		}
 	}
@@ -453,25 +452,25 @@ void NotificationWindow::ApplyThemeForPlain(FrameworkElement rootElement) noexce
 	ResourceDictionary res { rootElement.Resources() };
 	Media::Brush background { nullptr }, border { nullptr };
 	if (AccessibilitySettings().HighContrast()) {
-		background = getBrush(res, resources::WindowFillColorBrush_HighContrast);
-		border = getBrush(res, resources::WindowStrokeColorBrush_HighContrast);
-	} else if (hint_ == NotificationPresenterHint::Windows11) {
-		background = getBrush(res, resources::Windows11WindowFillColorBrush);
-		border = getBrush(res, resources::Windows11WindowStrokeColorBrush);
+		background = GetBrush(res, resources::WindowFillColorBrush_HighContrast);
+		border = GetBrush(res, resources::WindowStrokeColorBrush_HighContrast);
+	} else if (hint_ == app::ui::NotificationPresenterHint::Windows11) {
+		background = GetBrush(res, resources::Windows11WindowFillColorBrush);
+		border = GetBrush(res, resources::Windows11WindowStrokeColorBrush);
 	} else {
 		if (colorPrevalence_.value()) {
-			background = getBrush(res, resources::Windows10WindowFillColorBrush_Accent);
-			border = getBrush(res, resources::Windows10WindowStrokeColorBrush_Accent);
+			background = GetBrush(res, resources::Windows10WindowFillColorBrush_Accent);
+			border = GetBrush(res, resources::Windows10WindowStrokeColorBrush_Accent);
 		} else {
 			switch (rootElement.ActualTheme()) {
 			case ElementTheme::Dark:
-				background = getBrush(res, resources::Windows10WindowFillColorBrush_Dark);
-				border = getBrush(res, resources::Windows10WindowStrokeColorBrush_Dark);
+				background = GetBrush(res, resources::Windows10WindowFillColorBrush_Dark);
+				border = GetBrush(res, resources::Windows10WindowStrokeColorBrush_Dark);
 				break;
 			case ElementTheme::Light:
 			default:
-				background = getBrush(res, resources::Windows10WindowFillColorBrush_Light);
-				border = getBrush(res, resources::Windows10WindowStrokeColorBrush_Light);
+				background = GetBrush(res, resources::Windows10WindowFillColorBrush_Light);
+				border = GetBrush(res, resources::Windows10WindowStrokeColorBrush_Light);
 				break;
 			}
 		}

@@ -1,7 +1,7 @@
 #pragma once
 #include <winrt/Microsoft.Windows.ApplicationModel.Resources.h>
 
-namespace app::ui::resource {
+namespace winrt::PositiveDesktop::UI::Helpers::implementation {
 
 	enum class R: unsigned char {
 		Notification_Caption_VirtualDesktopChanged,
@@ -57,7 +57,7 @@ namespace app::ui::resource {
 			cache_.reserve(static_cast<size_t>(R::MaxCount));
 		}
 
-		void changeLanguage(winrt::param::hstring const& language) {
+		void ChangeLanguage(winrt::param::hstring const& language) {
 			cache_.clear();
 
 			winrt::Microsoft::Windows::ApplicationModel::Resources::ResourceContext resourceContext = resourceManager_.CreateResourceContext();
@@ -65,7 +65,7 @@ namespace app::ui::resource {
 		}
 
 		template<R T>
-		winrt::hstring get() noexcept {
+		winrt::hstring Get() noexcept {
 			auto itr = cache_.find(T);
 			if (itr == cache_.cend()) {
 				winrt::hstring resourceValue { resources_.GetValue(__impl::resource_data_t<T>::resourceName).ValueAsString() };
@@ -76,7 +76,7 @@ namespace app::ui::resource {
 		}
 
 		template<R T, class... Args>
-		winrt::hstring get(Args... args) noexcept {
+		winrt::hstring Get(Args... args) noexcept {
 			auto itr = cache_.find(T);
 			if (itr == cache_.cend()) {
 				winrt::hstring resourceValue { resources_.GetValue(__impl::resource_data_t<T>::resourceName).ValueAsString() };

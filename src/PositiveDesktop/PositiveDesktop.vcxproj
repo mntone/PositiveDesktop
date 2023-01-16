@@ -160,34 +160,33 @@
     <ClInclude Include="Common\Math.h" />
     <ClInclude Include="Common\message_service_t.h" />
     <ClInclude Include="Common\Reps.BufferBounce.h" />
-    <ClInclude Include="NotificationWindow.xaml.h">
-      <DependentUpon>NotificationWindow.xaml</DependentUpon>
-    </ClInclude>
     <ClInclude Include="Services\app_t.h" />
     <ClInclude Include="Services\Storages\config_t.h" />
     <ClInclude Include="Services\Storages\WinRTConfigManager.h" />
-    <ClInclude Include="SettingsPage_ErrorLog.xaml.h">
-      <DependentUpon>SettingsPage_ErrorLog.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </ClInclude>
-    <ClInclude Include="SettingsWindow.xaml.h">
-      <DependentUpon>SettingsWindow.xaml</DependentUpon>
-    </ClInclude>
     <ClInclude Include="UI\Converters\DateTimeToStringConverter.h" />
     <ClInclude Include="UI\Helpers\DispatcherQueueSupport.h" />
     <ClInclude Include="UI\Helpers\MicaSupport.h" />
     <ClInclude Include="UI\Helpers\NavigationHelper.h" />
+    <ClInclude Include="UI\Helpers\register_value_t.h" />
+    <ClInclude Include="UI\Helpers\ResourceManager.h" />
     <ClInclude Include="UI\Helpers\ThemeHelper.h" />
+    <ClInclude Include="UI\Helpers\UIHelper.h" />
+    <ClInclude Include="UI\Helpers\WindowBase.h" />
+    <ClInclude Include="UI\Helpers\WindowHelper.h" />
     <ClInclude Include="UI\NotificationPresenter.h" />
     <ClInclude Include="UI\NotificationPresenterWinUI3.h" />
-    <ClInclude Include="UI\register_value_t.h" />
-    <ClInclude Include="UI\ResourceManager.h" />
+    <ClInclude Include="UI\NotificationWindow.xaml.h">
+      <DependentUpon>UI\NotificationWindow.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="UI\SettingsPage_ErrorLog.xaml.h">
+      <DependentUpon>UI\SettingsPage_ErrorLog.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="UI\SettingsPage_Notification.xaml.h">
       <DependentUpon>UI\SettingsPage_Notification.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="UI\UIHelper.h" />
-    <ClInclude Include="UI\WindowBase.h" />
-    <ClInclude Include="UI\WindowHelper.h" />
+    <ClInclude Include="UI\SettingsWindow.xaml.h">
+      <DependentUpon>UI\SettingsWindow.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="ViewModels\NotificationWindowViewModel.h" />
     <ClInclude Include="ViewModels\Settings\ErrorLogViewModel.h" />
   </ItemGroup>
@@ -202,33 +201,31 @@
     <ClCompile Include="App.xaml.cpp">
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="NotificationWindow.xaml.cpp">
-      <DependentUpon>NotificationWindow.xaml</DependentUpon>
-    </ClCompile>
-    <ClCompile Include="NotificationWindow.xaml.calc.cpp">
-      <DependentUpon>NotificationWindow.xaml</DependentUpon>
-    </ClCompile>
     <ClCompile Include="Services\app_t.cpp" />
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="SettingsPage_ErrorLog.xaml.cpp">
-      <DependentUpon>SettingsPage_ErrorLog.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </ClCompile>
-    <ClCompile Include="SettingsWindow.xaml.cpp">
-      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="UI\Converters\DateTimeToStringConverter.cpp" />
     <ClCompile Include="UI\Helpers\DispatcherQueueSupport.cpp" />
     <ClCompile Include="UI\Helpers\MicaSupport.cpp" />
     <ClCompile Include="UI\Helpers\NavigationHelper.cpp" />
+    <ClCompile Include="UI\Helpers\WindowBase.cpp" />
     <ClCompile Include="UI\NotificationPresenterWinUI3.cpp" />
+    <ClCompile Include="UI\NotificationWindow.xaml.cpp">
+      <DependentUpon>UI\NotificationWindow.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="UI\NotificationWindow.xaml.calc.cpp">
+      <DependentUpon>UI\NotificationWindow.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="UI\SettingsPage_ErrorLog.xaml.cpp">
+      <DependentUpon>UI\SettingsPage_ErrorLog.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="UI\SettingsPage_Notification.xaml.cpp">
       <DependentUpon>UI\SettingsPage_Notification.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </ClCompile>
-    <ClCompile Include="UI\WindowBase.cpp" />
+    <ClCompile Include="UI\SettingsWindow.xaml.cpp">
+      <DependentUpon>UI\SettingsWindow.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="ViewModels\NotificationWindowViewModel.cpp" />
     <ClCompile Include="ViewModels\Settings\ErrorLogViewModel.cpp" />
   </ItemGroup>
@@ -241,14 +238,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="NotificationWindow.xaml" />
-    <Page Include="SettingsPage_ErrorLog.xaml">
+    <Page Include="UI\NotificationWindow.xaml" />
+    <Page Include="UI\SettingsPage_ErrorLog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SettingsWindow.xaml" />
     <Page Include="UI\SettingsPage_Notification.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UI\SettingsWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\CodeResources.lang-en-US.resw" />

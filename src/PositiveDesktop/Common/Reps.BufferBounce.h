@@ -5,21 +5,12 @@
 
 #include <winrt/Microsoft.UI.Dispatching.h>
 
-namespace app::ui {
-
-	extern winrt::Microsoft::UI::Dispatching::DispatcherQueue gDispatchQueue;
-
-}
-
 namespace reps {
 
 #ifdef WINRT_Microsoft_UI_Dispatching_H
 
 	struct timer_sink_t {
 	protected:
-		template<typename Duration>
-		constexpr timer_sink_t(Duration dueTime) noexcept: timer_sink_t(dueTime, app::ui::gDispatchQueue) { }
-
 		template<typename Duration>
 		constexpr timer_sink_t(Duration dueTime, winrt::Microsoft::UI::Dispatching::DispatcherQueue const& dispatchQueue) noexcept
 			: timer_(nullptr) {
@@ -53,11 +44,6 @@ namespace reps {
 		using sink_type = sink_t<std::vector<T>>;
 
 	public:
-		template<typename Duration>
-		buffer_debounce_sink_t(observer_t<std::vector<T>> observer, Duration dueTime) noexcept
-			: buffer_debounce_sink_t(std::move(observer), dueTime, app::ui::gDispatchQueue) {
-		}
-
 		template<typename Duration>
 		buffer_debounce_sink_t(
 			observer_t<std::vector<T>> observer,
@@ -126,8 +112,11 @@ namespace reps {
 	};
 
 	template<typename T>
-	observer_t<T> make_buffer_debounce(observer_t<std::vector<T>> observer, std::chrono::milliseconds dueTime) noexcept {
-		return { new buffer_debounce_sink_t<T>(std::move(observer), std::move(dueTime)), take_ownership };
+	observer_t<T> make_buffer_debounce(
+		observer_t<std::vector<T>> observer,
+		std::chrono::milliseconds dueTime,
+		winrt::Microsoft::UI::Dispatching::DispatcherQueue const& dispatchQueue) noexcept {
+		return { new buffer_debounce_sink_t<T>(std::move(observer), std::move(dueTime), dispatchQueue), take_ownership };
 	}
 
 #endif

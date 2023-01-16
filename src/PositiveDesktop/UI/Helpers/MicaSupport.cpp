@@ -5,7 +5,7 @@
 
 #include "DispatcherQueueSupport.h"
 #include "ThemeHelper.h"
-#include "UI/UIHelper.h"
+#include "UIHelper.h"
 
 namespace resources {
 	constexpr std::wstring_view WindowBackgroundFallbackColorBrush = L"WindowBackgroundFallbackColorBrush";
@@ -22,14 +22,14 @@ namespace winrt {
 	using namespace ::winrt::Microsoft::UI::Xaml::Controls;
 }
 
-using namespace app::ui::helper;
+using namespace winrt::PositiveDesktop::UI::Helpers::implementation;
 
 MicaSupport::MicaSupport() noexcept
 	: backdropConfiguration_(nullptr)
 	, backdropController_(nullptr)
 	, activatedRevoker_()
 	, actualThemeChangedRevoker_() {
-	DispatcherQueueSupport::ensureDispatcherQueueController();
+	DispatcherQueueSupport::EnsureDispatcherQueueController();
 }
 
 MicaSupport::~MicaSupport() {
@@ -46,7 +46,7 @@ bool MicaSupport::trysetSystemBackdrop(winrt::Window const& window) {
 
 		winrt::Panel content { window.Content().try_as<winrt::Panel>() };
 		if (content) {
-			content.Background(getBrush(content.Resources(), resources::WindowBackgroundFallbackColorBrush));
+			content.Background(GetBrush(content.Resources(), resources::WindowBackgroundFallbackColorBrush));
 		}
 		return false;
 	}

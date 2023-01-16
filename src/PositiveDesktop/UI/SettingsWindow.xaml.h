@@ -1,12 +1,12 @@
 #pragma once
-#include "SettingsWindow.g.h"
+#include "UI/SettingsWindow.g.h"
 
-#include "UI/Helpers/MicaSupport.h"
-#include "UI/WindowBase.h"
+#include "Helpers/MicaSupport.h"
+#include "Helpers/WindowBase.h"
 
-namespace winrt::PositiveDesktop::implementation {
+namespace winrt::PositiveDesktop::UI::implementation {
 
-	struct SettingsWindow: SettingsWindowT<SettingsWindow>, WindowBase {
+	struct SettingsWindow: SettingsWindowT<SettingsWindow>, Helpers::implementation::WindowBase {
 		SettingsWindow();
 
 		void ActualThemeChanged(winrt::Microsoft::UI::Xaml::FrameworkElement const& sender, winrt::Windows::Foundation::IInspectable const& args);
@@ -22,7 +22,7 @@ namespace winrt::PositiveDesktop::implementation {
 		void UpdateTitlebarMargin(winrt::Microsoft::UI::Xaml::Controls::NavigationView const& navigationView);
 
 	private:
-		app::ui::helper::MicaSupport micaSupport_;
+		Helpers::implementation::MicaSupport micaSupport_;
 	};
 
 }

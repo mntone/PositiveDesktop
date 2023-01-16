@@ -12,7 +12,7 @@ namespace app::ui::nonlocalized {
 
 using namespace app::ui::nonlocalized;
 
-using namespace winrt::PositiveDesktop::implementation;
+using namespace winrt::PositiveDesktop::UI::Helpers::implementation;
 
 void WindowBase::Subclass(HWND hWnd) {
 	winrt::check_bool(SetPropW(hWnd, PositiveDesktop_WindowBase_ClassPointer.data(), this)); // Set class pointer

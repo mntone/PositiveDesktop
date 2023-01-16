@@ -1,6 +1,6 @@
 #pragma once
 
-namespace winrt::PositiveDesktop::implementation {
+namespace winrt::PositiveDesktop::UI::Helpers::implementation {
 
 	struct WindowBase {
 	protected:

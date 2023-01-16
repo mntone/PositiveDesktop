@@ -1,12 +1,12 @@
 #pragma once
-#include "UI/register_value_t.h"
+#include "register_value_t.h"
 
 #include <winrt/Windows.Foundation.h>
 
 #include <winrt/Microsoft.UI.Xaml.h>
 #include <winrt/Microsoft.UI.Composition.SystemBackdrops.h>
 
-namespace app::ui::helper {
+namespace winrt::PositiveDesktop::UI::Helpers::implementation {
 
 	class MicaSupport {
 	public:

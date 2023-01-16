@@ -5,14 +5,13 @@
 
 namespace winrt {
 	using namespace ::winrt::Windows::Foundation;
-	using namespace ::winrt::Windows::System;
 }
 
-using namespace app::ui::helper;
+using namespace winrt::PositiveDesktop::UI::Helpers::implementation;
 
 winrt::IInspectable DispatcherQueueSupport::dispatcherQueueController_ { nullptr };
 
-void DispatcherQueueSupport::ensureDispatcherQueueController() {
+void DispatcherQueueSupport::EnsureDispatcherQueueController() {
 	if (nullptr != dispatcherQueueController_) return;
 
 	DispatcherQueueOptions options {

@@ -1,8 +1,8 @@
 #pragma once
 #include "ViewModels/Settings/ErrorLogViewModel.h"
-#include "SettingsPage_ErrorLog.g.h"
+#include "UI/SettingsPage_ErrorLog.g.h"
 
-namespace winrt::PositiveDesktop::implementation {
+namespace winrt::PositiveDesktop::UI::implementation {
 
 	struct SettingsPage_ErrorLog: SettingsPage_ErrorLogT<SettingsPage_ErrorLog> {
 		SettingsPage_ErrorLog() noexcept;
@@ -18,7 +18,7 @@ namespace winrt::PositiveDesktop::implementation {
 
 }
 
-namespace winrt::PositiveDesktop::factory_implementation {
+namespace winrt::PositiveDesktop::UI::factory_implementation {
 
 	struct SettingsPage_ErrorLog: SettingsPage_ErrorLogT<SettingsPage_ErrorLog, implementation::SettingsPage_ErrorLog> {
 	};

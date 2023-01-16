@@ -5,9 +5,10 @@
 
 #include "NotificationWindow.xaml.h"
 #include "SettingsWindow.xaml.h"
-#include "ResourceManager.h"
+
 #include "Helpers/DispatcherQueueSupport.h"
-#include "UIHelper.h"
+#include "Helpers/ResourceManager.h"
+#include "Helpers/UIHelper.h"
 
 namespace app::ui {
 
@@ -22,18 +23,18 @@ namespace app::ui {
 		}
 
 		void changeLanguage(winrt::param::hstring const& language) noexcept {
-			resourceManager_.changeLanguage(language);
+			resourceManager_.ChangeLanguage(language);
 		}
 
 		void show(NotificationPresenterData data) noexcept override {
-			dispatch([data, this]() mutable {
+			winrt::PositiveDesktop::UI::Helpers::implementation::Dispatch([data, this]() mutable {
 				showPrivate(std::move(data));
 			});
 		}
 
 		void showSettings() noexcept override {
-			dispatch([]() {
-				auto window = winrt::make<winrt::PositiveDesktop::implementation::SettingsWindow>();
+			winrt::PositiveDesktop::UI::Helpers::implementation::Dispatch([]() {
+				auto window = winrt::make<winrt::PositiveDesktop::UI::implementation::SettingsWindow>();
 				window.Activate();
 			});
 		}
@@ -45,10 +46,10 @@ namespace app::ui {
 
 		inline winrt::hstring GetFormatDesktopMessage(NotificationPresenterData data) noexcept {
 			if (data.name.empty()) {
-				winrt::hstring messageFormat { resourceManager_.get<resource::R::Notification_Message_DesktopIndex>(data.index + 1) };
+				winrt::hstring messageFormat { resourceManager_.Get<winrt::PositiveDesktop::UI::Helpers::implementation::R::Notification_Message_DesktopIndex>(data.index + 1) };
 				return messageFormat;
 			} else {
-				winrt::hstring messageFormat { resourceManager_.get<resource::R::Notification_Message_DesktopIndexAndNumber>(data.index + 1, data.name.c_str()) };
+				winrt::hstring messageFormat { resourceManager_.Get<winrt::PositiveDesktop::UI::Helpers::implementation::R::Notification_Message_DesktopIndexAndNumber>(data.index + 1, data.name.c_str()) };
 				return messageFormat;
 			}
 		}
@@ -57,8 +58,8 @@ namespace app::ui {
 		bool finalize_;
 		app::storage::config_t const& config_;
 		NotificationPresenterHint hint_;
-		resource::ResourceManager resourceManager_;
-		winrt::com_ptr<winrt::PositiveDesktop::implementation::NotificationWindow> window_;
+		winrt::PositiveDesktop::UI::Helpers::implementation::ResourceManager resourceManager_;
+		winrt::com_ptr<winrt::PositiveDesktop::UI::implementation::NotificationWindow> window_;
 	};
 
 }
@@ -66,15 +67,17 @@ namespace app::ui {
 using namespace app::storage;
 using namespace app::ui;
 
+using namespace winrt::PositiveDesktop::UI::implementation;
+using namespace winrt::PositiveDesktop::UI::Helpers::implementation;
 using namespace winrt::PositiveDesktop::ViewModels;
 
 void NotificationPresenterWinUI3::closeAll() noexcept {
 	finalize_ = true;
 
-	winrt::com_ptr<winrt::PositiveDesktop::implementation::NotificationWindow> window = std::exchange(window_, nullptr);
+	auto window = std::exchange(window_, nullptr);
 	if (!window) return;
 
-	dispatch(gDispatchQueue, [window]() {
+	winrt::PositiveDesktop::UI::Helpers::implementation::Dispatch([window]() {
 		window->Close();
 	});
 }
@@ -83,7 +86,7 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 	if (finalize_) return; // Exit state
 
 	// Check previous DispatcherQueue (require it for Mica/DesktopAcrylicController)
-	helper::DispatcherQueueSupport::ensureDispatcherQueueController();
+	DispatcherQueueSupport::EnsureDispatcherQueueController();
 
 	// Check window
 	if (!window_) {
@@ -92,13 +95,13 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 			config.theme = thm_system;
 		}
 
-		window_ = winrt::make_self<winrt::PositiveDesktop::implementation::NotificationWindow>(hint_, std::move(config));
+		window_ = winrt::make_self<NotificationWindow>(hint_, std::move(config));
 	}
 
 	// Set data
-	winrt::hstring caption { resourceManager_.get<resource::R::Notification_Caption_VirtualDesktopChanged>() };
+	winrt::hstring caption { resourceManager_.Get<R::Notification_Caption_VirtualDesktopChanged>() };
 	winrt::hstring message { GetFormatDesktopMessage(data) };
-	NotificationWindowViewModel viewModel = winrt::make<implementation::NotificationWindowViewModel>(caption, message);
+	NotificationWindowViewModel viewModel { winrt::make<implementation::NotificationWindowViewModel>(caption, message) };
 	window_->ViewModel(viewModel);
 
 	// Show window

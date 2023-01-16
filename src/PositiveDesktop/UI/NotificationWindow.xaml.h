@@ -1,17 +1,19 @@
 #pragma once
-#include "NotificationWindow.g.h"
+#include "UI/NotificationWindow.g.h"
+#include "NotificationPresenter.h"
 
 #include <dwmapi.h>
 
 #include "Services/Storages/config_t.h"
+
+#include "Helpers/register_value_t.h"
+#include "Helpers/WindowBase.h"
+
 #include "ViewModels/NotificationWindowViewModel.h"
-#include "UI/register_value_t.h"
-#include "UI/NotificationPresenter.h"
-#include "UI/WindowBase.h"
 
-namespace winrt::PositiveDesktop::implementation {
+namespace winrt::PositiveDesktop::UI::implementation {
 
-	struct NotificationWindow: NotificationWindowT<NotificationWindow>, WindowBase {
+	struct NotificationWindow: NotificationWindowT<NotificationWindow>, Helpers::implementation::WindowBase {
 		NotificationWindow(app::ui::NotificationPresenterHint hint, app::storage::desktop_t config);
 
 		void Show(float visibleDuration);
@@ -37,7 +39,7 @@ namespace winrt::PositiveDesktop::implementation {
 		void SystemSettingsChanged();
 		void HighContrastChanged();
 		void ContentThemeChanged(Microsoft::UI::Xaml::FrameworkElement const& sender, Windows::Foundation::IInspectable const& args);
-		void WindowActivated(IInspectable const& sender, WindowActivatedEventArgs const& args);
+		void WindowActivated(IInspectable const& sender, Microsoft::UI::Xaml::WindowActivatedEventArgs const& args);
 		void WindowClosed(Windows::Foundation::IInspectable const& sender, Microsoft::UI::Xaml::WindowEventArgs const& args);
 
 	public:  // - Properties

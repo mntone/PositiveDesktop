@@ -1,24 +1,23 @@
 #include "pch.h"
 #include "SettingsWindow.xaml.h"
-#if __has_include("SettingsWindow.g.cpp")
-#include "SettingsWindow.g.cpp"
+#if __has_include("UI/SettingsWindow.g.cpp")
+#include "UI/SettingsWindow.g.cpp"
 #endif
+
+#include "SettingsPage_ErrorLog.xaml.h"
 
 #include <winrt/Microsoft.UI.Windowing.h>
 
-#include "UI/Helpers/NavigationHelper.h"
-#include "UI/UIHelper.h"
-#include "UI/WindowHelper.h"
-#include "SettingsPage_ErrorLog.xaml.h"
+#include "Helpers/NavigationHelper.h"
+#include "Helpers/UIHelper.h"
+#include "Helpers/WindowHelper.h"
 
-namespace app::ui::resources {
-
-	constexpr std::wstring_view WindowButtonForegroundColor = L"WindowButtonForegroundColor";
-	constexpr std::wstring_view WindowButtonHoverBackgroundColor = L"WindowButtonHoverBackgroundColor";
-	constexpr std::wstring_view WindowButtonPressedBackgroundColor = L"WindowButtonPressedBackgroundColor";
-	constexpr std::wstring_view WindowButtonPressedForegroundColor = L"WindowButtonPressedForegroundColor";
-	constexpr std::wstring_view WindowButtonInactiveForegroundColor = L"WindowButtonInactiveForegroundColor";
-
+namespace resources {
+	constexpr std::wstring_view WindowButtonForegroundColor { L"WindowButtonForegroundColor" };
+	constexpr std::wstring_view WindowButtonHoverBackgroundColor { L"WindowButtonHoverBackgroundColor" };
+	constexpr std::wstring_view WindowButtonPressedBackgroundColor { L"WindowButtonPressedBackgroundColor" };
+	constexpr std::wstring_view WindowButtonPressedForegroundColor { L"WindowButtonPressedForegroundColor" };
+	constexpr std::wstring_view WindowButtonInactiveForegroundColor { L"WindowButtonInactiveForegroundColor" };
 }
 
 namespace winrt {
@@ -37,7 +36,8 @@ namespace winrt {
 
 #include "UI/SettingsPage_Notification.xaml.h"
 
-using namespace winrt::PositiveDesktop::implementation;
+using namespace winrt::PositiveDesktop::UI::implementation;
+using namespace winrt::PositiveDesktop::UI::Helpers::implementation;
 
 SettingsWindow::SettingsWindow() {
 	InitializeComponent();
@@ -87,12 +87,12 @@ void SettingsWindow::ActualThemeChanged(FrameworkElement const& sender, IInspect
 	AppWindow appWindow { GetAppWindow(m_inner) };
 	AppWindowTitleBar titlebar { appWindow.TitleBar() };
 	ResourceDictionary resources { sender.Resources() };
-	titlebar.ForegroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonForegroundColor));
-	titlebar.ButtonForegroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonForegroundColor));
-	titlebar.ButtonHoverBackgroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonInactiveForegroundColor));
-	titlebar.ButtonPressedBackgroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonPressedBackgroundColor));
-	titlebar.ButtonPressedForegroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonPressedForegroundColor));
-	titlebar.ButtonInactiveForegroundColor(app::ui::getColor(resources, app::ui::resources::WindowButtonInactiveForegroundColor));
+	titlebar.ForegroundColor(GetColor(resources, resources::WindowButtonForegroundColor));
+	titlebar.ButtonForegroundColor(GetColor(resources, resources::WindowButtonForegroundColor));
+	titlebar.ButtonHoverBackgroundColor(GetColor(resources, resources::WindowButtonInactiveForegroundColor));
+	titlebar.ButtonPressedBackgroundColor(GetColor(resources, resources::WindowButtonPressedBackgroundColor));
+	titlebar.ButtonPressedForegroundColor(GetColor(resources, resources::WindowButtonPressedForegroundColor));
+	titlebar.ButtonInactiveForegroundColor(GetColor(resources, resources::WindowButtonInactiveForegroundColor));
 }
 
 void SettingsWindow::NavigationViewDisplayModeChanged(NavigationView const& sender, NavigationViewDisplayModeChangedEventArgs const& /*args*/) {
