@@ -125,7 +125,8 @@ HRESULT VirtualDesktopCache::CreateDelegateIfNeeded(IVirtualDesktop20231* iface,
 
 HRESULT VirtualDesktopCache::FromInterface(IVirtualDesktop* iface, IVirtualDesktopDelegate** ppDelegate) noexcept {
 	guid id;
-	check_hresult(iface->GetID(&id));
+	HRESULT hr = iface->GetID(&id);
+	if (FAILED(hr)) return hr;
 
 	container_type::iterator itr;
 	{
@@ -141,7 +142,8 @@ HRESULT VirtualDesktopCache::FromInterface(IVirtualDesktop* iface, IVirtualDeskt
 
 HRESULT VirtualDesktopCache::FromInterface(IVirtualDesktop2* iface, IVirtualDesktopDelegate** ppDelegate) noexcept {
 	guid id;
-	check_hresult(iface->GetID(&id));
+	HRESULT hr = iface->GetID(&id);
+	if (FAILED(hr)) return hr;
 
 	container_type::iterator itr;
 	{
@@ -157,7 +159,8 @@ HRESULT VirtualDesktopCache::FromInterface(IVirtualDesktop2* iface, IVirtualDesk
 
 HRESULT VirtualDesktopCache::FromInterface(IVirtualDesktop20231* iface, IVirtualDesktopDelegate** ppDelegate) noexcept {
 	guid id;
-	check_hresult(iface->GetID(&id));
+	HRESULT hr = iface->GetID(&id);
+	if (FAILED(hr)) return hr;
 
 	container_type::iterator itr;
 	{
@@ -173,7 +176,8 @@ HRESULT VirtualDesktopCache::FromInterface(IVirtualDesktop20231* iface, IVirtual
 
 HRESULT VirtualDesktopCache::MoveDelegate(IVirtualDesktop20231* iface, int nFromIndex, int nToIndex, IVirtualDesktopDelegate** ppDelegate) noexcept {
 	guid id;
-	check_hresult(iface->GetID(&id));
+	HRESULT hr = iface->GetID(&id);
+	if (FAILED(hr)) return hr;
 
 	container_type::iterator itr;
 	{
@@ -210,7 +214,8 @@ HRESULT VirtualDesktopCache::MoveDelegate(IVirtualDesktop20231* iface, int nFrom
 
 HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop* iface, IVirtualDesktopDelegate** ppDesktop) noexcept {
 	guid id;
-	check_hresult(iface->GetID(&id));
+	HRESULT hr = iface->GetID(&id);
+	if (FAILED(hr)) return hr;
 
 	IVirtualDesktopDelegate* delegate;
 	{
@@ -238,7 +243,8 @@ HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop* iface, IVirtualDesk
 
 HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop2* iface, IVirtualDesktopDelegate** ppDesktop) noexcept {
 	guid id;
-	check_hresult(iface->GetID(&id));
+	HRESULT hr = iface->GetID(&id);
+	if (FAILED(hr)) return hr;
 
 	IVirtualDesktopDelegate* delegate;
 	{
@@ -266,7 +272,8 @@ HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop2* iface, IVirtualDes
 
 HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop20231* iface, IVirtualDesktopDelegate** ppDesktop) noexcept {
 	guid id;
-	check_hresult(iface->GetID(&id));
+	HRESULT hr = iface->GetID(&id);
+	if (FAILED(hr)) return hr;
 
 	IVirtualDesktopDelegate* delegate;
 	{
