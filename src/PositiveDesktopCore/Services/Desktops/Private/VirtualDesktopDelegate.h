@@ -54,11 +54,7 @@ namespace app::desktop {
 			if (!iface_ || cachedName_) return;
 
 			winrt::hstring name;
-			{
-				HSTRING abiName;
-				winrt::check_hresult(iface_->GetName(&abiName));
-				winrt::attach_abi(name, abiName);
-			}
+			winrt::check_hresult(iface_->GetName(reinterpret_cast<HSTRING*>(put_abi(name))));
 			name_ = std::move(name);
 			cachedName_ = true;
 		}
@@ -106,11 +102,7 @@ namespace app::desktop {
 			if (!iface_ || cachedName_) return;
 
 			winrt::hstring name;
-			{
-				HSTRING abiName;
-				winrt::check_hresult(iface_->GetName(&abiName));
-				winrt::attach_abi(name, abiName);
-			}
+			winrt::check_hresult(iface_->GetName(reinterpret_cast<HSTRING*>(put_abi(name))));
 			name_ = std::move(name);
 			cachedName_ = true;
 		}
