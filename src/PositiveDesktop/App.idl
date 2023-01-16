@@ -7,8 +7,8 @@ namespace PositiveDesktop
 		[interface_name("INotificationWindowViewModel", 1D992FCB-1992-5684-A2CC-CF52A0B98234)]
 		runtimeclass NotificationWindowViewModel
 		{
-			String Caption { get; };
-			String Message { get; };
+			[noexcept] String Caption { get; };
+			[noexcept] String Message { get; };
 		}
 
 		namespace Settings
@@ -17,24 +17,24 @@ namespace PositiveDesktop
 			[interface_name("IErrorLogViewModel", BB920A43-F5D2-443B-94D1-DCA41CE0F7A7)]
 			runtimeclass ErrorLogViewModel
 			{
-				String LevelIcon { get; };
-				String Level { get; };
-				String Tag { get; };
-				String Operation { get; };
-				Int16 Line { get; };
-				Windows.Foundation.DateTime DateTime { get; };
-				String FileName { get; };
-				String FuncName { get; };
-				String Message { get; };
+				[noexcept] String LevelIcon { get; };
+				[noexcept] String Level { get; };
+				[noexcept] String Tag { get; };
+				[noexcept] String Operation { get; };
+				[noexcept] Int16 Line { get; };
+				[noexcept] Windows.Foundation.DateTime DateTime { get; };
+				[noexcept] String FileName { get; };
+				[noexcept] String FuncName { get; };
+				[noexcept] String Message { get; };
 
-				String Header { get; };
-				String Description { get; };
+				[noexcept] String Header { get; };
+				[noexcept] String Description { get; };
 			}
 
 			[interface_name("IErrorLogsViewModel", 57C70EF5-FA73-4597-B4D5-F4FAFC05E920)]
 			runtimeclass ErrorLogsViewModel
 			{
-				Windows.Foundation.Collections.IObservableVector<ErrorLogViewModel> Logs { get; };
+				[noexcept] Windows.Foundation.Collections.IObservableVector<ErrorLogViewModel> Logs { get; };
 			}
 
 		}
