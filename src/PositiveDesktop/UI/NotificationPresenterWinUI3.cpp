@@ -58,7 +58,7 @@ namespace app::ui {
 		app::storage::config_t const& config_;
 		NotificationPresenterHint hint_;
 		resource::ResourceManager resourceManager_;
-		winrt::PositiveDesktop::NotificationWindow window_;
+		winrt::com_ptr<winrt::PositiveDesktop::implementation::NotificationWindow> window_;
 	};
 
 }
@@ -71,11 +71,11 @@ using namespace winrt::PositiveDesktop::ViewModels;
 void NotificationPresenterWinUI3::closeAll() noexcept {
 	finalize_ = true;
 
-	winrt::PositiveDesktop::NotificationWindow window = std::exchange(window_, nullptr);
+	winrt::com_ptr<winrt::PositiveDesktop::implementation::NotificationWindow> window = std::exchange(window_, nullptr);
 	if (!window) return;
 
 	dispatch(gDispatchQueue, [window]() {
-		window.Close();
+		window->Close();
 	});
 }
 
@@ -92,17 +92,17 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 			config.theme = thm_system;
 		}
 
-		window_ = winrt::make<winrt::PositiveDesktop::implementation::NotificationWindow>(hint_, std::move(config));
+		window_ = winrt::make_self<winrt::PositiveDesktop::implementation::NotificationWindow>(hint_, std::move(config));
 	}
 
 	// Set data
 	winrt::hstring caption { resourceManager_.get<resource::R::Notification_Caption_VirtualDesktopChanged>() };
 	winrt::hstring message { GetFormatDesktopMessage(data) };
 	NotificationWindowViewModel viewModel = winrt::make<implementation::NotificationWindowViewModel>(caption, message);
-	window_.ViewModel(viewModel);
+	window_->ViewModel(viewModel);
 
 	// Show window
-	window_.Show(app::storage::actualDuration(config_.defaultDesktop.duration));
+	window_->Show(app::storage::actualDuration(config_.defaultDesktop.duration));
 }
 
 INotificationPresenter* CreateWinUI3NotificationPresenter(app::storage::config_t const& config, NotificationPresenterHint hint) {
