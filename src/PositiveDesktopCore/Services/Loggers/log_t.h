@@ -137,8 +137,8 @@ namespace app::logger {
 #define LOG_BEGIN_INTHROW(__TAG__) constexpr ::app::logger::logtag_t __tag = __TAG__; LOG_TRACE(::app::logger::lop_function_begin, ""); try { static_cast<void>(0)
 #define LOG_END_INTHROW()          LOG_TRACE(::app::logger::lop_function_end, ""); } catch (...) { LOG_TRACE(::app::logger::lop_function_end, ""); throw; } static_cast<void>(0)
 
-#define LOG_WARN(__MSG__, __HR__)  ::app::logger::gLogger->warn(__tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__)
-#define LOG_ERROR(__MSG__, __HR__) ::app::logger::gLogger->error(__tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__)
+#define LOG_WARN(__MSG__, __HR__)  ::app::logger::gLogger->log(::app::logger::llv_warn, __tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__)
+#define LOG_ERROR(__MSG__, __HR__) ::app::logger::gLogger->log(::app::logger::llv_error, __tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__)
 
 #define __LOG_IF_BOOL(__LVL__, __FLAG__, __MSG__) \
 	if (!(__FLAG__)) { \
