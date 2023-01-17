@@ -1,0 +1,27 @@
+namespace PositiveDesktop.ViewModels.Settings
+{
+
+	enum SettingsSavedStatus
+	{
+		Succeeded,
+		Failed,
+	};
+
+	[interface_name("ISettingsSavedEventArgs", 74FBEA96-F58F-4F57-AA83-D8B685D616AD)]
+	runtimeclass SettingsSavedEventArgs
+	{
+		[noexcept] SettingsSavedStatus Status { get; };
+	}
+
+	delegate void SettingsSavedHandler(SettingsBaseViewModel sender, SettingsSavedEventArgs args);
+
+	[constructor_name("ISettingsBaseViewModelFactory", F4DFDB3F-95AA-59F5-A9A0-CDEFDEFA5C77)]
+	[interface_name("ISettingsBaseViewModel", 8E270C02-50E8-4DB2-8629-D3A5CADB6BF8)]
+	unsealed runtimeclass SettingsBaseViewModel : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+	{
+		Windows.Foundation.IAsyncOperation<SettingsSavedStatus> SaveAsync();
+
+		event SettingsSavedHandler Saved;
+	}
+
+}

@@ -1,0 +1,46 @@
+import "ViewModels/Settings/SettingsBaseViewModel.idl";
+
+namespace PositiveDesktop.ViewModels.Settings
+{
+
+	enum NotificationTheme
+	{
+		Default,
+		System,
+		Light,
+		Dark,
+		Accent,
+	};
+
+	enum NotificationCorner
+	{
+		Default,
+		Rounded,
+		RoundedSmall,
+		Squared,
+	};
+
+	enum NotificationPositionOrigin
+	{
+		Default,
+		WorkArea,
+		ActiveWindow,
+		Cursor,
+	};
+
+	unsealed runtimeclass SettingsBaseViewModel;
+
+	[interface_name("INotificationViewModel", 1DDA668C-4468-40F3-B76D-9ECF6045E155)]
+	runtimeclass NotificationViewModel : SettingsBaseViewModel
+	{
+		[noexcept] NotificationTheme Theme;
+		[noexcept] Windows.Foundation.IReference<Boolean> InactiveBackdrop;
+		[noexcept] NotificationCorner Corner;
+		[noexcept] Boolean UseParentDuration;
+		[noexcept] Single Duration;
+		[noexcept] NotificationPositionOrigin PositionOrigin;
+		[noexcept] Single PositionX;
+		[noexcept] Single PositionY;
+	}
+
+}

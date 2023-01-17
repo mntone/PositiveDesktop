@@ -1,5 +1,5 @@
 #pragma once
-#include "ViewModels/Settings/ErrorLogViewModel.h"
+#include "ViewModels/Settings/NotificationViewModel.h"
 #include "UI/SettingsPage_Notification.g.h"
 
 namespace winrt::PositiveDesktop::UI::implementation {
@@ -8,12 +8,12 @@ namespace winrt::PositiveDesktop::UI::implementation {
 		SettingsPage_Notification() noexcept;
 
 	public:  // - Properties
-		ViewModels::Settings::ErrorLogsViewModel ViewModel() const noexcept {
+		ViewModels::Settings::NotificationViewModel ViewModel() const noexcept {
 			return viewModel_;
 		}
 
 	private:
-		ViewModels::Settings::ErrorLogsViewModel viewModel_;
+		ViewModels::Settings::NotificationViewModel viewModel_;
 	};
 
 }

@@ -229,6 +229,15 @@ LRESULT NotificationWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPAR
 	return WindowBase::WndProc(hWnd, message, wParam, lParam);
 }
 
+void NotificationWindow::Sync(app::storage::desktop_t const& config) {
+	config_ = config;
+
+	winrt::Microsoft::UI::Windowing::AppWindow appWindow = GetAppWindow(m_inner);
+	if (appWindow.IsVisible()) {
+		UpdatePosition();
+	}
+}
+
 void NotificationWindow::UpdatePosition() {
 	// TODO: Observe the WorkArea and update position.
 	winrt::Microsoft::UI::Windowing::AppWindow appWindow = GetAppWindow(m_inner);

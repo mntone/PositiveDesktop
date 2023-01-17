@@ -10,11 +10,11 @@ namespace winrt::PositiveDesktop::ViewModels::implementation {
 			, message_(std::move(message))
 		{ }
 
-		winrt::hstring Caption() const noexcept {
+		inline winrt::hstring Caption() const noexcept {
 			return caption_;
 		}
 
-		winrt::hstring Message() const noexcept {
+		inline winrt::hstring Message() const noexcept {
 			return message_;
 		}
 

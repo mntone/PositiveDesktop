@@ -69,6 +69,8 @@ namespace winrt {
 			return L"Logger";
 		case ltg_storage:
 			return L"Storage";
+		case ltg_viewmodel:
+			return L"ViewModel";
 		case ltg_presenter:
 			return L"Presenter";
 		case ltg_unknown:

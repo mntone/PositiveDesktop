@@ -15,6 +15,9 @@ namespace winrt::PositiveDesktop::implementation {
 		void OnLaunched(Microsoft::UI::Xaml::LaunchActivatedEventArgs const&);
 		void OnSuspending(IInspectable const&, Windows::ApplicationModel::SuspendingEventArgs const&);
 
+	public:  // - Properties
+		app::app_t& Context() noexcept { return app_; }
+
 	private:
 		bool initialized_ { false };
 		app::app_t app_;

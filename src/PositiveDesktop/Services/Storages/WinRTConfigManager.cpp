@@ -1,7 +1,7 @@
-#include <utility>
-#include <winrt/base.h>
-
+#include "pch.h"
 #include "WinRTConfigManager.h"
+
+#include "Services/Loggers/log_t.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.Storage.h>
@@ -52,12 +52,14 @@ namespace app::storage {
 		desktop_t load(winrt::Windows::Foundation::Collections::IPropertySet values) {
 			desktop_t desktop {
 				load(values, L"theme", kThemeDefault),
+				load(values, L"backdrop", kBackdropDefault),
 				load(values, L"inactiveBackdrop", kInactiveBackdropDefault),
 				load(values, L"corner", kCornerDefault),
 				packedDuration(load(values, L"duration", kDurationDefaultFloat)),
 				load(values, L"positionMode", kPositionModeDefault),
 				packedPosition(load(values, L"positionX", kPositionXDefaultFloat)),
 				packedPosition(load(values, L"positionY", kPositionYDefaultFloat)),
+				packedScale(load(values, L"scale", kScaleDefaultFloat)),
 			};
 			return desktop;
 		}
@@ -121,12 +123,12 @@ namespace app::storage {
 #pragma region Store functions
 
 		template<typename T>
-		void store(winrt::Windows::Foundation::Collections::IPropertySet values, winrt::param::hstring key, T value) {
+		void store(winrt::Windows::Foundation::Collections::IPropertySet values, winrt::param::hstring const& key, T value) {
 			values.Insert(key, winrt::box_value(value));
 		}
 
 		template<typename T>
-		void store(winrt::Windows::Foundation::Collections::IPropertySet values, winrt::param::hstring key, T value, T defaultValue) {
+		void store(winrt::Windows::Foundation::Collections::IPropertySet values, winrt::param::hstring const& key, T value, T defaultValue) {
 			if (value != defaultValue) {
 				if constexpr (std::is_enum_v<T>) {
 					using B = std::underlying_type_t<T>;
@@ -141,12 +143,19 @@ namespace app::storage {
 
 		void store(winrt::Windows::Foundation::Collections::IPropertySet values, desktop_t value) {
 			store(values, L"theme", value.theme, kThemeDefault);
+			store(values, L"backdrop", value.backdrop, kBackdropDefault);
 			store(values, L"inactiveBackdrop", value.inactiveBackdrop, kInactiveBackdropDefault);
 			store(values, L"corner", value.corner, kCornerDefault);
 			store(values, L"duration", actualDuration(value.duration), kDurationDefaultFloat);
 			store(values, L"positionMode", value.positionMode, kPositionModeDefault);
 			store(values, L"positionX", actualPosition(value.positionX), kPositionXDefaultFloat);
 			store(values, L"positionY", actualPosition(value.positionY), kPositionYDefaultFloat);
+			store(values, L"scale", actualScale(value.scale), kScaleDefaultFloat);
+		}
+
+		void store(winrt::Windows::Storage::ApplicationDataContainer container, desktop_t value) {
+			winrt::Windows::Foundation::Collections::IPropertySet values { container.Values() };
+			store(values, value);
 		}
 
 		void store(winrt::Windows::Foundation::Collections::IPropertySet values, override_desktop_t value) {
@@ -191,6 +200,12 @@ namespace app::storage {
 	public:
 		WinRTConfigManager()
 			: container_(winrt::Windows::Storage::ApplicationData::Current().LocalSettings()) {
+#if _DEBUG
+			LOG_TAG(logger::ltg_storage);
+
+			winrt::hstring path { winrt::Windows::Storage::ApplicationData::Current().LocalFolder().Path() };
+			LOG_TRACE(logger::lop_info, std::format("Config file path: {}", winrt::to_string(path)));
+#endif
 		}
 
 		void Reset() override {
@@ -202,6 +217,10 @@ namespace app::storage {
 		}
 
 		void Store(config_t value) override {
+			interop::store(container_, value);
+		}
+
+		void Store(desktop_t value) override {
 			interop::store(container_, value);
 		}
 

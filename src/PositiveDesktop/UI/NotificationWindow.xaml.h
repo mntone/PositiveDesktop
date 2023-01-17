@@ -17,6 +17,7 @@ namespace winrt::PositiveDesktop::UI::implementation {
 		NotificationWindow(app::ui::NotificationPresenterHint hint, app::storage::desktop_t config);
 
 		void Show(float visibleDuration);
+		void Sync(app::storage::desktop_t const& config);
 
 	private:
 		void ReleasePrivate();

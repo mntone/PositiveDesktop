@@ -1,3 +1,5 @@
+import "ViewModels/Settings/NotificationViewModel.idl";
+
 namespace PositiveDesktop
 {
 
@@ -70,6 +72,8 @@ namespace PositiveDesktop
 		runtimeclass SettingsPage_Notification : Microsoft.UI.Xaml.Controls.Page
 		{
 			SettingsPage_Notification();
+
+			[noexcept] PositiveDesktop.ViewModels.Settings.NotificationViewModel ViewModel { get; };
 		}
 
 		[interface_name("ISettingsWindow", BD92255C-3BC5-54CE-A0FD-18D90F6CD803)]

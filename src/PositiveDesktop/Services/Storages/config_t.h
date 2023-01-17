@@ -46,13 +46,17 @@ namespace app::storage {
 	};
 	constexpr position_mode_t kPositionModeDefault = psn_default;
 
+	constexpr unsigned int kDurationParent = 0; /* parent */
+	constexpr unsigned int kPositionXParent = 0; /* parent */
+	constexpr unsigned int kPositionYParent = 0; /* parent */
+
 	constexpr unsigned int kInactiveBackdrop = 1; /* true */
 	constexpr unsigned int kDurationDefault = 9; /* 3s */
 	constexpr unsigned int kPositionXDefault = 5; /* center */
 	constexpr unsigned int kPositionYDefault = 5; /* center */
 	constexpr float kDurationDefaultFloat = 3.f; /* 3s */
-	constexpr float kPositionXDefaultFloat = 0.5; /* center */
-	constexpr float kPositionYDefaultFloat = 0.5; /* center */
+	constexpr float kPositionXDefaultFloat = 0.f; /* center */
+	constexpr float kPositionYDefaultFloat = 0.f; /* center */
 	struct desktop_t final {
 #pragma pack(4)
 		theme_t theme : 3 { kNotificationDefault }; // theme
@@ -91,16 +95,16 @@ namespace app::storage {
 		}
 	}
 
-	constexpr float actualPosition(unsigned int packedPosition, float parentPosition = 0.5) noexcept {
+	constexpr float actualPosition(unsigned int packedPosition, float parentPosition = 0) noexcept {
 		if (packedPosition >= 3) {
-			return 0.25f * static_cast<float>(packedPosition - 3);
+			return 0.5f * static_cast<float>(packedPosition - 3) - 1.f;
 		} else {
 			return parentPosition;
 		}
 	}
 
 	constexpr unsigned int packedPosition(float actualPosition) noexcept {
-		return std::min(7u, static_cast<unsigned int>(std::lround(4.f * actualPosition)) + 3u);
+		return std::min(7u, static_cast<unsigned int>(std::lround(2.f * (1.f + actualPosition))) + 3u);
 	}
 
 	enum override_mode_t: unsigned int {
@@ -152,11 +156,12 @@ namespace app::storage {
 
 	class IConfigManager {
 	public:
-		virtual ~IConfigManager() { }
+		virtual ~IConfigManager() = default;
 
 		virtual void Reset() = 0;
 		virtual config_t Load() = 0;
 		virtual void Store(config_t config) = 0;
+		virtual void Store(desktop_t config) = 0;
 	};
 
 }

@@ -72,7 +72,8 @@
 							Maximum="30"
 							Minimum="0.25"
 							MinWidth="200"
-							StepFrequency="0.5" />
+							StepFrequency="0.5"
+							Value="{x:Bind ViewModel.Duration, Mode=TwoWay}" />
 				</StackPanel>
 			</ctrl:SettingsCard>
 
@@ -94,7 +95,8 @@
 								MinWidth="200"
 								StepFrequency="0.5"
 								TickFrequency="0.5"
-								TickPlacement="BottomRight" />
+								TickPlacement="BottomRight"
+								Value="{x:Bind ViewModel.PositionX, Mode=TwoWay}" />
 					</StackPanel>
 				</ctrl:SettingsCard>
 
@@ -115,7 +117,8 @@
 								MinWidth="200"
 								StepFrequency="0.5"
 								TickFrequency="0.5"
-								TickPlacement="BottomRight" />
+								TickPlacement="BottomRight"
+								Value="{x:Bind ViewModel.PositionY, Mode=TwoWay}" />
 					</StackPanel>
 				</ctrl:SettingsCard>
 			</StackPanel>

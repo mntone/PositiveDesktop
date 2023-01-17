@@ -7,6 +7,6 @@
 using namespace winrt::PositiveDesktop::UI::implementation;
 
 SettingsPage_Notification::SettingsPage_Notification() noexcept
-	: viewModel_(winrt::make<winrt::PositiveDesktop::ViewModels::Settings::implementation::ErrorLogsViewModel>()) {
+	: viewModel_(winrt::make<winrt::PositiveDesktop::ViewModels::Settings::implementation::NotificationViewModel>()) {
 	InitializeComponent();
 }

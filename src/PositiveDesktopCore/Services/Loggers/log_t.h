@@ -29,11 +29,13 @@ namespace app::logger {
 		ltg_keylistener,
 		ltg_logger,
 		ltg_storage,
+		ltg_viewmodel,
 		ltg_presenter,
 	};
 
 	enum logop_t: unsigned int {
 		lop_unknown,
+		lop_info,
 		lop_function_begin,
 		lop_function_end,
 	};
@@ -131,6 +133,7 @@ namespace app::logger {
 #define LOG_DEBUG(__MSG__)         static_cast<void>(0)
 #endif
 
+#define LOG_TAG(__TAG__)   constexpr ::app::logger::logtag_t __tag = __TAG__; static_cast<void>(0)
 #define LOG_BEGIN(__TAG__) constexpr ::app::logger::logtag_t __tag = __TAG__; LOG_TRACE(::app::logger::lop_function_begin, "")
 #define LOG_END()          __LABEL_FINALIZE: LOG_TRACE(::app::logger::lop_function_end, "")
 #define LOG_END_NOLABEL()  LOG_TRACE(::app::logger::lop_function_end, "")

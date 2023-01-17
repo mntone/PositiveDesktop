@@ -154,3 +154,19 @@ void app_t::process(keylistener::kbevent_t ev) noexcept {
 		break;
 	}
 }
+
+
+#pragma region Storage related functions
+
+void app_t::reset() {
+	configManager_->Reset();
+	config_ = configManager_->Load();
+}
+
+void app_t::store(app::storage::desktop_t config) {
+	config_.defaultDesktop = config;
+	presenter_->sync(config_);
+	configManager_->Store(std::move(config));
+}
+
+#pragma endregion

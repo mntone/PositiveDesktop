@@ -23,6 +23,10 @@ namespace app {
 		void initialize();
 		void close() noexcept;
 
+		void reset();
+		app::storage::desktop_t& loadDefaultDesktop() noexcept { return config_.defaultDesktop; }
+		void store(app::storage::desktop_t config);
+
 	private:
 		void FASTCALL on(reps::bag_t<app::keylistener::kbevent_t> const& value) noexcept;
 		void FASTCALL on(reps::bag_t<app::desktop::vdevent_t> const& value) noexcept;

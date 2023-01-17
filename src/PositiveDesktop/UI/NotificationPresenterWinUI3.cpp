@@ -22,6 +22,15 @@ namespace app::ui {
 			, window_(nullptr) {
 		}
 
+		void sync(app::storage::config_t const& config) noexcept {
+			config_ = config;
+
+			winrt::com_ptr<winrt::PositiveDesktop::UI::implementation::NotificationWindow> window { window_ };
+			if (window) {
+				window->Sync(config.defaultDesktop);
+			}
+		}
+
 		void changeLanguage(winrt::param::hstring const& language) noexcept {
 			resourceManager_.ChangeLanguage(language);
 		}
@@ -56,7 +65,7 @@ namespace app::ui {
 
 	private:
 		bool finalize_;
-		app::storage::config_t const& config_;
+		app::storage::config_t config_;
 		NotificationPresenterHint hint_;
 		winrt::PositiveDesktop::UI::Helpers::implementation::ResourceManager resourceManager_;
 		winrt::com_ptr<winrt::PositiveDesktop::UI::implementation::NotificationWindow> window_;
@@ -89,23 +98,25 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 	DispatcherQueueSupport::EnsureDispatcherQueueController();
 
 	// Check window
-	if (!window_) {
+	winrt::com_ptr<NotificationWindow> window { window_ };
+	if (!window) {
 		desktop_t config = config_.defaultDesktop;
 		if (config.theme == thm_default) {
 			config.theme = thm_system;
 		}
 
-		window_ = winrt::make_self<NotificationWindow>(hint_, std::move(config));
+		window = winrt::make_self<NotificationWindow>(hint_, std::move(config));
+		window_ = window;
 	}
 
 	// Set data
 	winrt::hstring caption { resourceManager_.Get<R::Notification_Caption_VirtualDesktopChanged>() };
 	winrt::hstring message { GetFormatDesktopMessage(data) };
 	NotificationWindowViewModel viewModel { winrt::make<implementation::NotificationWindowViewModel>(caption, message) };
-	window_->ViewModel(viewModel);
+	window->ViewModel(viewModel);
 
 	// Show window
-	window_->Show(app::storage::actualDuration(config_.defaultDesktop.duration));
+	window->Show(app::storage::actualDuration(config_.defaultDesktop.duration));
 }
 
 INotificationPresenter* CreateWinUI3NotificationPresenter(app::storage::config_t const& config, NotificationPresenterHint hint) {

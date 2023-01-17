@@ -5,6 +5,12 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl" />
+    <Midl Include="ViewModels\Settings\NotificationViewModel.idl">
+      <Filter>ViewModels\Settings</Filter>
+    </Midl>
+    <Midl Include="ViewModels\Settings\SettingsBaseViewModel.idl">
+      <Filter>ViewModels\Settings</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\ErrorLog.png">
@@ -110,6 +116,12 @@
     <ClCompile Include="ViewModels\Settings\ErrorLogViewModel.cpp">
       <Filter>ViewModels\Settings</Filter>
     </ClCompile>
+    <ClCompile Include="ViewModels\Settings\NotificationViewModel.cpp">
+      <Filter>ViewModels\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\Settings\SettingsBaseViewModel.cpp">
+      <Filter>ViewModels\Settings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -168,6 +180,12 @@
       <Filter>ViewModels</Filter>
     </ClInclude>
     <ClInclude Include="ViewModels\Settings\ErrorLogViewModel.h">
+      <Filter>ViewModels\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\Settings\NotificationViewModel.h">
+      <Filter>ViewModels\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\Settings\SettingsBaseViewModel.h">
       <Filter>ViewModels\Settings</Filter>
     </ClInclude>
   </ItemGroup>

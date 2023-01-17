@@ -70,58 +70,9 @@
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition />
-					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
-				<Frame x:Name="rootFrame" />
-				<StackPanel Grid.Row="1"
-							Margin="24,4,24,4"
-							Spacing="4">
-					<ctrl:SettingsExpander Header="Header">
-						<Button Content="button"
-								MinWidth="{StaticResource SettingsCardContentMinWidth}" />
 
-						<ctrl:SettingsExpander.ExpanderContent>
-							<StackPanel>
-								<ctrl:SettingsCard Style="{StaticResource SettingsMiddleCardAltStyle}">
-									<ctrl:SettingsCard.Header>
-										<CheckBox Content="This is checkbox!!!!!!!" />
-									</ctrl:SettingsCard.Header>
-								</ctrl:SettingsCard>
-								<ctrl:SettingsCard Header="NumberBox"
-												   Description="Description, description, description, description and description!"
-												   Style="{StaticResource SettingsBottomCardAltStyle}">
-									<ctrl:SettingsCard.HeaderIcon>
-										<FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-												  Glyph="&#xE97E;"
-												  IsTextScaleFactorEnabled="False" />
-									</ctrl:SettingsCard.HeaderIcon>
-									<NumberBox MinWidth="{StaticResource SettingsCardContentMinWidth}" />
-								</ctrl:SettingsCard>
-							</StackPanel>
-						</ctrl:SettingsExpander.ExpanderContent>
-					</ctrl:SettingsExpander>
-					<ctrl:SettingsCard Header="Button"
-									   Description="Description, description, description, description and description!"
-									   IsClickEnabled="True">
-						<ctrl:SettingsCard.ActionIcon>
-							<FontIcon FontFamily="Segoe MDL2 Assets"
-									  FontSize="12"
-									  Glyph="&#xE974;"
-									  IsTextScaleFactorEnabled="False" />
-						</ctrl:SettingsCard.ActionIcon>
-						<Button Content="Content!!"
-								MinWidth="{StaticResource SettingsCardContentMinWidth}" />
-					</ctrl:SettingsCard>
-					<ctrl:SettingsCard Header="TextBox"
-									   Description="Description, description, description, description and description!">
-						<ctrl:SettingsCard.HeaderIcon>
-							<FontIcon FontFamily="Segoe MDL2 Assets"
-									  Glyph="&#xE97E;"
-									  IsTextScaleFactorEnabled="False" />
-						</ctrl:SettingsCard.HeaderIcon>
-						<TextBox MinWidth="{StaticResource SettingsCardContentMinWidth}" />
-					</ctrl:SettingsCard>
-				</StackPanel>
+				<Frame x:Name="rootFrame" />
 			</Grid>
 		</NavigationView>
 
