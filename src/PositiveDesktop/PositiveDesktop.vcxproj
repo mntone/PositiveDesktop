@@ -163,7 +163,6 @@
     <ClInclude Include="Services\app_t.h" />
     <ClInclude Include="Services\Storages\config_t.h" />
     <ClInclude Include="Services\Storages\WinRTConfigManager.h" />
-    <ClInclude Include="UI\Converters\DateTimeToStringConverter.h" />
     <ClInclude Include="UI\Helpers\DispatcherQueueSupport.h" />
     <ClInclude Include="UI\Helpers\MicaSupport.h" />
     <ClInclude Include="UI\Helpers\NavigationHelper.h" />
@@ -205,7 +204,6 @@
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="UI\Converters\DateTimeToStringConverter.cpp" />
     <ClCompile Include="UI\Helpers\DispatcherQueueSupport.cpp" />
     <ClCompile Include="UI\Helpers\MicaSupport.cpp" />
     <ClCompile Include="UI\Helpers\NavigationHelper.cpp" />
@@ -263,7 +261,7 @@
     <Import Project="..\..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.targets')" />
     <Import Project="..\..\packages\Microsoft.WindowsAppSDK.1.2.221209.1\build\native\Microsoft.WindowsAppSDK.targets" Condition="Exists('..\..\packages\Microsoft.WindowsAppSDK.1.2.221209.1\build\native\Microsoft.WindowsAppSDK.targets')" />
     <Import Project="..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.targets" Condition="Exists('..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.targets')" />
-    <Import Project="..\..\packages\Mntone.AngelUmbrella.1.1.0-alpha1\build\native\Mntone.AngelUmbrella.targets" Condition="Exists('..\..\packages\Mntone.AngelUmbrella.1.1.0-alpha1\build\native\Mntone.AngelUmbrella.targets')" />
+    <Import Project="..\..\packages\Mntone.AngelUmbrella.1.1.0\build\native\Mntone.AngelUmbrella.targets" Condition="Exists('..\..\packages\Mntone.AngelUmbrella.1.1.0\build\native\Mntone.AngelUmbrella.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -275,6 +273,6 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.WindowsAppSDK.1.2.221209.1\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.WindowsAppSDK.1.2.221209.1\build\native\Microsoft.WindowsAppSDK.targets'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Mntone.AngelUmbrella.1.1.0-alpha1\build\native\Mntone.AngelUmbrella.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Mntone.AngelUmbrella.1.1.0-alpha1\build\native\Mntone.AngelUmbrella.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Mntone.AngelUmbrella.1.1.0\build\native\Mntone.AngelUmbrella.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Mntone.AngelUmbrella.1.1.0\build\native\Mntone.AngelUmbrella.targets'))" />
   </Target>
 </Project>

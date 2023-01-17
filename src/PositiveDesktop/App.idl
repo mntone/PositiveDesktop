@@ -77,20 +77,6 @@ namespace PositiveDesktop
 		{
 		}
 
-		namespace Converters
-		{
-
-			//[constructor_name("IDateTimeToStringConverterFactory", 3B317E48-32FE-4922-8812-671E697B31B1)]
-			[interface_name("IDateTimeToStringConverter", 3EEE62D6-3584-41DC-9BE8-2911A9BB7F54)]
-			runtimeclass DateTimeToStringConverter : Microsoft.UI.Xaml.Data.IValueConverter
-			{
-				DateTimeToStringConverter();
-
-				String Format;
-			}
-
-		}
-
 		namespace Helpers
 		{
 
