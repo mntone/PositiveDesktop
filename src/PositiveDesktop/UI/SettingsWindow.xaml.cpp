@@ -6,9 +6,9 @@
 
 #include "SettingsPage_ErrorLog.xaml.h"
 
+#include <winrt/Mntone.AngelUmbrella.Navigation.h>
 #include <winrt/Microsoft.UI.Windowing.h>
 
-#include "Helpers/NavigationHelper.h"
 #include "Helpers/UIHelper.h"
 #include "Helpers/WindowHelper.h"
 
@@ -31,7 +31,7 @@ namespace winrt {
 	using namespace ::winrt::Microsoft::UI::Xaml::Controls;
 	using namespace ::winrt::Microsoft::UI::Windowing;
 
-	using namespace ::winrt::PositiveDesktop::UI::Helpers;
+	using namespace ::winrt::Mntone::AngelUmbrella::Navigation;
 }
 
 #include "UI/SettingsPage_Notification.xaml.h"
@@ -40,6 +40,7 @@ using namespace winrt::PositiveDesktop::UI::implementation;
 using namespace winrt::PositiveDesktop::UI::Helpers::implementation;
 
 SettingsWindow::SettingsWindow() {
+	NavigationProperties::Initialize();
 	InitializeComponent();
 	ExtendsContentIntoTitleBar(true);
 	SetTitleBar(titlebar());
@@ -139,7 +140,7 @@ void SettingsWindow::NavigationViewSelectionChanged(NavigationView const& /*send
 
 	NavigationViewItem item { args.SelectedItem().as<NavigationViewItem>() };
 	if (item) {
-		TypeName pageTypeName { NavigationHelper::GetPageType(item) };
+		TypeName pageTypeName { NavigationProperties::GetPageType(item) };
 		rootFrame().Navigate(pageTypeName);
 		LOG_DEBUG(std::format("Navigated to {}.", to_string(pageTypeName.Name)));
 	}

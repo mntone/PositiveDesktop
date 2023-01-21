@@ -6,7 +6,7 @@
 		mc:Ignorable="d"
 		xmlns:local="using:PositiveDesktop.UI"
 		xmlns:ctrl="using:Mntone.AngelUmbrella.Controls"
-		xmlns:helpers="using:PositiveDesktop.UI.Helpers">
+		xmlns:nav="using:Mntone.AngelUmbrella.Navigation">
 
 	<Grid ActualThemeChanged="ActualThemeChanged">
 		<Grid.Resources>
@@ -47,13 +47,13 @@
 			</NavigationView.Resources>
 			<NavigationView.MenuItems>
 				<NavigationViewItem x:Uid="SettingsWindow_Notification"
-									helpers:NavigationHelper.PageType="local:SettingsPage_Notification">
+									nav:NavigationProperties.PageType="local:SettingsPage_Notification">
 					<NavigationViewItem.Icon>
 						<ImageIcon Source="/Assets/Notification.png" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 				<NavigationViewItem x:Uid="SettingsWindow_ErrorLog"
-									helpers:NavigationHelper.PageType="local:SettingsPage_ErrorLog">
+									nav:NavigationProperties.PageType="local:SettingsPage_ErrorLog">
 					<NavigationViewItem.Icon>
 						<ImageIcon Source="/Assets/ErrorLog.png" />
 					</NavigationViewItem.Icon>

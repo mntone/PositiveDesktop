@@ -101,9 +101,6 @@
     <ClCompile Include="UI\Helpers\MicaSupport.cpp">
       <Filter>UI\Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Helpers\NavigationHelper.cpp">
-      <Filter>UI\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Helpers\WindowBase.cpp">
       <Filter>UI\Helpers</Filter>
     </ClCompile>
@@ -147,9 +144,6 @@
       <Filter>UI\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="UI\Helpers\MicaSupport.h">
-      <Filter>UI\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\Helpers\NavigationHelper.h">
       <Filter>UI\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="UI\Helpers\ThemeHelper.h">

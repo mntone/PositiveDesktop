@@ -1,7 +1,6 @@
 #pragma once
 #include <winrt/Microsoft.UI.Xaml.Controls.AnimatedVisuals.h>
-
-#include "UI/Helpers/NavigationHelper.h"
+#include <winrt/Mntone.AngelUmbrella.Navigation.h>
 
 #include "App.xaml.g.h"
 

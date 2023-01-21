@@ -81,21 +81,6 @@ namespace PositiveDesktop
 		{
 		}
 
-		namespace Helpers
-		{
-
-			[interface_name("INavigationHelper", 53398815-9FCC-4381-9F4B-A90E05DB272A)]
-			[static_name("INavigationHelperStatics", 514F7EE7-3A01-51CD-AA81-C320C329FCDC)]
-			runtimeclass NavigationHelper
-			{
-				static Windows.UI.Xaml.Interop.TypeName GetPageType(Microsoft.UI.Xaml.Controls.NavigationViewItem item);
-				static void SetPageType(Microsoft.UI.Xaml.Controls.NavigationViewItem item, Windows.UI.Xaml.Interop.TypeName value);
-
-				static Microsoft.UI.Xaml.DependencyProperty PageTypeProperty { get; };
-			}
-
-		}
-
 	}
 
 }
