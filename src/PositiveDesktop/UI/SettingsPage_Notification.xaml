@@ -48,13 +48,14 @@
 				<ToggleSwitch />
 			</ctrl:SettingsCard>
 
-			<ctrl:SettingsCard Header="Theme">
+			<ctrl:SettingsCard x:Uid="Settings_Notification_Theme"
+							   Header="Theme">
 				<ComboBox MinWidth="{StaticResource SettingsCardContentMinWidth}"
 						  SelectedIndex="{x:Bind ViewModel.ThemeIndex, Mode=TwoWay}">
-					<ComboBoxItem>System</ComboBoxItem>
-					<ComboBoxItem>Light</ComboBoxItem>
-					<ComboBoxItem>Dark</ComboBoxItem>
-					<ComboBoxItem>Accent</ComboBoxItem>
+					<ComboBoxItem x:Uid="Settings_Notification_Theme_System">System</ComboBoxItem>
+					<ComboBoxItem x:Uid="Settings_Notification_Theme_Light">Light</ComboBoxItem>
+					<ComboBoxItem x:Uid="Settings_Notification_Theme_Dark">Dark</ComboBoxItem>
+					<ComboBoxItem x:Uid="Settings_Notification_Theme_Accent">Accent</ComboBoxItem>
 				</ComboBox>
 			</ctrl:SettingsCard>
 

@@ -141,6 +141,21 @@
   <data name="Settings_Notification_HorizontalPosition.Header" xml:space="preserve">
     <value>水平方向の表示位置</value>
   </data>
+  <data name="Settings_Notification_Theme.Header" xml:space="preserve">
+    <value>テーマ</value>
+  </data>
+  <data name="Settings_Notification_Theme_Accent.Content" xml:space="preserve">
+    <value>アクセント カラー</value>
+  </data>
+  <data name="Settings_Notification_Theme_Dark.Content" xml:space="preserve">
+    <value>ダーク</value>
+  </data>
+  <data name="Settings_Notification_Theme_Light.Content" xml:space="preserve">
+    <value>ライト</value>
+  </data>
+  <data name="Settings_Notification_Theme_System.Content" xml:space="preserve">
+    <value>システム</value>
+  </data>
   <data name="Settings_Notification_VerticalPosition.Header" xml:space="preserve">
     <value>垂直方向の表示位置</value>
   </data>
