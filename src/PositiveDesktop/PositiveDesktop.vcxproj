@@ -189,6 +189,7 @@
     <ClInclude Include="ViewModels\Settings\ErrorLogViewModel.h" />
     <ClInclude Include="ViewModels\Settings\NotificationViewModel.h" />
     <ClInclude Include="ViewModels\Settings\SettingsBaseViewModel.h" />
+    <ClInclude Include="ViewModels\Settings\SettingsSavedEventArgs.h" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -226,6 +227,7 @@
     <ClCompile Include="ViewModels\Settings\ErrorLogViewModel.cpp" />
     <ClCompile Include="ViewModels\Settings\NotificationViewModel.cpp" />
     <ClCompile Include="ViewModels\Settings\SettingsBaseViewModel.cpp" />
+    <ClCompile Include="ViewModels\Settings\SettingsSavedEventArgs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl">

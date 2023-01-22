@@ -119,6 +119,9 @@
     <ClCompile Include="ViewModels\Settings\SettingsBaseViewModel.cpp">
       <Filter>ViewModels\Settings</Filter>
     </ClCompile>
+    <ClCompile Include="ViewModels\Settings\SettingsSavedEventArgs.cpp">
+      <Filter>ViewModels\Settings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -180,6 +183,9 @@
       <Filter>ViewModels\Settings</Filter>
     </ClInclude>
     <ClInclude Include="ViewModels\Settings\SettingsBaseViewModel.h">
+      <Filter>ViewModels\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\Settings\SettingsSavedEventArgs.h">
       <Filter>ViewModels\Settings</Filter>
     </ClInclude>
   </ItemGroup>

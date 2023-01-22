@@ -60,6 +60,7 @@
 #include <inspectable.h>
 #include <restrictederrorinfo.h>
 #include <hstring.h>
+#include <wil/cppwinrt.h>
 
 // Undefine GetCurrentTime macro to prevent
 // conflict with Storyboard::GetCurrentTime

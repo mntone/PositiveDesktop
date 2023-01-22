@@ -43,7 +43,11 @@ namespace app::logger {
 
 		void log(log_t&& log) noexcept override {
 			logs_.push_back(log);
+#if _DEBUG
+			reps::single_subject_t<log_t>::next(log);
+#else
 			reps::single_subject_t<log_t>::next(std::move(log));
+#endif
 		}
 
 	private:

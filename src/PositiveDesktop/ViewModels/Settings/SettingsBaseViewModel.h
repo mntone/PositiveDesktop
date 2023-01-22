@@ -6,10 +6,10 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 	struct SettingsBaseViewModel: SettingsBaseViewModelT<SettingsBaseViewModel> {
 		SettingsBaseViewModel() noexcept = default;
 
-		Windows::Foundation::IAsyncOperation<SettingsSavedStatus> SaveAsync();
+		SettingsSavedStatus Save();
 
 	protected:
-		void RaisePropertyChanged(param::hstring const& propertyName);
+		winrt::fire_and_forget RaisePropertyChanged(param::hstring const& propertyName);
 
 		virtual SettingsSavedStatus SaveCore() = 0;
 
@@ -31,6 +31,7 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 	private:
 		event<Microsoft::UI::Xaml::Data::PropertyChangedEventHandler> propertyChanged_;
 		event<SettingsSavedHandler> saved_;
+		cancellable_promise promise_;
 	};
 
 }
