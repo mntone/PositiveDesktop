@@ -1,4 +1,5 @@
 #pragma once
+#include <winrt/impl/PositiveDesktop.ViewModels.Settings.0.h>
 #include "ViewModels/Settings/NotificationViewModel.g.h"
 
 #include "SettingsBaseViewModel.h"
@@ -16,10 +17,10 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 		SettingsSavedStatus SaveCore() override final;
 
 	public:  // - Properties
-		constexpr NotificationTheme Theme() const noexcept {
-			return theme_;
+		constexpr int ThemeIndex() const noexcept {
+			return static_cast<int>(theme_) - 1;
 		}
-		void Theme(NotificationTheme value) noexcept;
+		void ThemeIndex(int value) noexcept;
 
 		inline Windows::Foundation::IReference<bool> InactiveBackdrop() const noexcept {
 			return inactiveBackdrop_;

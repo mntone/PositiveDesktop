@@ -50,11 +50,11 @@
 
 			<ctrl:SettingsCard Header="Theme">
 				<ComboBox MinWidth="{StaticResource SettingsCardContentMinWidth}"
-						  SelectedIndex="0">
+						  SelectedIndex="{x:Bind ViewModel.ThemeIndex, Mode=TwoWay}">
+					<ComboBoxItem>System</ComboBoxItem>
 					<ComboBoxItem>Light</ComboBoxItem>
 					<ComboBoxItem>Dark</ComboBoxItem>
 					<ComboBoxItem>Accent</ComboBoxItem>
-					<ComboBoxItem>Custom</ComboBoxItem>
 				</ComboBox>
 			</ctrl:SettingsCard>
 

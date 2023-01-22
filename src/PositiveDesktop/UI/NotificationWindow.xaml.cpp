@@ -234,6 +234,8 @@ void NotificationWindow::Sync(app::storage::desktop_t const& config) {
 
 	winrt::Microsoft::UI::Windowing::AppWindow appWindow = GetAppWindow(m_inner);
 	if (appWindow.IsVisible()) {
+		FrameworkElement rootElement { Content().as<FrameworkElement>() };
+		UpdateTheme(rootElement);
 		UpdatePosition();
 	}
 }
@@ -429,7 +431,7 @@ void NotificationWindow::ApplyThemeForAcrylic(FrameworkElement rootElement) noex
 
 	Media::Brush border { nullptr };
 	DesktopAcrylicController controller { backdropController_.as<DesktopAcrylicController>() };
-	if (colorPrevalence_.value()) {
+	if (app::storage::thm_accent == config_.theme || app::storage::thm_default == config_.theme && colorPrevalence_.value()) {
 		DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::AccentDark, DesktopAcrylicKind::Default);
 		configuration_.Theme(SystemBackdropTheme::Dark);
 		border = GetBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Accent);

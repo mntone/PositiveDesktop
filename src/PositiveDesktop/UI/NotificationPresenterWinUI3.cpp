@@ -25,10 +25,12 @@ namespace app::ui {
 		void sync(app::storage::config_t const& config) noexcept {
 			config_ = config;
 
-			winrt::com_ptr<winrt::PositiveDesktop::UI::implementation::NotificationWindow> window { window_ };
-			if (window) {
-				window->Sync(config.defaultDesktop);
-			}
+			winrt::PositiveDesktop::UI::Helpers::implementation::Dispatch([this]() {
+				winrt::com_ptr<winrt::PositiveDesktop::UI::implementation::NotificationWindow> window { window_ };
+				if (window) {
+					window->Sync(config_.defaultDesktop);
+				}
+			});
 		}
 
 		void changeLanguage(winrt::param::hstring const& language) noexcept {

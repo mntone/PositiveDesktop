@@ -24,7 +24,7 @@ namespace nonlocalized {
 }
 
 namespace properties {
-	constexpr std::wstring_view Theme { L"Theme" };
+	constexpr std::wstring_view ThemeIndex { L"ThemeIndex" };
 	constexpr std::wstring_view InactiveBackdrop { L"InactiveBackdrop" };
 	constexpr std::wstring_view Corner { L"Corner" };
 	constexpr std::wstring_view UseParentDuration { L"UseParentDuration" };
@@ -110,10 +110,11 @@ winrt::SettingsSavedStatus NotificationViewModel::SaveCore() {
 	return SettingsSavedStatus::Succeeded;
 }
 
-void NotificationViewModel::Theme(NotificationTheme value) noexcept {
-	if (theme_ != value) {
-		theme_ = value;
-		RaisePropertyChanged(properties::Theme);
+void NotificationViewModel::ThemeIndex(int value) noexcept {
+	NotificationTheme value2 { static_cast<NotificationTheme>(value + 1) };
+	if (theme_ != value2) {
+		theme_ = value2;
+		RaisePropertyChanged(properties::ThemeIndex);
 	}
 }
 
