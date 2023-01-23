@@ -15,6 +15,20 @@
 #include "Helpers/UIHelper.h"
 #include "Helpers/WindowHelper.h"
 
+inline DWM_WINDOW_CORNER_PREFERENCE GetDwmCornerFromConfigType(app::storage::corner_t value) noexcept {
+	switch (value) {
+	case app::storage::cnr_rounded:
+		return DWMWCP_ROUND;
+	case app::storage::cnr_rounded_small:
+		return DWMWCP_ROUNDSMALL;
+	case app::storage::cnr_squared:
+		return DWMWCP_DONOTROUND;
+	case app::storage::cnr_default:
+	default:
+		return DWMWCP_DEFAULT;
+	}
+}
+
 namespace resources {
 
 	// High contrast resources
@@ -85,7 +99,7 @@ NotificationWindow::NotificationWindow(std::shared_ptr<app::storage::DesktopConf
 	, applyTheme_(nullptr)
 	, dpiX_(USER_DEFAULT_SCREEN_DPI)
 	, dpiY_(USER_DEFAULT_SCREEN_DPI)
-	, cornerPreference_(DWMWCP_DEFAULT)
+	, cornerPreference_(GetDwmCornerFromConfigType(config_->corner()))
 	, transparencyEnabled_(false)
 	, background_(nullptr)
 	, border_(nullptr)
@@ -311,20 +325,6 @@ void NotificationWindow::UpdatePosition() {
 	appWindow.Move(calcData.first);
 }
 
-inline DWM_WINDOW_CORNER_PREFERENCE GetDwmCornerFromConfigType(app::storage::corner_t value) noexcept {
-	switch (value) {
-	case app::storage::cnr_rounded:
-		return DWMWCP_ROUND;
-	case app::storage::cnr_rounded_small:
-		return DWMWCP_ROUNDSMALL;
-	case app::storage::cnr_squared:
-		return DWMWCP_DONOTROUND;
-	case app::storage::cnr_default:
-	default:
-		return DWMWCP_DEFAULT;
-	}
-}
-
 bool NotificationWindow::UpdateCorners() noexcept {
 	if (!app::VersionHelper::isWindows11()) return false;
 
@@ -343,6 +343,8 @@ bool NotificationWindow::UpdateCorners() noexcept {
 			cornerPreference_ = cornerPreference;
 		}
 		return false;
+	} else {
+		cornerPreference_ = cornerPreference;
 	}
 	return true;
 }
