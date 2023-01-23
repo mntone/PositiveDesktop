@@ -27,7 +27,7 @@ namespace properties {
 	constexpr std::wstring_view ThemeIndex { L"ThemeIndex" };
 	constexpr std::wstring_view Backdrop { L"Backdrop" };
 	constexpr std::wstring_view InactiveBackdrop { L"InactiveBackdrop" };
-	constexpr std::wstring_view Corner { L"Corner" };
+	constexpr std::wstring_view CornerIndex { L"CornerIndex" };
 	constexpr std::wstring_view UseParentDuration { L"UseParentDuration" };
 	constexpr std::wstring_view Duration { L"Duration" };
 	constexpr std::wstring_view PositionOrigin { L"PositionOrigin" };
@@ -79,10 +79,10 @@ void NotificationViewModel::InactiveBackdrop(IReference<bool> const& value) noex
 	}
 }
 
-void NotificationViewModel::Corner(NotificationCorner value) noexcept {
-	corner_t newValue { static_cast<corner_t>(value) };
+void NotificationViewModel::CornerIndex(int value) noexcept {
+	corner_t newValue { static_cast<corner_t>(value + 1) };
 	if (config_->corner(newValue)) {
-		RaisePropertyChanged(properties::ThemeIndex);
+		RaisePropertyChanged(properties::CornerIndex);
 	}
 }
 
@@ -95,7 +95,7 @@ void NotificationViewModel::UseParentDuration(bool value) noexcept {
 
 void NotificationViewModel::Duration(float value) noexcept {
 	if (config_->duration(value)) {
-		RaisePropertyChanged(properties::ThemeIndex);
+		RaisePropertyChanged(properties::Duration);
 	}
 }
 

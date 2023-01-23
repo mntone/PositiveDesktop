@@ -14,10 +14,9 @@ namespace app::ui {
 
 	class NotificationPresenterWinUI3: public INotificationPresenter {
 	public:
-		NotificationPresenterWinUI3(std::shared_ptr<storage::DesktopConfig> config, NotificationPresenterHint hint) noexcept
+		NotificationPresenterWinUI3(std::shared_ptr<storage::DesktopConfig> config) noexcept
 			: finalize_(false)
 			, config_(config)
-			, hint_(hint)
 			, resourceManager_(L"CodeResources")
 			, window_(nullptr) {
 		}
@@ -57,7 +56,6 @@ namespace app::ui {
 	private:
 		bool finalize_;
 		std::shared_ptr<storage::DesktopConfig> config_;
-		NotificationPresenterHint hint_;
 		winrt::PositiveDesktop::UI::Helpers::implementation::ResourceManager resourceManager_;
 		winrt::com_ptr<winrt::PositiveDesktop::UI::implementation::NotificationWindow> window_;
 	};
@@ -91,7 +89,7 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 	// Check window
 	winrt::com_ptr<NotificationWindow> window { window_ };
 	if (!window) {
-		window = winrt::make_self<NotificationWindow>(hint_, config_);
+		window = winrt::make_self<NotificationWindow>(config_);
 		window_ = window;
 	}
 
@@ -105,6 +103,6 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 	window->Show(config_->duration());
 }
 
-INotificationPresenter* CreateWinUI3NotificationPresenter(std::shared_ptr<app::storage::DesktopConfig> config, NotificationPresenterHint hint) {
-	return new NotificationPresenterWinUI3(config, hint);
+INotificationPresenter* CreateWinUI3NotificationPresenter(std::shared_ptr<app::storage::DesktopConfig> config) {
+	return new NotificationPresenterWinUI3(config);
 }

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DesktopService.h"
 
+#include "Common/VersionHelper.h"
 #include "Common/WindowUtil.h"
 
 #include "Private/VirtualDesktopDelegate.h"
@@ -95,7 +96,7 @@ DesktopService::~DesktopService() {
 	unsetTopmostAll();
 }
 
-void DesktopService::initialize(uint32_t build) {
+void DesktopService::initialize() {
 	LOG_BEGIN_INTHROW(logger::ltg_desktop);
 
 	THROW_IF_HRESULT_FATAL(CoCreateInstance(
@@ -112,6 +113,7 @@ void DesktopService::initialize(uint32_t build) {
 		applicationViewCollection_.put_void()),
 		nonlocalized::ErrorMessage_InitIApplicationViewCollection);
 
+	DWORD build { VersionHelper::build() };
 	if (build >= 22449) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate22449>(build, virtualDesktopCache_, serviceProvider_.get());
 	} else if (build >= 21313) {

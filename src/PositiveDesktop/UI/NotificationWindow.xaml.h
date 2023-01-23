@@ -17,7 +17,7 @@ namespace winrt::PositiveDesktop::UI::implementation {
 		NotificationWindowT<NotificationWindow>,
 		Helpers::implementation::WindowBase,
 		reps::basic_observer_t<app::storage::desktop_update_t> {
-		NotificationWindow(app::ui::NotificationPresenterHint hint, std::shared_ptr<app::storage::DesktopConfig> config);
+		NotificationWindow(std::shared_ptr<app::storage::DesktopConfig> config);
 
 		void Show(float visibleDuration);
 
@@ -77,7 +77,6 @@ namespace winrt::PositiveDesktop::UI::implementation {
 		Microsoft::UI::Xaml::FrameworkElement::ActualThemeChanged_revoker actualThemeChangedRevoker_;
 		Microsoft::UI::Dispatching::DispatcherQueueTimer timer_;
 
-		app::ui::NotificationPresenterHint hint_;
 		std::shared_ptr<app::storage::DesktopConfig> config_;
 		reps::observer_token token_;
 

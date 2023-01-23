@@ -41,10 +41,11 @@ namespace PositiveDesktop.ViewModels.Settings
 	[interface_name("INotificationViewModel", 1DDA668C-4468-40F3-B76D-9ECF6045E155)]
 	runtimeclass NotificationViewModel : SettingsBaseViewModel
 	{
+		[noexcept] Boolean IsWindows11 { get; };
 		[noexcept] Int32 ThemeIndex;
 		[noexcept] NotificationBackdrop Backdrop;
 		[noexcept] Windows.Foundation.IReference<Boolean> InactiveBackdrop;
-		[noexcept] NotificationCorner Corner;
+		[noexcept] Int32 CornerIndex;
 		[noexcept] Boolean UseParentDuration;
 		[noexcept] Single Duration;
 		[noexcept] NotificationPositionOrigin PositionOrigin;

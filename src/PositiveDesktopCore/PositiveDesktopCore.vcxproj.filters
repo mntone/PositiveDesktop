@@ -2,6 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Common\VersionHelper.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
     <ClCompile Include="Services\Desktops\DesktopService.cpp">
       <Filter>Services\Desktops</Filter>
     </ClCompile>
@@ -55,6 +58,9 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\RepsUtil.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\VersionHelper.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\VirtualDesktop.h">

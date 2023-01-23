@@ -48,16 +48,31 @@
 				<ToggleSwitch />
 			</ctrl:SettingsCard>
 
-			<ctrl:SettingsCard x:Uid="Settings_Notification_Theme"
-							   Header="Theme">
-				<ComboBox MinWidth="{StaticResource SettingsCardContentMinWidth}"
-						  SelectedIndex="{x:Bind ViewModel.ThemeIndex, Mode=TwoWay}">
-					<ComboBoxItem x:Uid="Settings_Notification_Theme_System">System</ComboBoxItem>
-					<ComboBoxItem x:Uid="Settings_Notification_Theme_Light">Light</ComboBoxItem>
-					<ComboBoxItem x:Uid="Settings_Notification_Theme_Dark">Dark</ComboBoxItem>
-					<ComboBoxItem x:Uid="Settings_Notification_Theme_Accent">Accent</ComboBoxItem>
-				</ComboBox>
-			</ctrl:SettingsCard>
+			<StackPanel>
+				<ctrl:SettingsCard x:Uid="Settings_Notification_Theme"
+								   Header="Theme"
+								   Style="{StaticResource SettingsTopCardStyle}">
+					<ComboBox MinWidth="{StaticResource SettingsCardContentMinWidth}"
+							  SelectedIndex="{x:Bind ViewModel.ThemeIndex, Mode=TwoWay}">
+						<ComboBoxItem x:Uid="Settings_Notification_Theme_System">System</ComboBoxItem>
+						<ComboBoxItem x:Uid="Settings_Notification_Theme_Light">Light</ComboBoxItem>
+						<ComboBoxItem x:Uid="Settings_Notification_Theme_Dark">Dark</ComboBoxItem>
+						<ComboBoxItem x:Uid="Settings_Notification_Theme_Accent">Accent</ComboBoxItem>
+					</ComboBox>
+				</ctrl:SettingsCard>
+
+				<ctrl:SettingsCard x:Uid="Settings_Notification_Corner"
+								   Header="Window Corner"
+								   IsEnabled="{x:Bind ViewModel.IsWindows11}"
+								   Style="{StaticResource SettingsBottomCardStyle}">
+					<ComboBox MinWidth="{StaticResource SettingsCardContentMinWidth}"
+							  SelectedIndex="{x:Bind ViewModel.CornerIndex, Mode=TwoWay}">
+						<ComboBoxItem x:Uid="Settings_Notification_Corner_Rounded">Rounded</ComboBoxItem>
+						<ComboBoxItem x:Uid="Settings_Notification_Corner_RoundedSmall">Rounded Small</ComboBoxItem>
+						<ComboBoxItem x:Uid="Settings_Notification_Corner_Squared">Squared</ComboBoxItem>
+					</ComboBox>
+				</ctrl:SettingsCard>
+			</StackPanel>
 
 			<ctrl:SettingsCard x:Uid="Settings_Notification_Duration"
 							   x:Name="duration"

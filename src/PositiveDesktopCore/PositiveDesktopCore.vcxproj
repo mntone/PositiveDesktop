@@ -113,6 +113,7 @@
     <ClInclude Include="Common\Reps.h" />
     <ClInclude Include="Common\RepsBase.h" />
     <ClInclude Include="Common\RepsUtil.h" />
+    <ClInclude Include="Common\VersionHelper.h" />
     <ClInclude Include="Common\VirtualDesktop.h" />
     <ClInclude Include="Common\WindowUtil.h" />
     <ClInclude Include="Services\Desktops\vdevent_t.h" />
@@ -130,6 +131,7 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Common\VersionHelper.cpp" />
     <ClCompile Include="Services\Desktops\DesktopService.cpp" />
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopManagerInternalDelegate.cpp" />
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener10240.cpp" />

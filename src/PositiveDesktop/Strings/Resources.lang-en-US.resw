@@ -135,6 +135,18 @@
   <data name="SettingsWindow_Notification.Content" xml:space="preserve">
     <value>Notification</value>
   </data>
+  <data name="Settings_Notification_Corner.Header" xml:space="preserve">
+    <value>Window Corner</value>
+  </data>
+  <data name="Settings_Notification_Corner_Rounded.Content" xml:space="preserve">
+    <value>Rounded</value>
+  </data>
+  <data name="Settings_Notification_Corner_RoundedSmall.Content" xml:space="preserve">
+    <value>Rounded Small</value>
+  </data>
+  <data name="Settings_Notification_Corner_Squared.Content" xml:space="preserve">
+    <value>Squared</value>
+  </data>
   <data name="Settings_Notification_Duration.Header" xml:space="preserve">
     <value>Duration</value>
   </data>

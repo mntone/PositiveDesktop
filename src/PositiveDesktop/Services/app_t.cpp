@@ -2,6 +2,7 @@
 #include "app_t.h"
 
 #include "Common/RepsUtil.h"
+#include "Common/VersionHelper.h"
 
 #include "Services/Desktops/vdevent_t.h"
 #include "Services/Storages/config_t.h"
@@ -35,24 +36,14 @@ app_t::~app_t() noexcept {
 
 void app_t::initialize() {
 	// Retrieve OS Version
-	OSVERSIONINFOW osver { sizeof(OSVERSIONINFOW) };
-#pragma warning(push)
-#pragma warning(disable: 4996)
-	winrt::check_bool(GetVersionExW(&osver));
-#pragma warning(pop)
-	if (osver.dwMajorVersion != 10 || osver.dwMinorVersion != 0) {
-		winrt::throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
-	}
+	VersionHelper::init();
 
 	// Init config
 	storage::IConfigManager* configManager = storage::CreateWinRTConfigManager();
 	config_ = new storage::ConfigService(configManager);
 
 	// Init presenter
-	app::ui::NotificationPresenterHint hint = osver.dwBuildNumber >= 22000
-		? app::ui::NotificationPresenterHint::Windows11 /* Build 22000- */
-		: app::ui::NotificationPresenterHint::Windows10;
-	presenter_ = CreateWinUI3NotificationPresenter(config_->desktop(), hint);
+	presenter_ = CreateWinUI3NotificationPresenter(config_->desktop());
 
 	// Init key listener
 	keysLitener_ = new keylistener::KeysListenerService();
@@ -62,7 +53,7 @@ void app_t::initialize() {
 	// Init desktop service
 	desktop_ = new desktop::DesktopService();
 	desktop_->addObserver(reps::basic_observer_t<app::desktop::vdevent_t>::observer());
-	desktop_->initialize(osver.dwBuildNumber);
+	desktop_->initialize();
 
 	// Start message service
 	message_service_t::initialize();

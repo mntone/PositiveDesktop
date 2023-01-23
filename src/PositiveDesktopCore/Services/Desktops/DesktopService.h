@@ -14,7 +14,7 @@ namespace app::desktop {
 		DesktopService();
 		~DesktopService();
 
-		void initialize(uint32_t build);
+		void initialize();
 
 		// - Desktop actions
 		void switchDesktop(int target) noexcept;

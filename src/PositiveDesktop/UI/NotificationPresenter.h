@@ -3,11 +3,6 @@
 
 namespace app::ui {
 
-	enum class NotificationPresenterHint {
-		Windows10,
-		Windows11,
-	};
-
 	struct NotificationPresenterData {
 		int index;
 		winrt::hstring name;

@@ -9,6 +9,8 @@
 #include <winrt/Mntone.AngelUmbrella.Composition.SystemBackdrops.h>
 
 #include "Common/Math.h"
+#include "Common/VersionHelper.h"
+
 #include "Helpers/ThemeHelper.h"
 #include "Helpers/UIHelper.h"
 #include "Helpers/WindowHelper.h"
@@ -75,9 +77,8 @@ namespace winrt {
 using namespace winrt::PositiveDesktop::UI::implementation;
 using namespace winrt::PositiveDesktop::UI::Helpers::implementation;
 
-NotificationWindow::NotificationWindow(app::ui::NotificationPresenterHint hint, std::shared_ptr<app::storage::DesktopConfig> config)
-	: hint_(hint)
-	, config_(std::move(config))
+NotificationWindow::NotificationWindow(std::shared_ptr<app::storage::DesktopConfig> config)
+	: config_(std::move(config))
 	, token_(nullptr)
 	, configuration_(nullptr)
 	, backdropController_(nullptr)
@@ -173,7 +174,7 @@ void NotificationWindow::Show(float visibleDuration) {
 	app::int32x4_t workArea = displayArea.WorkArea();
 	app::int32x4_t outerBounds = displayArea.OuterBounds();
 	bool isSquareCorner = true;
-	if (hint_ == app::ui::NotificationPresenterHint::Windows11) {
+	if (app::VersionHelper::isWindows11()) {
 		switch (cornerPreference_) {
 		case DWMWCP_DEFAULT:
 		case DWMWCP_ROUND:
@@ -284,7 +285,7 @@ void NotificationWindow::UpdatePosition() {
 	app::int32x4_t workArea = displayArea.WorkArea();
 	app::int32x4_t outerBounds = displayArea.OuterBounds();
 	bool isSquareCorner = true;
-	if (hint_ == app::ui::NotificationPresenterHint::Windows11) {
+	if (app::VersionHelper::isWindows11()) {
 		switch (cornerPreference_) {
 		case DWMWCP_DEFAULT:
 		case DWMWCP_ROUND:
@@ -325,7 +326,7 @@ inline DWM_WINDOW_CORNER_PREFERENCE GetDwmCornerFromConfigType(app::storage::cor
 }
 
 bool NotificationWindow::UpdateCorners() noexcept {
-	if (hint_ != app::ui::NotificationPresenterHint::Windows11) return false;
+	if (!app::VersionHelper::isWindows11()) return false;
 
 	app::storage::corner_t corner { config_->corner() };
 	DWM_WINDOW_CORNER_PREFERENCE cornerPreference { GetDwmCornerFromConfigType(corner) };
@@ -502,7 +503,7 @@ void NotificationWindow::ApplyThemeForPlain(FrameworkElement rootElement) noexce
 	if (AccessibilitySettings().HighContrast()) {
 		background = GetBrush(res, resources::WindowFillColorBrush_HighContrast);
 		border = GetBrush(res, resources::WindowStrokeColorBrush_HighContrast);
-	} else if (hint_ == app::ui::NotificationPresenterHint::Windows11) {
+	} else if (app::VersionHelper::isWindows11()) {
 		background = GetBrush(res, resources::Windows11WindowFillColorBrush);
 		border = GetBrush(res, resources::Windows11WindowStrokeColorBrush);
 	} else {

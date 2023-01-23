@@ -4,6 +4,7 @@
 
 #include "SettingsBaseViewModel.h"
 
+#include "Common/VersionHelper.h"
 #include "Services/Storages/DesktopConfig.h"
 
 namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
@@ -14,6 +15,10 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 		SettingsSavedStatus SaveCore() override final;
 
 	public:  // - Properties
+		constexpr bool IsWindows11() const noexcept {
+			return app::VersionHelper::isWindows11();
+		}
+
 		constexpr int ThemeIndex() const noexcept {
 			return static_cast<int>(config_->theme()) - 1;
 		}
@@ -27,10 +32,14 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 		Windows::Foundation::IReference<bool> InactiveBackdrop() const noexcept;
 		void InactiveBackdrop(Windows::Foundation::IReference<bool> const& value) noexcept;
 
-		constexpr NotificationCorner Corner() const noexcept {
-			return static_cast<NotificationCorner>(config_->corner());
+		constexpr int CornerIndex() const noexcept {
+			app::storage::corner_t value { config_->corner() };
+			if (!app::VersionHelper::isWindows11() && app::storage::cnr_squared != value) {
+				return static_cast<int>(NotificationCorner::Squared) - 1;
+			}
+			return static_cast<int>(value) - 1;
 		}
-		void Corner(NotificationCorner value) noexcept;
+		void CornerIndex(int value) noexcept;
 
 		inline bool UseParentDuration() const noexcept {
 			return false;
