@@ -49,7 +49,7 @@ namespace resources {
 #pragma warning(push)
 #pragma warning(disable: 4324)
 extern std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
-	app::storage::desktop_t const& config,
+	app::storage::DesktopConfig const* config,
 	app::int32x4_t workArea,
 	app::int32x4_t outerBounds,
 	app::int32x2_t size,
@@ -75,9 +75,10 @@ namespace winrt {
 using namespace winrt::PositiveDesktop::UI::implementation;
 using namespace winrt::PositiveDesktop::UI::Helpers::implementation;
 
-NotificationWindow::NotificationWindow(app::ui::NotificationPresenterHint hint, app::storage::desktop_t config)
+NotificationWindow::NotificationWindow(app::ui::NotificationPresenterHint hint, std::shared_ptr<app::storage::DesktopConfig> config)
 	: hint_(hint)
 	, config_(std::move(config))
+	, token_(nullptr)
 	, configuration_(nullptr)
 	, backdropController_(nullptr)
 	, applyTheme_(nullptr)
@@ -134,9 +135,12 @@ NotificationWindow::NotificationWindow(app::ui::NotificationPresenterHint hint, 
 	TrySetSystemBackdrop(rootElement);
 	UpdateTheme(rootElement); /* PLEASE call this after calling TrySetSystemBackdrop because of using configuration_ */
 	(this->*applyTheme_)(rootElement);
-	if (config_.corner != app::storage::cnr_default) {
+	if (config_->corner() != app::storage::cnr_default) {
 		UpdateCorners();
 	}
+
+	// Hook config
+	token_ = config_->addObserver(observer());
 }
 
 void NotificationWindow::ReleasePrivate() {
@@ -146,6 +150,11 @@ void NotificationWindow::ReleasePrivate() {
 	// So, we catch WindowClosed bacause of releasing subclass decently.
 	HWND hWnd { GetHwnd(m_inner) };
 	WindowBase::ReleaseSubclass(hWnd);
+
+	if (token_) {
+		config_->removeObserver(token_);
+		token_ = nullptr;
+	}
 
 	actualThemeChangedRevoker_.revoke();
 	activatedRovoker_.revoke();
@@ -194,7 +203,7 @@ void NotificationWindow::Show(float visibleDuration) {
 
 	// Calc position
 	std::pair<app::int32x2_t, app::double4> calcData = getPositionAndThickness(
-		config_,
+		config_.get(),
 		workArea,
 		outerBounds,
 		appWindow.Size(),
@@ -217,6 +226,42 @@ void NotificationWindow::Show(float visibleDuration) {
 	}
 }
 
+void FASTCALL NotificationWindow::on(reps::bag_t<app::storage::desktop_update_t> const& value) noexcept {
+	using namespace app::storage;
+
+	if (value.hr < 0) {
+		// error
+		return;
+	}
+
+	if (reps::event_t::completed == value.ev) {
+		if (token_) {
+			config_->removeObserver(token_);
+			token_ = nullptr;
+		}
+		return;
+	}
+
+	bool shouldUpdatePosition { false };
+	desktop_update_t const& config { value.data };
+	if (config.property & prp_theme) {
+		FrameworkElement rootElement { Content().as<FrameworkElement>() };
+		UpdateTheme(rootElement);
+	}
+	if (config.property & prp_corner) {
+		if (UpdateCorners()) {
+			shouldUpdatePosition = true;
+		}
+	}
+
+	winrt::Microsoft::UI::Windowing::AppWindow appWindow { GetAppWindow(m_inner) };
+	if (appWindow.IsVisible()) {
+		if (shouldUpdatePosition || config.property & prp_position) {
+			UpdatePosition();
+		}
+	}
+}
+
 LRESULT NotificationWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept {
 	if (WM_THEMECHANGED == message) {
 		HighContrastChanged();
@@ -227,17 +272,6 @@ LRESULT NotificationWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPAR
 		dpiY_ = HIWORD(wParam);
 	}
 	return WindowBase::WndProc(hWnd, message, wParam, lParam);
-}
-
-void NotificationWindow::Sync(app::storage::desktop_t const& config) {
-	config_ = config;
-
-	winrt::Microsoft::UI::Windowing::AppWindow appWindow = GetAppWindow(m_inner);
-	if (appWindow.IsVisible()) {
-		FrameworkElement rootElement { Content().as<FrameworkElement>() };
-		UpdateTheme(rootElement);
-		UpdatePosition();
-	}
 }
 
 void NotificationWindow::UpdatePosition() {
@@ -268,7 +302,7 @@ void NotificationWindow::UpdatePosition() {
 
 	// Calc position
 	std::pair<app::int32x2_t, app::double4> calcData = getPositionAndThickness(
-		config_,
+		config_.get(),
 		workArea,
 		outerBounds,
 		appWindow.Size(),
@@ -293,7 +327,8 @@ inline DWM_WINDOW_CORNER_PREFERENCE GetDwmCornerFromConfigType(app::storage::cor
 bool NotificationWindow::UpdateCorners() noexcept {
 	if (hint_ != app::ui::NotificationPresenterHint::Windows11) return false;
 
-	DWM_WINDOW_CORNER_PREFERENCE cornerPreference { GetDwmCornerFromConfigType(config_.corner) };
+	app::storage::corner_t corner { config_->corner() };
+	DWM_WINDOW_CORNER_PREFERENCE cornerPreference { GetDwmCornerFromConfigType(corner) };
 	if (cornerPreference == cornerPreference_) return false;
 
 	HWND hWnd { GetNullableHwnd(m_inner) };
@@ -312,38 +347,39 @@ bool NotificationWindow::UpdateCorners() noexcept {
 }
 
 void NotificationWindow::UpdateTheme(FrameworkElement rootElement) {
-	ElementTheme theme;
+	ElementTheme elementTheme;
 	if (AccessibilitySettings().HighContrast()) {
-		theme = ElementTheme::Default;
+		elementTheme = ElementTheme::Default;
 	} else {
-		switch (config_.theme) {
+		app::storage::theme_t theme { config_->theme() };
+		switch (theme) {
 		case app::storage::thm_dark:
 		case app::storage::thm_accent:
-			theme = ElementTheme::Dark;
+			elementTheme = ElementTheme::Dark;
 			break;
 		case app::storage::thm_light:
-			theme = ElementTheme::Light;
+			elementTheme = ElementTheme::Light;
 			break;
 		case app::storage::thm_system:
 		default:
 		{
 			DWORD preserveColor = colorPrevalence_.value();
 			if (preserveColor) {
-				theme = ElementTheme::Dark;
+				elementTheme = ElementTheme::Dark;
 			} else {
 				DWORD useLight = systemUsesLightTheme_.value();
 				if (useLight) {
-					theme = ElementTheme::Light;
+					elementTheme = ElementTheme::Light;
 				} else {
-					theme = ElementTheme::Dark;
+					elementTheme = ElementTheme::Dark;
 				}
 			}
 			break;
 		}
 		}
 	}
-	if (rootElement.RequestedTheme() != theme) {
-		rootElement.RequestedTheme(theme);
+	if (rootElement.RequestedTheme() != elementTheme) {
+		rootElement.RequestedTheme(elementTheme);
 	} else {
 		(this->*applyTheme_)(rootElement);
 	}
@@ -430,8 +466,9 @@ void NotificationWindow::ApplyThemeForAcrylic(FrameworkElement rootElement) noex
 	}
 
 	Media::Brush border { nullptr };
+	app::storage::theme_t theme { config_->theme() };
 	DesktopAcrylicController controller { backdropController_.as<DesktopAcrylicController>() };
-	if (app::storage::thm_accent == config_.theme || app::storage::thm_default == config_.theme && colorPrevalence_.value()) {
+	if (app::storage::thm_accent == theme || app::storage::thm_default == theme && colorPrevalence_.value()) {
 		DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::AccentDark, DesktopAcrylicKind::Default);
 		configuration_.Theme(SystemBackdropTheme::Dark);
 		border = GetBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Accent);
@@ -504,22 +541,23 @@ void NotificationWindow::SystemSettingsChanged() {
 		TrySetSystemBackdrop(rootElement);
 	}
 
-	if (app::storage::thm_system == config_.theme) {
-		ElementTheme theme;
+	app::storage::theme_t theme { config_->theme() };
+	if (app::storage::thm_system == theme) {
+		ElementTheme elementTheme;
 		DWORD preserveColor = colorPrevalence_.value();
 		if (preserveColor) {
-			theme = ElementTheme::Dark;
+			elementTheme = ElementTheme::Dark;
 		} else {
 			DWORD useLight = systemUsesLightTheme_.value();
 			if (useLight) {
-				theme = ElementTheme::Light;
+				elementTheme = ElementTheme::Light;
 			} else {
-				theme = ElementTheme::Dark;
+				elementTheme = ElementTheme::Dark;
 			}
 		}
 
-		if (rootElement.RequestedTheme() != theme) {
-			rootElement.RequestedTheme(theme);
+		if (rootElement.RequestedTheme() != elementTheme) {
+			rootElement.RequestedTheme(elementTheme);
 		} else {
 			(this->*applyTheme_)(rootElement);
 		}
@@ -541,7 +579,8 @@ void NotificationWindow::ContentThemeChanged(FrameworkElement const& sender, IIn
 }
 
 void NotificationWindow::WindowActivated(IInspectable const& /*sender*/, WindowActivatedEventArgs const& args) {
-	if (config_.inactiveBackdrop == app::storage::ibd_disabled) {
+	app::storage::inactive_backdrop_t inactiveBackdrop { config_->inactiveBackdrop() };
+	if (app::storage::ibd_disabled == inactiveBackdrop) {
 		configuration_.IsInputActive(WindowActivationState::Deactivated != args.WindowActivationState());
 	}
 }
@@ -583,22 +622,6 @@ void NotificationWindow::ViewModel(ViewModels::NotificationWindowViewModel const
 	if (viewModel_ != value) {
 		viewModel_ = value;
 		propertyChanged_(*this, Data::PropertyChangedEventArgs { L"ViewModel" });
-	}
-}
-
-void NotificationWindow::theme(app::storage::theme_t value) noexcept {
-	if (config_.theme != value) {
-		config_.theme = value;
-		UpdateTheme(nullptr);
-	}
-}
-
-void NotificationWindow::corner(app::storage::corner_t value) noexcept {
-	if (config_.corner != value) {
-		config_.corner = value;
-		if (UpdateCorners()) {
-			UpdatePosition();
-		}
 	}
 }
 

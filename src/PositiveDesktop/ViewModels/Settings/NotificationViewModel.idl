@@ -12,6 +12,14 @@ namespace PositiveDesktop.ViewModels.Settings
 		Accent,
 	};
 
+	enum NotificationBackdrop
+	{
+		Default,
+		Plain,
+		Acrylic,
+		Mica,
+	};
+
 	enum NotificationCorner
 	{
 		Default,
@@ -34,6 +42,7 @@ namespace PositiveDesktop.ViewModels.Settings
 	runtimeclass NotificationViewModel : SettingsBaseViewModel
 	{
 		[noexcept] Int32 ThemeIndex;
+		[noexcept] NotificationBackdrop Backdrop;
 		[noexcept] Windows.Foundation.IReference<Boolean> InactiveBackdrop;
 		[noexcept] NotificationCorner Corner;
 		[noexcept] Boolean UseParentDuration;

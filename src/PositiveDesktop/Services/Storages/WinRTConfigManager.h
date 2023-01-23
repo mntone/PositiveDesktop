@@ -1,5 +1,5 @@
 #pragma once
-#include "config_t.h"
+#include "Services/Storages/config_t.h"
 
 namespace app::storage {
 

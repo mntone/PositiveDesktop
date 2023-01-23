@@ -4,7 +4,7 @@
 
 #include <dwmapi.h>
 
-#include "Services/Storages/config_t.h"
+#include "Services/Storages/DesktopConfig.h"
 
 #include "Helpers/register_value_t.h"
 #include "Helpers/WindowBase.h"
@@ -13,11 +13,13 @@
 
 namespace winrt::PositiveDesktop::UI::implementation {
 
-	struct NotificationWindow: NotificationWindowT<NotificationWindow>, Helpers::implementation::WindowBase {
-		NotificationWindow(app::ui::NotificationPresenterHint hint, app::storage::desktop_t config);
+	struct NotificationWindow:
+		NotificationWindowT<NotificationWindow>,
+		Helpers::implementation::WindowBase,
+		reps::basic_observer_t<app::storage::desktop_update_t> {
+		NotificationWindow(app::ui::NotificationPresenterHint hint, std::shared_ptr<app::storage::DesktopConfig> config);
 
 		void Show(float visibleDuration);
-		void Sync(app::storage::desktop_t const& config);
 
 	private:
 		void ReleasePrivate();
@@ -30,6 +32,8 @@ namespace winrt::PositiveDesktop::UI::implementation {
 		void ApplyThemeForMica(Microsoft::UI::Xaml::FrameworkElement rootElement) noexcept;
 		void ApplyThemeForAcrylic(Microsoft::UI::Xaml::FrameworkElement rootElement) noexcept;
 		void ApplyThemeForPlain(Microsoft::UI::Xaml::FrameworkElement rootElement) noexcept;
+
+		void FASTCALL on(reps::bag_t<app::storage::desktop_update_t> const& value) noexcept;
 
 		LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept override final;
 
@@ -64,16 +68,6 @@ namespace winrt::PositiveDesktop::UI::implementation {
 		}
 		void ViewModel(ViewModels::NotificationWindowViewModel const& value) noexcept;
 
-		constexpr app::storage::theme_t theme() const noexcept {
-			return config_.theme;
-		}
-		void theme(app::storage::theme_t value) noexcept;
-
-		constexpr app::storage::corner_t corner() const noexcept {
-			return config_.corner;
-		}
-		void corner(app::storage::corner_t value) noexcept;
-
 		event_token PropertyChanged(Microsoft::UI::Xaml::Data::PropertyChangedEventHandler const& value);
 		void PropertyChanged(event_token const& token);
 
@@ -84,7 +78,9 @@ namespace winrt::PositiveDesktop::UI::implementation {
 		Microsoft::UI::Dispatching::DispatcherQueueTimer timer_;
 
 		app::ui::NotificationPresenterHint hint_;
-		app::storage::desktop_t config_;
+		std::shared_ptr<app::storage::DesktopConfig> config_;
+		reps::observer_token token_;
+
 		Microsoft::UI::Composition::SystemBackdrops::SystemBackdropConfiguration configuration_;
 		Windows::Foundation::IInspectable backdropController_;
 		void (NotificationWindow::*applyTheme_)(Microsoft::UI::Xaml::FrameworkElement rootElement) noexcept;

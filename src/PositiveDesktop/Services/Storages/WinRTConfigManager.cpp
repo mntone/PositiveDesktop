@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "WinRTConfigManager.h"
 
+#include "Services/Storages/config_interop.h"
 #include "Services/Loggers/log_t.h"
 
 #include <winrt/Windows.Foundation.Collections.h>
@@ -56,12 +57,26 @@ namespace app::storage {
 				load(values, L"inactiveBackdrop", kInactiveBackdropDefault),
 				load(values, L"corner", kCornerDefault),
 				packedDuration(load(values, L"duration", kDurationDefaultFloat)),
-				load(values, L"positionMode", kPositionModeDefault),
+				load(values, L"positionOrigin", kPositionOriginDefault),
 				packedPosition(load(values, L"positionX", kPositionXDefaultFloat)),
 				packedPosition(load(values, L"positionY", kPositionYDefaultFloat)),
 				packedScale(load(values, L"scale", kScaleDefaultFloat)),
 			};
 			return desktop;
+		}
+
+		template<>
+		default_desktop_t load(winrt::Windows::Foundation::Collections::IPropertySet values) {
+			default_desktop_t defaultDesktop {
+				load<desktop_t>(values),
+			};
+			return defaultDesktop;
+		}
+
+		template<typename T, std::enable_if_t<std::is_same_v<T, default_desktop_t>, std::nullptr_t> = nullptr>
+		default_desktop_t load(winrt::Windows::Storage::ApplicationDataContainer container) {
+			winrt::Windows::Foundation::Collections::IPropertySet values { container.Values() };
+			return load<default_desktop_t>(values);
 		}
 
 		override_desktop_t load(winrt::Windows::Foundation::Collections::IPropertySet values, winrt::guid uuid) {
@@ -93,11 +108,12 @@ namespace app::storage {
 			return desktop;
 		}
 
+		template<typename T, std::enable_if_t<std::is_same_v<T, config_t>, std::nullptr_t> = nullptr>
 		config_t load(winrt::Windows::Storage::ApplicationDataContainer container) {
 			winrt::Windows::Foundation::Collections::IPropertySet values { container.Values() };
 			config_t config {
 				load(values, L"mode", kNotificationDefault),
-				load<desktop_t>(values),
+				load<default_desktop_t>(values),
 			};
 
 			winrt::Windows::Storage::ApplicationDataContainer desktopsContainer { getContainer<winrt::Windows::Storage::ApplicationDataCreateDisposition::Existing>(container, L"desktops") };
@@ -147,13 +163,17 @@ namespace app::storage {
 			store(values, L"inactiveBackdrop", value.inactiveBackdrop, kInactiveBackdropDefault);
 			store(values, L"corner", value.corner, kCornerDefault);
 			store(values, L"duration", actualDuration(value.duration), kDurationDefaultFloat);
-			store(values, L"positionMode", value.positionMode, kPositionModeDefault);
+			store(values, L"positionOrigin", value.positionOrigin, kPositionOriginDefault);
 			store(values, L"positionX", actualPosition(value.positionX), kPositionXDefaultFloat);
 			store(values, L"positionY", actualPosition(value.positionY), kPositionYDefaultFloat);
 			store(values, L"scale", actualScale(value.scale), kScaleDefaultFloat);
 		}
 
-		void store(winrt::Windows::Storage::ApplicationDataContainer container, desktop_t value) {
+		void store(winrt::Windows::Foundation::Collections::IPropertySet values, default_desktop_t value) {
+			store(values, value.desktop);
+		}
+
+		void store(winrt::Windows::Storage::ApplicationDataContainer container, default_desktop_t value) {
 			winrt::Windows::Foundation::Collections::IPropertySet values { container.Values() };
 			store(values, value);
 		}
@@ -182,7 +202,6 @@ namespace app::storage {
 
 		void store(winrt::Windows::Storage::ApplicationDataContainer container, config_t value) {
 			winrt::Windows::Foundation::Collections::IPropertySet values { container.Values() };
-			store(values, L"mode", value.mode, kNotificationDefault);
 			store(values, value.defaultDesktop);
 
 			winrt::Windows::Storage::ApplicationDataContainer desktopsContainer { getContainer(container, L"desktops") };
@@ -213,14 +232,18 @@ namespace app::storage {
 		}
 
 		config_t Load() override {
-			return interop::load(container_);
+			return interop::load<config_t>(container_);
 		}
 
-		void Store(config_t value) override {
+		default_desktop_t LoadDefaultDesktop() override {
+			return interop::load<default_desktop_t>(container_);
+		}
+
+		void store(config_t value)  const override {
 			interop::store(container_, value);
 		}
 
-		void Store(desktop_t value) override {
+		void store(default_desktop_t value)  const override {
 			interop::store(container_, value);
 		}
 

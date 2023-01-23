@@ -161,7 +161,6 @@
     <ClInclude Include="Common\message_service_t.h" />
     <ClInclude Include="Common\Reps.BufferBounce.h" />
     <ClInclude Include="Services\app_t.h" />
-    <ClInclude Include="Services\Storages\config_t.h" />
     <ClInclude Include="Services\Storages\WinRTConfigManager.h" />
     <ClInclude Include="UI\Helpers\DispatcherQueueSupport.h" />
     <ClInclude Include="UI\Helpers\MicaSupport.h" />

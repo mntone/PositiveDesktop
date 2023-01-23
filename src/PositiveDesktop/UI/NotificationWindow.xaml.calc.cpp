@@ -5,7 +5,7 @@
 #include <dwmapi.h>
 
 #include <Common/Math.h>
-#include <Services/Storages/config_t.h>
+#include <Services/Storages/DesktopConfig.h>
 
 namespace app {
 
@@ -32,7 +32,7 @@ namespace app {
 #pragma warning(push)
 #pragma warning(disable: 4324)
 std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
-	app::storage::desktop_t const& config,
+	app::storage::DesktopConfig const* config,
 	app::int32x4_t workArea,
 	app::int32x4_t outerBounds,
 	app::int32x2_t size,
@@ -40,11 +40,12 @@ std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
 	app::int32x2_t position;
 	app::double4 border { 1, 1, 1, 1 };
 
-	unsigned int const modeX = config.positionX;
-	unsigned int const modeY = config.positionY;
+	app::storage::desktop_t const& desktop { config->raw().desktop };
+	app::storage::position_t const modeX { desktop.positionX };
+	app::storage::position_t const modeY { desktop.positionY };
 
-	switch (config.positionMode) {
-	case app::storage::psn_window:
+	switch (desktop.positionOrigin) {
+	case app::storage::pon_activeWindow:
 		app::int32x4_t windowBounds = app::getActiveWindowRect();
 		if (modeY == modeX) {
 			app::int32x2_t windowPosition = windowBounds.point();
@@ -107,7 +108,7 @@ std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
 		}
 		position = clamp(position, workArea.point(), workArea.point2() - size);
 		break;
-	case app::storage::psn_cursor:
+	case app::storage::pon_cursor:
 		app::int32x2_t cursor = app::getCursorPosition();
 		if (modeY == modeX) {
 			switch (modeY) {
@@ -224,7 +225,7 @@ std::pair<app::int32x2_t, app::double4> getPositionAndThickness(
 		break;
 
 	// WorkArea mode
-	case app::storage::psn_workarea:
+	case app::storage::pon_workArea:
 	default:
 		if (modeY == modeX) {
 			app::int32x2_t outerPosition = outerBounds.point();

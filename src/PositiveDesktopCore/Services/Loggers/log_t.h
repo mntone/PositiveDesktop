@@ -142,6 +142,11 @@ namespace app::logger {
 
 #define LOG_WARN(__MSG__, __HR__)  ::app::logger::gLogger->log(::app::logger::llv_warn, __tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__)
 #define LOG_ERROR(__MSG__, __HR__) ::app::logger::gLogger->log(::app::logger::llv_error, __tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__)
+#if _DEBUG
+#define LOG_FATAL(__MSG__, __HR__) ::app::logger::gLogger->log(::app::logger::llv_error, __tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__)
+#else
+#define LOG_FATAL(__MSG__, __HR__) ::app::logger::gLogger->log(::app::logger::llv_error, __tag, __HR__, __LINE__, __FILE__, __FUNCTION__, __MSG__); exit(1)
+#endif
 
 #define __LOG_IF_BOOL(__LVL__, __FLAG__, __MSG__) \
 	if (!(__FLAG__)) { \

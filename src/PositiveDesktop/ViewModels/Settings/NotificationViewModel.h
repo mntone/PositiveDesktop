@@ -4,68 +4,61 @@
 
 #include "SettingsBaseViewModel.h"
 
-#include "Services/Storages/config_t.h"
+#include "Services/Storages/DesktopConfig.h"
 
 namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 
 	struct NotificationViewModel: NotificationViewModelT<NotificationViewModel, SettingsBaseViewModel> {
-		NotificationViewModel() noexcept;
-		NotificationViewModel(app::storage::desktop_t config) noexcept;
-
-		void Sync(app::storage::desktop_t config) noexcept;
+		NotificationViewModel(std::shared_ptr<app::storage::DesktopConfig> config) noexcept;
 
 		SettingsSavedStatus SaveCore() override final;
 
 	public:  // - Properties
 		constexpr int ThemeIndex() const noexcept {
-			return static_cast<int>(theme_) - 1;
+			return static_cast<int>(config_->theme()) - 1;
 		}
 		void ThemeIndex(int value) noexcept;
 
-		inline Windows::Foundation::IReference<bool> InactiveBackdrop() const noexcept {
-			return inactiveBackdrop_;
+		constexpr NotificationBackdrop Backdrop() const noexcept {
+			return static_cast<NotificationBackdrop>(config_->backdrop());
 		}
+		void Backdrop(NotificationBackdrop value) noexcept;
+
+		Windows::Foundation::IReference<bool> InactiveBackdrop() const noexcept;
 		void InactiveBackdrop(Windows::Foundation::IReference<bool> const& value) noexcept;
 
 		constexpr NotificationCorner Corner() const noexcept {
-			return corner_;
+			return static_cast<NotificationCorner>(config_->corner());
 		}
 		void Corner(NotificationCorner value) noexcept;
 
 		inline bool UseParentDuration() const noexcept {
-			return useParentDuration_;
+			return false;
 		}
 		void UseParentDuration(bool value) noexcept;
 
-		constexpr float Duration() const noexcept {
-			return duration_;
+		inline float Duration() const noexcept {
+			return config_->duration();
 		}
 		void Duration(float value) noexcept;
 
 		constexpr NotificationPositionOrigin PositionOrigin() const noexcept {
-			return positionOrigin_;
+			return static_cast<NotificationPositionOrigin>(config_->positionOrigin());
 		}
 		void PositionOrigin(NotificationPositionOrigin value) noexcept;
 
-		constexpr float PositionX() const noexcept {
-			return positionX_;
+		inline float PositionX() const noexcept {
+			return config_->positionX();
 		}
 		void PositionX(float value) noexcept;
 
-		constexpr float PositionY() const noexcept {
-			return positionY_;
+		inline float PositionY() const noexcept {
+			return config_->positionY();
 		}
 		void PositionY(float value) noexcept;
 
 	private:
-		NotificationTheme theme_;
-		Windows::Foundation::IReference<bool> inactiveBackdrop_;
-		NotificationCorner corner_;
-		bool useParentDuration_;
-		float duration_;
-		NotificationPositionOrigin positionOrigin_;
-		float positionX_, positionY_;
-
+		std::shared_ptr<app::storage::DesktopConfig> config_;
 	};
 
 }

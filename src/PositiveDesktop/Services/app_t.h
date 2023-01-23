@@ -3,7 +3,7 @@
 #include "Common/message_service_t.h"
 #include "Common/RepsBase.h"
 
-#include "Services/Storages/config_t.h"
+#include "Services/Storages/ConfigService.h"
 #include "Services/KeyListeners/kbevent_t.h"
 #include "Services/KeyListeners/KeyListenerService.h"
 #include "Services/Desktops/DesktopService.h"
@@ -23,9 +23,7 @@ namespace app {
 		void initialize();
 		void close() noexcept;
 
-		void reset();
-		app::storage::desktop_t& loadDefaultDesktop() noexcept { return config_.defaultDesktop; }
-		void store(app::storage::desktop_t config);
+		storage::ConfigService* config() const noexcept { return config_; }
 
 	private:
 		void FASTCALL on(reps::bag_t<app::keylistener::kbevent_t> const& value) noexcept;
@@ -33,8 +31,7 @@ namespace app {
 		void process(app::keylistener::kbevent_t ev) noexcept override;
 
 	private:
-		app::storage::config_t config_;
-		storage::IConfigManager* configManager_;
+		storage::ConfigService* config_;
 		ui::INotificationPresenter* presenter_;
 		keylistener::KeysListenerService* keysLitener_;
 		desktop::DesktopService* desktop_;

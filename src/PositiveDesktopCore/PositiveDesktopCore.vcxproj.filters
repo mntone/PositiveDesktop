@@ -29,6 +29,12 @@
     <ClCompile Include="Services\Loggers\Logger.cpp">
       <Filter>Services\Loggers</Filter>
     </ClCompile>
+    <ClCompile Include="Services\Storages\ConfigService.cpp">
+      <Filter>Services\Storages</Filter>
+    </ClCompile>
+    <ClCompile Include="Services\Storages\DesktopConfig.cpp">
+      <Filter>Services\Storages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -87,6 +93,18 @@
     <ClInclude Include="Services\Loggers\log_t.h">
       <Filter>Services\Loggers</Filter>
     </ClInclude>
+    <ClInclude Include="Services\Storages\config_interop.h">
+      <Filter>Services\Storages</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Storages\config_t.h">
+      <Filter>Services\Storages</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Storages\ConfigService.h">
+      <Filter>Services\Storages</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Storages\DesktopConfig.h">
+      <Filter>Services\Storages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -106,6 +124,9 @@
     </Filter>
     <Filter Include="Services\Loggers">
       <UniqueIdentifier>{8ad1e0be-1593-4dc8-a973-cfa6a8fd6287}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Services\Storages">
+      <UniqueIdentifier>{5bc8c176-1435-4bd0-a198-f1739829ec47}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

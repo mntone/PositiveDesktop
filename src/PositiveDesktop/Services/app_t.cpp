@@ -4,6 +4,7 @@
 #include "Common/RepsUtil.h"
 
 #include "Services/Desktops/vdevent_t.h"
+#include "Services/Storages/config_t.h"
 #include "Services/Storages/WinRTConfigManager.h"
 
 #include "UI/NotificationPresenterWinUI3.h"
@@ -19,7 +20,7 @@ void release(T*& ptr) {
 }
 
 app_t::app_t()
-	: configManager_(nullptr)
+	: config_(nullptr)
 	, presenter_(nullptr)
 	, keysLitener_(nullptr)
 	, desktop_(nullptr) {
@@ -43,15 +44,15 @@ void app_t::initialize() {
 		winrt::throw_hresult(0x80131515 /*COR_E_NOTSUPPORTED*/);
 	}
 
-	// Init config manager
-	configManager_ = storage::CreateWinRTConfigManager();
-	config_ = configManager_->Load();
+	// Init config
+	storage::IConfigManager* configManager = storage::CreateWinRTConfigManager();
+	config_ = new storage::ConfigService(configManager);
 
 	// Init presenter
 	app::ui::NotificationPresenterHint hint = osver.dwBuildNumber >= 22000
 		? app::ui::NotificationPresenterHint::Windows11 /* Build 22000- */
 		: app::ui::NotificationPresenterHint::Windows10;
-	presenter_ = CreateWinUI3NotificationPresenter(config_, hint);
+	presenter_ = CreateWinUI3NotificationPresenter(config_->desktop(), hint);
 
 	// Init key listener
 	keysLitener_ = new keylistener::KeysListenerService();
@@ -72,7 +73,7 @@ void app_t::close() noexcept {
 	release(desktop_);
 	release(keysLitener_);
 	release(presenter_);
-	release(configManager_);
+	release(config_);
 }
 
 void FASTCALL app_t::on(reps::bag_t<app::keylistener::kbevent_t> const& value) noexcept {
@@ -154,19 +155,3 @@ void app_t::process(keylistener::kbevent_t ev) noexcept {
 		break;
 	}
 }
-
-
-#pragma region Storage related functions
-
-void app_t::reset() {
-	configManager_->Reset();
-	config_ = configManager_->Load();
-}
-
-void app_t::store(app::storage::desktop_t config) {
-	config_.defaultDesktop = config;
-	presenter_->sync(config_);
-	configManager_->Store(std::move(config));
-}
-
-#pragma endregion

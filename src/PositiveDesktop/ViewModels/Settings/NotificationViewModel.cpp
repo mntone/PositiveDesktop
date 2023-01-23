@@ -4,8 +4,6 @@
 #include "ViewModels/Settings/NotificationViewModel.g.cpp"
 #endif
 
-#include "App.xaml.h"
-
 inline ::winrt::Windows::Foundation::IReference<bool> to_winrt(::app::storage::inactive_backdrop_t config) noexcept {
 	switch (config) {
 	case ::app::storage::ibd_disabled:
@@ -18,13 +16,16 @@ inline ::winrt::Windows::Foundation::IReference<bool> to_winrt(::app::storage::i
 	}
 }
 
-
-namespace nonlocalized {
-	constexpr std::string_view ErrorMessage_LoadDesktopDefaultConfig { "Failed to load desktop default config. Load fallback default config." };
+inline ::app::storage::inactive_backdrop_t to_app(::winrt::Windows::Foundation::IReference<bool> config) noexcept {
+	std::optional<bool> config2 { config };
+	return config2.has_value()
+		? (config2 ? ::app::storage::ibd_enabled : ::app::storage::ibd_disabled)
+		: ::app::storage::ibd_default;
 }
 
 namespace properties {
 	constexpr std::wstring_view ThemeIndex { L"ThemeIndex" };
+	constexpr std::wstring_view Backdrop { L"Backdrop" };
 	constexpr std::wstring_view InactiveBackdrop { L"InactiveBackdrop" };
 	constexpr std::wstring_view Corner { L"Corner" };
 	constexpr std::wstring_view UseParentDuration { L"UseParentDuration" };
@@ -40,129 +41,79 @@ namespace winrt {
 	using namespace ::winrt::PositiveDesktop::ViewModels::Settings;
 }
 
-using namespace winrt::PositiveDesktop::implementation;
+using namespace app::storage;
+
 using namespace winrt::PositiveDesktop::ViewModels::Settings::implementation;
 
-NotificationViewModel::NotificationViewModel() noexcept
-	: theme_(NotificationTheme::Default)
-	, inactiveBackdrop_(nullptr)
-	, corner_(NotificationCorner::Default)
-	, useParentDuration_(true)
-	, duration_(app::storage::kDurationDefaultFloat)
-	, positionOrigin_(NotificationPositionOrigin::Default)
-	, positionX_(app::storage::kPositionXDefaultFloat)
-	, positionY_(app::storage::kPositionYDefaultFloat) {
-	LOG_BEGIN(app::logger::ltg_viewmodel);
-
-	com_ptr<App> appXaml { Microsoft::UI::Xaml::Application::Current().try_as<App>() };
-	if (appXaml) {
-		app::app_t& app { appXaml->Context() };
-		Sync(app.loadDefaultDesktop());
-	} else {
-		LOG_ERROR(nonlocalized::ErrorMessage_LoadDesktopDefaultConfig, E_NOINTERFACE);
-	}
-
-	LOG_END_NOLABEL();
-}
-
-NotificationViewModel::NotificationViewModel(app::storage::desktop_t config) noexcept
-	: theme_(static_cast<winrt::NotificationTheme>(config.theme))
-	, inactiveBackdrop_(to_winrt(config.inactiveBackdrop))
-	, corner_(static_cast<winrt::NotificationCorner>(config.corner))
-	, useParentDuration_(config.duration != 0)
-	, duration_(app::storage::actualDuration(config.duration, app::storage::kDurationDefaultFloat))
-	, positionOrigin_(static_cast<winrt::NotificationPositionOrigin>(config.positionMode))
-	, positionX_(app::storage::actualPosition(config.positionX, app::storage::kPositionXDefaultFloat))
-	, positionY_(app::storage::actualPosition(config.positionY, app::storage::kPositionYDefaultFloat)) {
-}
-
-void NotificationViewModel::Sync(app::storage::desktop_t config) noexcept {
-	theme_ = static_cast<winrt::NotificationTheme>(config.theme);
-	inactiveBackdrop_ = to_winrt(config.inactiveBackdrop);
-	corner_ = static_cast<winrt::NotificationCorner>(config.corner);
-	useParentDuration_ = config.duration != 0;
-	duration_ = app::storage::actualDuration(config.duration, app::storage::kDurationDefaultFloat);
-	positionOrigin_ = static_cast<winrt::NotificationPositionOrigin>(config.positionMode);
-	positionX_ = app::storage::actualPosition(config.positionX, app::storage::kPositionXDefaultFloat);
-	positionY_ = app::storage::actualPosition(config.positionY, app::storage::kPositionYDefaultFloat);
+NotificationViewModel::NotificationViewModel(std::shared_ptr<app::storage::DesktopConfig> config) noexcept
+	: config_(std::move(config)) {
 }
 
 winrt::SettingsSavedStatus NotificationViewModel::SaveCore() {
-	using namespace app::storage;
-
-	std::optional<bool> inactiveBackdrop { inactiveBackdrop_ };
-	desktop_t config {
-		static_cast<theme_t>(theme_),
-		kBackdropDefault,
-		inactiveBackdrop.has_value() ? (inactiveBackdrop ? ibd_enabled : ibd_disabled) : ibd_default,
-		static_cast<corner_t>(corner_),
-		useParentDuration_ ? packedDuration(duration_) : kDurationParent,
-		static_cast<position_mode_t>(positionOrigin_),
-		packedPosition(positionX_),
-		packedPosition(positionY_),
-	};
-
-	com_ptr<App> appXaml { Microsoft::UI::Xaml::Application::Current().try_as<App>() };
-	if (!appXaml) return SettingsSavedStatus::Failed;
-
-	app::app_t& app { appXaml->Context() };
-	app.store(std::move(config));
+	config_->store();
 	return SettingsSavedStatus::Succeeded;
 }
 
 void NotificationViewModel::ThemeIndex(int value) noexcept {
-	NotificationTheme value2 { static_cast<NotificationTheme>(value + 1) };
-	if (theme_ != value2) {
-		theme_ = value2;
+	theme_t newValue { static_cast<theme_t>(value + 1) };
+	if (config_->theme(newValue)) {
 		RaisePropertyChanged(properties::ThemeIndex);
 	}
 }
 
+void NotificationViewModel::Backdrop(NotificationBackdrop value) noexcept {
+	backdrop_t newValue { static_cast<backdrop_t>(value) };
+	if (config_->backdrop(newValue)) {
+		RaisePropertyChanged(properties::Backdrop);
+	}
+}
+
+winrt::IReference<bool> NotificationViewModel::InactiveBackdrop() const noexcept {
+	return to_winrt(config_->inactiveBackdrop());
+}
+
 void NotificationViewModel::InactiveBackdrop(IReference<bool> const& value) noexcept {
-	if (inactiveBackdrop_ != value) {
-		inactiveBackdrop_ = value;
+	inactive_backdrop_t newValue { to_app(value) };
+	if (config_->inactiveBackdrop(newValue)) {
 		RaisePropertyChanged(properties::InactiveBackdrop);
 	}
 }
 
 void NotificationViewModel::Corner(NotificationCorner value) noexcept {
-	if (corner_ != value) {
-		corner_ = value;
-		RaisePropertyChanged(properties::Corner);
+	corner_t newValue { static_cast<corner_t>(value) };
+	if (config_->corner(newValue)) {
+		RaisePropertyChanged(properties::ThemeIndex);
 	}
 }
 
 void NotificationViewModel::UseParentDuration(bool value) noexcept {
-	if (useParentDuration_ != value) {
-		useParentDuration_ = value;
-		RaisePropertyChanged(properties::UseParentDuration);
+	//if (useParentDuration_ != value) {
+	//	useParentDuration_ = value;
+	//	RaisePropertyChanged(properties::UseParentDuration);
+	//}
+}
+
+void NotificationViewModel::Duration(float value) noexcept {
+	if (config_->duration(value)) {
+		RaisePropertyChanged(properties::ThemeIndex);
 	}
 }
 
 void NotificationViewModel::PositionOrigin(NotificationPositionOrigin value) noexcept {
-	if (positionOrigin_ != value) {
-		positionOrigin_ = value;
+	position_origin_t newValue { static_cast<position_origin_t>(value) };
+	if (config_->positionOrigin(newValue)) {
 		RaisePropertyChanged(properties::PositionOrigin);
 	}
 }
 
-void NotificationViewModel::Duration(float value) noexcept {
-	if (duration_ != value) {
-		duration_ = value;
-		RaisePropertyChanged(properties::Duration);
-	}
-}
-
 void NotificationViewModel::PositionX(float value) noexcept {
-	if (positionX_ != value) {
-		positionX_ = value;
+	if (config_->positionX(value)) {
 		RaisePropertyChanged(properties::PositionX);
 	}
 }
 
 void NotificationViewModel::PositionY(float value) noexcept {
-	if (positionY_ != value) {
-		positionY_ = value;
+	if (config_->positionY(value)) {
 		RaisePropertyChanged(properties::PositionY);
 	}
 }

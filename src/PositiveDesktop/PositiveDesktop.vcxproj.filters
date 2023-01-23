@@ -137,9 +137,6 @@
     <ClInclude Include="Services\app_t.h">
       <Filter>Services</Filter>
     </ClInclude>
-    <ClInclude Include="Services\Storages\config_t.h">
-      <Filter>Services\Storages</Filter>
-    </ClInclude>
     <ClInclude Include="Services\Storages\WinRTConfigManager.h">
       <Filter>Services\Storages</Filter>
     </ClInclude>

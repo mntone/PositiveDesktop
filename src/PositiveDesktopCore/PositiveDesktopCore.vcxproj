@@ -102,6 +102,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Services\Storages\config_interop.h" />
+    <ClInclude Include="Services\Storages\config_t.h" />
+    <ClInclude Include="Services\Storages\ConfigService.h" />
+    <ClInclude Include="Services\Storages\DesktopConfig.h" />
     <ClInclude Include="shared.h" />
     <ClInclude Include="Common\Debug.h" />
     <ClInclude Include="Common\key_config_t.h" />
@@ -127,14 +131,16 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Services\Desktops\DesktopService.cpp" />
-    <ClCompile Include="Services\Desktops\VirtualDesktopCache.cpp" />
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopManagerInternalDelegate.cpp" />
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener10240.cpp" />
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener18963.cpp" />
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener20231.cpp" />
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener21359.cpp" />
+    <ClCompile Include="Services\Desktops\VirtualDesktopCache.cpp" />
     <ClCompile Include="Services\KeyListeners\KeyListenerService.cpp" />
     <ClCompile Include="Services\Loggers\Logger.cpp" />
+    <ClCompile Include="Services\Storages\ConfigService.cpp" />
+    <ClCompile Include="Services\Storages\DesktopConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

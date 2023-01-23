@@ -29,9 +29,11 @@ namespace reps {
 			}
 
 			constexpr void _removeObserver(observer_token token) noexcept {
-				typename container_type::const_iterator itr = std::find([](observer_t<T> const& ob) { return ob.impl(); }, observers_.cbegin(), observers_.cend(), token);
-				if (itr != observers_.cend()) {
-					observers_.erase(itr);
+				for (typename container_type::const_iterator itr = observers_.cbegin(); itr != observers_.cend(); ++itr) {
+					if (itr->impl() == token) {
+						observers_.erase(itr);
+						break;
+					}
 				}
 			}
 

@@ -17,7 +17,6 @@ namespace app::ui {
 	public:
 		virtual ~INotificationPresenter() { }
 
-		virtual void sync(app::storage::config_t const& config) noexcept = 0;
 		virtual void show(NotificationPresenterData data) = 0;
 		virtual void showSettings() noexcept = 0;
 		virtual void closeAll() = 0;

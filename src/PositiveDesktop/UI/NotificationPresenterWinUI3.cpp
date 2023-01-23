@@ -14,23 +14,12 @@ namespace app::ui {
 
 	class NotificationPresenterWinUI3: public INotificationPresenter {
 	public:
-		NotificationPresenterWinUI3(app::storage::config_t const& config, NotificationPresenterHint hint) noexcept
+		NotificationPresenterWinUI3(std::shared_ptr<storage::DesktopConfig> config, NotificationPresenterHint hint) noexcept
 			: finalize_(false)
 			, config_(config)
 			, hint_(hint)
 			, resourceManager_(L"CodeResources")
 			, window_(nullptr) {
-		}
-
-		void sync(app::storage::config_t const& config) noexcept {
-			config_ = config;
-
-			winrt::PositiveDesktop::UI::Helpers::implementation::Dispatch([this]() {
-				winrt::com_ptr<winrt::PositiveDesktop::UI::implementation::NotificationWindow> window { window_ };
-				if (window) {
-					window->Sync(config_.defaultDesktop);
-				}
-			});
 		}
 
 		void changeLanguage(winrt::param::hstring const& language) noexcept {
@@ -67,7 +56,7 @@ namespace app::ui {
 
 	private:
 		bool finalize_;
-		app::storage::config_t config_;
+		std::shared_ptr<storage::DesktopConfig> config_;
 		NotificationPresenterHint hint_;
 		winrt::PositiveDesktop::UI::Helpers::implementation::ResourceManager resourceManager_;
 		winrt::com_ptr<winrt::PositiveDesktop::UI::implementation::NotificationWindow> window_;
@@ -102,12 +91,7 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 	// Check window
 	winrt::com_ptr<NotificationWindow> window { window_ };
 	if (!window) {
-		desktop_t config = config_.defaultDesktop;
-		if (config.theme == thm_default) {
-			config.theme = thm_system;
-		}
-
-		window = winrt::make_self<NotificationWindow>(hint_, std::move(config));
+		window = winrt::make_self<NotificationWindow>(hint_, config_);
 		window_ = window;
 	}
 
@@ -118,9 +102,9 @@ void NotificationPresenterWinUI3::showPrivate(NotificationPresenterData data) no
 	window->ViewModel(viewModel);
 
 	// Show window
-	window->Show(app::storage::actualDuration(config_.defaultDesktop.duration));
+	window->Show(config_->duration());
 }
 
-INotificationPresenter* CreateWinUI3NotificationPresenter(app::storage::config_t const& config, NotificationPresenterHint hint) {
+INotificationPresenter* CreateWinUI3NotificationPresenter(std::shared_ptr<app::storage::DesktopConfig> config, NotificationPresenterHint hint) {
 	return new NotificationPresenterWinUI3(config, hint);
 }
