@@ -1,0 +1,19 @@
+namespace PositiveDesktop.UI.Controls
+{
+
+	[constructor_name("IKeyTopFactory", DD42CE6D-A0C4-4483-95EF-466C7239DF86)]
+	[interface_name("IKeyTop", 9139A73A-21CB-48A4-AC6B-F06D6344F5A9)]
+	[static_name("IKeyTopStatics", 82740F38-3433-5A41-B016-CF49DC6330F8)]
+	[webhosthidden]
+	runtimeclass KeyTop : Microsoft.UI.Xaml.Controls.ContentControl
+	{
+		KeyTop();
+
+		Boolean HasError;
+		Windows.System.VirtualKey Key;
+
+		[noexcept] static Microsoft.UI.Xaml.DependencyProperty HasErrorProperty { get; };
+		[noexcept] static Microsoft.UI.Xaml.DependencyProperty KeyProperty { get; };
+	}
+
+}

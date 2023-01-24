@@ -13,7 +13,7 @@ namespace app::keylistener {
 
 	class KeysListenerService final: public reps::single_subject_t<kbevent_t> {
 	public:
-		KeysListenerService(): previousVirtualKey_(0), suspending_(false), keymap_() { }
+		KeysListenerService() noexcept: previousVirtualKey_(0), suspending_(false), keymap_() { }
 		~KeysListenerService();
 
 		void initialize();

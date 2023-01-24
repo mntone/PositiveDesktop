@@ -2,6 +2,8 @@
 #include <winrt/Microsoft.UI.Xaml.Controls.AnimatedVisuals.h>
 #include <winrt/Mntone.AngelUmbrella.Navigation.h>
 
+#include "UI/Controls/KeyTop.xaml.h"
+
 #include "App.xaml.g.h"
 
 #include "Services/app_t.h"

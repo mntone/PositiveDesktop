@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="KeyTop_Convert" xml:space="preserve">
+    <value>変換</value>
+  </data>
+  <data name="KeyTop_NonConvert" xml:space="preserve">
+    <value>無変換</value>
+  </data>
+  <data name="KeyTop_NumberPad" xml:space="preserve">
+    <value>テンキー</value>
+  </data>
   <data name="Notification_Caption_Unknown" xml:space="preserve">
     <value>不明な操作</value>
   </data>

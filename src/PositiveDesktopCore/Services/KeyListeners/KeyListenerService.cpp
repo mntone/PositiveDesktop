@@ -168,7 +168,7 @@ void KeysListenerService::addHook(KeysListenerService* that) {
 #endif
 }
 
-void KeysListenerService::removeHook(KeysListenerService* that) {
+void KeysListenerService::removeHook([[maybe_unused]] KeysListenerService* that) {
 	app::lock_guard<app::lock_t> lock { locker_ };
 #ifndef KEYLISTENERS_SINGLETON
 	auto itr = hooks_.find(that);

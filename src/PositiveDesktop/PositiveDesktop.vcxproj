@@ -143,6 +143,62 @@
     <Image Include="Assets\Info.scale-300.png" />
     <Image Include="Assets\Info.scale-400.png" />
     <Image Include="Assets\Info.scale-500.png" />
+    <Image Include="Assets\KeyboardArrowDown.png" />
+    <Image Include="Assets\KeyboardArrowDown.scale-125.png" />
+    <Image Include="Assets\KeyboardArrowDown.scale-150.png" />
+    <Image Include="Assets\KeyboardArrowDown.scale-200.png" />
+    <Image Include="Assets\KeyboardArrowDown.scale-250.png" />
+    <Image Include="Assets\KeyboardArrowDown.scale-300.png" />
+    <Image Include="Assets\KeyboardArrowDown.scale-400.png" />
+    <Image Include="Assets\KeyboardArrowDown.scale-500.png" />
+    <Image Include="Assets\KeyboardArrowLeft.png" />
+    <Image Include="Assets\KeyboardArrowLeft.scale-125.png" />
+    <Image Include="Assets\KeyboardArrowLeft.scale-150.png" />
+    <Image Include="Assets\KeyboardArrowLeft.scale-200.png" />
+    <Image Include="Assets\KeyboardArrowLeft.scale-250.png" />
+    <Image Include="Assets\KeyboardArrowLeft.scale-300.png" />
+    <Image Include="Assets\KeyboardArrowLeft.scale-400.png" />
+    <Image Include="Assets\KeyboardArrowLeft.scale-500.png" />
+    <Image Include="Assets\KeyboardArrowRight.png" />
+    <Image Include="Assets\KeyboardArrowRight.scale-125.png" />
+    <Image Include="Assets\KeyboardArrowRight.scale-150.png" />
+    <Image Include="Assets\KeyboardArrowRight.scale-200.png" />
+    <Image Include="Assets\KeyboardArrowRight.scale-250.png" />
+    <Image Include="Assets\KeyboardArrowRight.scale-300.png" />
+    <Image Include="Assets\KeyboardArrowRight.scale-400.png" />
+    <Image Include="Assets\KeyboardArrowRight.scale-500.png" />
+    <Image Include="Assets\KeyboardArrowUp.png" />
+    <Image Include="Assets\KeyboardArrowUp.scale-125.png" />
+    <Image Include="Assets\KeyboardArrowUp.scale-150.png" />
+    <Image Include="Assets\KeyboardArrowUp.scale-200.png" />
+    <Image Include="Assets\KeyboardArrowUp.scale-250.png" />
+    <Image Include="Assets\KeyboardArrowUp.scale-300.png" />
+    <Image Include="Assets\KeyboardArrowUp.scale-400.png" />
+    <Image Include="Assets\KeyboardArrowUp.scale-500.png" />
+    <Image Include="Assets\KeyboardEnter.png" />
+    <Image Include="Assets\KeyboardEnter.scale-125.png" />
+    <Image Include="Assets\KeyboardEnter.scale-150.png" />
+    <Image Include="Assets\KeyboardEnter.scale-200.png" />
+    <Image Include="Assets\KeyboardEnter.scale-250.png" />
+    <Image Include="Assets\KeyboardEnter.scale-300.png" />
+    <Image Include="Assets\KeyboardEnter.scale-400.png" />
+    <Image Include="Assets\KeyboardEnter.scale-500.png" />
+    <Image Include="Assets\KeyboardShift.png" />
+    <Image Include="Assets\KeyboardShift.scale-125.png" />
+    <Image Include="Assets\KeyboardShift.scale-150.png" />
+    <Image Include="Assets\KeyboardShift.scale-200.png" />
+    <Image Include="Assets\KeyboardShift.scale-250.png" />
+    <Image Include="Assets\KeyboardShift.scale-300.png" />
+    <Image Include="Assets\KeyboardShift.scale-400.png" />
+    <Image Include="Assets\KeyboardShift.scale-500.png" />
+    <Image Include="Assets\KeyboardTab.png" />
+    <Image Include="Assets\KeyboardTab.scale-125.png" />
+    <Image Include="Assets\KeyboardTab.scale-150.png" />
+    <Image Include="Assets\KeyboardTab.scale-200.png" />
+    <Image Include="Assets\KeyboardTab.scale-250.png" />
+    <Image Include="Assets\KeyboardTab.scale-300.png" />
+    <Image Include="Assets\KeyboardTab.scale-400.png" />
+    <Image Include="Assets\KeyboardTab.scale-500.png" />
     <Image Include="Assets\Notification.png" />
     <Image Include="Assets\Notification.scale-125.png" />
     <Image Include="Assets\Notification.scale-150.png" />
@@ -162,6 +218,9 @@
     <ClInclude Include="Common\Reps.BufferBounce.h" />
     <ClInclude Include="Services\app_t.h" />
     <ClInclude Include="Services\Storages\WinRTConfigManager.h" />
+    <ClInclude Include="UI\Controls\KeyTop.xaml.h">
+      <DependentUpon>UI\Controls\KeyTop.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="UI\Helpers\DispatcherQueueSupport.h" />
     <ClInclude Include="UI\Helpers\MicaSupport.h" />
     <ClInclude Include="UI\Helpers\register_value_t.h" />
@@ -203,6 +262,10 @@
     </ClCompile>
     <ClCompile Include="Services\app_t.cpp" />
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp" />
+    <ClCompile Include="UI\Controls\KeyTop.xaml.cpp">
+      <DependentUpon>UI\Controls\KeyTop.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="UI\Controls\KeyTop.xaml.properties.cpp" />
     <ClCompile Include="UI\Helpers\DispatcherQueueSupport.cpp" />
     <ClCompile Include="UI\Helpers\MicaSupport.cpp" />
     <ClCompile Include="UI\Helpers\WindowBase.cpp" />
@@ -232,6 +295,7 @@
     <Midl Include="App.idl">
       <SubType>Code</SubType>
     </Midl>
+    <Midl Include="UI\Controls\Controls.idl" />
     <Midl Include="ViewModels\Settings\NotificationViewModel.idl" />
     <Midl Include="ViewModels\Settings\SettingsBaseViewModel.idl" />
   </ItemGroup>
@@ -239,6 +303,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\Controls\KeyTop.xaml" />
+    <Page Include="UI\Controls\KeyTop_themeresources.xaml" />
     <Page Include="UI\NotificationWindow.xaml" />
     <Page Include="UI\SettingsPage_ErrorLog.xaml">
       <SubType>Designer</SubType>
