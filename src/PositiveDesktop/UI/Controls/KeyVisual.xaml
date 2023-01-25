@@ -2,46 +2,44 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:ctrl="using:PositiveDesktop.UI.Controls">
 	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="ms-appx:///UI/Controls/KeyTop_themeresources.xaml" />
+		<ResourceDictionary Source="ms-appx:///UI/Controls/KeyVisual_themeresources.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
-	<Style x:Key="DefaultKeyTopStyle"
-		   TargetType="ctrl:KeyTop">
+	<Style x:Key="DefaultKeyVisualStyle"
+		   TargetType="ctrl:KeyVisual">
 		<Setter Property="Background"
-				Value="{ThemeResource KeyTopBackground}" />
+				Value="{ThemeResource KeyVisualBackground}" />
 		<Setter Property="BackgroundSizing"
 				Value="InnerBorderEdge" />
 		<Setter Property="BorderBrush"
-				Value="{ThemeResource KeyTopBorderBrush}" />
+				Value="{ThemeResource KeyVisualBorderBrush}" />
 		<Setter Property="BorderThickness"
-				Value="{StaticResource KeyTopBorderThickness}" />
+				Value="{StaticResource KeyVisualBorderThickness}" />
 		<Setter Property="CornerRadius"
-				Value="{StaticResource KeyTopCornerRadius}" />
-		<Setter Property="FocusVisualMargin"
-				Value="-1" />
+				Value="{StaticResource KeyVisualCornerRadius}" />
 		<Setter Property="FontFamily"
 				Value="{ThemeResource ContentControlThemeFontFamily}" />
 		<Setter Property="FontSize"
-				Value="{ThemeResource KeyTopContentThemeFontSize}" />
+				Value="{ThemeResource KeyVisualContentThemeFontSize}" />
 		<Setter Property="FontWeight"
 				Value="Normal" />
 		<Setter Property="Foreground"
-				Value="{ThemeResource KeyTopForeground}" />
+				Value="{ThemeResource KeyVisualForeground}" />
 		<Setter Property="HorizontalAlignment"
 				Value="Left" />
 		<Setter Property="MinHeight"
-				Value="{StaticResource KeyTopMinHeight}" />
+				Value="{StaticResource KeyVisualMinHeight}" />
 		<Setter Property="MinWidth"
-				Value="{StaticResource KeyTopMinWidth}" />
+				Value="{StaticResource KeyVisualMinWidth}" />
 		<Setter Property="Padding"
-				Value="{StaticResource KeyTopPadding}" />
+				Value="{StaticResource KeyVisualPadding}" />
 		<Setter Property="UseSystemFocusVisuals"
 				Value="{StaticResource UseSystemFocusVisuals}" />
 		<Setter Property="VerticalContentAlignment"
 				Value="Top" />
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="ctrl:KeyTop">
+				<ControlTemplate TargetType="ctrl:KeyVisual">
 					<Grid x:Name="RootGrid"
 						  Background="{TemplateBinding Background}"
 						  BackgroundSizing="{TemplateBinding BackgroundSizing}"
@@ -56,40 +54,16 @@
 						<VisualStateManager.VisualStateGroups>
 							<VisualStateGroup x:Name="CommonStates">
 								<VisualState x:Name="Normal" />
-								<VisualState x:Name="PointerOver">
-									<VisualState.Setters>
-										<Setter Target="Content.Foreground"
-												Value="{ThemeResource KeyTopForegroundPointerOver}" />
-										<Setter Target="RootGrid.Background"
-												Value="{ThemeResource KeyTopBackgroundPointerOver}" />
-										<Setter Target="RootGrid.BorderBrush"
-												Value="{ThemeResource KeyTopBorderBrushPointerOver}" />
-										<Setter Target="PrefixContent.Foreground"
-												Value="{ThemeResource KeyTopForegroundPointerOver}" />
-									</VisualState.Setters>
-								</VisualState>
-								<VisualState x:Name="Pressed">
-									<VisualState.Setters>
-										<Setter Target="Content.Foreground"
-												Value="{ThemeResource KeyTopForegroundPressed}" />
-										<Setter Target="RootGrid.Background"
-												Value="{ThemeResource KeyTopBackgroundPressed}" />
-										<Setter Target="RootGrid.BorderBrush"
-												Value="{ThemeResource KeyTopBorderBrushPressed}" />
-										<Setter Target="PrefixContent.Foreground"
-												Value="{ThemeResource KeyTopForegroundPressed}" />
-									</VisualState.Setters>
-								</VisualState>
 								<VisualState x:Name="Disabled">
 									<VisualState.Setters>
 										<Setter Target="Content.Foreground"
-												Value="{ThemeResource KeyTopForegroundDisabled}" />
+												Value="{ThemeResource KeyVisualForegroundDisabled}" />
 										<Setter Target="RootGrid.Background"
-												Value="{ThemeResource KeyTopBackgroundDisabled}" />
+												Value="{ThemeResource KeyVisualBackgroundDisabled}" />
 										<Setter Target="RootGrid.BorderBrush"
-												Value="{ThemeResource KeyTopBorderBrushDisabled}" />
+												Value="{ThemeResource KeyVisualBorderBrushDisabled}" />
 										<Setter Target="PrefixContent.Foreground"
-												Value="{ThemeResource KeyTopForegroundDisabled}" />
+												Value="{ThemeResource KeyVisualForegroundDisabled}" />
 									</VisualState.Setters>
 								</VisualState>
 							</VisualStateGroup>
@@ -100,7 +74,7 @@
 									Spacing="4"
 									VerticalAlignment="Center">
 							<TextBlock x:Name="PrefixContent"
-									   FontSize="{ThemeResource KeyTopPrefixContentThemeFontSize}"
+									   FontSize="{ThemeResource KeyVisualPrefixContentThemeFontSize}"
 									   IsTextScaleFactorEnabled="False"
 									   TextLineBounds="Tight"
 									   TextWrapping="NoWrap"
@@ -118,6 +92,6 @@
 		</Setter>
 	</Style>
 
-	<Style TargetType="ctrl:KeyTop"
-		   BasedOn="{StaticResource DefaultKeyTopStyle}" />
+	<Style TargetType="ctrl:KeyVisual"
+		   BasedOn="{StaticResource DefaultKeyVisualStyle}" />
 </ResourceDictionary>

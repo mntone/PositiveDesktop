@@ -45,27 +45,24 @@
 
 		<StackPanel Margin="24,0,24,36"
 					Spacing="2">
-			<StackPanel Orientation="Horizontal"
-						Spacing="4">
-				<local:KeyTop Key="B" />
-				<local:KeyTop Key="C" />
-				<local:KeyTop Key="D" />
-				<local:KeyTop Key="E" />
-				<local:KeyTop Key="Add" />
-				<local:KeyTop Key="G" />
-				<local:KeyTop Key="NumberPad5" />
-				<local:KeyTop Key="I" />
-				<local:KeyTop Key="J" />
-				<local:KeyTop Key="LeftWindows" />
-				<local:KeyTop Key="Left" />
-				<local:KeyTop Key="Left" />
-				<local:KeyTop Key="F13" />
-				<local:KeyTop Key="Up" />
-				<local:KeyTop Key="M" />
-				<local:KeyTop Key="Convert" />
-				<local:KeyTop Key="LeftShift" />
-				<local:KeyTop Key="Tab" />
-			</StackPanel>
+			<ItemsRepeaterScrollHost>
+				<ScrollViewer>
+					<ItemsRepeater x:Name="itemsRepeater">
+						<ItemsRepeater.Layout>
+							<StackLayout Orientation="Vertical" />
+
+						</ItemsRepeater.Layout>
+
+					</ItemsRepeater>
+				</ScrollViewer>
+			</ItemsRepeaterScrollHost>
+
+			<ctrl:SettingsCard Header="Notification">
+				<StackPanel Orientation="Horizontal" Spacing="4">
+					<local:KeyInputBox />
+					<local:KeyInputBox />
+				</StackPanel>
+			</ctrl:SettingsCard>
 
 			<ctrl:SettingsCard Header="Notification">
 				<ToggleSwitch />

@@ -1,13 +1,26 @@
 namespace PositiveDesktop.UI.Controls
 {
 
-	[constructor_name("IKeyTopFactory", DD42CE6D-A0C4-4483-95EF-466C7239DF86)]
-	[interface_name("IKeyTop", 9139A73A-21CB-48A4-AC6B-F06D6344F5A9)]
-	[static_name("IKeyTopStatics", 82740F38-3433-5A41-B016-CF49DC6330F8)]
+	[interface_name("IKeyInputBox", DD42CE6D-A0C4-4483-95EF-466C7239DF86)]
+	[static_name("IKeyInputBoxStatics", 4B3E403A-5333-41F3-92DC-65DA6BC469A7)]
 	[webhosthidden]
-	runtimeclass KeyTop : Microsoft.UI.Xaml.Controls.ContentControl
+	runtimeclass KeyInputBox : Microsoft.UI.Xaml.Controls.TextBox
 	{
-		KeyTop();
+		KeyInputBox();
+
+		Windows.System.VirtualKey Key;
+		Windows.System.VirtualKeyModifiers KeyModifiers;
+
+		[noexcept] static Microsoft.UI.Xaml.DependencyProperty KeyProperty { get; };
+		[noexcept] static Microsoft.UI.Xaml.DependencyProperty KeyModifiersProperty { get; };
+	}
+
+	[interface_name("IKeyVisual", 9139A73A-21CB-48A4-AC6B-F06D6344F5A9)]
+	[static_name("IKeyVisualStatics", 82740F38-3433-5A41-B016-CF49DC6330F8)]
+	[webhosthidden]
+	runtimeclass KeyVisual : Microsoft.UI.Xaml.Controls.Control
+	{
+		KeyVisual();
 
 		Boolean HasError;
 		Windows.System.VirtualKey Key;

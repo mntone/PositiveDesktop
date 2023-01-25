@@ -1,16 +1,20 @@
 #pragma once
-#include "UI/Controls/KeyTop.g.h"
+#include "UI/Controls/KeyVisual.g.h"
 
 namespace winrt::PositiveDesktop::UI::Controls::implementation {
 
-	struct KeyTop: KeyTop_base<KeyTop> {
-		KeyTop();
+	struct KeyVisual: KeyVisual_base<KeyVisual> {
+		KeyVisual();
 
 		void OnApplyTemplate();
 
 	private:
-		inline void OnKeyTopChanged(Windows::System::VirtualKey newValue) const;
-		static void OnKeyTopChangedStatic(
+		static void OnIsEnabledChangedStatic(
+			Windows::Foundation::IInspectable const& sender,
+			Microsoft::UI::Xaml::DependencyPropertyChangedEventArgs const& args);
+
+		inline void OnKeyChanged(Windows::System::VirtualKey newValue) const;
+		static void OnKeyChangedStatic(
 			Microsoft::UI::Xaml::DependencyObject const& sender,
 			Microsoft::UI::Xaml::DependencyPropertyChangedEventArgs const& args);
 
@@ -25,9 +29,6 @@ namespace winrt::PositiveDesktop::UI::Controls::implementation {
 		inline static Microsoft::UI::Xaml::DependencyProperty HasErrorProperty() noexcept { return props_.HasError; }
 
 	private: // - Variables
-		std::array<IInspectable, 167> keymap_;
-		Microsoft::UI::Xaml::Controls::TextBlock content_;
-
 		struct DependencyProperties final {
 			void DelayInitIfNeeded();
 
@@ -42,7 +43,7 @@ namespace winrt::PositiveDesktop::UI::Controls::implementation {
 
 namespace winrt::PositiveDesktop::UI::Controls::factory_implementation {
 
-	struct KeyTop: KeyTopT<KeyTop, implementation::KeyTop> {
+	struct KeyVisual: KeyVisualT<KeyVisual, implementation::KeyVisual> {
 	};
 
 }

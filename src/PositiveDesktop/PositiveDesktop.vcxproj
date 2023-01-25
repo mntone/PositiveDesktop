@@ -218,8 +218,12 @@
     <ClInclude Include="Common\Reps.BufferBounce.h" />
     <ClInclude Include="Services\app_t.h" />
     <ClInclude Include="Services\Storages\WinRTConfigManager.h" />
-    <ClInclude Include="UI\Controls\KeyTop.xaml.h">
-      <DependentUpon>UI\Controls\KeyTop.xaml</DependentUpon>
+    <ClInclude Include="UI\Controls\KeyInputBox.xaml.h">
+      <DependentUpon>UI\Controls\KeyInputBox.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="UI\Controls\KeyboardHelper.h" />
+    <ClInclude Include="UI\Controls\KeyVisual.xaml.h">
+      <DependentUpon>UI\Controls\KeyVisual.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="UI\Helpers\DispatcherQueueSupport.h" />
     <ClInclude Include="UI\Helpers\MicaSupport.h" />
@@ -262,10 +266,19 @@
     </ClCompile>
     <ClCompile Include="Services\app_t.cpp" />
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp" />
-    <ClCompile Include="UI\Controls\KeyTop.xaml.cpp">
-      <DependentUpon>UI\Controls\KeyTop.xaml</DependentUpon>
+    <ClCompile Include="UI\Controls\KeyInputBox.xaml.cpp">
+      <DependentUpon>UI\Controls\KeyInputBox.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="UI\Controls\KeyTop.xaml.properties.cpp" />
+    <ClCompile Include="UI\Controls\KeyInputBox.xaml.properties.cpp">
+      <DependentUpon>UI\Controls\KeyInputBox.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="UI\Controls\KeyboardHelper.cpp" />
+    <ClCompile Include="UI\Controls\KeyVisual.xaml.cpp">
+      <DependentUpon>UI\Controls\KeyVisual.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="UI\Controls\KeyVisual.xaml.properties.cpp">
+      <DependentUpon>UI\Controls\KeyVisual.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="UI\Helpers\DispatcherQueueSupport.cpp" />
     <ClCompile Include="UI\Helpers\MicaSupport.cpp" />
     <ClCompile Include="UI\Helpers\WindowBase.cpp" />
@@ -303,8 +316,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="UI\Controls\KeyTop.xaml" />
-    <Page Include="UI\Controls\KeyTop_themeresources.xaml" />
+    <Page Include="UI\Controls\KeyInputBox.xaml" />
+    <Page Include="UI\Controls\KeyInputBox_themeresources.xaml">
+      <DependentUpon>UI\Controls\KeyInputBox.xaml</DependentUpon>
+      <Type>ThemeResources</Type>
+    </Page>
+    <Page Include="UI\Controls\KeyVisual.xaml" />
+    <Page Include="UI\Controls\KeyVisual_themeresources.xaml">
+      <DependentUpon>UI\Controls\KeyVisual.xaml</DependentUpon>
+      <Type>ThemeResources</Type>
+    </Page>
     <Page Include="UI\NotificationWindow.xaml" />
     <Page Include="UI\SettingsPage_ErrorLog.xaml">
       <SubType>Designer</SubType>

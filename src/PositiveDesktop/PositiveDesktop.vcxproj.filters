@@ -266,6 +266,9 @@
     <ClCompile Include="Services\Storages\WinRTConfigManager.cpp">
       <Filter>Services\Storages</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Controls\KeyboardHelper.cpp">
+      <Filter>UI\Controls</Filter>
+    </ClCompile>
     <ClCompile Include="UI\Helpers\DispatcherQueueSupport.cpp">
       <Filter>UI\Helpers</Filter>
     </ClCompile>
@@ -293,9 +296,6 @@
     <ClCompile Include="ViewModels\Settings\SettingsSavedEventArgs.cpp">
       <Filter>ViewModels\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Controls\KeyTop.xaml.properties.cpp">
-      <Filter>UI\Controls</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -313,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="Services\Storages\WinRTConfigManager.h">
       <Filter>Services\Storages</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Controls\KeyboardHelper.h">
+      <Filter>UI\Controls</Filter>
     </ClInclude>
     <ClInclude Include="UI\Helpers\DispatcherQueueSupport.h">
       <Filter>UI\Helpers</Filter>
@@ -399,6 +402,12 @@
     <Manifest Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\Controls\KeyVisual.xaml">
+      <Filter>UI\Controls</Filter>
+    </Page>
+    <Page Include="UI\Controls\KeyInputBox.xaml">
+      <Filter>UI\Controls</Filter>
+    </Page>
     <Page Include="UI\NotificationWindow.xaml">
       <Filter>UI</Filter>
     </Page>
@@ -410,12 +419,6 @@
     </Page>
     <Page Include="UI\SettingsWindow.xaml">
       <Filter>UI</Filter>
-    </Page>
-    <Page Include="UI\Controls\KeyTop.xaml">
-      <Filter>UI\Controls</Filter>
-    </Page>
-    <Page Include="UI\Controls\KeyTop_themeresources.xaml">
-      <Filter>UI\Controls</Filter>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -431,5 +434,8 @@
     <PRIResource Include="Strings\CodeResources.lang-ja-JP.resw">
       <Filter>Strings</Filter>
     </PRIResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
   </ItemGroup>
 </Project>
