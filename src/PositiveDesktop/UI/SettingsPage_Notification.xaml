@@ -45,18 +45,6 @@
 
 		<StackPanel Margin="24,0,24,36"
 					Spacing="2">
-			<ItemsRepeaterScrollHost>
-				<ScrollViewer>
-					<ItemsRepeater x:Name="itemsRepeater">
-						<ItemsRepeater.Layout>
-							<StackLayout Orientation="Vertical" />
-
-						</ItemsRepeater.Layout>
-
-					</ItemsRepeater>
-				</ScrollViewer>
-			</ItemsRepeaterScrollHost>
-
 			<ctrl:SettingsCard Header="Notification">
 				<StackPanel Orientation="Horizontal" Spacing="4">
 					<local:KeyInputBox />

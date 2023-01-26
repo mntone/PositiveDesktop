@@ -29,13 +29,5 @@ SettingsPage_Notification::SettingsPage_Notification() noexcept
 
 	InitializeComponent();
 
-	std::vector<Controls::KeyVisual> keytops;
-	for (int i = 160; i != 223; ++i) {
-		Controls::KeyVisual keytop;
-		keytop.Key(static_cast<Windows::System::VirtualKey>(i));
-		keytops.push_back(keytop);
-	}
-	itemsRepeater().ItemsSource(single_threaded_observable_vector(std::move(keytops)));
-
 	LOG_END_NOLABEL();
 }
