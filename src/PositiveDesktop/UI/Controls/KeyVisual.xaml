@@ -71,11 +71,11 @@
 
 						<StackPanel Orientation="Horizontal"
 									HorizontalAlignment="Center"
-									Spacing="4"
 									VerticalAlignment="Center">
 							<TextBlock x:Name="PrefixContent"
 									   FontSize="{ThemeResource KeyVisualPrefixContentThemeFontSize}"
 									   IsTextScaleFactorEnabled="False"
+									   Margin="0,0,4,0"
 									   TextLineBounds="Tight"
 									   TextWrapping="NoWrap"
 									   VerticalAlignment="Bottom" />

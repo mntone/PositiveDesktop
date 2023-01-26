@@ -31,7 +31,7 @@ SettingsPage_Notification::SettingsPage_Notification() noexcept
 
 	std::vector<Controls::KeyVisual> keytops;
 	for (int i = 160; i != 223; ++i) {
-		auto keytop { make<Controls::implementation::KeyVisual>() };
+		Controls::KeyVisual keytop;
 		keytop.Key(static_cast<Windows::System::VirtualKey>(i));
 		keytops.push_back(keytop);
 	}
