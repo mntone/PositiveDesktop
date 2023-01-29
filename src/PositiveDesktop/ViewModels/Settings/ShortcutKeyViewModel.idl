@@ -1,0 +1,74 @@
+import "ViewModels/Settings/SettingsBaseViewModel.idl";
+import "ViewModels/Settings/KeyViewModel.idl";
+
+namespace PositiveDesktop.ViewModels.Settings
+{
+	[interface_name("IShortcutKeyViewModel", 1BCB5AB1-CA24-479A-83DC-002CD7379B5F)]
+	runtimeclass ShortcutKeyViewModel : SettingsBaseViewModel
+	{
+		[noexcept] KeyViewModel ExitApplication { get; };
+		[noexcept] KeyViewModel RenameDesktop { get; };
+		[noexcept] KeyViewModel OpenSettings { get; };
+		[noexcept] KeyViewModel OpenTaskView { get; };
+		[noexcept] KeyViewModel SetOrRemoveTopmost { get; };
+		[noexcept] KeyViewModel PinOrUnpinWindow { get; };
+
+		[noexcept] KeyViewModel SwitchDesktop1 { get; };
+		[noexcept] KeyViewModel SwitchDesktop2 { get; };
+		[noexcept] KeyViewModel SwitchDesktop3 { get; };
+		[noexcept] KeyViewModel SwitchDesktop4 { get; };
+		[noexcept] KeyViewModel SwitchDesktop5 { get; };
+		[noexcept] KeyViewModel SwitchDesktop6 { get; };
+		[noexcept] KeyViewModel SwitchDesktop7 { get; };
+		[noexcept] KeyViewModel SwitchDesktop8 { get; };
+		[noexcept] KeyViewModel SwitchDesktop9 { get; };
+		[noexcept] KeyViewModel SwitchDesktop10 { get; };
+		[noexcept] KeyViewModel SwitchDesktop11 { get; };
+		[noexcept] KeyViewModel SwitchDesktop12 { get; };
+		[noexcept] KeyViewModel SwitchDesktop13 { get; };
+		[noexcept] KeyViewModel SwitchDesktop14 { get; };
+		[noexcept] KeyViewModel SwitchDesktop15 { get; };
+		[noexcept] KeyViewModel SwitchDesktop16 { get; };
+		[noexcept] KeyViewModel SwitchDesktop17 { get; };
+		[noexcept] KeyViewModel SwitchDesktop18 { get; };
+		[noexcept] KeyViewModel SwitchDesktop19 { get; };
+		[noexcept] KeyViewModel SwitchDesktop20 { get; };
+		[noexcept] KeyViewModel SwitchFirstDesktop { get; };
+		[noexcept] KeyViewModel SwitchLastDesktop { get; };
+		[noexcept] KeyViewModel SwitchLeftDesktop { get; };
+		[noexcept] KeyViewModel SwitchRightDesktop { get; };
+		[noexcept] KeyViewModel SwitchNewFirstDesktop { get; };
+		[noexcept] KeyViewModel SwitchNewLastDesktop { get; };
+		[noexcept] KeyViewModel SwitchNewLeftDesktop { get; };
+		[noexcept] KeyViewModel SwitchNewRightDesktop { get; };
+
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop1 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop2 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop3 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop4 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop5 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop6 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop7 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop8 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop9 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop10 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop11 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop12 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop13 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop14 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop15 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop16 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop17 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop18 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop19 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop20 { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchFirstDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchLastDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchLeftDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchRightDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchNewFirstDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchNewLastDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchNewLeftDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowAndSwitchNewRightDesktop { get; };
+	}
+}

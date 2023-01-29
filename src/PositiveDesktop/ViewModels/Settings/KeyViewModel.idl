@@ -1,0 +1,14 @@
+import "ViewModels/ObservableObject.idl";
+
+namespace PositiveDesktop.ViewModels.Settings
+{
+	[interface_name("IKeyViewModel", 9EA2C8DB-EE85-4AE1-BEED-BBA094A16FA2)]
+	runtimeclass KeyViewModel : PositiveDesktop.ViewModels.ObservableObject
+	{
+		[noexcept] Windows.System.VirtualKey Key;
+		[noexcept] Windows.System.VirtualKeyModifiers KeyModifiers;
+
+		[noexcept] Windows.System.VirtualKey Key2;
+		[noexcept] Windows.System.VirtualKeyModifiers KeyModifiers2;
+	}
+}

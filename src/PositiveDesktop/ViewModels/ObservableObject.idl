@@ -1,0 +1,8 @@
+namespace PositiveDesktop.ViewModels
+{
+	[constructor_name("IObservableObjectFactory", 924893EC-6B3F-58A7-93CD-97DBDEEF3C30)]
+	[interface_name("IObservableObject", 255FE03C-8766-405A-A19F-DC9A977FC3F3)]
+	unsealed runtimeclass ObservableObject : Microsoft.UI.Xaml.Data.INotifyPropertyChanged
+	{
+	}
+}

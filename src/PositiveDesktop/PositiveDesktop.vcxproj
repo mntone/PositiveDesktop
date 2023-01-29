@@ -248,10 +248,13 @@
       <DependentUpon>UI\SettingsWindow.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="ViewModels\NotificationWindowViewModel.h" />
+    <ClInclude Include="ViewModels\ObservableObject.h" />
     <ClInclude Include="ViewModels\Settings\ErrorLogViewModel.h" />
+    <ClInclude Include="ViewModels\Settings\KeyViewModel.h" />
     <ClInclude Include="ViewModels\Settings\NotificationViewModel.h" />
     <ClInclude Include="ViewModels\Settings\SettingsBaseViewModel.h" />
     <ClInclude Include="ViewModels\Settings\SettingsSavedEventArgs.h" />
+    <ClInclude Include="ViewModels\Settings\ShortcutKeyViewModel.h" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
@@ -299,18 +302,24 @@
       <DependentUpon>UI\SettingsWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="ViewModels\NotificationWindowViewModel.cpp" />
+    <ClCompile Include="ViewModels\ObservableObject.cpp" />
     <ClCompile Include="ViewModels\Settings\ErrorLogViewModel.cpp" />
+    <ClCompile Include="ViewModels\Settings\KeyViewModel.cpp" />
     <ClCompile Include="ViewModels\Settings\NotificationViewModel.cpp" />
     <ClCompile Include="ViewModels\Settings\SettingsBaseViewModel.cpp" />
     <ClCompile Include="ViewModels\Settings\SettingsSavedEventArgs.cpp" />
+    <ClCompile Include="ViewModels\Settings\ShortcutKeyViewModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="App.idl">
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="UI\Controls\Controls.idl" />
+    <Midl Include="ViewModels\ObservableObject.idl" />
+    <Midl Include="ViewModels\Settings\KeyViewModel.idl" />
     <Midl Include="ViewModels\Settings\NotificationViewModel.idl" />
     <Midl Include="ViewModels\Settings\SettingsBaseViewModel.idl" />
+    <Midl Include="ViewModels\Settings\ShortcutKeyViewModel.idl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
