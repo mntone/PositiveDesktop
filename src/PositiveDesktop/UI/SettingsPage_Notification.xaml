@@ -46,13 +46,6 @@
 		<StackPanel Margin="24,0,24,36"
 					Spacing="2">
 			<ctrl:SettingsCard Header="Notification">
-				<StackPanel Orientation="Horizontal" Spacing="4">
-					<local:KeyInputBox />
-					<local:KeyInputBox />
-				</StackPanel>
-			</ctrl:SettingsCard>
-
-			<ctrl:SettingsCard Header="Notification">
 				<ToggleSwitch />
 			</ctrl:SettingsCard>
 
