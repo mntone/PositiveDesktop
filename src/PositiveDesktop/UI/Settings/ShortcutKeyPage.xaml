@@ -1,0 +1,185 @@
+<Page x:Class="PositiveDesktop.UI.Settings.ShortcutKeyPage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:PositiveDesktop.UI.Controls"
+	  xmlns:ctrl="using:Mntone.AngelUmbrella.Controls"
+	  xmlns:vm="using:PositiveDesktop.ViewModels.Settings"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  mc:Ignorable="d">
+	<Page.Resources>
+		<DataTemplate x:Key="DefaultKeyInputSettingsCard"
+					  x:DataType="vm:KeyViewModel">
+			<StackPanel Orientation="Horizontal"
+						Spacing="4">
+				<local:KeyInputBox Key="{x:Bind Key, Mode=TwoWay}"
+								   KeyModifiers="{x:Bind KeyModifiers, Mode=TwoWay}" />
+				<local:KeyInputBox Key="{x:Bind Key2, Mode=TwoWay}"
+								   KeyModifiers="{x:Bind KeyModifiers2, Mode=TwoWay}" />
+			</StackPanel>
+		</DataTemplate>
+	</Page.Resources>
+
+	<ScrollViewer x:Name="contentRoot"
+				  Margin="0">
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="LayoutVisualStates">
+				<VisualState x:Name="WideLayout">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint800Plus}" />
+					</VisualState.StateTriggers>
+				</VisualState>
+				<VisualState x:Name="NarrowLayout">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="contentRoot.Margin"
+								Value="0,48,0,0" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+
+		<StackPanel Margin="24,0,24,36"
+					Spacing="24">
+			<StackPanel>
+				<TextBlock x:Uid="ShortcutKeyPage_SwitchDesktop"
+						   Text="Switch Desktop"
+						   Style="{StaticResource SettingsSubHeaderBlockStyle}" />
+
+				<ctrl:SettingsCard x:Uid="ShortcutKeyPage_SwitchDesktop_Left"
+								   ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+								   DataContext="{x:Bind ViewModel.SwitchLeftDesktop}"
+								   Header="Left"
+								   Style="{StaticResource SettingsTopCardStyle}" />
+
+				<ctrl:SettingsCard x:Uid="ShortcutKeyPage_SwitchDesktop_Right"
+								   ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+								   DataContext="{x:Bind ViewModel.SwitchRightDesktop}"
+								   Header="Right"
+								   Style="{StaticResource SettingsMiddleCardStyle}" />
+
+				<ctrl:SettingsCard x:Uid="ShortcutKeyPage_SwitchDesktop_First"
+								   ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+								   DataContext="{x:Bind ViewModel.SwitchFirstDesktop}"
+								   Header="First"
+								   Style="{StaticResource SettingsMiddleCardStyle}" />
+
+				<ctrl:SettingsCard x:Uid="ShortcutKeyPage_SwitchDesktop_Last"
+								   ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+								   DataContext="{x:Bind ViewModel.SwitchLastDesktop}"
+								   Header="Last"
+								   Style="{StaticResource SettingsMiddleCardStyle}" />
+
+				<ctrl:SettingsExpander ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+									   DataContext="{x:Bind ViewModel.SwitchDesktop1}"
+									   Header="Desktop 1">
+					<ctrl:SettingsExpander.ExpanderContent>
+						<StackPanel>
+							<ctrl:SettingsCard ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+											   DataContext="{x:Bind ViewModel.SwitchDesktop2}"
+											   Header="Desktop 2"
+											   Style="{StaticResource SettingsMiddleCardStyle}"
+											   Visibility="{x:Bind ViewModel.SwitchDesktop1.IsValid, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
+
+							<ctrl:SettingsCard ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+											   DataContext="{x:Bind ViewModel.SwitchDesktop3}"
+											   Header="Desktop 3"
+											   Style="{StaticResource SettingsMiddleCardStyle}"
+											   Visibility="{x:Bind ViewModel.SwitchDesktop2.IsValid, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
+
+							<ctrl:SettingsCard ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+											   DataContext="{x:Bind ViewModel.SwitchDesktop4}"
+											   Header="Desktop 4"
+											   Style="{StaticResource SettingsMiddleCardStyle}"
+											   Visibility="{x:Bind ViewModel.SwitchDesktop3.IsValid, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
+
+							<ctrl:SettingsCard ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+											   DataContext="{x:Bind ViewModel.SwitchDesktop5}"
+											   Header="Desktop 5"
+											   Style="{StaticResource SettingsMiddleCardStyle}"
+											   Visibility="{x:Bind ViewModel.SwitchDesktop4.IsValid, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
+
+							<ctrl:SettingsCard ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+											   DataContext="{x:Bind ViewModel.SwitchDesktop6}"
+											   Header="Desktop 6"
+											   Style="{StaticResource SettingsMiddleCardStyle}"
+											   Visibility="{x:Bind ViewModel.SwitchDesktop5.IsValid, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
+
+							<ctrl:SettingsCard ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+											   DataContext="{x:Bind ViewModel.SwitchDesktop7}"
+											   Header="Desktop 7"
+											   Style="{StaticResource SettingsMiddleCardStyle}"
+											   Visibility="{x:Bind ViewModel.SwitchDesktop6.IsValid, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
+
+							<ctrl:SettingsCard ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+											   DataContext="{x:Bind ViewModel.SwitchDesktop8}"
+											   Header="Desktop 8"
+											   Style="{StaticResource SettingsMiddleCardStyle}"
+											   Visibility="{x:Bind ViewModel.SwitchDesktop7.IsValid, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
+
+							<ctrl:SettingsCard ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+											   DataContext="{x:Bind ViewModel.SwitchDesktop9}"
+											   Header="Desktop 9"
+											   Style="{StaticResource SettingsBottomCardStyle}"
+											   Visibility="{x:Bind ViewModel.SwitchDesktop8.IsValid, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}" />
+						</StackPanel>
+					</ctrl:SettingsExpander.ExpanderContent>
+				</ctrl:SettingsExpander>
+			</StackPanel>
+
+			<StackPanel>
+				<TextBlock x:Uid="ShortcutKeyPage_MoveWindow"
+						   Text="Move Window"
+						   Style="{StaticResource SettingsSubHeaderBlockStyle}" />
+
+				<ctrl:SettingsCard x:Uid="ShortcutKeyPage_MoveWindow_Left"
+								   ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+								   DataContext="{x:Bind ViewModel.MoveWindowToLeftDesktop}"
+								   Header="Left"
+								   Style="{StaticResource SettingsTopCardStyle}" />
+
+				<ctrl:SettingsCard x:Uid="ShortcutKeyPage_MoveWindow_Right"
+								   ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+								   DataContext="{x:Bind ViewModel.MoveWindowToRightDesktop}"
+								   Header="Right"
+								   Style="{StaticResource SettingsMiddleCardStyle}" />
+
+				<ctrl:SettingsCard x:Uid="ShortcutKeyPage_MoveWindow_First"
+								   ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+								   DataContext="{x:Bind ViewModel.MoveWindowToFirstDesktop}"
+								   Header="First"
+								   Style="{StaticResource SettingsMiddleCardStyle}" />
+
+				<ctrl:SettingsCard x:Uid="ShortcutKeyPage_MoveWindow_Last"
+								   ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+								   DataContext="{x:Bind ViewModel.MoveWindowToLastDesktop}"
+								   Header="Last"
+								   Style="{StaticResource SettingsMiddleCardStyle}" />
+			</StackPanel>
+
+			<StackPanel Spacing="2">
+				<TextBlock Text="Move Window and Switch Desktop"
+						   Style="{StaticResource SettingsSubHeaderBlockStyle}" />
+
+				<ctrl:SettingsCard ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+								   DataContext="{x:Bind ViewModel.MoveWindowAndSwitchLeftDesktop}"
+								   Header="Left" />
+
+				<ctrl:SettingsCard ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+								   DataContext="{x:Bind ViewModel.MoveWindowAndSwitchRightDesktop}"
+								   Header="Right" />
+
+				<ctrl:SettingsCard ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+								   DataContext="{x:Bind ViewModel.MoveWindowAndSwitchFirstDesktop}"
+								   Header="First" />
+
+				<ctrl:SettingsCard ContentTemplate="{StaticResource DefaultKeyInputSettingsCard}"
+								   DataContext="{x:Bind ViewModel.MoveWindowAndSwitchLastDesktop}"
+								   Header="Last" />
+			</StackPanel>
+
+		</StackPanel>
+	</ScrollViewer>
+</Page>

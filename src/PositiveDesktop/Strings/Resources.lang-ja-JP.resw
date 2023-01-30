@@ -135,6 +135,9 @@
   <data name="SettingsWindow_Notification.Content" xml:space="preserve">
     <value>通知</value>
   </data>
+  <data name="SettingsWindow_ShortcutKey.Content" xml:space="preserve">
+    <value>ショートカット キー</value>
+  </data>
   <data name="Settings_Notification_Corner.Header" xml:space="preserve">
     <value>ウィンドウの角</value>
   </data>
@@ -170,5 +173,35 @@
   </data>
   <data name="Settings_Notification_VerticalPosition.Header" xml:space="preserve">
     <value>垂直方向の表示位置</value>
+  </data>
+  <data name="ShortcutKeyPage_MoveWindow.Text" xml:space="preserve">
+    <value>ウィンドウの移動</value>
+  </data>
+  <data name="ShortcutKeyPage_MoveWindow_First.Header" xml:space="preserve">
+    <value>先頭</value>
+  </data>
+  <data name="ShortcutKeyPage_MoveWindow_Last.Header" xml:space="preserve">
+    <value>末尾</value>
+  </data>
+  <data name="ShortcutKeyPage_MoveWindow_Left.Header" xml:space="preserve">
+    <value>左</value>
+  </data>
+  <data name="ShortcutKeyPage_MoveWindow_Right.Header" xml:space="preserve">
+    <value>右</value>
+  </data>
+  <data name="ShortcutKeyPage_SwitchDesktop.Text" xml:space="preserve">
+    <value>デスクトップの切り替え</value>
+  </data>
+  <data name="ShortcutKeyPage_SwitchDesktop_First.Header" xml:space="preserve">
+    <value>先頭</value>
+  </data>
+  <data name="ShortcutKeyPage_SwitchDesktop_Last.Header" xml:space="preserve">
+    <value>末尾</value>
+  </data>
+  <data name="ShortcutKeyPage_SwitchDesktop_Left.Header" xml:space="preserve">
+    <value>左</value>
+  </data>
+  <data name="ShortcutKeyPage_SwitchDesktop_Right.Header" xml:space="preserve">
+    <value>右</value>
   </data>
 </root>

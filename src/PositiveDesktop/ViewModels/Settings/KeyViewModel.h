@@ -9,6 +9,10 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 		KeyViewModel() noexcept = default;
 
 	public:  // - Properties
+		inline constexpr bool IsValid() const noexcept {
+			return Windows::System::VirtualKey::None != key_ || Windows::System::VirtualKey::None != key2_;
+		}
+
 		inline constexpr Windows::System::VirtualKey Key() const noexcept {
 			return key_;
 		}

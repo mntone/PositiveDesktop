@@ -6,7 +6,7 @@
 
 #define DEFINE_PROP(__NAME__) \
 	public:  inline ::winrt::PositiveDesktop::ViewModels::Settings::KeyViewModel __NAME__##() const noexcept { return __NAME__##_; } \
-	private: ::winrt::PositiveDesktop::ViewModels::Settings::KeyViewModel __NAME__##_
+	private: ::winrt::PositiveDesktop::ViewModels::Settings::KeyViewModel __NAME__##_ { make<::winrt::PositiveDesktop::ViewModels::Settings::implementation::KeyViewModel>() }
 
 namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 
@@ -51,6 +51,35 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 		DEFINE_PROP(SwitchNewLastDesktop);
 		DEFINE_PROP(SwitchNewLeftDesktop);
 		DEFINE_PROP(SwitchNewRightDesktop);
+
+		DEFINE_PROP(MoveWindowToDesktop1);
+		DEFINE_PROP(MoveWindowToDesktop2);
+		DEFINE_PROP(MoveWindowToDesktop3);
+		DEFINE_PROP(MoveWindowToDesktop4);
+		DEFINE_PROP(MoveWindowToDesktop5);
+		DEFINE_PROP(MoveWindowToDesktop6);
+		DEFINE_PROP(MoveWindowToDesktop7);
+		DEFINE_PROP(MoveWindowToDesktop8);
+		DEFINE_PROP(MoveWindowToDesktop9);
+		DEFINE_PROP(MoveWindowToDesktop10);
+		DEFINE_PROP(MoveWindowToDesktop11);
+		DEFINE_PROP(MoveWindowToDesktop12);
+		DEFINE_PROP(MoveWindowToDesktop13);
+		DEFINE_PROP(MoveWindowToDesktop14);
+		DEFINE_PROP(MoveWindowToDesktop15);
+		DEFINE_PROP(MoveWindowToDesktop16);
+		DEFINE_PROP(MoveWindowToDesktop17);
+		DEFINE_PROP(MoveWindowToDesktop18);
+		DEFINE_PROP(MoveWindowToDesktop19);
+		DEFINE_PROP(MoveWindowToDesktop20);
+		DEFINE_PROP(MoveWindowToFirstDesktop);
+		DEFINE_PROP(MoveWindowToLastDesktop);
+		DEFINE_PROP(MoveWindowToLeftDesktop);
+		DEFINE_PROP(MoveWindowToRightDesktop);
+		DEFINE_PROP(MoveWindowToNewFirstDesktop);
+		DEFINE_PROP(MoveWindowToNewLastDesktop);
+		DEFINE_PROP(MoveWindowToNewLeftDesktop);
+		DEFINE_PROP(MoveWindowToNewRightDesktop);
 
 		DEFINE_PROP(MoveWindowAndSwitchDesktop1);
 		DEFINE_PROP(MoveWindowAndSwitchDesktop2);

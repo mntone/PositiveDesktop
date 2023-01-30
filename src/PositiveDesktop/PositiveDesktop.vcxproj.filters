@@ -14,6 +14,18 @@
     <Midl Include="UI\Controls\Controls.idl">
       <Filter>UI\Controls</Filter>
     </Midl>
+    <Midl Include="ViewModels\Settings\KeyViewModel.idl">
+      <Filter>ViewModels\Settings</Filter>
+    </Midl>
+    <Midl Include="ViewModels\Settings\ShortcutKeyViewModel.idl">
+      <Filter>ViewModels\Settings</Filter>
+    </Midl>
+    <Midl Include="ViewModels\ObservableObject.idl">
+      <Filter>ViewModels</Filter>
+    </Midl>
+    <Midl Include="UI\Settings\ShortcutKeyPage.idl">
+      <Filter>UI\Settings</Filter>
+    </Midl>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\ErrorLog.png">
@@ -256,6 +268,30 @@
     <Image Include="Assets\Notification.scale-500.png">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\ShortcutKey.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ShortcutKey.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ShortcutKey.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ShortcutKey.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ShortcutKey.scale-250.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ShortcutKey.scale-300.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ShortcutKey.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ShortcutKey.scale-500.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -295,6 +331,15 @@
     </ClCompile>
     <ClCompile Include="ViewModels\Settings\SettingsSavedEventArgs.cpp">
       <Filter>ViewModels\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\Settings\KeyViewModel.cpp">
+      <Filter>ViewModels\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\Settings\ShortcutKeyViewModel.cpp">
+      <Filter>ViewModels\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModels\ObservableObject.cpp">
+      <Filter>ViewModels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,6 +407,15 @@
     <ClInclude Include="ViewModels\Settings\SettingsSavedEventArgs.h">
       <Filter>ViewModels\Settings</Filter>
     </ClInclude>
+    <ClInclude Include="ViewModels\Settings\KeyViewModel.h">
+      <Filter>ViewModels\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\Settings\ShortcutKeyViewModel.h">
+      <Filter>ViewModels\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModels\ObservableObject.h">
+      <Filter>ViewModels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Assets">
@@ -394,6 +448,9 @@
     <Filter Include="UI\Controls">
       <UniqueIdentifier>{3792e93a-1c36-45bc-9237-d48e681cfe0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\Settings">
+      <UniqueIdentifier>{510800be-ce9d-42c8-844b-36c59bfc45e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -419,6 +476,9 @@
     </Page>
     <Page Include="UI\SettingsWindow.xaml">
       <Filter>UI</Filter>
+    </Page>
+    <Page Include="UI\Settings\ShortcutKeyPage.xaml">
+      <Filter>UI\Settings</Filter>
     </Page>
   </ItemGroup>
   <ItemGroup>

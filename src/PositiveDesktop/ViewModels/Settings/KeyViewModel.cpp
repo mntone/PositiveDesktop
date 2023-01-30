@@ -5,6 +5,7 @@
 #endif
 
 namespace properties {
+	constexpr std::wstring_view IsValid { L"IsValid" };
 	constexpr std::wstring_view Key { L"Key" };
 	constexpr std::wstring_view Key2 { L"Key2" };
 	constexpr std::wstring_view KeyModifiers { L"KeyModifiers" };
@@ -21,6 +22,7 @@ void KeyViewModel::Key(VirtualKey value) noexcept {
 	if (key_ != value) {
 		key_ = value;
 		RaisePropertyChanged(properties::Key);
+		RaisePropertyChanged(properties::IsValid);
 	}
 }
 
@@ -35,6 +37,7 @@ void KeyViewModel::Key2(VirtualKey value) noexcept {
 	if (key2_ != value) {
 		key2_ = value;
 		RaisePropertyChanged(properties::Key2);
+		RaisePropertyChanged(properties::IsValid);
 	}
 }
 

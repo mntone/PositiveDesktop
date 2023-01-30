@@ -42,6 +42,35 @@ namespace PositiveDesktop.ViewModels.Settings
 		[noexcept] KeyViewModel SwitchNewLeftDesktop { get; };
 		[noexcept] KeyViewModel SwitchNewRightDesktop { get; };
 
+		[noexcept] KeyViewModel MoveWindowToDesktop1 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop2 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop3 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop4 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop5 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop6 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop7 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop8 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop9 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop10 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop11 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop12 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop13 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop14 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop15 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop16 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop17 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop18 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop19 { get; };
+		[noexcept] KeyViewModel MoveWindowToDesktop20 { get; };
+		[noexcept] KeyViewModel MoveWindowToFirstDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowToLastDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowToLeftDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowToRightDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowToNewFirstDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowToNewLastDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowToNewLeftDesktop { get; };
+		[noexcept] KeyViewModel MoveWindowToNewRightDesktop { get; };
+
 		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop1 { get; };
 		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop2 { get; };
 		[noexcept] KeyViewModel MoveWindowAndSwitchDesktop3 { get; };

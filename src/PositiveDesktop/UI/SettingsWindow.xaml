@@ -5,6 +5,7 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		mc:Ignorable="d"
 		xmlns:local="using:PositiveDesktop.UI"
+		xmlns:page="using:PositiveDesktop.UI.Settings"
 		xmlns:ctrl="using:Mntone.AngelUmbrella.Controls"
 		xmlns:nav="using:Mntone.AngelUmbrella.Navigation">
 
@@ -50,6 +51,12 @@
 									nav:NavigationProperties.PageType="local:SettingsPage_Notification">
 					<NavigationViewItem.Icon>
 						<ImageIcon Source="/Assets/Notification.png" />
+					</NavigationViewItem.Icon>
+				</NavigationViewItem>
+				<NavigationViewItem x:Uid="SettingsWindow_ShortcutKey"
+									nav:NavigationProperties.PageType="page:ShortcutKeyPage">
+					<NavigationViewItem.Icon>
+						<ImageIcon Source="/Assets/ShortcutKey.png" />
 					</NavigationViewItem.Icon>
 				</NavigationViewItem>
 				<NavigationViewItem x:Uid="SettingsWindow_ErrorLog"

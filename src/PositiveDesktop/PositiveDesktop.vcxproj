@@ -207,6 +207,14 @@
     <Image Include="Assets\Notification.scale-300.png" />
     <Image Include="Assets\Notification.scale-400.png" />
     <Image Include="Assets\Notification.scale-500.png" />
+    <Image Include="Assets\ShortcutKey.png" />
+    <Image Include="Assets\ShortcutKey.scale-125.png" />
+    <Image Include="Assets\ShortcutKey.scale-150.png" />
+    <Image Include="Assets\ShortcutKey.scale-200.png" />
+    <Image Include="Assets\ShortcutKey.scale-250.png" />
+    <Image Include="Assets\ShortcutKey.scale-300.png" />
+    <Image Include="Assets\ShortcutKey.scale-400.png" />
+    <Image Include="Assets\ShortcutKey.scale-500.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -246,6 +254,9 @@
     </ClInclude>
     <ClInclude Include="UI\SettingsWindow.xaml.h">
       <DependentUpon>UI\SettingsWindow.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="UI\Settings\ShortcutKeyPage.xaml.h">
+      <DependentUpon>UI\Settings\ShortcutKeyPage.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="ViewModels\NotificationWindowViewModel.h" />
     <ClInclude Include="ViewModels\ObservableObject.h" />
@@ -301,6 +312,9 @@
     <ClCompile Include="UI\SettingsWindow.xaml.cpp">
       <DependentUpon>UI\SettingsWindow.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="UI\Settings\ShortcutKeyPage.xaml.cpp">
+      <DependentUpon>UI\Settings\ShortcutKeyPage.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="ViewModels\NotificationWindowViewModel.cpp" />
     <ClCompile Include="ViewModels\ObservableObject.cpp" />
     <ClCompile Include="ViewModels\Settings\ErrorLogViewModel.cpp" />
@@ -315,6 +329,7 @@
       <SubType>Code</SubType>
     </Midl>
     <Midl Include="UI\Controls\Controls.idl" />
+    <Midl Include="UI\Settings\ShortcutKeyPage.idl" />
     <Midl Include="ViewModels\ObservableObject.idl" />
     <Midl Include="ViewModels\Settings\KeyViewModel.idl" />
     <Midl Include="ViewModels\Settings\NotificationViewModel.idl" />
@@ -343,6 +358,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\SettingsWindow.xaml" />
+    <Page Include="UI\Settings\ShortcutKeyPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Strings\CodeResources.lang-en-US.resw" />
@@ -360,7 +376,7 @@
     <Import Project="..\..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.targets')" />
     <Import Project="..\..\packages\Microsoft.WindowsAppSDK.1.2.221209.1\build\native\Microsoft.WindowsAppSDK.targets" Condition="Exists('..\..\packages\Microsoft.WindowsAppSDK.1.2.221209.1\build\native\Microsoft.WindowsAppSDK.targets')" />
     <Import Project="..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.targets" Condition="Exists('..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.targets')" />
-    <Import Project="..\..\packages\Mntone.AngelUmbrella.1.1.1\build\native\Mntone.AngelUmbrella.targets" Condition="Exists('..\..\packages\Mntone.AngelUmbrella.1.1.1\build\native\Mntone.AngelUmbrella.targets')" />
+    <Import Project="..\..\packages\Mntone.AngelUmbrella.1.1.3\build\native\Mntone.AngelUmbrella.targets" Condition="Exists('..\..\packages\Mntone.AngelUmbrella.1.1.3\build\native\Mntone.AngelUmbrella.targets')" />
     <Import Project="..\..\packages\Microsoft.Windows.ImplementationLibrary.1.0.220914.1\build\native\Microsoft.Windows.ImplementationLibrary.targets" Condition="Exists('..\..\packages\Microsoft.Windows.ImplementationLibrary.1.0.220914.1\build\native\Microsoft.Windows.ImplementationLibrary.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -373,7 +389,7 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.WindowsAppSDK.1.2.221209.1\build\native\Microsoft.WindowsAppSDK.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.WindowsAppSDK.1.2.221209.1\build\native\Microsoft.WindowsAppSDK.targets'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Windows.SDK.BuildTools.10.0.22621.755\build\Microsoft.Windows.SDK.BuildTools.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Mntone.AngelUmbrella.1.1.1\build\native\Mntone.AngelUmbrella.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Mntone.AngelUmbrella.1.1.1\build\native\Mntone.AngelUmbrella.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Mntone.AngelUmbrella.1.1.3\build\native\Mntone.AngelUmbrella.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Mntone.AngelUmbrella.1.1.3\build\native\Mntone.AngelUmbrella.targets'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Windows.ImplementationLibrary.1.0.220914.1\build\native\Microsoft.Windows.ImplementationLibrary.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Windows.ImplementationLibrary.1.0.220914.1\build\native\Microsoft.Windows.ImplementationLibrary.targets'))" />
   </Target>
 </Project>

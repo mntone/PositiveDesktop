@@ -1,0 +1,13 @@
+import "ViewModels/Settings/ShortcutKeyViewModel.idl";
+
+namespace PositiveDesktop.UI.Settings
+{
+	[interface_name("IShortcutKeyPage", FACDFBDA-22F3-4405-AF35-BB44BA232228)]
+	[webhosthidden]
+	runtimeclass ShortcutKeyPage : Microsoft.UI.Xaml.Controls.Page
+	{
+		ShortcutKeyPage();
+
+		[noexcept] PositiveDesktop.ViewModels.Settings.ShortcutKeyViewModel ViewModel { get; };
+	}
+}

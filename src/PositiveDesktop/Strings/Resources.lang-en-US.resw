@@ -135,6 +135,9 @@
   <data name="SettingsWindow_Notification.Content" xml:space="preserve">
     <value>Notification</value>
   </data>
+  <data name="SettingsWindow_ShortcutKey.Content" xml:space="preserve">
+    <value>Hot Key</value>
+  </data>
   <data name="Settings_Notification_Corner.Header" xml:space="preserve">
     <value>Window Corner</value>
   </data>
@@ -170,5 +173,35 @@
   </data>
   <data name="Settings_Notification_VerticalPosition.Header" xml:space="preserve">
     <value>Vertical Position</value>
+  </data>
+  <data name="ShortcutKeyPage_MoveWindow.Text" xml:space="preserve">
+    <value>Move Window</value>
+  </data>
+  <data name="ShortcutKeyPage_MoveWindow_First.Header" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="ShortcutKeyPage_MoveWindow_Last.Header" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="ShortcutKeyPage_MoveWindow_Left.Header" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="ShortcutKeyPage_MoveWindow_Right.Header" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="ShortcutKeyPage_SwitchDesktop.Text" xml:space="preserve">
+    <value>Switch Desktop</value>
+  </data>
+  <data name="ShortcutKeyPage_SwitchDesktop_First.Header" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="ShortcutKeyPage_SwitchDesktop_Last.Header" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="ShortcutKeyPage_SwitchDesktop_Left.Header" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="ShortcutKeyPage_SwitchDesktop_Right.Header" xml:space="preserve">
+    <value>Right</value>
   </data>
 </root>
