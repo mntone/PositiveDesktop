@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "KeyVisual.xaml.h"
 
+#ifdef __INTELLISENSE__
 #include <winrt/Windows.Foundation.h> // Fix buggy IntelliSense :(
+#endif
 
 #include "KeyboardHelper.h"
 
@@ -71,7 +73,16 @@ void KeyVisual::OnKeyChanged(VirtualKey newValue) const {
 		} else {
 			prefixContent.Visibility(Visibility::Collapsed);
 		}
-		content.Content(std::get<0>(keymap));
+		IInspectable key { std::get<0>(keymap) };
+		if (auto iconSource { key.try_as<BitmapIconSource>() }) {
+			IconSourceElement icon;
+			icon.Height(20.0);
+			icon.IconSource(iconSource);
+			icon.Width(20.0);
+			content.Content(icon);
+		} else {
+			content.Content(key);
+		}
 	} else {
 		prefixContent.Visibility(Visibility::Collapsed);
 		content.Content(box_value(L"Unknown"));

@@ -228,11 +228,9 @@ KeyboardHelper::keymap_type LoadStringToKeymap(std::wstring_view key) {
 }
 
 KeyboardHelper::keymap_type LoadImageToKeymap(std::wstring_view uri, winrt::hstring const& prefixText) {
-	winrt::BitmapIcon icon;
-	icon.Height(20.0);
+	winrt::BitmapIconSource icon;
 	icon.ShowAsMonochrome(true);
 	icon.UriSource(winrt::Uri(uri));
-	icon.Width(20.0);
 	return std::make_tuple(icon, prefixText);
 }
 
