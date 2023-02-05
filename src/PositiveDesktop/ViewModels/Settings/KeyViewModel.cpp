@@ -18,6 +18,21 @@ namespace winrt {
 
 using namespace winrt::PositiveDesktop::ViewModels::Settings::implementation;
 
+winrt::VirtualKeyModifiers to_vkmodifiers(app::storage::key_t const& key) {
+	uint32_t modifiers(0);
+	if (key.leftCtrl() || key.rightCtrl()) modifiers |= static_cast<uint32_t>(winrt::VirtualKeyModifiers::Control);
+	if (key.leftAlt() || key.rightAlt()) modifiers |= static_cast<uint32_t>(winrt::VirtualKeyModifiers::Menu);
+	if (key.leftWin() || key.rightWin()) modifiers |= static_cast<uint32_t>(winrt::VirtualKeyModifiers::Windows);
+	return static_cast<winrt::VirtualKeyModifiers>(modifiers);
+}
+
+void KeyViewModel::Bind(app::storage::keymap_t const& keymap) noexcept {
+	key_ = static_cast<VirtualKey>(keymap.key1.key());
+	keyModifiers_ = to_vkmodifiers(keymap.key1);
+	key2_ = static_cast<VirtualKey>(keymap.key2.key());
+	keyModifiers2_ = to_vkmodifiers(keymap.key2);
+}
+
 void KeyViewModel::Key(VirtualKey value) noexcept {
 	if (key_ != value) {
 		key_ = value;

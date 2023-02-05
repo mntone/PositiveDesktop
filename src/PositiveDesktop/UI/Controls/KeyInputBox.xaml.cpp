@@ -44,6 +44,9 @@ KeyInputBox::KeyInputBox() {
 
 void KeyInputBox::OnApplyTemplate() {
 	__super::OnApplyTemplate();
+
+	OnKeyChanged(Key());
+	SetAllKeyModifiersVisibilities(VirtualKeyModifiers::None, KeyModifiers());
 }
 
 void KeyInputBox::OnKeyDown(KeyRoutedEventArgs const& args) {
@@ -91,7 +94,7 @@ void KeyInputBox::OnKeyChangedStatic(DependencyObject const& sender, DependencyP
 	get_self<KeyInputBox>(sender.as<winrt::KeyInputBox>())->OnKeyChanged(args.NewValue().as<VirtualKey>());
 }
 
-void KeyInputBox::SetVisibility(param::hstring const& controlName, uint32_t oldValue, uint32_t newValue, uint32_t mask) const {
+void KeyInputBox::SetKeyModifiersVisibility(param::hstring const& controlName, uint32_t oldValue, uint32_t newValue, uint32_t mask) const {
 	Control control { GetTemplateChild(controlName).try_as<Control>() };
 	if (control) {
 		if (!(oldValue & mask) && (newValue & mask)) {
@@ -102,14 +105,17 @@ void KeyInputBox::SetVisibility(param::hstring const& controlName, uint32_t oldV
 	}
 }
 
+void KeyInputBox::SetAllKeyModifiersVisibilities(VirtualKeyModifiers oldValue, VirtualKeyModifiers newValue) const {
+	uint32_t oldValue2 { static_cast<uint32_t>(oldValue) };
+	uint32_t newValue2 { static_cast<uint32_t>(newValue) };
+	SetKeyModifiersVisibility(controls::LeftControl, oldValue2, newValue2, 0x1 /* Control */);
+	SetKeyModifiersVisibility(controls::LeftShift, oldValue2, newValue2, 0x4 /* Shift */);
+	SetKeyModifiersVisibility(controls::LeftMenu, oldValue2, newValue2, 0x2 /* Menu */);
+}
+
 void KeyInputBox::OnKeyModifiersChanged(std::optional<VirtualKeyModifiers> oldValue, VirtualKeyModifiers newValue) const {
 	if (oldValue.has_value()) {
-		uint32_t oldValue2 { static_cast<uint32_t>(oldValue.value()) };
-		uint32_t newValue2 { static_cast<uint32_t>(newValue) };
-
-		SetVisibility(controls::LeftControl, oldValue2, newValue2, 0x1 /* Control */);
-		SetVisibility(controls::LeftShift, oldValue2, newValue2, 0x4 /* Shift */);
-		SetVisibility(controls::LeftMenu, oldValue2, newValue2, 0x2 /* Menu */);
+		SetAllKeyModifiersVisibilities(oldValue.value(), newValue);
 	} else {
 		uint32_t newValue2 { static_cast<uint32_t>(newValue) };
 

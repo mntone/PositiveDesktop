@@ -3,10 +3,14 @@
 
 #include "ViewModels/ObservableObject.h"
 
+#include "Services/Storages/config_t.h"
+
 namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 
 	struct KeyViewModel: KeyViewModelT<KeyViewModel, ::winrt::PositiveDesktop::ViewModels::implementation::ObservableObject> {
 		KeyViewModel() noexcept = default;
+
+		void Bind(app::storage::keymap_t const& keymap) noexcept;
 
 	public:  // - Properties
 		inline constexpr bool IsValid() const noexcept {

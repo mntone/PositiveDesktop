@@ -12,7 +12,10 @@ namespace winrt::PositiveDesktop::UI::Controls::implementation {
 		void OnKeyUp(Microsoft::UI::Xaml::Input::KeyRoutedEventArgs const& args);
 
 	private:
-		void SetVisibility(param::hstring const& controlName, uint32_t oldValue, uint32_t newValue, uint32_t mask) const;
+		void SetKeyModifiersVisibility(param::hstring const& controlName, uint32_t oldValue, uint32_t newValue, uint32_t mask) const;
+		void SetAllKeyModifiersVisibilities(
+			Windows::System::VirtualKeyModifiers oldValue,
+			Windows::System::VirtualKeyModifiers newValue) const;
 
 		inline void OnKeyChanged(Windows::System::VirtualKey newValue) const;
 		static void OnKeyChangedStatic(

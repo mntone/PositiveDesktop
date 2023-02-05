@@ -38,14 +38,14 @@
     <ClCompile Include="Services\Storages\DesktopConfig.cpp">
       <Filter>Services\Storages</Filter>
     </ClCompile>
+    <ClCompile Include="Services\Storages\KeyConfig.cpp">
+      <Filter>Services\Storages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="shared.h" />
     <ClInclude Include="Common\Debug.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\key_config_t.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\lock_t.h">
@@ -109,6 +109,9 @@
       <Filter>Services\Storages</Filter>
     </ClInclude>
     <ClInclude Include="Services\Storages\DesktopConfig.h">
+      <Filter>Services\Storages</Filter>
+    </ClInclude>
+    <ClInclude Include="Services\Storages\KeyConfig.h">
       <Filter>Services\Storages</Filter>
     </ClInclude>
   </ItemGroup>

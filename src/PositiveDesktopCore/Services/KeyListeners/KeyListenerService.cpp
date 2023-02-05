@@ -31,37 +31,6 @@ KeysListenerService::~KeysListenerService() {
 }
 
 void KeysListenerService::initialize() {
-	app::storage::key_config_t config;
-	config.map.reserve(32);
-	config.map.push_back({ kbe_exit, { 'X', 0x28 /* LCtrl+LWin */ } }); // Exit application.
-	config.map.push_back({ kbe_settings, { 'I', 0x28 /* LCtrl+LWin */ } }); // Show settings window.
-
-	// Switch desktop.
-	for (char i = 0; i < 9; ++i) {
-		config.map.push_back({ addingDesktop(kbe_switch, i), { '1' + i, 0x28 /* LCtrl+LWin*/ } });
-	}
-	config.map.push_back({ kbe_switch_desktop10, { '0', 0x28 /* LCtrl+LWin*/ } });
-	config.map.push_back({ kbe_switch_first, { VK_HOME, 0x28 /* LCtrl+LWin*/ } });
-	config.map.push_back({ kbe_switch_last, { VK_END, 0x28 /* LCtrl+LWin*/ } });
-	config.map.push_back({ kbe_switch_left, { VK_PRIOR, 0x28 /* LCtrl+LWin*/ } });
-	config.map.push_back({ kbe_switch_right, { VK_NEXT, 0x28 /* LCtrl+LWin*/ } });
-
-	// Move window to the X desktop and switch.
-	for (char i = 0; i < 9; ++i) {
-		config.map.push_back({ addingDesktop(kbe_move_window_and_switch, i), { '1' + i, 0x2A /* LCtrl+LWin+LAlt*/ } });
-	}
-	config.map.push_back({ kbe_move_window_and_switch_desktop10, { '0', 0x2A /* LCtrl+LWin+LAlt*/ } });
-	config.map.push_back({ kbe_move_window_and_switch_first, { VK_HOME, 0x2A /* LCtrl+LWin+LAlt*/ } });
-	config.map.push_back({ kbe_move_window_and_switch_last, { VK_END, 0x2A /* LCtrl+LWin+LAlt*/ } });
-	config.map.push_back({ kbe_move_window_and_switch_left, { VK_LEFT, 0x2A /* LCtrl+LWin+LAlt*/ }, { VK_PRIOR, 0x2A /* LCtrl+LWin+LAlt*/ } });
-	config.map.push_back({ kbe_move_window_and_switch_right, { VK_RIGHT, 0x2A /* LCtrl+LWin+LAlt*/ }, { VK_NEXT, 0x2A /* LCtrl+LWin+LAlt*/ } });
-	config.map.push_back({ kbe_move_window_and_switch_new_last, { 'D', 0x2A /* LCtrl+LWin+LAlt*/ } });
-
-	// Toggle topmost window.
-	config.map.push_back({ kbe_topmost_toggle, { 'T', 0x2A /* LCtrl+LWin+LAlt*/ } });
-
-	updateConfigPrivate(config);
-
 	KeysListenerService::addHook(this);
 }
 
@@ -79,7 +48,7 @@ void KeysListenerService::resume() {
 	KeysListenerService::addHook(this);
 }
 
-void KeysListenerService::updateConfig(app::storage::key_config_t const& config) noexcept {
+void KeysListenerService::updateConfig(std::shared_ptr<app::storage::KeyConfig> config) noexcept {
 	if (suspending_) {
 		updateConfigPrivate(config);
 	} else {
@@ -89,9 +58,9 @@ void KeysListenerService::updateConfig(app::storage::key_config_t const& config)
 	}
 }
 
-void KeysListenerService::updateConfigPrivate(app::storage::key_config_t const& config) noexcept {
+void KeysListenerService::updateConfigPrivate(std::shared_ptr<app::storage::KeyConfig> config) noexcept {
 	std::unordered_map<short, kbevent_t> keymap;
-	for (app::storage::keymap_t const& key : config.map) {
+	for (app::storage::keymap_t const& key : config->raw().keymaps) {
 		if (!key.key1.empty()) {
 			keymap.emplace(key.key1.raw, key.ev);
 		}

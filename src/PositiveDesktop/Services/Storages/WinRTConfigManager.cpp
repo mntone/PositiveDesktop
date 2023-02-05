@@ -108,6 +108,41 @@ namespace app::storage {
 			return desktop;
 		}
 
+		keymap_t load(winrt::Windows::Foundation::Collections::IPropertySet values, app::keylistener::kbevent_t ev) {
+			keymap_t keymap {
+				ev,
+				load(values, L"key1", kKeyDefault),
+				load(values, L"key2", kKeyDefault),
+			};
+			return keymap;
+		}
+
+		template<typename T, std::enable_if_t<std::is_same_v<T, keymaps_t>, std::nullptr_t> = nullptr>
+		keymaps_t load(winrt::Windows::Storage::ApplicationDataContainer container) {
+			winrt::Windows::Foundation::Collections::IPropertySet values { container.Values() };
+			keymaps_t config {
+				load(values, L"separate", kSeparateDefault),
+			};
+
+			winrt::Windows::Storage::ApplicationDataContainer keymapsContainer { getContainer<winrt::Windows::Storage::ApplicationDataCreateDisposition::Existing>(container, L"keymaps") };
+			if (keymapsContainer) {
+				winrt::Windows::Foundation::Collections::IPropertySet keymapsValues { keymapsContainer.Values() };
+				if (keymapsValues) {
+					winrt::Windows::Foundation::Collections::IMapView<winrt::hstring, winrt::Windows::Foundation::IInspectable> keymaps = keymapsValues.GetView();
+					uint32_t const size = keymaps.Size();
+					config.keymaps.reserve(size);
+					for (winrt::Windows::Foundation::Collections::IKeyValuePair<winrt::hstring, winrt::Windows::Foundation::IInspectable> pair : keymaps) {
+						winrt::hstring evstr { pair.Key() };
+						app::keylistener::kbevent_t ev { static_cast<app::keylistener::kbevent_t>(std::wcstoul(evstr.data(), nullptr, 10)) };
+						winrt::Windows::Storage::ApplicationDataCompositeValue composite { pair.Value().as<winrt::Windows::Storage::ApplicationDataCompositeValue>() };
+						keymap_t keymap { load(composite, ev) };
+						config.keymaps.push_back(keymap);
+					}
+				}
+			}
+			return config;
+		}
+
 		template<typename T, std::enable_if_t<std::is_same_v<T, config_t>, std::nullptr_t> = nullptr>
 		config_t load(winrt::Windows::Storage::ApplicationDataContainer container) {
 			winrt::Windows::Foundation::Collections::IPropertySet values { container.Values() };
@@ -200,6 +235,24 @@ namespace app::storage {
 			values.Insert(uuidText, composite);
 		}
 
+		void store(winrt::Windows::Foundation::Collections::IPropertySet values, keymap_t const& value) {
+			winrt::Windows::Storage::ApplicationDataCompositeValue composite;
+			store(composite, L"key1", value.key1.raw, kKeyDefault);
+			store(composite, L"key2", value.key2.raw, kKeyDefault);
+			values.Insert(winrt::to_hstring(value.ev), composite);
+		}
+
+		void store(winrt::Windows::Storage::ApplicationDataContainer container, keymaps_t const& value) {
+			winrt::Windows::Foundation::Collections::IPropertySet values { container.Values() };
+			store(values, L"separate", value.separate, kSeparateDefault);
+
+			winrt::Windows::Storage::ApplicationDataContainer keymapsContainer { getContainer(container, L"keymaps") };
+			winrt::Windows::Foundation::Collections::IPropertySet keymapsValues { keymapsContainer.Values() };
+			for (keymap_t const& keymap : value.keymaps) {
+				store(keymapsValues, keymap);
+			}
+		}
+
 		void store(winrt::Windows::Storage::ApplicationDataContainer container, config_t value) {
 			winrt::Windows::Foundation::Collections::IPropertySet values { container.Values() };
 			store(values, value.defaultDesktop);
@@ -239,11 +292,19 @@ namespace app::storage {
 			return interop::load<default_desktop_t>(container_);
 		}
 
+		keymaps_t LoadKeymaps() override {
+			return interop::load< keymaps_t>(container_);
+		}
+
 		void store(config_t value)  const override {
 			interop::store(container_, value);
 		}
 
 		void store(default_desktop_t value)  const override {
+			interop::store(container_, value);
+		}
+
+		void store(keymaps_t const& value) const override {
 			interop::store(container_, value);
 		}
 

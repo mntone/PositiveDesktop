@@ -4,6 +4,8 @@
 #include "SettingsBaseViewModel.h"
 #include "KeyViewModel.h"
 
+#include "Services/Storages/KeyConfig.h"
+
 #define DEFINE_PROP(__NAME__) \
 	public:  inline ::winrt::PositiveDesktop::ViewModels::Settings::KeyViewModel __NAME__##() const noexcept { return __NAME__##_; } \
 	private: ::winrt::PositiveDesktop::ViewModels::Settings::KeyViewModel __NAME__##_ { make<::winrt::PositiveDesktop::ViewModels::Settings::implementation::KeyViewModel>() }
@@ -11,7 +13,7 @@
 namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 
 	struct ShortcutKeyViewModel: ShortcutKeyViewModelT<ShortcutKeyViewModel, SettingsBaseViewModel> {
-		ShortcutKeyViewModel() noexcept = default;
+		ShortcutKeyViewModel(std::shared_ptr<app::storage::KeyConfig> config) noexcept;
 
 		SettingsSavedStatus SaveCore() override final;
 
@@ -109,6 +111,9 @@ namespace winrt::PositiveDesktop::ViewModels::Settings::implementation {
 		DEFINE_PROP(MoveWindowAndSwitchNewLastDesktop);
 		DEFINE_PROP(MoveWindowAndSwitchNewLeftDesktop);
 		DEFINE_PROP(MoveWindowAndSwitchNewRightDesktop);
+
+	private:
+		std::shared_ptr<app::storage::KeyConfig> config_;
 	};
 
 }

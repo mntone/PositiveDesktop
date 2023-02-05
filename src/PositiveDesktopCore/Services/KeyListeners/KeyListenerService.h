@@ -3,9 +3,10 @@
 
 #include <unordered_map>
 
-#include "Common/key_config_t.h"
 #include "Common/lock_t.h"
 #include "Common/Reps.h"
+
+#include "Services/Storages/KeyConfig.h"
 
 #define KEYLISTENERS_SINGLETON
 
@@ -13,17 +14,17 @@ namespace app::keylistener {
 
 	class KeysListenerService final: public reps::single_subject_t<kbevent_t> {
 	public:
-		KeysListenerService() noexcept: previousVirtualKey_(0), suspending_(false), keymap_() { }
+		KeysListenerService() noexcept: previousVirtualKey_(0), suspending_(true), keymap_() { }
 		~KeysListenerService();
 
 		void initialize();
-		void updateConfig(app::storage::key_config_t const& config) noexcept;
+		void updateConfig(std::shared_ptr<app::storage::KeyConfig> config) noexcept;
 
 		void suspend();
 		void resume();
 
 	private:
-		void updateConfigPrivate(app::storage::key_config_t const& config) noexcept;
+		void updateConfigPrivate(std::shared_ptr<app::storage::KeyConfig> config) noexcept;
 
 		LRESULT KbdProc(HHOOK hHook, int nCode, WPARAM wParam, KBDLLHOOKSTRUCT const& kbdStruct, bool& handled) noexcept;
 		static LRESULT CALLBACK KbdProcStatic(int nCode, WPARAM wParam, LPARAM lParam) noexcept;

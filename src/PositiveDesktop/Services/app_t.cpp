@@ -48,6 +48,7 @@ void app_t::initialize() {
 	// Init key listener
 	keysLitener_ = new keylistener::KeysListenerService();
 	keysLitener_->addObserver(reps::basic_observer_t<app::keylistener::kbevent_t>::observer());
+	keysLitener_->updateConfig(config_->key());
 	keysLitener_->initialize();
 
 	// Init desktop service
