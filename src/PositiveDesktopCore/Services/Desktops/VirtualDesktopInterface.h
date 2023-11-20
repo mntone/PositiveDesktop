@@ -7,6 +7,7 @@ namespace app::desktop {
 
 		virtual int Index() const noexcept = 0;
 		virtual winrt::hstring Name() = 0;
+		virtual bool IsRemote() const = 0;
 	};
 
 	struct IVirtualDesktopManagerInternalDelegate {

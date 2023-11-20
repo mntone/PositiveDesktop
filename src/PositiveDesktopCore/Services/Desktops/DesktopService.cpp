@@ -113,18 +113,20 @@ void DesktopService::initialize() {
 		applicationViewCollection_.put_void()),
 		nonlocalized::ErrorMessage_InitIApplicationViewCollection);
 
-	DWORD build { VersionHelper::build() };
-	if (build >= 22449) {
-		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate22449>(build, virtualDesktopCache_, serviceProvider_.get());
-	} else if (build >= 21313) {
-		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate21313>(build, virtualDesktopCache_, serviceProvider_.get());
-	} else if (build >= 20231) {
-		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate20231>(build, virtualDesktopCache_, serviceProvider_.get());
-	} else if (build >= 20211) {
+	DWORD version { VersionHelper::version() };
+	if (version >= 224490000) {
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate22449>(version, virtualDesktopCache_, serviceProvider_.get());
+	} else if (version >= 226212215) {
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate22621_2215>(virtualDesktopCache_, serviceProvider_.get());
+	} else if (version >= 213130000) {
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate21313>(version, virtualDesktopCache_, serviceProvider_.get());
+	} else if (version >= 202310000) {
+		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate20231>(version, virtualDesktopCache_, serviceProvider_.get());
+	} else if (version >= 202110000) {
 		THROW_HRESULT_FATAL(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
-	} else if (build >= 18963) {
+	} else if (version >= 189630000) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate18963>(virtualDesktopCache_, serviceProvider_.get());
-	} else if (build >= 14238) {
+	} else if (version >= 142380000) {
 		virtualDesktopManagerDelegate_ = std::make_unique<VirtualDesktopManagerInternalDelegate14238>(virtualDesktopCache_, serviceProvider_.get());
 	} else {
 		THROW_HRESULT_FATAL(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
@@ -136,24 +138,34 @@ void DesktopService::initialize() {
 		virtualDesktopNotificationService_.put_void()),
 		nonlocalized::ErrorMessage_InitIVirtualDesktopNotificationService);
 
-	if (build >= 21359 /* Windows 10 Insider, Windows 11 */) {
+	if (version >= 224490000) {
 		com_ptr<VirtualDesktopNotificationListener21359> listener = make_self<VirtualDesktopNotificationListener21359>(virtualDesktopCache_, this);
 		THROW_IF_HRESULT_FATAL(
 			virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification21359>().get(), &cookie_),
 			"Failed to register IVirtualDesktopNotification21359.");
-	} else if (build >= 20231 /* Windows 10 Insider */) {
+	} else if (version >= 226212215) {
+		com_ptr<VirtualDesktopNotificationListener22621_2215> listener = make_self<VirtualDesktopNotificationListener22621_2215>(virtualDesktopCache_, this);
+		THROW_IF_HRESULT_FATAL(
+			virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification22621_2215>().get(), &cookie_),
+			"Failed to register IVirtualDesktopNotification22621_2215.");
+	} else if (version >= 213590000 /* Windows 10 Insider, Windows 11 */) {
+		com_ptr<VirtualDesktopNotificationListener21359> listener = make_self<VirtualDesktopNotificationListener21359>(virtualDesktopCache_, this);
+		THROW_IF_HRESULT_FATAL(
+			virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification21359>().get(), &cookie_),
+			"Failed to register IVirtualDesktopNotification21359.");
+	} else if (version >= 202310000 /* Windows 10 Insider */) {
 		com_ptr<VirtualDesktopNotificationListener20231> listener = make_self<VirtualDesktopNotificationListener20231>(virtualDesktopCache_, this);
 		THROW_IF_HRESULT_FATAL(
 			virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification20241>().get(), &cookie_),
 			"Failed to register IVirtualDesktopNotification20241.");
-	} else if (build >= 20211) {
+	} else if (version >= 202110000) {
 		THROW_HRESULT_FATAL(0x80131515 /*COR_E_NOTSUPPORTED*/, nonlocalized::ErrorMessage_NotSupported);
-	} else if (build >= 18963 /* general Windows 10 */) {
+	} else if (version >= 189630000 /* general Windows 10 */) {
 		com_ptr<VirtualDesktopNotificationListener18963> listener = make_self<VirtualDesktopNotificationListener18963>(virtualDesktopCache_, this);
 		THROW_IF_HRESULT_FATAL(
 			virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification2>().get(), &cookie_),
 			"Failed to register IVirtualDesktopNotification2.");
-	} else if (build >= 10159 /* previous Windows 10 */) {
+	} else if (version >= 101590000 /* previous Windows 10 */) {
 		com_ptr<VirtualDesktopNotificationListener10240> listener = make_self<VirtualDesktopNotificationListener10240>(virtualDesktopCache_, this);
 		THROW_IF_HRESULT_FATAL(
 			virtualDesktopNotificationService_->Register(listener.as<IVirtualDesktopNotification>().get(), &cookie_),

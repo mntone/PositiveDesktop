@@ -14,20 +14,25 @@ namespace app::desktop {
 		HRESULT CreateDelegate(IVirtualDesktop* iface, int index, IVirtualDesktopDelegate** ppDelegate) noexcept;
 		HRESULT CreateDelegate(IVirtualDesktop2* iface, int index, IVirtualDesktopDelegate** ppDelegate) noexcept;
 		HRESULT CreateDelegate(IVirtualDesktop20231* iface, int index, IVirtualDesktopDelegate** ppDelegate) noexcept;
+		HRESULT CreateDelegate(IVirtualDesktop22621_2215* iface, int index, IVirtualDesktopDelegate** ppDelegate) noexcept;
 
 		HRESULT CreateDelegateIfNeeded(IVirtualDesktop* iface, IVirtualDesktopDelegate** ppDelegate) noexcept;
 		HRESULT CreateDelegateIfNeeded(IVirtualDesktop2* iface, IVirtualDesktopDelegate** ppDelegate) noexcept;
 		HRESULT CreateDelegateIfNeeded(IVirtualDesktop20231* iface, IVirtualDesktopDelegate** ppDelegate) noexcept;
+		HRESULT CreateDelegateIfNeeded(IVirtualDesktop22621_2215* iface, IVirtualDesktopDelegate** ppDelegate) noexcept;
 
 		HRESULT FromInterface(IVirtualDesktop* iface, IVirtualDesktopDelegate** ppDelegate) noexcept;
 		HRESULT FromInterface(IVirtualDesktop2* iface, IVirtualDesktopDelegate** ppDelegate) noexcept;
 		HRESULT FromInterface(IVirtualDesktop20231* iface, IVirtualDesktopDelegate** ppDelegate) noexcept;
+		HRESULT FromInterface(IVirtualDesktop22621_2215* iface, IVirtualDesktopDelegate** ppDelegate) noexcept;
 
 		HRESULT MoveDelegate(IVirtualDesktop20231* iface, int nFromIndex, int nToIndex, IVirtualDesktopDelegate** ppDelegate) noexcept;
+		HRESULT MoveDelegate(IVirtualDesktop22621_2215* iface, int nFromIndex, int nToIndex, IVirtualDesktopDelegate** ppDelegate) noexcept;
 
 		HRESULT DetachDelegate(IVirtualDesktop* iface, IVirtualDesktopDelegate** ppDesktop) noexcept;
 		HRESULT DetachDelegate(IVirtualDesktop2* iface, IVirtualDesktopDelegate** ppDesktop) noexcept;
 		HRESULT DetachDelegate(IVirtualDesktop20231* iface, IVirtualDesktopDelegate** ppDesktop) noexcept;
+		HRESULT DetachDelegate(IVirtualDesktop22621_2215* iface, IVirtualDesktopDelegate** ppDesktop) noexcept;
 
 		HRESULT First(IVirtualDesktopDelegate** ppDesktop) noexcept;
 		HRESULT GetAt(int index, IVirtualDesktopDelegate** ppDesktop) noexcept;

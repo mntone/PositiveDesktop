@@ -38,7 +38,7 @@ HRESULT VirtualDesktopNotificationListener18963::VirtualDesktopDestroyed(IVirtua
 	return hr;
 }
 
-HRESULT VirtualDesktopNotificationListener18963::ViewVirtualDesktopChanged(IUnknown* pView) {
+HRESULT VirtualDesktopNotificationListener18963::ViewVirtualDesktopChanged(IUnknown* /*pView*/) {
 	return S_OK;
 }
 

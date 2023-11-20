@@ -63,6 +63,21 @@ HRESULT VirtualDesktopCache::CreateDelegate(IVirtualDesktop20231* iface, int ind
 	return hr;
 }
 
+HRESULT VirtualDesktopCache::CreateDelegate(IVirtualDesktop22621_2215* iface, int index, IVirtualDesktopDelegate** ppDelegate) noexcept {
+	guid id;
+	HRESULT hr = iface->GetID(&id);
+	if (FAILED(hr)) return hr;
+	WINRT_ASSERT(cache_.find(id) == cache_.end());
+
+	IVirtualDesktopDelegate* delegate = new VirtualDesktopDelegate22621_2215(iface, index);
+	{
+		app::lock_guard lock { locker_ };
+		cache_.emplace(id, delegate);
+	}
+	*ppDelegate = delegate;
+	return hr;
+}
+
 HRESULT VirtualDesktopCache::CreateDelegateIfNeeded(IVirtualDesktop* iface, IVirtualDesktopDelegate** ppDelegate) noexcept {
 	guid id;
 	HRESULT hr = iface->GetID(&id);
@@ -123,6 +138,26 @@ HRESULT VirtualDesktopCache::CreateDelegateIfNeeded(IVirtualDesktop20231* iface,
 	return hr;
 }
 
+HRESULT VirtualDesktopCache::CreateDelegateIfNeeded(IVirtualDesktop22621_2215* iface, IVirtualDesktopDelegate** ppDelegate) noexcept {
+	guid id;
+	HRESULT hr = iface->GetID(&id);
+	if (FAILED(hr)) return hr;
+
+	container_type::iterator itr;
+	{
+		app::lock_guard lock { locker_ };
+		itr = cache_.find(id);
+		if (itr == cache_.end()) {
+			IVirtualDesktopDelegate* delegate = new VirtualDesktopDelegate22621_2215(iface, static_cast<int>(cache_.size()));
+			cache_.emplace(id, delegate);
+			*ppDelegate = delegate;
+			return hr;
+		}
+	}
+	*ppDelegate = itr->second;
+	return hr;
+}
+
 HRESULT VirtualDesktopCache::FromInterface(IVirtualDesktop* iface, IVirtualDesktopDelegate** ppDelegate) noexcept {
 	guid id;
 	HRESULT hr = iface->GetID(&id);
@@ -158,6 +193,23 @@ HRESULT VirtualDesktopCache::FromInterface(IVirtualDesktop2* iface, IVirtualDesk
 }
 
 HRESULT VirtualDesktopCache::FromInterface(IVirtualDesktop20231* iface, IVirtualDesktopDelegate** ppDelegate) noexcept {
+	guid id;
+	HRESULT hr = iface->GetID(&id);
+	if (FAILED(hr)) return hr;
+
+	container_type::iterator itr;
+	{
+		app::lock_guard lock { locker_ };
+		itr = cache_.find(id);
+		if (itr == cache_.end()) {
+			return E_INVALIDARG;
+		}
+	}
+	*ppDelegate = itr->second;
+	return S_OK;
+}
+
+HRESULT VirtualDesktopCache::FromInterface(IVirtualDesktop22621_2215* iface, IVirtualDesktopDelegate** ppDelegate) noexcept {
 	guid id;
 	HRESULT hr = iface->GetID(&id);
 	if (FAILED(hr)) return hr;
@@ -212,92 +264,77 @@ HRESULT VirtualDesktopCache::MoveDelegate(IVirtualDesktop20231* iface, int nFrom
 	return S_OK;
 }
 
-HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop* iface, IVirtualDesktopDelegate** ppDesktop) noexcept {
+HRESULT VirtualDesktopCache::MoveDelegate(IVirtualDesktop22621_2215* iface, int nFromIndex, int nToIndex, IVirtualDesktopDelegate** ppDelegate) noexcept {
 	guid id;
 	HRESULT hr = iface->GetID(&id);
 	if (FAILED(hr)) return hr;
 
-	IVirtualDesktopDelegate* delegate;
+	container_type::iterator itr;
 	{
 		app::lock_guard lock { locker_ };
-		auto itr = cache_.find(id);
+		itr = cache_.find(id);
 		if (itr == cache_.end()) {
 			return E_INVALIDARG;
 		}
+		reinterpret_cast<VirtualDesktopDelegate22621_2215*>(itr->second)->Index(nToIndex);
 
-		delegate = itr->second;
-		cache_.erase(itr);
-
-		// -1 if index
-		int const targetIndex = delegate->Index();
-		for (auto& cache : cache_) {
-			int const cacheIndex = cache.second->Index();
-			if (cacheIndex > targetIndex) {
-				reinterpret_cast<VirtualDesktopDelegate10240*>(cache.second)->Index(cacheIndex - 1);
+		// e.g. [A, B, C, D]
+		if (nFromIndex > nToIndex) { // 3 to 1, expected: [A, D, B, C]
+			for (auto& cache : cache_) {
+				int const nCacheIndex { cache.second->Index() };
+				if (nFromIndex <= nCacheIndex && nCacheIndex < nToIndex) {
+					reinterpret_cast<VirtualDesktopDelegate22621_2215*>(cache.second)->Index(nCacheIndex + 1);
+				}
 			}
+		} else if (nFromIndex < nToIndex) { // 1 to 3, expected: [A, C, D, B]
+			for (auto& cache : cache_) {
+				int const nCacheIndex { cache.second->Index() };
+				if (nFromIndex < nCacheIndex && nCacheIndex <= nToIndex) {
+					reinterpret_cast<VirtualDesktopDelegate22621_2215*>(cache.second)->Index(nCacheIndex - 1);
+				}
+			}
+		} else {
+			WINRT_ASSERT(false);
+			return TYPE_E_OUTOFBOUNDS;
 		}
 	}
-	*ppDesktop = delegate;
+	*ppDelegate = itr->second;
 	return S_OK;
 }
 
-HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop2* iface, IVirtualDesktopDelegate** ppDesktop) noexcept {
-	guid id;
-	HRESULT hr = iface->GetID(&id);
-	if (FAILED(hr)) return hr;
-
-	IVirtualDesktopDelegate* delegate;
-	{
-		app::lock_guard lock { locker_ };
-		auto itr = cache_.find(id);
-		if (itr == cache_.end()) {
-			return E_INVALIDARG;
-		}
-
-		delegate = itr->second;
-		cache_.erase(itr);
-
-		// -1 if index
-		int const targetIndex = delegate->Index();
-		for (auto& cache : cache_) {
-			int const cacheIndex = cache.second->Index();
-			if (cacheIndex > targetIndex) {
-				reinterpret_cast<VirtualDesktopDelegate18963*>(cache.second)->Index(cacheIndex - 1);
-			}
-		}
+#define DEFINE_DETACH_DELEGATE(_IFACE, _DPREF) \
+	HRESULT VirtualDesktopCache::DetachDelegate(_IFACE* iface, IVirtualDesktopDelegate** ppDesktop) noexcept { \
+		guid id; \
+		HRESULT hr = iface->GetID(&id); \
+		if (FAILED(hr)) return hr; \
+		 \
+		IVirtualDesktopDelegate* delegate; \
+		{ \
+			app::lock_guard lock { locker_ }; \
+			auto itr = cache_.find(id); \
+			if (itr == cache_.end()) { \
+				return E_INVALIDARG; \
+			} \
+			 \
+			delegate = itr->second; \
+			cache_.erase(itr); \
+			 \
+			/* -1 if index */ \
+			int const targetIndex = delegate->Index(); \
+			for (auto& cache : cache_) { \
+				int const cacheIndex = cache.second->Index(); \
+				if (cacheIndex > targetIndex) { \
+					reinterpret_cast<_DPREF*>(cache.second)->Index(cacheIndex - 1); \
+				} \
+			} \
+		} \
+		*ppDesktop = delegate; \
+		return S_OK; \
 	}
-	*ppDesktop = delegate;
-	return S_OK;
-}
-
-HRESULT VirtualDesktopCache::DetachDelegate(IVirtualDesktop20231* iface, IVirtualDesktopDelegate** ppDesktop) noexcept {
-	guid id;
-	HRESULT hr = iface->GetID(&id);
-	if (FAILED(hr)) return hr;
-
-	IVirtualDesktopDelegate* delegate;
-	{
-		app::lock_guard lock { locker_ };
-		auto itr = cache_.find(id);
-		if (itr == cache_.end()) {
-			return E_INVALIDARG;
-		}
-
-		delegate = itr->second;
-		cache_.erase(itr);
-
-		// -1 if index
-		int const targetIndex = delegate->Index();
-		for (auto& cache : cache_) {
-			int const cacheIndex = cache.second->Index();
-			if (cacheIndex > targetIndex) {
-				reinterpret_cast<VirtualDesktopDelegate20231*>(cache.second)->Index(cacheIndex - 1);
-			}
-		}
-	}
-	*ppDesktop = delegate;
-	return S_OK;
-}
+DEFINE_DETACH_DELEGATE(IVirtualDesktop, VirtualDesktopDelegate10240);
+DEFINE_DETACH_DELEGATE(IVirtualDesktop2, VirtualDesktopDelegate18963);
+DEFINE_DETACH_DELEGATE(IVirtualDesktop20231, VirtualDesktopDelegate20231);
+DEFINE_DETACH_DELEGATE(IVirtualDesktop22621_2215, VirtualDesktopDelegate22621_2215);
 
 constexpr bool isFirst(std::pair<guid, IVirtualDesktopDelegate*> p) noexcept {
 	return p.second->Index() == 0;

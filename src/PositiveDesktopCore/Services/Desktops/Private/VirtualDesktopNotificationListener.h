@@ -90,4 +90,28 @@ namespace app::desktop {
 		IVirtualDesktopNotificationCallback* callback_;
 	};
 
+	struct VirtualDesktopNotificationListener22621_2215
+		: public IVirtualDesktopNotificationListener
+		, winrt::implements<VirtualDesktopNotificationListener22621_2215, IVirtualDesktopNotification22621_2215> {
+		VirtualDesktopNotificationListener22621_2215(std::shared_ptr<VirtualDesktopCache> cache, IVirtualDesktopNotificationCallback* callback) noexcept: cache_(cache), callback_(callback) { };
+
+	private:
+		// - IVirtualDesktopNotification22621_2215
+		IFACEMETHOD(VirtualDesktopCreated)(IObjectArray* pArray, IVirtualDesktop22621_2215* pDesktop);
+		IFACEMETHOD(VirtualDesktopDestroyBegin)(IObjectArray* pArray, IVirtualDesktop22621_2215* pDesktopDestroyed, IVirtualDesktop22621_2215* pDesktopFallback);
+		IFACEMETHOD(VirtualDesktopDestroyFailed)(IObjectArray* pArray, IVirtualDesktop22621_2215* pDesktopDestroyed, IVirtualDesktop22621_2215* pDesktopFallback);
+		IFACEMETHOD(VirtualDesktopDestroyed)(IObjectArray* pArray, IVirtualDesktop22621_2215* pDesktopDestroyed, IVirtualDesktop22621_2215* pDesktopFallback);
+		IFACEMETHOD(VirtualDesktopMoved)(IObjectArray* pArray, IVirtualDesktop22621_2215* pDesktop, int nFromIndex, int nToIndex);
+		IFACEMETHOD(VirtualDesktopNameChanged)(IVirtualDesktop22621_2215* pDesktop, HSTRING name);
+		IFACEMETHOD(ViewVirtualDesktopChanged)(IUnknown* pView);
+		IFACEMETHOD(CurrentVirtualDesktopChanged)(IObjectArray* pArray, IVirtualDesktop22621_2215* pDesktopOld, IVirtualDesktop22621_2215* pDesktopNew);
+		IFACEMETHOD(VirtualDesktopWallpaperChanged)(IVirtualDesktop22621_2215* pDesktop, HSTRING path);
+		IFACEMETHOD(VirtualDesktopSwitched)(IVirtualDesktop22621_2215** ppDesktop);
+		IFACEMETHOD(RemoteVirtualDesktopConnected)(IVirtualDesktop22621_2215** ppDesktop);
+
+	private:
+		std::shared_ptr<VirtualDesktopCache> cache_;
+		IVirtualDesktopNotificationCallback* callback_;
+	};
+
 }

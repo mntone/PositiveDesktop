@@ -77,7 +77,7 @@ namespace app::desktop {
 		virtual HRESULT __stdcall GetName(HSTRING* pName) = 0;
 	};
 
-	// Supported OS: Build 20241-20279 (change UUID only, vtable is the same to IVirtualDesktop20231)
+	// Supported OS: Build 20241-20348 (change UUID only, vtable is the same to IVirtualDesktop20231)
 	struct __declspec(uuid("62FDF88B-11CA-4AFB-8BD8-2296DFAE49E2")) IVirtualDesktop20241: public IVirtualDesktop20231 {
 	};
 
@@ -86,6 +86,16 @@ namespace app::desktop {
 	// - [22621] Windows 11 Version 22H2
 	struct __declspec(uuid("536D3495-B208-4CC9-AE26-DE8111275BF8")) IVirtualDesktop21313: public IVirtualDesktop20241 {
 		virtual HRESULT __stdcall GetWallpaper(HSTRING* pName) = 0;
+	};
+
+	// Supported OS: Build 22621.2215 and later
+	// - [22621.2215] Windows 11 Version 22H2 + KB5029351
+	struct __declspec(uuid("3F07F4BE-B107-441A-AF0F-39D82529072C")) IVirtualDesktop22621_2215: public IUnknown {
+		virtual HRESULT __stdcall IsViewVisible(IUnknown* pView, int* pfVisible) = 0;
+		virtual HRESULT __stdcall GetID(winrt::guid* pGuid) = 0;
+		virtual HRESULT __stdcall GetName(HSTRING* pName) = 0;
+		virtual HRESULT __stdcall GetWallpaper(HSTRING* pName) = 0;
+		virtual HRESULT __stdcall IsRemote(int* pfRemote) = 0;
 	};
 
 	// ===[ IVirtualDesktopManagerInternal ]=============
@@ -225,6 +235,32 @@ namespace app::desktop {
 		virtual HRESULT __stdcall SetDesktopIsPerMonitor(BOOL state) = 0;
 	};
 
+	// Supported OS: Build 22621.2215 and later
+	// - [22621.2215] Windows 11 Version 22H2 + KB5029351
+	struct __declspec(uuid("A3175F2D-239C-4BD2-8AA0-EEBA8B0B138E")) IVirtualDesktopManagerInternal22621_2215: public IUnknown {
+		virtual HRESULT __stdcall GetCount(HMONITOR hMonitor, int* pCount) = 0;
+		virtual HRESULT __stdcall MoveViewToDesktop(/*IApplicationView*/ IUnknown* pView, IVirtualDesktop22621_2215* pDesktop) = 0;
+		virtual HRESULT __stdcall CanViewMoveDesktops(/*IApplicationView*/ IUnknown* pView, BOOL* bCanMove) = 0;
+		virtual HRESULT __stdcall GetCurrentDesktop(HMONITOR hMonitor, IVirtualDesktop22621_2215** ppDesktop) = 0;
+		virtual HRESULT __stdcall GetDesktops(HMONITOR hMonitor, IObjectArray** ppArray) = 0;
+		virtual HRESULT __stdcall GetAdjacentDesktop(IVirtualDesktop22621_2215* pDesktopOrigin, AdjacentDesktopDirection nDirection, IVirtualDesktop22621_2215** ppDesktop) = 0;
+		virtual HRESULT __stdcall SwitchDesktop(HMONITOR hMonitor, IVirtualDesktop22621_2215* pDesktop) = 0;
+		virtual HRESULT __stdcall CreateDesktopW(HMONITOR hMonitor, IVirtualDesktop22621_2215** ppDesktop) = 0;
+		virtual HRESULT __stdcall MoveDesktop(IVirtualDesktop22621_2215* pMoveDesktop, HMONITOR hMonitor, int nIndex) = 0;
+		virtual HRESULT __stdcall RemoveDesktop(IVirtualDesktop22621_2215* pRemoveDesktop, IVirtualDesktop22621_2215* pFallbackDesktop) = 0;
+		virtual HRESULT __stdcall FindDesktop(winrt::guid desktopId, IVirtualDesktop22621_2215** ppDesktop) = 0;
+		virtual HRESULT __stdcall GetDesktopSwitchIncludeExcludeViews(IVirtualDesktop22621_2215* pDesktop, IObjectArray** ppLeftDesktops, IObjectArray** ppRightDesktops) = 0;
+		virtual HRESULT __stdcall SetDesktopName(IVirtualDesktop22621_2215* pDesktop, HSTRING name) = 0;
+		virtual HRESULT __stdcall SetDesktopWallpaper(IVirtualDesktop22621_2215* pDesktop, HSTRING path) = 0;
+		virtual HRESULT __stdcall UpdateWallpaperPathForAllDesktops(HSTRING text) = 0;
+		virtual HRESULT __stdcall CopyDesktopState(/*IApplicationView*/ IUnknown* pView0, /*IApplicationView*/ IUnknown* pView1) = 0;
+		virtual HRESULT __stdcall CreateRemoteDesktop(HSTRING text, IVirtualDesktop22621_2215** ppDesktop) = 0;
+		virtual HRESULT __stdcall SwitchRemoteDesktop(IVirtualDesktop22621_2215* pDesktop) = 0;
+		virtual HRESULT __stdcall SwitchDesktopWithAnimation(IVirtualDesktop22621_2215* pDesktop) = 0;
+		virtual HRESULT __stdcall GetLastActiveDesktop(IVirtualDesktop22621_2215** ppDesktop) = 0;
+		virtual HRESULT __stdcall WaitForAnimationToComplete() = 0;
+	};
+
 	// Supported OS: Build 25158 and later (change UUID only, vtable is the same to IVirtualDesktopManagerInternal22449)
 	struct __declspec(uuid("88846798-1611-4D18-946B-4A67BFF58C1B")) IVirtualDesktopManagerInternal25158: public IVirtualDesktopManagerInternal22449 {
 	};
@@ -279,7 +315,7 @@ namespace app::desktop {
 		virtual HRESULT __stdcall CurrentVirtualDesktopChanged(IVirtualDesktop20231* pDesktopOld, IVirtualDesktop20231* pDesktopNew) = 0;
 	};
 
-	// Supported OS: Build 20241-20279 (change UUID only, vtable is the same to IVirtualDesktopNotification20231)
+	// Supported OS: Build 20241-20349 (change UUID only, vtable is the same to IVirtualDesktopNotification20231)
 	struct __declspec(uuid("F3163E11-6B04-433C-A64B-6F82C9094257")) IVirtualDesktopNotification20241: public IVirtualDesktopNotification20231 {
 	};
 
@@ -295,6 +331,21 @@ namespace app::desktop {
 		virtual HRESULT __stdcall ViewVirtualDesktopChanged(/*IApplicationView*/ IUnknown* pView) = 0;
 		virtual HRESULT __stdcall CurrentVirtualDesktopChanged(IObjectArray* pArray, IVirtualDesktop20231* pDesktopOld, IVirtualDesktop20231* pDesktopNew) = 0;
 		virtual HRESULT __stdcall VirtualDesktopWallpaperChanged(IVirtualDesktop20231* pDesktop, HSTRING path) = 0;
+	};
+
+	// Supported OS: Build 22621.2215 and later
+	struct __declspec(uuid("B287FA1C-7771-471A-A2DF-9B6B21F0D675")) IVirtualDesktopNotification22621_2215: public IUnknown {
+		virtual HRESULT __stdcall VirtualDesktopCreated(IObjectArray* pArray, IVirtualDesktop22621_2215* pDesktop) = 0;
+		virtual HRESULT __stdcall VirtualDesktopDestroyBegin(IObjectArray* pArray, IVirtualDesktop22621_2215* pDesktopDestroyed, IVirtualDesktop22621_2215* pDesktopFallback) = 0;
+		virtual HRESULT __stdcall VirtualDesktopDestroyFailed(IObjectArray* pArray, IVirtualDesktop22621_2215* pDesktopDestroyed, IVirtualDesktop22621_2215* pDesktopFallback) = 0;
+		virtual HRESULT __stdcall VirtualDesktopDestroyed(IObjectArray* pArray, IVirtualDesktop22621_2215* pDesktopDestroyed, IVirtualDesktop22621_2215* pDesktopFallback) = 0;
+		virtual HRESULT __stdcall VirtualDesktopMoved(IObjectArray* pArray, IVirtualDesktop22621_2215* pDesktop, int nFromIndex, int nToIndex) = 0;
+		virtual HRESULT __stdcall VirtualDesktopNameChanged(IVirtualDesktop22621_2215* pDesktop, HSTRING name) = 0;
+		virtual HRESULT __stdcall ViewVirtualDesktopChanged(/*IApplicationView*/ IUnknown* pView) = 0;
+		virtual HRESULT __stdcall CurrentVirtualDesktopChanged(IObjectArray* pArray, IVirtualDesktop22621_2215* pDesktopOld, IVirtualDesktop22621_2215* pDesktopNew) = 0;
+		virtual HRESULT __stdcall VirtualDesktopWallpaperChanged(IVirtualDesktop22621_2215* pDesktop, HSTRING path) = 0;
+		virtual HRESULT __stdcall VirtualDesktopSwitched(IVirtualDesktop22621_2215** ppDesktop) = 0;
+		virtual HRESULT __stdcall RemoteVirtualDesktopConnected(IVirtualDesktop22621_2215** ppDesktop) = 0;
 	};
 
 	// ===[ IVirtualDesktopNotificationService ]=============

@@ -23,6 +23,9 @@
     <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener21359.cpp">
       <Filter>Services\Desktops\Private</Filter>
     </ClCompile>
+    <ClCompile Include="Services\Desktops\Private\VirtualDesktopNotificationListener22621_2215.cpp">
+      <Filter>Services\Desktops\Private</Filter>
+    </ClCompile>
     <ClCompile Include="Services\Desktops\VirtualDesktopCache.cpp">
       <Filter>Services\Desktops</Filter>
     </ClCompile>

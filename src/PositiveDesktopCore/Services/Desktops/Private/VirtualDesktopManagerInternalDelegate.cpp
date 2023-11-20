@@ -134,3 +134,29 @@ HRESULT VirtualDesktopManagerInternalDelegate22449::LoadDesktops() noexcept {
 	}
 	return hr;
 }
+
+HRESULT VirtualDesktopManagerInternalDelegate22621_2215::LoadDesktops() noexcept {
+	HRESULT hr = S_OK;
+
+	winrt::com_ptr<IObjectArray> desktops;
+	hr = iface_->GetDesktops(nullptr, desktops.put());
+	if (FAILED(hr)) return hr;
+
+	UINT count { 0 };
+	hr = desktops->GetCount(&count);
+	if (FAILED(hr)) return hr;
+
+	for (UINT i = 0; i < count; ++i) {
+		IVirtualDesktop22621_2215* desktop;
+		hr = desktops->GetAt(i, __uuidof(IVirtualDesktop22621_2215), reinterpret_cast<void**>(&desktop));
+		if (FAILED(hr)) return hr;
+
+		IVirtualDesktopDelegate* delegate { nullptr };
+		hr = cache_->CreateDelegate(desktop, static_cast<int>(i), &delegate);
+		if (FAILED(hr)) {
+			desktop->Release();
+			return hr;
+		}
+	}
+	return hr;
+}
