@@ -132,8 +132,8 @@
   <data name="SettingsWindow_Info.Content" xml:space="preserve">
     <value>About Positive☆Desktop</value>
   </data>
-  <data name="SettingsWindow_Notification.Content" xml:space="preserve">
-    <value>Notification</value>
+  <data name="SettingsWindow_Notifications.Content" xml:space="preserve">
+    <value>Notifications</value>
   </data>
   <data name="SettingsWindow_ShortcutKey.Content" xml:space="preserve">
     <value>Hot Key</value>
@@ -155,6 +155,12 @@
   </data>
   <data name="Settings_Notification_HorizontalPosition.Header" xml:space="preserve">
     <value>Horizontal Position</value>
+  </data>
+  <data name="Settings_Notification_Notifications.Description" xml:space="preserve">
+    <value>Get notifications to change virtual desktops</value>
+  </data>
+  <data name="Settings_Notification_Notifications.Header" xml:space="preserve">
+    <value>Notifications</value>
   </data>
   <data name="Settings_Notification_Theme.Header" xml:space="preserve">
     <value>Theme</value>

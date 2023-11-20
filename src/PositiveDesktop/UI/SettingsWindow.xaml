@@ -47,7 +47,7 @@
 								 Color="Transparent" />
 			</NavigationView.Resources>
 			<NavigationView.MenuItems>
-				<NavigationViewItem x:Uid="SettingsWindow_Notification"
+				<NavigationViewItem x:Uid="SettingsWindow_Notifications"
 									nav:NavigationProperties.PageType="local:SettingsPage_Notification">
 					<NavigationViewItem.Icon>
 						<ImageIcon Source="/Assets/Notification.png" />

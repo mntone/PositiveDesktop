@@ -45,7 +45,9 @@
 
 		<StackPanel Margin="24,0,24,36"
 					Spacing="2">
-			<ctrl:SettingsCard Header="Notification">
+			<ctrl:SettingsCard x:Uid="Settings_Notification_Notifications"
+							   Description="Get notifications to change virtual desktops"
+							   Header="Notifications">
 				<ToggleSwitch />
 			</ctrl:SettingsCard>
 
