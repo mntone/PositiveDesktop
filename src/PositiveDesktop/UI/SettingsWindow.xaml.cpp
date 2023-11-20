@@ -85,8 +85,7 @@ void SettingsWindow::ActualThemeChanged(FrameworkElement const& sender, IInspect
 	if (!AppWindowTitleBar::IsCustomizationSupported()) return;
 #endif
 
-	AppWindow appWindow { GetAppWindow(m_inner) };
-	AppWindowTitleBar titlebar { appWindow.TitleBar() };
+	AppWindowTitleBar titlebar { AppWindow().TitleBar() };
 	ResourceDictionary resources { sender.Resources() };
 	titlebar.ForegroundColor(GetColor(resources, resources::WindowButtonForegroundColor));
 	titlebar.ButtonForegroundColor(GetColor(resources, resources::WindowButtonForegroundColor));

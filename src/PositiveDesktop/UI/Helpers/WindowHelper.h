@@ -2,6 +2,7 @@
 #include <microsoft.ui.xaml.window.h>
 
 #include <winrt/Microsoft.UI.h>
+#include <winrt/Microsoft.UI.Interop.h>
 #include <winrt/Microsoft.UI.Windowing.h>
 
 #include <Common/Math.h>

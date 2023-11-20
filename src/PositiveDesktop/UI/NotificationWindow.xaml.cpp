@@ -131,7 +131,7 @@ NotificationWindow::NotificationWindow(std::shared_ptr<app::storage::DesktopConf
 	}
 
 	// Set window configs
-	AppWindow appWindow { GetAppWindow(hWnd) };
+	::winrt::AppWindow appWindow { GetAppWindow(hWnd) };
 	appWindow.IsShownInSwitchers(false);
 	appWindow.ResizeClient(Windows::Graphics::SizeInt32 { 500, 95 });
 
@@ -472,19 +472,19 @@ void NotificationWindow::ApplyThemeForAcrylic(FrameworkElement rootElement) noex
 	app::storage::theme_t theme { config_->theme() };
 	DesktopAcrylicController controller { backdropController_.as<DesktopAcrylicController>() };
 	if (app::storage::thm_accent == theme || app::storage::thm_default == theme && colorPrevalence_.value()) {
-		DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::AccentDark, DesktopAcrylicKind::Default);
+		DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::AccentDark, ::winrt::Mntone::AngelUmbrella::Composition::SystemBackdrops::DesktopAcrylicKind::Default);
 		configuration_.Theme(SystemBackdropTheme::Dark);
 		border = GetBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Accent);
 	} else {
 		switch (rootElement.ActualTheme()) {
 		case ElementTheme::Dark:
-			DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::Dark, DesktopAcrylicKind::Default);
+			DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::Dark, ::winrt::Mntone::AngelUmbrella::Composition::SystemBackdrops::DesktopAcrylicKind::Default);
 			configuration_.Theme(SystemBackdropTheme::Dark);
 			border = GetBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Dark);
 			break;
 		case ElementTheme::Light:
 		default:
-			DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::Light, DesktopAcrylicKind::Base);
+			DesktopAcrylicHelper::SetColors(controller, DesktopAcrylicTheme::Light, ::winrt::Mntone::AngelUmbrella::Composition::SystemBackdrops::DesktopAcrylicKind::Base);
 			configuration_.Theme(SystemBackdropTheme::Light);
 			border = GetBrush(rootElement.Resources(), resources::AcrylicWindowStrokeColorBrush_Light);
 			break;
